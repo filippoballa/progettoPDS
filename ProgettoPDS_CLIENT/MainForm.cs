@@ -19,6 +19,7 @@ namespace ProgettoPDS_CLIENT
             InitializeComponent();
             this.user = aux;
             this.Text += " - " + aux.Name;
+			MessageBox.Show("Hello!!");
         }
     }
 }
