@@ -21,3 +21,13 @@ C:\Users\filippo\Documents\Visual Studio 2012\Projects\ProgettoPDS_SERVER\BuildP
 C:\Users\filippo\Documents\Visual Studio 2012\Projects\ProgettoPDS_SERVER\BuildProcessTemplates\ProgettoPDS_CLIENT\obj\Debug\ProgettoPDS_CLIENT.MainForm.resources
 C:\Users\filippo\Documents\Visual Studio 2012\Projects\ProgettoPDS_SERVER\BuildProcessTemplates\ProgettoPDS_CLIENT\obj\Debug\ProgettoPDS_CLIENT.Properties.Resources.resources
 C:\Users\filippo\Documents\Visual Studio 2012\Projects\ProgettoPDS_SERVER\BuildProcessTemplates\ProgettoPDS_CLIENT\obj\Debug\ProgettoPDS_CLIENT.csproj.GenerateResource.Cache
+C:\Users\filippo\Documents\GitHub\progettoPDS\ProgettoPDS_CLIENT\bin\Debug\ProgettoPDS_CLIENT.exe.config
+C:\Users\filippo\Documents\GitHub\progettoPDS\ProgettoPDS_CLIENT\obj\Debug\ProgettoPDS_CLIENT.exe
+C:\Users\filippo\Documents\GitHub\progettoPDS\ProgettoPDS_CLIENT\obj\Debug\ProgettoPDS_CLIENT.pdb
+C:\Users\filippo\Documents\GitHub\progettoPDS\ProgettoPDS_CLIENT\bin\Debug\ProgettoPDS_CLIENT.exe
+C:\Users\filippo\Documents\GitHub\progettoPDS\ProgettoPDS_CLIENT\bin\Debug\ProgettoPDS_CLIENT.pdb
+C:\Users\filippo\Documents\GitHub\progettoPDS\ProgettoPDS_CLIENT\obj\Debug\ProgettoPDS_CLIENT.csprojResolveAssemblyReference.cache
+C:\Users\filippo\Documents\GitHub\progettoPDS\ProgettoPDS_CLIENT\obj\Debug\ProgettoPDS_CLIENT.LoginForm.resources
+C:\Users\filippo\Documents\GitHub\progettoPDS\ProgettoPDS_CLIENT\obj\Debug\ProgettoPDS_CLIENT.MainForm.resources
+C:\Users\filippo\Documents\GitHub\progettoPDS\ProgettoPDS_CLIENT\obj\Debug\ProgettoPDS_CLIENT.Properties.Resources.resources
+C:\Users\filippo\Documents\GitHub\progettoPDS\ProgettoPDS_CLIENT\obj\Debug\ProgettoPDS_CLIENT.csproj.GenerateResource.Cache
