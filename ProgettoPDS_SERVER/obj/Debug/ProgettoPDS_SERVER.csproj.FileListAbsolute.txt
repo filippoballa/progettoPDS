@@ -18,3 +18,6 @@ C:\Users\filippo\Documents\Visual Studio 2012\Projects\ProgettoPDS_SERVER\BuildP
 C:\Users\filippo\Documents\Visual Studio 2012\Projects\ProgettoPDS_SERVER\BuildProcessTemplates\ProgettoPDS_SERVER\obj\Debug\ProgettoPDS_SERVER.MainForm.resources
 C:\Users\filippo\Documents\Visual Studio 2012\Projects\ProgettoPDS_SERVER\BuildProcessTemplates\ProgettoPDS_SERVER\obj\Debug\ProgettoPDS_SERVER.Properties.Resources.resources
 C:\Users\filippo\Documents\Visual Studio 2012\Projects\ProgettoPDS_SERVER\BuildProcessTemplates\ProgettoPDS_SERVER\obj\Debug\ProgettoPDS_SERVER.csproj.GenerateResource.Cache
+C:\Users\filippo\Documents\GitHub\progettoPDS\ProgettoPDS_SERVER\bin\Debug\ProgettoPDS_SERVER.exe.config
+C:\Users\filippo\Documents\GitHub\progettoPDS\ProgettoPDS_SERVER\obj\Debug\ProgettoPDS_SERVER.exe
+C:\Users\filippo\Documents\GitHub\progettoPDS\ProgettoPDS_SERVER\obj\Debug\ProgettoPDS_SERVER.pdb
