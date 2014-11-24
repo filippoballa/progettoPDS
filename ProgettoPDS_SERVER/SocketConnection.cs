@@ -56,34 +56,56 @@ namespace ProgettoPDS_SERVER
         private bool ClientAutentication()
         {
             string comando, user, pwd;
-            bool presente;
             byte[] data;
 
             //richiesta user e password;
 
             comando = "+AUTH_USER";
             data = Encoding.ASCII.GetBytes(comando);
-            passiv.Send(data);
+            passiv.Send(data);//invio richiesta di autenticazione
 
             passiv.Receive(data);
             user = Encoding.ASCII.GetString(data);
 
-            presente = ControlloUser(user);// controllo che l'user sia già registrato
-            if (presente)
+            // controllo che l'user sia già registrato
+            if (ControlloUser(user))
             {
                 comando = "+AUTH_PWD";
                 data = Encoding.ASCII.GetBytes(comando);
-                passiv.Send(data);
+                passiv.Send(data);//se l'user è registrato gli chiedo la pswrd
 
                 passiv.Receive(data);
                 pwd = Encoding.ASCII.GetString(data);
+
+                if (ControlloPassword(user))
+                {
+                    //...
+                }
+                else//la password non è corretta
+                {
+                    //...
+                }
             }
-            else if (user == "+REGISTRATION")
+            else if (user == "+REGISTRATION")//se il client ha richiesto di registrarsi
             {
                 comando = "";
                 data = Encoding.ASCII.GetBytes(comando);
+                //..
             }
-            //....
+            else//se il client non vuole registrarsi si chiude la connessione
+            { 
+                CloseSocket(); 
+            }
+            return true;
+        }
+
+        private void CloseSocket()
+        {
+            throw new NotImplementedException();
+        }
+
+        private bool ControlloPassword(string user)
+        {
             return true;
         }
 
