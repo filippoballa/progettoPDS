@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-//using System.Text.Encoding;
+using System.Text.Encoding;
 using System.Threading.Tasks;
 using System.Net.Sockets;
 using System.Net;
 using System.Threading;
-using System.Windows.Forms;
 
 namespace ProgettoPDS_SERVER
 {
@@ -45,7 +44,7 @@ namespace ProgettoPDS_SERVER
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message);
+                //Console.WriteLine(e.ToString());
             }
         }
 

@@ -7,16 +7,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Xml;
-using System.IO;
 
 namespace ProgettoPDS_SERVER
 {   
     public partial class LoginForm : Form
     {
         private User user;
-        private XmlManager Users;
-        
 
         public LoginForm( User aux )
         {
@@ -26,7 +22,7 @@ namespace ProgettoPDS_SERVER
 
         private void LoginButton_Click(object sender, EventArgs e)
         {
-            if ( VerificaCredenziali()) 
+            if ( VerificaCredenziali() == true) 
                 this.Close();
             else
                 MessageBox.Show("Login Fallito!!", "ERRORE", MessageBoxButtons.OK,MessageBoxIcon.Error);         
@@ -34,25 +30,15 @@ namespace ProgettoPDS_SERVER
 
         private bool VerificaCredenziali()
         {
-            Users = new XmlManager('U');
-            string pwd = null;
-
-            //prova inserimento
-            //Users.AddNewUser(this.UsernameTextBox.Text, this.PasswordTextBox.Text);//
-
-            pwd = Users.SearchUser(this.UsernameTextBox.Text);
-
-            if(pwd!= null && pwd == this.PasswordTextBox.Text)
+            if (this.UsernameTextBox.Text == "filippo" && this.PasswordTextBox.Text == "balla")
             {
                 user.Name = this.UsernameTextBox.Text;
+                user.Password = this.PasswordTextBox.Text;
                 user.Login = true;
                 return true;
             }
             else
                 return false;
         }
-
-       
     }
-    
 }
