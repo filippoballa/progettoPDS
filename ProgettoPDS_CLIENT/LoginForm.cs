@@ -53,7 +53,7 @@ namespace ProgettoPDS_CLIENT
 
         private void chiudiToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Close();
+            this.Close();
         }
 
         private void registraToolStripMenuItem_Click(object sender, EventArgs e)

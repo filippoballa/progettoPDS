@@ -157,7 +157,7 @@
             this.PwdRegLabel.AutoSize = true;
             this.PwdRegLabel.Location = new System.Drawing.Point(23, 146);
             this.PwdRegLabel.Name = "PwdRegLabel";
-            this.PwdRegLabel.Size = new System.Drawing.Size(84, 17);
+            this.PwdRegLabel.Size = new System.Drawing.Size(86, 17);
             this.PwdRegLabel.TabIndex = 3;
             this.PwdRegLabel.Text = "PASSWORD :";
             // 
@@ -166,7 +166,7 @@
             this.UserRegLabel.AutoSize = true;
             this.UserRegLabel.Location = new System.Drawing.Point(23, 111);
             this.UserRegLabel.Name = "UserRegLabel";
-            this.UserRegLabel.Size = new System.Drawing.Size(84, 17);
+            this.UserRegLabel.Size = new System.Drawing.Size(87, 17);
             this.UserRegLabel.TabIndex = 2;
             this.UserRegLabel.Text = "USERNAME :";
             // 
@@ -175,7 +175,7 @@
             this.CognomeRegLabel.AutoSize = true;
             this.CognomeRegLabel.Location = new System.Drawing.Point(23, 73);
             this.CognomeRegLabel.Name = "CognomeRegLabel";
-            this.CognomeRegLabel.Size = new System.Drawing.Size(79, 17);
+            this.CognomeRegLabel.Size = new System.Drawing.Size(80, 17);
             this.CognomeRegLabel.TabIndex = 1;
             this.CognomeRegLabel.Text = "COGNOME :";
             // 
@@ -184,7 +184,7 @@
             this.NameRegLabel.AutoSize = true;
             this.NameRegLabel.Location = new System.Drawing.Point(23, 37);
             this.NameRegLabel.Name = "NameRegLabel";
-            this.NameRegLabel.Size = new System.Drawing.Size(54, 17);
+            this.NameRegLabel.Size = new System.Drawing.Size(55, 17);
             this.NameRegLabel.TabIndex = 0;
             this.NameRegLabel.Text = "NOME :";
             // 
@@ -262,7 +262,7 @@
             this.PasswordTextBox.Name = "PasswordTextBox";
             this.PasswordTextBox.PasswordChar = '*';
             this.PasswordTextBox.Size = new System.Drawing.Size(254, 24);
-            this.PasswordTextBox.TabIndex = 11;
+            this.PasswordTextBox.TabIndex = 13;
             // 
             // LoginButton
             // 
@@ -276,7 +276,7 @@
             this.LoginButton.Location = new System.Drawing.Point(152, 152);
             this.LoginButton.Name = "LoginButton";
             this.LoginButton.Size = new System.Drawing.Size(75, 48);
-            this.LoginButton.TabIndex = 10;
+            this.LoginButton.TabIndex = 14;
             this.LoginButton.Text = "LOGIN";
             this.LoginButton.UseVisualStyleBackColor = false;
             this.LoginButton.Click += new System.EventHandler(this.LoginButton_Click);
@@ -330,13 +330,16 @@
             this.registraToolStripMenuItem,
             this.chiudiToolStripMenuItem});
             this.fileToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.fileToolStripMenuItem.ForeColor = System.Drawing.Color.Gold;
+            this.fileToolStripMenuItem.ForeColor = System.Drawing.Color.CornflowerBlue;
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(38, 20);
             this.fileToolStripMenuItem.Text = "File";
             // 
             // loginPageToolStripMenuItem
             // 
+            this.loginPageToolStripMenuItem.BackColor = System.Drawing.SystemColors.WindowFrame;
+            this.loginPageToolStripMenuItem.ForeColor = System.Drawing.Color.White;
+            this.loginPageToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("loginPageToolStripMenuItem.Image")));
             this.loginPageToolStripMenuItem.Name = "loginPageToolStripMenuItem";
             this.loginPageToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
             this.loginPageToolStripMenuItem.Text = "Login Page";
@@ -344,7 +347,9 @@
             // 
             // registraToolStripMenuItem
             // 
-            this.registraToolStripMenuItem.BackColor = System.Drawing.SystemColors.Control;
+            this.registraToolStripMenuItem.BackColor = System.Drawing.SystemColors.WindowFrame;
+            this.registraToolStripMenuItem.ForeColor = System.Drawing.Color.White;
+            this.registraToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("registraToolStripMenuItem.Image")));
             this.registraToolStripMenuItem.Name = "registraToolStripMenuItem";
             this.registraToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
             this.registraToolStripMenuItem.Text = "Registra Utente";
@@ -352,9 +357,13 @@
             // 
             // chiudiToolStripMenuItem
             // 
+            this.chiudiToolStripMenuItem.BackColor = System.Drawing.SystemColors.WindowFrame;
+            this.chiudiToolStripMenuItem.ForeColor = System.Drawing.Color.White;
+            this.chiudiToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("chiudiToolStripMenuItem.Image")));
             this.chiudiToolStripMenuItem.Name = "chiudiToolStripMenuItem";
             this.chiudiToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
             this.chiudiToolStripMenuItem.Text = "Chiudi";
+            this.chiudiToolStripMenuItem.Click += new System.EventHandler(this.chiudiToolStripMenuItem_Click);
             // 
             // toolStripMenuItem1
             // 
@@ -363,16 +372,19 @@
             this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.infoToolStripMenuItem});
             this.toolStripMenuItem1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.toolStripMenuItem1.ForeColor = System.Drawing.Color.Gold;
+            this.toolStripMenuItem1.ForeColor = System.Drawing.Color.CornflowerBlue;
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
             this.toolStripMenuItem1.Size = new System.Drawing.Size(24, 20);
             this.toolStripMenuItem1.Text = "?";
             // 
             // infoToolStripMenuItem
             // 
+            this.infoToolStripMenuItem.BackColor = System.Drawing.SystemColors.WindowFrame;
+            this.infoToolStripMenuItem.ForeColor = System.Drawing.Color.White;
+            this.infoToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("infoToolStripMenuItem.Image")));
             this.infoToolStripMenuItem.Name = "infoToolStripMenuItem";
-            this.infoToolStripMenuItem.Size = new System.Drawing.Size(97, 22);
-            this.infoToolStripMenuItem.Text = "Info";
+            this.infoToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.infoToolStripMenuItem.Text = "Informazioni";
             // 
             // LoginForm
             // 
