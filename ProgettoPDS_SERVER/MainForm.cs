@@ -15,7 +15,8 @@ namespace ProgettoPDS_SERVER
         public MainForm(User u)
         {
             InitializeComponent();
-            this.Text = "SERVER - "+ u.Name;
+            this.Text = "SERVER - "+ u.Username;
+            MessageBox.Show("Benvenuto " + u.Name + " " + u.Surname + "!");
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -36,5 +37,16 @@ namespace ProgettoPDS_SERVER
             this.Activate();
         }
 
+        private void notifyIcon1_BalloonTipClicked(object sender, EventArgs e)
+        {
+            // Show the form when the user double clicks on the notify icon.
+
+            // Set the WindowState to normal if the form is minimized.
+            if (this.WindowState == FormWindowState.Minimized)
+                this.WindowState = FormWindowState.Normal;
+
+            // Activate the form.
+            this.Activate();
+        }
     }
 }

@@ -8,41 +8,60 @@ using System.Xml;
 using System.Windows.Forms;
 using System.Security.Cryptography;
 
+
+/*
+ * XML STRUCTURE
+ *
+ * <USERS>
+  
+ *  <MYUSER>
+   
+ *      <USER>filippo.balla</USER>
+   
+ *      <PASSWORD>fballa1</PASSWORD>
+   
+ *      <NAME>filippo</NAME>
+   
+ *      <SURNAME>balla</SURNAME>
+  
+ *  </MYUSER>  
+
+ * </USERS>
+*/
+
 namespace ProgettoPDS_SERVER
 {
     class XmlManager
     {
         private string root = "C:\\Users\\filippo\\Documents\\GitHub\\progettoPDS\\ProgettoPDS_SERVER\\";// Path.GetDirectoryName(Application.UserAppDataPath);
-        private string FileName;
-        private static string FileNameUsers = "XMLUsers.xml";
-        private static string FileNameClients = "XMLClients.xml";
+        private string FileNameUsers = "XMLUsers.xml";
+        private string FileNameClients = "XMLClients.xml";
         private XmlDocument XmlDoc;
         private Rijndael myRijndael;
-        private byte[] Key = new byte[32] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1 };
-        private byte[] IV = new byte[16] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5};
+        private bool criptography = false;// se è settato su true memorizza i dati codificati sul file xml, ma non funziona ancora
 
          public XmlManager(char c)
         {
+            string FileName,p;
+
             if (c == 'C')
                 FileName = FileNameClients;
-            else if(c =='U')
+            else //if(c =='U')
                 FileName = FileNameUsers;
 
             this.XmlDoc = new XmlDocument();
-            string p;
 
             if (File.Exists(p = Path.Combine(root, FileName)))
                 XmlDoc.Load(p);
             else
                 MessageBox.Show(p + "\n file non trovato!");
 
-            myRijndael = Rijndael.Create();
-            myRijndael.Key = Key;
-            myRijndael.IV = IV;
+            if(criptography)
+                CreateRijandel();
         }
-         public string SearchUser(string user)//potrebbe essere un'operazione pesante
+         public string[] SearchUser(string user)//potrebbe essere un'operazione pesante
          {
-             string pswd = null;
+             string [] data= new string[4]{"","","",""};
              int i;
              XmlNodeList xmlnode;
              byte[] encrypted;
@@ -53,20 +72,41 @@ namespace ProgettoPDS_SERVER
 
                  for (i = 0; i <= xmlnode.Count - 1; i++)//scorre tutti  i nodi MYUSER
                  {
-                     encrypted = GetBytes(xmlnode[i].ChildNodes.Item(0).InnerText.Trim());//decodifica il campo 0 (USER) codificato sul file
-                     if (user == DecryptStringFromBytes(encrypted, myRijndael.Key, myRijndael.IV))//se è uguale
+                     #region c_on
+                     if (criptography)
                      {
-                         encrypted = GetBytes(xmlnode[i].ChildNodes.Item(1).InnerText.Trim());//decodifica il campo 1 (PASSWORD) codificato sul file
-                         pswd = DecryptStringFromBytes(encrypted, myRijndael.Key, myRijndael.IV);//e lo decodifica
+                         encrypted = GetBytes(xmlnode[i].ChildNodes.Item(0).InnerText.Trim());//decodifica il campo 0 (USER) codificato sul file
+                         if (user == DecryptStringFromBytes(encrypted, myRijndael.Key, myRijndael.IV))//se è uguale
+                         {
+                             data[0] = user;
+                             int j;
+                             for (j = 1; j < 4; j++)
+                             {
+                                 encrypted = GetBytes(xmlnode[i].ChildNodes.Item(j).InnerText.Trim());//trasformo in bit il campo J
+                                 data[j] = DecryptStringFromBytes(encrypted, myRijndael.Key, myRijndael.IV); //e lo decodifico
+                             }
+                         }
+                     }
+                     else
+                     #endregion c_on
+                     {
+                         if (user == xmlnode[i].ChildNodes.Item(0).InnerText.Trim())//se trovo lo user
+                         {
+                             data[0] = user;//assegno lo user
+                             data[1] = xmlnode[i].ChildNodes.Item(1).InnerText.Trim();//assegno la password
+                             data[2] = xmlnode[i].ChildNodes.Item(2).InnerText.Trim();//assegno il nome
+                             data[3] = xmlnode[i].ChildNodes.Item(3).InnerText.Trim();//assegno il cognome
+                         }
                      }
                  }
              }catch(Exception e)
              {
                  MessageBox.Show(e.Message);
              }
-             return pswd;
+             return data;
          }
-         static string DecryptStringFromBytes(byte[] cipherText, byte[] Key, byte[] IV)
+         #region criptography
+         private string DecryptStringFromBytes(byte[] cipherText, byte[] Key, byte[] IV)
          {
              // Check arguments.
              if (cipherText == null || cipherText.Length <= 0)
@@ -82,11 +122,9 @@ namespace ProgettoPDS_SERVER
 
              // Create an Rijndael object
              // with the specified key and IV.
-             using (Rijndael rijAlg = Rijndael.Create())
-             {
-                 rijAlg.Key = Key;
-                 rijAlg.IV = IV;
-
+             RijndaelManaged rijAlg = new RijndaelManaged();
+                 rijAlg.Key = myRijndael.Key;
+                 rijAlg.IV = myRijndael.IV;
                  // Create a decrytor to perform the stream transform.
                  ICryptoTransform decryptor = rijAlg.CreateDecryptor(rijAlg.Key, rijAlg.IV);
 
@@ -105,12 +143,12 @@ namespace ProgettoPDS_SERVER
                      }
                  }
 
-             }
+             
 
              return plaintext;
 
          }
-         static byte[] EncryptStringToBytes(string plainText, byte[] Key, byte[] IV)
+         private byte[] EncryptStringToBytes(string plainText, byte[] Key, byte[] IV)
          {
              // Check arguments.
              if (plainText == null || plainText.Length <= 0)
@@ -122,11 +160,9 @@ namespace ProgettoPDS_SERVER
              byte[] encrypted;
              // Create an Rijndael object
              // with the specified key and IV.
-             using (Rijndael rijAlg = Rijndael.Create())
-             {
-                 rijAlg.Key = Key;
-                 rijAlg.IV = IV;
-
+             RijndaelManaged rijAlg = new RijndaelManaged();
+                 rijAlg.Key = myRijndael.Key;
+                 rijAlg.IV = myRijndael.IV;
                  // Create a decrytor to perform the stream transform.
                  ICryptoTransform encryptor = rijAlg.CreateEncryptor(rijAlg.Key, rijAlg.IV);
 
@@ -144,7 +180,7 @@ namespace ProgettoPDS_SERVER
                          encrypted = msEncrypt.ToArray();
                      }
                  }
-             }
+             
 
 
              // Return the encrypted bytes from the memory stream.
@@ -164,12 +200,21 @@ namespace ProgettoPDS_SERVER
              System.Buffer.BlockCopy(bytes, 0, chars, 0, bytes.Length);
              return new string(chars);
          }
+        private void CreateRijandel(){
+            myRijndael = Rijndael.Create();
+            //create key
+            var key = new Rfc2898DeriveBytes(root, GetBytes(FileNameUsers));//due stringhe a caso in teoria la prima è una chiave privata la seconda un 'salt'
+            myRijndael.Key = key.GetBytes(myRijndael.KeySize / 8);
+            myRijndael.IV = key.GetBytes(myRijndael.BlockSize / 8);
+        }
+        #endregion criptography
         public void AddNewUser(string user, string pswd)
         {
             try
             {
                 string p;
-                if (File.Exists(p = Path.Combine(this.root, FileNameUsers)))
+
+                if (File.Exists(p = Path.Combine(FileNameUsers, this.root)))
                     XmlDoc.Load(p);
                 else
                     MessageBox.Show(p + "\n file non trovato!");
