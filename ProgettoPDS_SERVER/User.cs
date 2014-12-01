@@ -9,6 +9,8 @@ namespace ProgettoPDS_SERVER
     public class User
     {
         private string name;
+        private string user;
+        private string surname;
         private string password;
         private bool IsLog;
 
@@ -37,6 +39,17 @@ namespace ProgettoPDS_SERVER
         {
             get { return this.password; }
             set { this.password = value; }
+        }
+        public string Username
+        {
+            get { return this.user; }
+            set { this.user = value; }
+        }
+
+        public string Surname
+        {
+            get { return this.surname; }
+            set { this.surname = value; }
         }
 
         public bool Login

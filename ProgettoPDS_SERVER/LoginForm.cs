@@ -35,16 +35,19 @@ namespace ProgettoPDS_SERVER
         private bool VerificaCredenziali()
         {
             Users = new XmlManager('U');
-            string pwd = null;
+            string[] data = null;
 
             //prova inserimento
             //Users.AddNewUser(this.UsernameTextBox.Text, this.PasswordTextBox.Text);//
 
-            pwd = Users.SearchUser(this.UsernameTextBox.Text);
+            data = Users.SearchUser(this.UsernameTextBox.Text);//ritorna null se non trova lo user
 
-            if(pwd!= null && pwd == this.PasswordTextBox.Text)
+            if(data!= null && data[1] == this.PasswordTextBox.Text)//se non ha ritornato null e la pswrd è uguale
             {
-                user.Name = this.UsernameTextBox.Text;
+                user.Username = data[0];
+                user.Password = data[1];
+                user.Name = data[2];
+                user.Surname = data[3];
                 user.Login = true;
                 return true;
             }
