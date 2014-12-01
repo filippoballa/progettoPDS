@@ -4,15 +4,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProgettoPDS_CLIENT", "ProgettoPDS_CLIENT\ProgettoPDS_CLIENT.csproj", "{85F3DB19-A847-439C-8A86-76E13DF5EEE0}"
 EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 2
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://filippoballa.visualstudio.com/defaultcollection
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = ProgettoPDS_CLIENT\\ProgettoPDS_CLIENT.csproj
-		SccProjectName1 = ProgettoPDS_CLIENT
-		SccLocalPath1 = ProgettoPDS_CLIENT
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
