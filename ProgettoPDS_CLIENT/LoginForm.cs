@@ -14,6 +14,7 @@ namespace ProgettoPDS_CLIENT
     public partial class LoginForm : Form
     {
         private User user;
+        private XmlManager mng;
 
         public LoginForm( User aux )
         {
@@ -24,10 +25,17 @@ namespace ProgettoPDS_CLIENT
             SetStyle(ControlStyles.AllPaintingInWmPaint, true);
             InitializeComponent();
             this.user = aux;
+            this.mng = new XmlManager("XMLUsers.xml");
         }
 
         private void LoginButton_Click(object sender, EventArgs e)
         {
+            if (this.UsernameTextBox.Text == "" || this.PasswordTextBox.Text == "") {
+                this.UsernameTextBox.Focus();
+                MessageBox.Show("Inserisci le tue credenziali complete prima di accedere!!", "ERRORE", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             if (VerificaCredenziali() == true)
                 this.Close();
             else {
@@ -40,14 +48,17 @@ namespace ProgettoPDS_CLIENT
 
         private bool VerificaCredenziali()
         {
-            if (this.UsernameTextBox.Text == "filippo" && this.PasswordTextBox.Text == "balla")
-            {
-                user.Name = this.UsernameTextBox.Text;
-                user.Password = this.PasswordTextBox.Text;
-                user.Login = true;
+            User aux = this.mng.SearchUser(this.UsernameTextBox.Text);
+
+            if ( aux != null && (aux.Password == this.PasswordTextBox.Text) ) {
+                this.user.Name = aux.Name;
+                this.user.Username = aux.Username;
+                this.user.Password = aux.Username;
+                this.user.Surname = aux.Surname;
+                this.user.Login = true;
                 return true;
             }
-            else
+            else 
                 return false;
         }
 
@@ -68,6 +79,51 @@ namespace ProgettoPDS_CLIENT
             this.RegistraPanel.Visible = false;
             this.UsernameTextBox.Focus();
             this.MainPanel.Visible = true;
+
+        }
+
+        private void RegistraButton_Click(object sender, EventArgs e)
+        {
+
+            if (this.UserRegTextBox.Text == "" && this.PwdRegTextBox.Text == "" && this.NameRegTextBox.Text == "" && this.CognomeRegTextBox.Text == "") {
+                this.NameRegTextBox.Focus();
+                MessageBox.Show("Completa tutti i campi del form prima di cliccare sul bottone \"Registra\"", "AVVISO", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            else if (this.NameRegTextBox.Text == "") {
+                this.NameRegTextBox.Focus();
+                MessageBox.Show("Inserire un Nome nell'apposito campo del form!!", "AVVISO", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            else if (this.CognomeRegTextBox.Text == "") {
+                this.CognomeRegTextBox.Focus();
+                MessageBox.Show("Inserire un Cognome nell'apposito campo del form!!", "AVVISO", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            else if (this.UserRegTextBox.Text == "") {
+                this.UserRegTextBox.Focus();
+                MessageBox.Show("Inserire uno Username valido nell'apposito campo del form!!", "AVVISO", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            else if (this.PwdRegTextBox.Text == "") {
+                this.PwdRegTextBox.Focus();
+                MessageBox.Show("Inserire una Password nell'apposito campo del form!!", "AVVISO", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            else {
+               
+                User aux = mng.SearchUser(this.UserRegTextBox.Text);
+
+                if (aux == null) {
+                    this.user.Name = this.NameRegTextBox.Text;
+                    this.user.Surname = this.CognomeRegTextBox.Text;
+                    this.user.Username = this.UserRegTextBox.Text;
+                    this.user.Password = this.PwdRegTextBox.Text;
+                    this.user.Login = true;
+
+                    mng.AddNewUser(this.user);
+
+                    this.Close();
+                }
+                else
+                    MessageBox.Show("L'utente " + aux.Username + " è già registrato nell'applicazione!!", "ANOMALIA", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            
+            }
 
         }
 
