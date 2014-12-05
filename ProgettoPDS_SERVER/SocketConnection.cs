@@ -16,11 +16,14 @@ namespace ProgettoPDS_SERVER
         private const int backlog = 1;
         private Socket sock, passiv;
         public static ManualResetEvent allDone = new ManualResetEvent(false);
+        private int porta;
+        private String myIP;
 
         public SocketConnection(int porta)
         {
 
             // Create a TCP/IP socket.
+            this.porta = porta;
             sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
             // Bind the socket to the local endpoint and 
@@ -31,17 +34,13 @@ namespace ProgettoPDS_SERVER
             try
             {
                 sock.Listen(backlog);
-                // Start listening for connections.
-                /* Main Server Loop */
-                while (true)
-                {
+
                     // Set the event to nonsignaled state.
-                    allDone.Reset();
+                    //allDone.Reset();
                     // Program is suspended while waiting for an incoming connection.
                     sock.BeginAccept(new AsyncCallback(AcceptCallback), sock);
                     // Wait until a connection is made before continuing.
-                    allDone.WaitOne();
-                }
+                    //allDone.WaitOne();
             }
             catch (Exception e)
             {
@@ -51,7 +50,16 @@ namespace ProgettoPDS_SERVER
 
         private void AcceptCallback(IAsyncResult ar)
         {
-            ClientAutentication();
+            //allDone.Set();
+
+            passiv = (Socket)ar.AsyncState;
+            passiv = passiv.EndAccept(ar);
+
+            MessageBox.Show("Connessione avvenuta inizio autenticazione client("+passiv.RemoteEndPoint.ToString()+")");
+            if(ClientAutentication())
+            {}
+            else
+            {}
         }
 
         private bool ClientAutentication()
@@ -113,6 +121,21 @@ namespace ProgettoPDS_SERVER
         private bool ControlloUser(string user)
         {
             return true;
+        }
+
+        public String GetMyIp()
+        {
+            IPHostEntry host;
+            host = Dns.GetHostEntry(Dns.GetHostName());
+            foreach (IPAddress ip in host.AddressList)
+            {
+                if (ip.AddressFamily == AddressFamily.InterNetwork)
+                {
+                    myIP = ip.ToString();
+                    break;
+                }
+            }
+            return myIP;
         }
 
     }
