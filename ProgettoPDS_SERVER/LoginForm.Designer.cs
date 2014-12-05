@@ -31,19 +31,19 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LoginForm));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.loginPageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.registraUtenteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.chiudiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.informazioniToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MainPanel = new System.Windows.Forms.Panel();
-            this.label1 = new System.Windows.Forms.Label();
-            this.PasswordTextBox = new System.Windows.Forms.TextBox();
-            this.UsernameTextBox = new System.Windows.Forms.TextBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.LoginButton = new System.Windows.Forms.Button();
-            this.PasswordLabel = new System.Windows.Forms.Label();
             this.UsernameLabel = new System.Windows.Forms.Label();
+            this.PasswordLabel = new System.Windows.Forms.Label();
+            this.LoginButton = new System.Windows.Forms.Button();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.UsernameTextBox = new System.Windows.Forms.TextBox();
+            this.PasswordTextBox = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.RegistraPanel = new System.Windows.Forms.Panel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.button1 = new System.Windows.Forms.Button();
@@ -87,16 +87,6 @@
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(38, 20);
             this.fileToolStripMenuItem.Text = "File";
             // 
-            // toolStripMenuItem1
-            // 
-            this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.informazioniToolStripMenuItem});
-            this.toolStripMenuItem1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.toolStripMenuItem1.ForeColor = System.Drawing.Color.Black;
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(24, 20);
-            this.toolStripMenuItem1.Text = "?";
-            // 
             // loginPageToolStripMenuItem
             // 
             this.loginPageToolStripMenuItem.BackColor = System.Drawing.SystemColors.Info;
@@ -125,12 +115,22 @@
             this.chiudiToolStripMenuItem.Text = "Chiudi";
             this.chiudiToolStripMenuItem.Click += new System.EventHandler(this.chiudiToolStripMenuItem_Click);
             // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.informazioniToolStripMenuItem});
+            this.toolStripMenuItem1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.toolStripMenuItem1.ForeColor = System.Drawing.Color.Black;
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(24, 20);
+            this.toolStripMenuItem1.Text = "?";
+            // 
             // informazioniToolStripMenuItem
             // 
             this.informazioniToolStripMenuItem.BackColor = System.Drawing.SystemColors.Info;
             this.informazioniToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("informazioniToolStripMenuItem.Image")));
             this.informazioniToolStripMenuItem.Name = "informazioniToolStripMenuItem";
-            this.informazioniToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.informazioniToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.informazioniToolStripMenuItem.Text = "Informazioni";
             // 
             // MainPanel
@@ -150,50 +150,29 @@
             this.MainPanel.Size = new System.Drawing.Size(579, 296);
             this.MainPanel.TabIndex = 11;
             // 
-            // label1
+            // UsernameLabel
             // 
-            this.label1.AutoSize = true;
-            this.label1.BackColor = System.Drawing.Color.Transparent;
-            this.label1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.label1.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.label1.Location = new System.Drawing.Point(22, 230);
-            this.label1.Name = "label1";
-            this.label1.Padding = new System.Windows.Forms.Padding(2);
-            this.label1.Size = new System.Drawing.Size(497, 34);
-            this.label1.TabIndex = 11;
-            this.label1.Text = "NOTA :  Se stai usando l\'applicativo per la prima volta e quindi non sei ancora i" +
-    "scritto nel sistema, \r\n             sei pregato di registrare le tue credenziali" +
-    ".";
+            this.UsernameLabel.AutoSize = true;
+            this.UsernameLabel.BackColor = System.Drawing.Color.Transparent;
+            this.UsernameLabel.Font = new System.Drawing.Font("Comic Sans MS", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.UsernameLabel.ForeColor = System.Drawing.Color.White;
+            this.UsernameLabel.Location = new System.Drawing.Point(18, 46);
+            this.UsernameLabel.Name = "UsernameLabel";
+            this.UsernameLabel.Size = new System.Drawing.Size(101, 19);
+            this.UsernameLabel.TabIndex = 17;
+            this.UsernameLabel.Text = "USERNAME :";
             // 
-            // PasswordTextBox
+            // PasswordLabel
             // 
-            this.PasswordTextBox.BackColor = System.Drawing.Color.Silver;
-            this.PasswordTextBox.Font = new System.Drawing.Font("Comic Sans MS", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.PasswordTextBox.Location = new System.Drawing.Point(139, 98);
-            this.PasswordTextBox.Name = "PasswordTextBox";
-            this.PasswordTextBox.Size = new System.Drawing.Size(254, 24);
-            this.PasswordTextBox.TabIndex = 2;
-            // 
-            // UsernameTextBox
-            // 
-            this.UsernameTextBox.BackColor = System.Drawing.Color.Silver;
-            this.UsernameTextBox.Font = new System.Drawing.Font("Comic Sans MS", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UsernameTextBox.Location = new System.Drawing.Point(139, 45);
-            this.UsernameTextBox.Name = "UsernameTextBox";
-            this.UsernameTextBox.Size = new System.Drawing.Size(254, 24);
-            this.UsernameTextBox.TabIndex = 1;
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
-            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(419, 21);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(128, 121);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox1.TabIndex = 14;
-            this.pictureBox1.TabStop = false;
+            this.PasswordLabel.AutoSize = true;
+            this.PasswordLabel.BackColor = System.Drawing.Color.Transparent;
+            this.PasswordLabel.Font = new System.Drawing.Font("Comic Sans MS", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.PasswordLabel.ForeColor = System.Drawing.Color.White;
+            this.PasswordLabel.Location = new System.Drawing.Point(18, 99);
+            this.PasswordLabel.Name = "PasswordLabel";
+            this.PasswordLabel.Size = new System.Drawing.Size(115, 19);
+            this.PasswordLabel.TabIndex = 16;
+            this.PasswordLabel.Text = "PASSWORD :  ";
             // 
             // LoginButton
             // 
@@ -212,29 +191,50 @@
             this.LoginButton.UseVisualStyleBackColor = false;
             this.LoginButton.Click += new System.EventHandler(this.LoginButton_Click);
             // 
-            // PasswordLabel
+            // pictureBox1
             // 
-            this.PasswordLabel.AutoSize = true;
-            this.PasswordLabel.BackColor = System.Drawing.Color.Transparent;
-            this.PasswordLabel.Font = new System.Drawing.Font("Comic Sans MS", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.PasswordLabel.ForeColor = System.Drawing.Color.White;
-            this.PasswordLabel.Location = new System.Drawing.Point(18, 99);
-            this.PasswordLabel.Name = "PasswordLabel";
-            this.PasswordLabel.Size = new System.Drawing.Size(115, 19);
-            this.PasswordLabel.TabIndex = 16;
-            this.PasswordLabel.Text = "PASSWORD :  ";
+            this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Location = new System.Drawing.Point(419, 21);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(115, 115);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 14;
+            this.pictureBox1.TabStop = false;
             // 
-            // UsernameLabel
+            // UsernameTextBox
             // 
-            this.UsernameLabel.AutoSize = true;
-            this.UsernameLabel.BackColor = System.Drawing.Color.Transparent;
-            this.UsernameLabel.Font = new System.Drawing.Font("Comic Sans MS", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UsernameLabel.ForeColor = System.Drawing.Color.White;
-            this.UsernameLabel.Location = new System.Drawing.Point(18, 46);
-            this.UsernameLabel.Name = "UsernameLabel";
-            this.UsernameLabel.Size = new System.Drawing.Size(101, 19);
-            this.UsernameLabel.TabIndex = 17;
-            this.UsernameLabel.Text = "USERNAME :";
+            this.UsernameTextBox.BackColor = System.Drawing.Color.Silver;
+            this.UsernameTextBox.Font = new System.Drawing.Font("Comic Sans MS", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.UsernameTextBox.Location = new System.Drawing.Point(139, 45);
+            this.UsernameTextBox.Name = "UsernameTextBox";
+            this.UsernameTextBox.Size = new System.Drawing.Size(254, 24);
+            this.UsernameTextBox.TabIndex = 1;
+            // 
+            // PasswordTextBox
+            // 
+            this.PasswordTextBox.BackColor = System.Drawing.Color.Silver;
+            this.PasswordTextBox.Font = new System.Drawing.Font("Comic Sans MS", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.PasswordTextBox.Location = new System.Drawing.Point(139, 98);
+            this.PasswordTextBox.Name = "PasswordTextBox";
+            this.PasswordTextBox.Size = new System.Drawing.Size(254, 24);
+            this.PasswordTextBox.TabIndex = 2;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.BackColor = System.Drawing.Color.Transparent;
+            this.label1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.label1.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.label1.Location = new System.Drawing.Point(22, 230);
+            this.label1.Name = "label1";
+            this.label1.Padding = new System.Windows.Forms.Padding(2);
+            this.label1.Size = new System.Drawing.Size(497, 34);
+            this.label1.TabIndex = 11;
+            this.label1.Text = "NOTA :  Se stai usando l\'applicativo per la prima volta e quindi non sei ancora i" +
+    "scritto nel sistema, \r\n             sei pregato di registrare le tue credenziali" +
+    ".";
             // 
             // RegistraPanel
             // 
@@ -331,7 +331,7 @@
             this.PwdRegLabel.AutoSize = true;
             this.PwdRegLabel.Location = new System.Drawing.Point(23, 146);
             this.PwdRegLabel.Name = "PwdRegLabel";
-            this.PwdRegLabel.Size = new System.Drawing.Size(86, 17);
+            this.PwdRegLabel.Size = new System.Drawing.Size(84, 17);
             this.PwdRegLabel.TabIndex = 3;
             this.PwdRegLabel.Text = "PASSWORD :";
             // 
@@ -340,7 +340,7 @@
             this.UserRegLabel.AutoSize = true;
             this.UserRegLabel.Location = new System.Drawing.Point(23, 111);
             this.UserRegLabel.Name = "UserRegLabel";
-            this.UserRegLabel.Size = new System.Drawing.Size(87, 17);
+            this.UserRegLabel.Size = new System.Drawing.Size(84, 17);
             this.UserRegLabel.TabIndex = 2;
             this.UserRegLabel.Text = "USERNAME :";
             // 
@@ -349,7 +349,7 @@
             this.CognomeRegLabel.AutoSize = true;
             this.CognomeRegLabel.Location = new System.Drawing.Point(23, 73);
             this.CognomeRegLabel.Name = "CognomeRegLabel";
-            this.CognomeRegLabel.Size = new System.Drawing.Size(80, 17);
+            this.CognomeRegLabel.Size = new System.Drawing.Size(79, 17);
             this.CognomeRegLabel.TabIndex = 1;
             this.CognomeRegLabel.Text = "COGNOME :";
             // 
@@ -358,7 +358,7 @@
             this.NameRegLabel.AutoSize = true;
             this.NameRegLabel.Location = new System.Drawing.Point(23, 37);
             this.NameRegLabel.Name = "NameRegLabel";
-            this.NameRegLabel.Size = new System.Drawing.Size(55, 17);
+            this.NameRegLabel.Size = new System.Drawing.Size(54, 17);
             this.NameRegLabel.TabIndex = 0;
             this.NameRegLabel.Text = "NOME :";
             // 

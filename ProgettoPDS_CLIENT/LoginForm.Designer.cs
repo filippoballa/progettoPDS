@@ -161,7 +161,7 @@
             this.PwdRegLabel.AutoSize = true;
             this.PwdRegLabel.Location = new System.Drawing.Point(23, 146);
             this.PwdRegLabel.Name = "PwdRegLabel";
-            this.PwdRegLabel.Size = new System.Drawing.Size(86, 17);
+            this.PwdRegLabel.Size = new System.Drawing.Size(84, 17);
             this.PwdRegLabel.TabIndex = 3;
             this.PwdRegLabel.Text = "PASSWORD :";
             // 
@@ -170,7 +170,7 @@
             this.UserRegLabel.AutoSize = true;
             this.UserRegLabel.Location = new System.Drawing.Point(23, 111);
             this.UserRegLabel.Name = "UserRegLabel";
-            this.UserRegLabel.Size = new System.Drawing.Size(87, 17);
+            this.UserRegLabel.Size = new System.Drawing.Size(84, 17);
             this.UserRegLabel.TabIndex = 2;
             this.UserRegLabel.Text = "USERNAME :";
             // 
@@ -179,7 +179,7 @@
             this.CognomeRegLabel.AutoSize = true;
             this.CognomeRegLabel.Location = new System.Drawing.Point(23, 73);
             this.CognomeRegLabel.Name = "CognomeRegLabel";
-            this.CognomeRegLabel.Size = new System.Drawing.Size(80, 17);
+            this.CognomeRegLabel.Size = new System.Drawing.Size(79, 17);
             this.CognomeRegLabel.TabIndex = 1;
             this.CognomeRegLabel.Text = "COGNOME :";
             // 
@@ -188,7 +188,7 @@
             this.NameRegLabel.AutoSize = true;
             this.NameRegLabel.Location = new System.Drawing.Point(23, 37);
             this.NameRegLabel.Name = "NameRegLabel";
-            this.NameRegLabel.Size = new System.Drawing.Size(55, 17);
+            this.NameRegLabel.Size = new System.Drawing.Size(54, 17);
             this.NameRegLabel.TabIndex = 0;
             this.NameRegLabel.Text = "NOME :";
             // 
@@ -307,7 +307,7 @@
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
             this.pictureBox1.Location = new System.Drawing.Point(454, 30);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(117, 103);
+            this.pictureBox1.Size = new System.Drawing.Size(115, 115);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 8;
             this.pictureBox1.TabStop = false;
