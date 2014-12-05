@@ -56,6 +56,7 @@
             this.chiudiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.infoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.indirizzoIPToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.RegistraPanel.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.MainPanel.SuspendLayout();
@@ -374,6 +375,7 @@
             this.toolStripMenuItem1.BackColor = System.Drawing.Color.Transparent;
             this.toolStripMenuItem1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.indirizzoIPToolStripMenuItem,
             this.infoToolStripMenuItem});
             this.toolStripMenuItem1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.toolStripMenuItem1.ForeColor = System.Drawing.Color.CornflowerBlue;
@@ -389,6 +391,16 @@
             this.infoToolStripMenuItem.Name = "infoToolStripMenuItem";
             this.infoToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.infoToolStripMenuItem.Text = "Informazioni";
+            // 
+            // indirizzoIPToolStripMenuItem
+            // 
+            this.indirizzoIPToolStripMenuItem.BackColor = System.Drawing.SystemColors.WindowFrame;
+            this.indirizzoIPToolStripMenuItem.ForeColor = System.Drawing.Color.White;
+            this.indirizzoIPToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("indirizzoIPToolStripMenuItem.Image")));
+            this.indirizzoIPToolStripMenuItem.Name = "indirizzoIPToolStripMenuItem";
+            this.indirizzoIPToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.indirizzoIPToolStripMenuItem.Text = "Indirizzo IP";
+            this.indirizzoIPToolStripMenuItem.Click += new System.EventHandler(this.indirizzoIPToolStripMenuItem_Click);
             // 
             // LoginForm
             // 
@@ -449,6 +461,7 @@
         private System.Windows.Forms.ToolStripMenuItem chiudiToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem infoToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem indirizzoIPToolStripMenuItem;
     }
 }
 

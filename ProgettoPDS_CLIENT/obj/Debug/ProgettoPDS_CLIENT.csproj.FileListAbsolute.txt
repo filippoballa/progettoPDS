@@ -46,3 +46,14 @@ C:\Users\filippo\Documents\GitHub\progettoPDS\ProgettoPDS_CLIENT\obj\Debug\Proge
 C:\Users\filippo\Documents\GitHub\progettoPDS\ProgettoPDS_CLIENT\obj\Debug\ProgettoPDS_CLIENT.MainForm.resources
 C:\Users\filippo\Documents\GitHub\progettoPDS\ProgettoPDS_CLIENT\obj\Debug\ProgettoPDS_CLIENT.Properties.Resources.resources
 C:\Users\filippo\Documents\GitHub\progettoPDS\ProgettoPDS_CLIENT\obj\Debug\ProgettoPDS_CLIENT.csproj.GenerateResource.Cache
+C:\Users\Dave\Documents\GitHub\progettoPDS\ProgettoPDS_CLIENT\bin\Debug\ProgettoPDS_CLIENT.exe.config
+C:\Users\Dave\Documents\GitHub\progettoPDS\ProgettoPDS_CLIENT\obj\Debug\ProgettoPDS_CLIENT.exe
+C:\Users\Dave\Documents\GitHub\progettoPDS\ProgettoPDS_CLIENT\obj\Debug\ProgettoPDS_CLIENT.pdb
+C:\Users\Dave\Documents\GitHub\progettoPDS\ProgettoPDS_CLIENT\bin\Debug\XMLUsers.xml
+C:\Users\Dave\Documents\GitHub\progettoPDS\ProgettoPDS_CLIENT\bin\Debug\ProgettoPDS_CLIENT.exe
+C:\Users\Dave\Documents\GitHub\progettoPDS\ProgettoPDS_CLIENT\bin\Debug\ProgettoPDS_CLIENT.pdb
+C:\Users\Dave\Documents\GitHub\progettoPDS\ProgettoPDS_CLIENT\obj\Debug\ProgettoPDS_CLIENT.csprojResolveAssemblyReference.cache
+C:\Users\Dave\Documents\GitHub\progettoPDS\ProgettoPDS_CLIENT\obj\Debug\ProgettoPDS_CLIENT.LoginForm.resources
+C:\Users\Dave\Documents\GitHub\progettoPDS\ProgettoPDS_CLIENT\obj\Debug\ProgettoPDS_CLIENT.MainForm.resources
+C:\Users\Dave\Documents\GitHub\progettoPDS\ProgettoPDS_CLIENT\obj\Debug\ProgettoPDS_CLIENT.Properties.Resources.resources
+C:\Users\Dave\Documents\GitHub\progettoPDS\ProgettoPDS_CLIENT\obj\Debug\ProgettoPDS_CLIENT.csproj.GenerateResource.Cache

@@ -13,6 +13,7 @@ namespace ProgettoPDS_CLIENT
     public partial class MainForm : Form
     {
         private User user;
+        private SocketConnection connessione;
 
         public MainForm( User aux)
         {
@@ -20,5 +21,13 @@ namespace ProgettoPDS_CLIENT
             this.user = aux;
             this.Text += " - " + aux.Username;
         }
+
+        private void ConnectButton_Click(object sender, EventArgs e)
+        {
+            this.connessione = new SocketConnection(this.IPAddressTextBox.Text, Convert.ToInt32(this.PortaTextBox.Text));
+            this.connessione.StartClientConnection();
+        }
+
+
     }
 }

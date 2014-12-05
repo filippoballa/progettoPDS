@@ -131,6 +131,11 @@ namespace ProgettoPDS_CLIENT
 
         }
 
+        private void indirizzoIPToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("INDIRIZZO IP: " + SocketConnection.MyIpInfo(), "INFORMAZIONI", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
         
     }
 }
