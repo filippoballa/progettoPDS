@@ -10,3 +10,16 @@ C:\Users\filippo\Documents\GitHub\progettoPDS\ProgettoPDS_SERVER\obj\Release\Pro
 C:\Users\filippo\Documents\GitHub\progettoPDS\ProgettoPDS_SERVER\obj\Release\ProgettoPDS_SERVER.csproj.GenerateResource.Cache
 C:\Users\filippo\Documents\GitHub\progettoPDS\ProgettoPDS_SERVER\obj\Release\ProgettoPDS_SERVER.exe
 C:\Users\filippo\Documents\GitHub\progettoPDS\ProgettoPDS_SERVER\obj\Release\ProgettoPDS_SERVER.pdb
+C:\Users\filippo\Documents\GitHub\progettoPDS - Copia\ProgettoPDS_SERVER\bin\Release\ProgettoPDS_SERVER.exe.config
+C:\Users\filippo\Documents\GitHub\progettoPDS - Copia\ProgettoPDS_SERVER\obj\Release\ProgettoPDS_SERVER.exe
+C:\Users\filippo\Documents\GitHub\progettoPDS - Copia\ProgettoPDS_SERVER\obj\Release\ProgettoPDS_SERVER.pdb
+C:\Users\filippo\Documents\GitHub\progettoPDS - Copia\ProgettoPDS_SERVER\bin\Release\ProgettoPDS_SERVER.exe
+C:\Users\filippo\Documents\GitHub\progettoPDS - Copia\ProgettoPDS_SERVER\bin\Release\ProgettoPDS_SERVER.pdb
+C:\Users\filippo\Documents\GitHub\progettoPDS - Copia\ProgettoPDS_SERVER\bin\Release\EntityFramework.dll
+C:\Users\filippo\Documents\GitHub\progettoPDS - Copia\ProgettoPDS_SERVER\bin\Release\EntityFramework.xml
+C:\Users\filippo\Documents\GitHub\progettoPDS - Copia\ProgettoPDS_SERVER\bin\Release\it\EntityFramework.resources.dll
+C:\Users\filippo\Documents\GitHub\progettoPDS - Copia\ProgettoPDS_SERVER\obj\Release\ProgettoPDS_SERVER.csprojResolveAssemblyReference.cache
+C:\Users\filippo\Documents\GitHub\progettoPDS - Copia\ProgettoPDS_SERVER\obj\Release\ProgettoPDS_SERVER.LoginForm.resources
+C:\Users\filippo\Documents\GitHub\progettoPDS - Copia\ProgettoPDS_SERVER\obj\Release\ProgettoPDS_SERVER.MainForm.resources
+C:\Users\filippo\Documents\GitHub\progettoPDS - Copia\ProgettoPDS_SERVER\obj\Release\ProgettoPDS_SERVER.Properties.Resources.resources
+C:\Users\filippo\Documents\GitHub\progettoPDS - Copia\ProgettoPDS_SERVER\obj\Release\ProgettoPDS_SERVER.csproj.GenerateResource.Cache

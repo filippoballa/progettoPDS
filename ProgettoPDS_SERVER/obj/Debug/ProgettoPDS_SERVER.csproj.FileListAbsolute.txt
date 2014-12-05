@@ -43,3 +43,6 @@ C:\Users\Dave\Documents\PDS - PROGETTO\ProgettoPDS_SERVER\ProgettoPDS_SERVER\obj
 C:\Users\Dave\Documents\PDS - PROGETTO\ProgettoPDS_SERVER\ProgettoPDS_SERVER\obj\Debug\ProgettoPDS_SERVER.MainForm.resources
 C:\Users\Dave\Documents\PDS - PROGETTO\ProgettoPDS_SERVER\ProgettoPDS_SERVER\obj\Debug\ProgettoPDS_SERVER.Properties.Resources.resources
 C:\Users\Dave\Documents\PDS - PROGETTO\ProgettoPDS_SERVER\ProgettoPDS_SERVER\obj\Debug\ProgettoPDS_SERVER.csproj.GenerateResource.Cache
+E:\PDS - PROGETTO\ProgettoPDS_SERVER\ProgettoPDS_SERVER\bin\Debug\ProgettoPDS_SERVER.exe.config
+E:\PDS - PROGETTO\ProgettoPDS_SERVER\ProgettoPDS_SERVER\obj\Debug\ProgettoPDS_SERVER.exe
+E:\PDS - PROGETTO\ProgettoPDS_SERVER\ProgettoPDS_SERVER\obj\Debug\ProgettoPDS_SERVER.pdb
