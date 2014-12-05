@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using System.IO;
+using System.Security.Cryptography;
 
 namespace ProgettoPDS_CLIENT
 {
@@ -46,6 +48,7 @@ namespace ProgettoPDS_CLIENT
         public void AddNewUser( User NuovoUtente ) 
         {
             XmlNode root = this.document.DocumentElement;
+            SHA1 shaM = new SHA1Managed();
 
             //Create a new node.
             XmlElement myUser = this.document.CreateElement("MYUSER");
@@ -53,7 +56,8 @@ namespace ProgettoPDS_CLIENT
             campo.InnerText = NuovoUtente.Username;
             myUser.AppendChild(campo);
             campo = this.document.CreateElement("PASSWORD");
-            campo.InnerText = NuovoUtente.Password;
+            byte[] pwd = Encoding.ASCII.GetBytes(NuovoUtente.Password);
+            campo.InnerText = Encoding.ASCII.GetString(shaM.ComputeHash(pwd)); //Cifratura Password!!
             myUser.AppendChild(campo);
             campo = this.document.CreateElement("NAME");
             campo.InnerText = NuovoUtente.Name;

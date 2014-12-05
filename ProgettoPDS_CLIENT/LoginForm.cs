@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Threading;
+using System.IO;
+using System.Security.Cryptography;
 
 namespace ProgettoPDS_CLIENT
 {   
@@ -49,11 +51,13 @@ namespace ProgettoPDS_CLIENT
         private bool VerificaCredenziali()
         {
             User aux = this.mng.SearchUser(this.UsernameTextBox.Text);
+            SHA1 shaM = new SHA1Managed();
+            string res = Encoding.ASCII.GetString(shaM.ComputeHash(Encoding.ASCII.GetBytes(this.PasswordTextBox.Text)));
 
-            if ( aux != null && (aux.Password == this.PasswordTextBox.Text) ) {
+            if ( aux != null && (aux.Password == res ) ) {
                 this.user.Name = aux.Name;
                 this.user.Username = aux.Username;
-                this.user.Password = aux.Username;
+                this.user.Password = aux.Password;
                 this.user.Surname = aux.Surname;
                 this.user.Login = true;
                 return true;
@@ -69,16 +73,16 @@ namespace ProgettoPDS_CLIENT
 
         private void registraToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.MainPanel.Visible = false;
-            this.NameRegTextBox.Focus();            
+            this.MainPanel.Visible = false;          
             this.RegistraPanel.Visible = true;
+            this.NameRegTextBox.Focus();  
         }
 
         private void loginPageToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.RegistraPanel.Visible = false;
-            this.UsernameTextBox.Focus();
             this.MainPanel.Visible = true;
+            this.UsernameTextBox.Focus();
 
         }
 
