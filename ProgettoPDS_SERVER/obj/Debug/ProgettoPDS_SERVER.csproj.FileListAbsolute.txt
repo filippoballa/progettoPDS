@@ -31,3 +31,15 @@ C:\Users\filippo\Documents\GitHub\progettoPDS\ProgettoPDS_SERVER\bin\Debug\Proge
 C:\Users\filippo\Documents\GitHub\progettoPDS\ProgettoPDS_SERVER\bin\Debug\EntityFramework.dll
 C:\Users\filippo\Documents\GitHub\progettoPDS\ProgettoPDS_SERVER\bin\Debug\EntityFramework.xml
 C:\Users\filippo\Documents\GitHub\progettoPDS\ProgettoPDS_SERVER\bin\Debug\it\EntityFramework.resources.dll
+C:\Users\Dave\Documents\PDS - PROGETTO\ProgettoPDS_SERVER\ProgettoPDS_SERVER\bin\Debug\ProgettoPDS_SERVER.exe.config
+C:\Users\Dave\Documents\PDS - PROGETTO\ProgettoPDS_SERVER\ProgettoPDS_SERVER\obj\Debug\ProgettoPDS_SERVER.exe
+C:\Users\Dave\Documents\PDS - PROGETTO\ProgettoPDS_SERVER\ProgettoPDS_SERVER\obj\Debug\ProgettoPDS_SERVER.pdb
+C:\Users\Dave\Documents\PDS - PROGETTO\ProgettoPDS_SERVER\ProgettoPDS_SERVER\bin\Debug\ProgettoPDS_SERVER.exe
+C:\Users\Dave\Documents\PDS - PROGETTO\ProgettoPDS_SERVER\ProgettoPDS_SERVER\bin\Debug\ProgettoPDS_SERVER.pdb
+C:\Users\Dave\Documents\PDS - PROGETTO\ProgettoPDS_SERVER\ProgettoPDS_SERVER\bin\Debug\EntityFramework.xml
+C:\Users\Dave\Documents\PDS - PROGETTO\ProgettoPDS_SERVER\ProgettoPDS_SERVER\bin\Debug\it\EntityFramework.resources.dll
+C:\Users\Dave\Documents\PDS - PROGETTO\ProgettoPDS_SERVER\ProgettoPDS_SERVER\obj\Debug\ProgettoPDS_SERVER.csprojResolveAssemblyReference.cache
+C:\Users\Dave\Documents\PDS - PROGETTO\ProgettoPDS_SERVER\ProgettoPDS_SERVER\obj\Debug\ProgettoPDS_SERVER.LoginForm.resources
+C:\Users\Dave\Documents\PDS - PROGETTO\ProgettoPDS_SERVER\ProgettoPDS_SERVER\obj\Debug\ProgettoPDS_SERVER.MainForm.resources
+C:\Users\Dave\Documents\PDS - PROGETTO\ProgettoPDS_SERVER\ProgettoPDS_SERVER\obj\Debug\ProgettoPDS_SERVER.Properties.Resources.resources
+C:\Users\Dave\Documents\PDS - PROGETTO\ProgettoPDS_SERVER\ProgettoPDS_SERVER\obj\Debug\ProgettoPDS_SERVER.csproj.GenerateResource.Cache

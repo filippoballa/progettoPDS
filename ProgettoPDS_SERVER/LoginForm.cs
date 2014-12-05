@@ -20,6 +20,11 @@ namespace ProgettoPDS_SERVER
 
         public LoginForm( User aux )
         {
+            SetStyle(ControlStyles.UserPaint, true);
+            SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
+            SetStyle(ControlStyles.SupportsTransparentBackColor, true);
+            SetStyle(ControlStyles.ResizeRedraw, true);
+            SetStyle(ControlStyles.AllPaintingInWmPaint, true);
             InitializeComponent();
             this.user = aux;
         }
@@ -53,6 +58,25 @@ namespace ProgettoPDS_SERVER
             }
             else
                 return false;
+        }
+
+        private void loginPageToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.RegistraPanel.Visible = false;
+            this.UsernameTextBox.Focus();
+            this.MainPanel.Visible = true;
+        }
+
+        private void registraUtenteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.MainPanel.Visible = false;
+            this.NameRegTextBox.Focus();
+            this.RegistraPanel.Visible = true;
+        }
+
+        private void chiudiToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
 
        

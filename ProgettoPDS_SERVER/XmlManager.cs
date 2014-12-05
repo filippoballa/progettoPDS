@@ -33,7 +33,7 @@ namespace ProgettoPDS_SERVER
 {
     class XmlManager
     {
-        private string root = "C:\\Users\\filippo\\Documents\\GitHub\\progettoPDS\\ProgettoPDS_SERVER\\";// Path.GetDirectoryName(Application.UserAppDataPath);
+        private string root = "C:\\Users\\filippo\\Documents\\GitHub\\progettoPDS\\ProgettoPDS_SERVER\\"; // Path.GetDirectoryName(Application.UserAppDataPath);
         private string FileNameUsers = "XMLUsers.xml";
         private string FileNameClients = "XMLClients.xml";
         private XmlDocument XmlDoc;

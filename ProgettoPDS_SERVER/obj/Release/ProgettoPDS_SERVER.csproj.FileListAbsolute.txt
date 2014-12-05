@@ -10,4 +10,3 @@ C:\Users\filippo\Documents\GitHub\progettoPDS\ProgettoPDS_SERVER\obj\Release\Pro
 C:\Users\filippo\Documents\GitHub\progettoPDS\ProgettoPDS_SERVER\obj\Release\ProgettoPDS_SERVER.csproj.GenerateResource.Cache
 C:\Users\filippo\Documents\GitHub\progettoPDS\ProgettoPDS_SERVER\obj\Release\ProgettoPDS_SERVER.exe
 C:\Users\filippo\Documents\GitHub\progettoPDS\ProgettoPDS_SERVER\obj\Release\ProgettoPDS_SERVER.pdb
-C:\Users\filippo\Documents\GitHub\progettoPDS\ProgettoPDS_SERVER\obj\Release\ProgettoPDS_SERVER.csprojResolveAssemblyReference.cache
