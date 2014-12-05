@@ -43,13 +43,13 @@
             this.notifyIcon1.Text = "Ready to connect . . .";
             this.notifyIcon1.Visible = true;
             this.notifyIcon1.BalloonTipClicked += new System.EventHandler(this.notifyIcon1_BalloonTipClicked);
-            this.notifyIcon1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseDoubleClick);
+            this.notifyIcon1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseClick);
             this.notifyIcon1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseDoubleClick);
             // 
             // button_connect
             // 
             this.button_connect.FlatAppearance.BorderSize = 0;
-            this.button_connect.Location = new System.Drawing.Point(144, 97);
+            this.button_connect.Location = new System.Drawing.Point(146, 100);
             this.button_connect.Margin = new System.Windows.Forms.Padding(0);
             this.button_connect.Name = "button_connect";
             this.button_connect.Size = new System.Drawing.Size(75, 23);
@@ -60,18 +60,24 @@
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(374, 132);
             this.Controls.Add(this.button_connect);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "MainForm";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
-            this.Text = "Main - Server";
+            this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Menù - Server";
+            this.TopMost = true;
             this.TransparencyKey = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.WindowState = System.Windows.Forms.FormWindowState.Minimized;
+            this.Activated += new System.EventHandler(this.PopUpShow);
             this.Load += new System.EventHandler(this.MainForm_Load);
+            this.Shown += new System.EventHandler(this.PopUpShow);
+            this.Click += new System.EventHandler(this.PopUpShow);
+            this.DoubleClick += new System.EventHandler(this.PopUpShow);
             this.ResumeLayout(false);
 
         }

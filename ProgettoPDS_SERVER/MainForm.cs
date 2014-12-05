@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows;
 
 namespace ProgettoPDS_SERVER
 {
@@ -14,6 +15,10 @@ namespace ProgettoPDS_SERVER
     {
         private SocketConnection Sconnection;
         const int port = 2000;
+        PopUpWindow top = new PopUpWindow(new Panel(),"t");
+        PopUpWindow right = new PopUpWindow(new Panel(), "r");
+        PopUpWindow left = new PopUpWindow(new Panel(), "l");
+        PopUpWindow bottom = new PopUpWindow(new Panel(), "b");
 
         public MainForm(User u)
         {
@@ -29,6 +34,9 @@ namespace ProgettoPDS_SERVER
             this.ShowInTaskbar = false;
             this.Sconnection = new SocketConnection(port);
             this.Text+=" -IP : "+Sconnection.GetMyIp();
+            //Sconnection.StartListening();
+            //PopUpShow();
+    
         }
 
         private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -41,6 +49,7 @@ namespace ProgettoPDS_SERVER
 
             // Activate the form.
             this.Activate();
+            PopUpShow(null,null);
         }
 
         private void notifyIcon1_BalloonTipClicked(object sender, EventArgs e)
@@ -53,11 +62,33 @@ namespace ProgettoPDS_SERVER
 
             // Activate the form.
             this.Activate();
+            PopUpShow(null,null);
+            
         }
 
         private void button_connect_Click(object sender, EventArgs e)
         {
             Sconnection.StartListening();
         }
+
+        private void PopUpShow(object sender, EventArgs e)
+        {
+            //int border = PopUpWindow.border;
+            this.top.Show(0,0);
+            //this.right.Show(new Point(Screen.PrimaryScreen.Bounds.Width - border, border));
+            //this.left.Show(new Point(0, border));
+            //this.bottom.Show(new Point(0, Screen.PrimaryScreen.Bounds.Height - border));
+        }
+
+        private void notifyIcon1_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (this.WindowState == FormWindowState.Normal)
+                this.WindowState = FormWindowState.Minimized;
+
+            // Activate the form.
+            this.Activate();
+            PopUpShow(null, null);
+        }
+
     }
 }
