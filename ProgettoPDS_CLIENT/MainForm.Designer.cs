@@ -132,9 +132,9 @@
             this.ConfigLabel.AutoSize = true;
             this.ConfigLabel.Font = new System.Drawing.Font("Comic Sans MS", 11F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ConfigLabel.ForeColor = System.Drawing.Color.DarkOrange;
-            this.ConfigLabel.Location = new System.Drawing.Point(41, 45);
+            this.ConfigLabel.Location = new System.Drawing.Point(32, 45);
             this.ConfigLabel.Name = "ConfigLabel";
-            this.ConfigLabel.Size = new System.Drawing.Size(289, 21);
+            this.ConfigLabel.Size = new System.Drawing.Size(289, 22);
             this.ConfigLabel.TabIndex = 5;
             this.ConfigLabel.Text = "Inserisci i Parametri di Configurazione";
             // 
@@ -158,7 +158,7 @@
             this.groupBox2.BackColor = System.Drawing.Color.Sienna;
             this.groupBox2.Controls.Add(this.label5);
             this.groupBox2.ForeColor = System.Drawing.Color.White;
-            this.groupBox2.Location = new System.Drawing.Point(552, 329);
+            this.groupBox2.Location = new System.Drawing.Point(552, 336);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(358, 100);
             this.groupBox2.TabIndex = 7;
@@ -178,21 +178,21 @@
             // 
             this.ElencoLabel.Font = new System.Drawing.Font("Comic Sans MS", 11F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ElencoLabel.ForeColor = System.Drawing.Color.DarkOrange;
-            this.ElencoLabel.Location = new System.Drawing.Point(133, 39);
+            this.ElencoLabel.Location = new System.Drawing.Point(133, 23);
             this.ElencoLabel.Name = "ElencoLabel";
-            this.ElencoLabel.Size = new System.Drawing.Size(259, 45);
+            this.ElencoLabel.Size = new System.Drawing.Size(274, 66);
             this.ElencoLabel.TabIndex = 8;
-            this.ElencoLabel.Text = "Elenco dei Dispositivi ( SERVER ) \r\nComandabili";
+            this.ElencoLabel.Text = "Elenco dei Dispositivi ( SERVER ) \r\nComandabili momentaneamente";
             this.ElencoLabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // listBox1
             // 
-            this.listBox1.BackColor = System.Drawing.SystemColors.InactiveCaptionText;
+            this.listBox1.BackColor = System.Drawing.Color.SlateGray;
             this.listBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(133, 105);
+            this.listBox1.Location = new System.Drawing.Point(133, 108);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(259, 325);
+            this.listBox1.Size = new System.Drawing.Size(274, 325);
             this.listBox1.TabIndex = 9;
             // 
             // DisconnectButton
@@ -233,12 +233,12 @@
             // 
             // InfoButton
             // 
+            this.InfoButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.InfoButton.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.InfoButton.FlatAppearance.BorderSize = 4;
             this.InfoButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.InfoButton.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.InfoButton.Image = ((System.Drawing.Image)(resources.GetObject("InfoButton.Image")));
-            this.InfoButton.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
             this.InfoButton.Location = new System.Drawing.Point(844, 503);
             this.InfoButton.Name = "InfoButton";
             this.InfoButton.Size = new System.Drawing.Size(66, 58);
@@ -264,7 +264,7 @@
             this.Cursor = System.Windows.Forms.Cursors.Default;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "MainForm";
-            this.Text = "Main Form";
+            this.Text = "Progetto PDS - Main Form";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Resize += new System.EventHandler(this.MainForm_Resize);
             this.groupBox1.ResumeLayout(false);

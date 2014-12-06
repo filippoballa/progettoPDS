@@ -25,9 +25,10 @@ namespace ProgettoPDS_CLIENT
             SetStyle(ControlStyles.AllPaintingInWmPaint, true);
             InitializeComponent();
             this.user = aux;
-            this.Text += " - " + aux.Username;
+            this.Text += " - USER: \"" + aux.Username + "\" - IP Address : " + SocketConnection.MyIpInfo() + " , Port Number: " + SocketConnection.localPort.ToString();
             this.AltezzaForm = this.Height;
             this.BaseForm = this.Width;
+            
         }
 
         private void ConnectButton_Click(object sender, EventArgs e)
@@ -38,6 +39,7 @@ namespace ProgettoPDS_CLIENT
 
         private void MainForm_Resize(object sender, EventArgs e)
         {
+            
             // Resize "Elenco Label"
             float aux = (this.ElencoLabel.Font.Size * this.Height) / this.AltezzaForm;
             this.ElencoLabel.Font = new System.Drawing.Font("Comic Sans MS", aux - 1, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -48,10 +50,14 @@ namespace ProgettoPDS_CLIENT
             this.ElencoLabel.Width = (this.ElencoLabel.Width * this.Width) / this.BaseForm;  
 
             // Resize "GroupBox Conf."
+            aux = (this.groupBox1.Font.Size * this.Height) / this.AltezzaForm;
+            this.groupBox1.Font = new System.Drawing.Font("Comic Sans MS", aux - 1, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox1.Height = ( this.groupBox1.Height * this.Height ) / this.AltezzaForm;
             this.groupBox1.Width = ( this.groupBox1.Width * this.Width ) / this.BaseForm;
 
             // Resize "GroupBox STATO"
+            aux = (this.groupBox2.Font.Size * this.Height) / this.AltezzaForm;
+            this.groupBox2.Font = new System.Drawing.Font("Comic Sans MS", aux - 1, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox2.Height = (this.groupBox2.Height * this.Height) / this.AltezzaForm;
             this.groupBox2.Width = (this.groupBox2.Width * this.Width) / this.BaseForm;
 
@@ -63,6 +69,8 @@ namespace ProgettoPDS_CLIENT
             this.listBox1.Location = new Point(X, Y);
 
             // Riposizionamento Bottone Connetti
+            aux = (this.ConnectButton.Font.Size * this.Height) / this.AltezzaForm;
+            this.ConnectButton.Font = new System.Drawing.Font("Comic Sans MS", aux - 1, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ConnectButton.Height = (this.ConnectButton.Height * this.Height) / this.AltezzaForm;
             this.ConnectButton.Width = (this.ConnectButton.Width * this.Width) / this.BaseForm;
             X = (this.ConnectButton.Location.X * this.Width ) / this.BaseForm;
@@ -70,6 +78,8 @@ namespace ProgettoPDS_CLIENT
             this.ConnectButton.Location = new Point(X, Y);
 
             // Riposizionamento Bottone Disconnetti
+            aux = (this.DisconnectButton.Font.Size * this.Height) / this.AltezzaForm;
+            this.DisconnectButton.Font = new System.Drawing.Font("Comic Sans MS", aux - 1, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.DisconnectButton.Height = (this.DisconnectButton.Height * this.Height) / this.AltezzaForm;
             this.DisconnectButton.Width = (this.DisconnectButton.Width * this.Width) / this.BaseForm;
             X = (this.DisconnectButton.Location.X * this.Width) / this.BaseForm;
@@ -78,7 +88,6 @@ namespace ProgettoPDS_CLIENT
 
             // Riposizionamento Bottone Information
             this.InfoButton.Height = (this.InfoButton.Height * this.Height) / this.AltezzaForm;
-            this.InfoButton.Height += 5;
             this.InfoButton.Width = (this.InfoButton.Width * this.Width) / this.BaseForm;
             X = (this.InfoButton.Location.X * this.Width) / this.BaseForm;
             Y = (this.InfoButton.Location.Y * this.Height) / this.AltezzaForm;
@@ -103,6 +112,7 @@ namespace ProgettoPDS_CLIENT
             X = (this.IPAddressTextBox.Location.X * this.Width) / this.BaseForm;
             Y = (this.IPAddressTextBox.Location.Y * this.Height) / this.AltezzaForm;
             this.IPAddressTextBox.Location = new Point(X, Y);
+            this.IPAddressTextBox.Width = (this.IPAddressTextBox.Width * this.Width) / this.BaseForm;
             // Resize Porta Label
             aux = (this.PortaLabel.Font.Size * this.Height) / this.AltezzaForm;
             this.PortaLabel.Font = new System.Drawing.Font("Comic Sans MS", aux, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -115,7 +125,10 @@ namespace ProgettoPDS_CLIENT
             X = (this.PortaTextBox.Location.X * this.Width) / this.BaseForm;
             Y = (this.PortaTextBox.Location.Y * this.Height) / this.AltezzaForm;
             this.PortaTextBox.Location = new Point(X, Y);
+            this.PortaTextBox.Width = (this.PortaTextBox.Width * this.Width) / this.BaseForm;
 
+            aux = (this.AddButton.Font.Size * this.Height) / this.AltezzaForm;
+            this.AddButton.Font = new System.Drawing.Font("Comic Sans MS", aux-15, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.AddButton.Height = (this.AddButton.Height * this.Height) / this.AltezzaForm;
             this.AddButton.Width = (this.AddButton.Width * this.Width) / this.BaseForm;
             X = (this.AddButton.Location.X * this.Width) / this.BaseForm;

@@ -14,7 +14,7 @@ namespace ProgettoPDS_CLIENT
     { 
         private Socket sock;
         private IPEndPoint remoteEP, localEP;
-        private const int localPort = 5000;
+        public const int localPort = 5000;
         private int remotePort;
         //private static ManualResetEvent connectDone = new ManualResetEvent(false);
 
