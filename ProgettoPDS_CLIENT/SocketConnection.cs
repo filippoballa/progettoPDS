@@ -97,5 +97,19 @@ namespace ProgettoPDS_CLIENT
             }
         }
 
+        public bool IsConnected() 
+        {
+            if (this.sock.Connected)
+                return true;
+            else
+                return false;
+        }
+
+        public void SockDisconnect() 
+        {
+            this.sock.Shutdown(SocketShutdown.Both);
+            this.sock.Close();
+        }
+
     }
 }
