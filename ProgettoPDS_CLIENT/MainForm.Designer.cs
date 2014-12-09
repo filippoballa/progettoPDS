@@ -127,7 +127,7 @@
             this.groupBox1.ForeColor = System.Drawing.Color.White;
             this.groupBox1.Location = new System.Drawing.Point(565, 22);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(358, 326);
+            this.groupBox1.Size = new System.Drawing.Size(358, 334);
             this.groupBox1.TabIndex = 5;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Configurazione Server";
@@ -159,7 +159,7 @@
             this.ConfigLabel.ForeColor = System.Drawing.Color.DarkOrange;
             this.ConfigLabel.Location = new System.Drawing.Point(32, 45);
             this.ConfigLabel.Name = "ConfigLabel";
-            this.ConfigLabel.Size = new System.Drawing.Size(289, 22);
+            this.ConfigLabel.Size = new System.Drawing.Size(289, 21);
             this.ConfigLabel.TabIndex = 5;
             this.ConfigLabel.Text = "Inserisci i Parametri di Configurazione";
             // 
@@ -172,7 +172,7 @@
             this.AddButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.AddButton.Location = new System.Drawing.Point(132, 246);
             this.AddButton.Name = "AddButton";
-            this.AddButton.Size = new System.Drawing.Size(123, 53);
+            this.AddButton.Size = new System.Drawing.Size(123, 62);
             this.AddButton.TabIndex = 4;
             this.AddButton.Text = "Add Server \r\nTo List!";
             this.AddButton.UseVisualStyleBackColor = false;
@@ -204,7 +204,7 @@
             // 
             this.ElencoLabel.Font = new System.Drawing.Font("Comic Sans MS", 11F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ElencoLabel.ForeColor = System.Drawing.Color.DarkOrange;
-            this.ElencoLabel.Location = new System.Drawing.Point(121, 23);
+            this.ElencoLabel.Location = new System.Drawing.Point(134, 23);
             this.ElencoLabel.Name = "ElencoLabel";
             this.ElencoLabel.Size = new System.Drawing.Size(294, 66);
             this.ElencoLabel.TabIndex = 8;
@@ -221,7 +221,7 @@
             this.listBox1.ItemHeight = 23;
             this.listBox1.Location = new System.Drawing.Point(134, 100);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(274, 345);
+            this.listBox1.Size = new System.Drawing.Size(303, 345);
             this.listBox1.TabIndex = 9;
             // 
             // DisconnectButton
@@ -311,10 +311,11 @@
             this.Cursor = System.Windows.Forms.Cursors.Default;
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
             this.Name = "MainForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Progetto PDS - Main Form";
-            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-            this.Resize += new System.EventHandler(this.MainForm_Resize);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
