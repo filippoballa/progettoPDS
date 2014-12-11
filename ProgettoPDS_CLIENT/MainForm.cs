@@ -80,7 +80,7 @@ namespace ProgettoPDS_CLIENT
             }
 
             this.listBox1.Items.Add( this.HostNameTextBox.Text + " -  IP: " + this.IPAddressTextBox.Text + " , PORTA: " + this.PortaTextBox.Text );
-            this.connessioni.Add(new SocketConnection(this.IPAddressTextBox.Text, Convert.ToInt32(this.PortaTextBox.Text)));
+            this.connessioni.Add(new SocketConnection(this.IPAddressTextBox.Text, Convert.ToInt32(this.PortaTextBox.Text),this.user));
             this.PortaTextBox.Clear();
             this.IPAddressTextBox.Clear();
             this.HostNameTextBox.Clear();

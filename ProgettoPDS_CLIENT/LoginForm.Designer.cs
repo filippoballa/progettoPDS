@@ -167,7 +167,7 @@
             this.PwdRegLabel.AutoSize = true;
             this.PwdRegLabel.Location = new System.Drawing.Point(23, 146);
             this.PwdRegLabel.Name = "PwdRegLabel";
-            this.PwdRegLabel.Size = new System.Drawing.Size(84, 17);
+            this.PwdRegLabel.Size = new System.Drawing.Size(86, 17);
             this.PwdRegLabel.TabIndex = 3;
             this.PwdRegLabel.Text = "PASSWORD :";
             // 
@@ -176,7 +176,7 @@
             this.UserRegLabel.AutoSize = true;
             this.UserRegLabel.Location = new System.Drawing.Point(23, 111);
             this.UserRegLabel.Name = "UserRegLabel";
-            this.UserRegLabel.Size = new System.Drawing.Size(84, 17);
+            this.UserRegLabel.Size = new System.Drawing.Size(87, 17);
             this.UserRegLabel.TabIndex = 2;
             this.UserRegLabel.Text = "USERNAME :";
             // 
@@ -185,7 +185,7 @@
             this.CognomeRegLabel.AutoSize = true;
             this.CognomeRegLabel.Location = new System.Drawing.Point(23, 73);
             this.CognomeRegLabel.Name = "CognomeRegLabel";
-            this.CognomeRegLabel.Size = new System.Drawing.Size(79, 17);
+            this.CognomeRegLabel.Size = new System.Drawing.Size(80, 17);
             this.CognomeRegLabel.TabIndex = 1;
             this.CognomeRegLabel.Text = "COGNOME :";
             // 
@@ -194,7 +194,7 @@
             this.NameRegLabel.AutoSize = true;
             this.NameRegLabel.Location = new System.Drawing.Point(23, 37);
             this.NameRegLabel.Name = "NameRegLabel";
-            this.NameRegLabel.Size = new System.Drawing.Size(54, 17);
+            this.NameRegLabel.Size = new System.Drawing.Size(55, 17);
             this.NameRegLabel.TabIndex = 0;
             this.NameRegLabel.Text = "NOME :";
             // 
@@ -474,7 +474,6 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
-            this.MinimizeBox = false;
             this.Name = "LoginForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Progetto PDS - CLIENT Login";
