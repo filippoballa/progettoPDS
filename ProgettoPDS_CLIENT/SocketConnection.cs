@@ -14,7 +14,7 @@ namespace ProgettoPDS_CLIENT
     { 
         private Socket sock;
         private IPEndPoint remoteEP, localEP;
-        private const int localPort = 5000;
+        public const int localPort = 5000;
         private int remotePort;
         //private static ManualResetEvent connectDone = new ManualResetEvent(false);
 
@@ -95,6 +95,20 @@ namespace ProgettoPDS_CLIENT
                 MessageBox.Show(ecc.ToString(), "ANOMALY", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 //connectDone.Set();
             }
+        }
+
+        public bool IsConnected() 
+        {
+            if (this.sock.Connected)
+                return true;
+            else
+                return false;
+        }
+
+        public void SockDisconnect() 
+        {
+            this.sock.Shutdown(SocketShutdown.Both);
+            this.sock.Close();
         }
 
     }

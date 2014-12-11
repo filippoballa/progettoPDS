@@ -32,19 +32,32 @@ namespace ProgettoPDS_CLIENT
 
         private void LoginButton_Click(object sender, EventArgs e)
         {
-            if (this.UsernameTextBox.Text == "" || this.PasswordTextBox.Text == "") {
-                this.UsernameTextBox.Focus();
+            if (this.UsernameTextBox.Text == "" && this.PasswordTextBox.Text == "") {
                 MessageBox.Show("Inserisci le tue credenziali complete prima di accedere!!", "ERRORE", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.UsernameTextBox.Focus();
                 return;
             }
-
-            if (VerificaCredenziali() == true)
-                this.Close();
-            else {
-                MessageBox.Show("Login Fallito!!", "ERRORE", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                this.UsernameTextBox.Clear();
-                this.PasswordTextBox.Clear();
+            else if (this.UsernameTextBox.Text == "" ) {
+                MessageBox.Show("Inserisci il tuo username per accedere all'applicazione!!", "ERRORE", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 this.UsernameTextBox.Focus();
+                return;
+            }
+            else if (this.PasswordTextBox.Text == "") {
+                MessageBox.Show("Inserisci la tua password per accedere all'applicazione!!", "ERRORE", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.PasswordTextBox.Focus();
+                return;
+            }
+            else {
+
+                if (VerificaCredenziali() == true)
+                    this.Close();
+                else
+                {
+                    MessageBox.Show("Login Fallito!!", "ERRORE", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    this.UsernameTextBox.Clear();
+                    this.PasswordTextBox.Clear();
+                    this.UsernameTextBox.Focus();
+                }
             }
         }
 
@@ -73,6 +86,7 @@ namespace ProgettoPDS_CLIENT
 
         private void registraToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            this.InfoPanel.Visible = false;
             this.MainPanel.Visible = false;          
             this.RegistraPanel.Visible = true;
             this.NameRegTextBox.Focus();  
@@ -80,6 +94,7 @@ namespace ProgettoPDS_CLIENT
 
         private void loginPageToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            this.InfoPanel.Visible = false;
             this.RegistraPanel.Visible = false;
             this.MainPanel.Visible = true;
             this.UsernameTextBox.Focus();
@@ -124,8 +139,14 @@ namespace ProgettoPDS_CLIENT
 
                     this.Close();
                 }
-                else
+                else {
                     MessageBox.Show("L'utente " + aux.Username + " è già registrato nell'applicazione!!", "ANOMALIA", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    this.NameRegTextBox.Clear();
+                    this.CognomeRegTextBox.Clear();
+                    this.PwdRegTextBox.Clear();
+                    this.UserRegTextBox.Clear();
+                    this.NameRegTextBox.Focus();
+                }
             
             }
 
@@ -136,6 +157,13 @@ namespace ProgettoPDS_CLIENT
             MessageBox.Show("INDIRIZZO IP: " + SocketConnection.MyIpInfo(), "INFORMAZIONI", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
+        private void infoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.InfoPanel.Visible = true;
+            this.MainPanel.Visible = false;
+            this.RegistraPanel.Visible = false;
+
+        }
         
     }
 }

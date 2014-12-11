@@ -55,13 +55,18 @@
             this.registraToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.chiudiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.infoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.indirizzoIPToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.infoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.InfoPanel = new System.Windows.Forms.Panel();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.TitleInfoLabel = new System.Windows.Forms.Label();
             this.RegistraPanel.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.MainPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.menuStrip1.SuspendLayout();
+            this.InfoPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // RegistraPanel
@@ -73,7 +78,7 @@
             this.RegistraPanel.Font = new System.Drawing.Font("Comic Sans MS", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.RegistraPanel.Location = new System.Drawing.Point(0, 24);
             this.RegistraPanel.Name = "RegistraPanel";
-            this.RegistraPanel.Size = new System.Drawing.Size(602, 273);
+            this.RegistraPanel.Size = new System.Drawing.Size(615, 296);
             this.RegistraPanel.TabIndex = 8;
             this.RegistraPanel.Visible = false;
             // 
@@ -92,7 +97,7 @@
             this.groupBox1.ForeColor = System.Drawing.Color.White;
             this.groupBox1.Location = new System.Drawing.Point(21, 59);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(526, 197);
+            this.groupBox1.Size = new System.Drawing.Size(558, 197);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Credenziali";
@@ -104,7 +109,7 @@
             this.RegistraButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
             this.RegistraButton.FlatAppearance.BorderSize = 3;
             this.RegistraButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.RegistraButton.Location = new System.Drawing.Point(385, 80);
+            this.RegistraButton.Location = new System.Drawing.Point(422, 83);
             this.RegistraButton.Name = "RegistraButton";
             this.RegistraButton.Size = new System.Drawing.Size(89, 38);
             this.RegistraButton.TabIndex = 9;
@@ -219,7 +224,7 @@
             this.MainPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.MainPanel.Location = new System.Drawing.Point(0, 24);
             this.MainPanel.Name = "MainPanel";
-            this.MainPanel.Size = new System.Drawing.Size(602, 273);
+            this.MainPanel.Size = new System.Drawing.Size(615, 296);
             this.MainPanel.TabIndex = 2;
             // 
             // UsernameLabel
@@ -293,7 +298,7 @@
             this.label1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.label1.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.label1.Location = new System.Drawing.Point(35, 222);
+            this.label1.Location = new System.Drawing.Point(44, 240);
             this.label1.Name = "label1";
             this.label1.Padding = new System.Windows.Forms.Padding(2);
             this.label1.Size = new System.Drawing.Size(497, 34);
@@ -322,7 +327,7 @@
             this.toolStripMenuItem1});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(602, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(615, 24);
             this.menuStrip1.TabIndex = 9;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -383,6 +388,16 @@
             this.toolStripMenuItem1.Size = new System.Drawing.Size(24, 20);
             this.toolStripMenuItem1.Text = "?";
             // 
+            // indirizzoIPToolStripMenuItem
+            // 
+            this.indirizzoIPToolStripMenuItem.BackColor = System.Drawing.SystemColors.WindowFrame;
+            this.indirizzoIPToolStripMenuItem.ForeColor = System.Drawing.Color.White;
+            this.indirizzoIPToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("indirizzoIPToolStripMenuItem.Image")));
+            this.indirizzoIPToolStripMenuItem.Name = "indirizzoIPToolStripMenuItem";
+            this.indirizzoIPToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.indirizzoIPToolStripMenuItem.Text = "Indirizzo IP";
+            this.indirizzoIPToolStripMenuItem.Click += new System.EventHandler(this.indirizzoIPToolStripMenuItem_Click);
+            // 
             // infoToolStripMenuItem
             // 
             this.infoToolStripMenuItem.BackColor = System.Drawing.SystemColors.WindowFrame;
@@ -391,16 +406,58 @@
             this.infoToolStripMenuItem.Name = "infoToolStripMenuItem";
             this.infoToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.infoToolStripMenuItem.Text = "Informazioni";
+            this.infoToolStripMenuItem.Click += new System.EventHandler(this.infoToolStripMenuItem_Click);
             // 
-            // indirizzoIPToolStripMenuItem
+            // InfoPanel
             // 
-            this.indirizzoIPToolStripMenuItem.BackColor = System.Drawing.SystemColors.WindowFrame;
-            this.indirizzoIPToolStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.indirizzoIPToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("indirizzoIPToolStripMenuItem.Image")));
-            this.indirizzoIPToolStripMenuItem.Name = "indirizzoIPToolStripMenuItem";
-            this.indirizzoIPToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.indirizzoIPToolStripMenuItem.Text = "Indirizzo IP";
-            this.indirizzoIPToolStripMenuItem.Click += new System.EventHandler(this.indirizzoIPToolStripMenuItem_Click);
+            this.InfoPanel.BackColor = System.Drawing.Color.White;
+            this.InfoPanel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("InfoPanel.BackgroundImage")));
+            this.InfoPanel.Controls.Add(this.label4);
+            this.InfoPanel.Controls.Add(this.label3);
+            this.InfoPanel.Controls.Add(this.TitleInfoLabel);
+            this.InfoPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.InfoPanel.Location = new System.Drawing.Point(0, 24);
+            this.InfoPanel.Name = "InfoPanel";
+            this.InfoPanel.Size = new System.Drawing.Size(615, 296);
+            this.InfoPanel.TabIndex = 16;
+            this.InfoPanel.Visible = false;
+            // 
+            // label4
+            // 
+            this.label4.BackColor = System.Drawing.Color.Transparent;
+            this.label4.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.label4.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.label4.Location = new System.Drawing.Point(21, 62);
+            this.label4.Name = "label4";
+            this.label4.Padding = new System.Windows.Forms.Padding(2);
+            this.label4.Size = new System.Drawing.Size(573, 191);
+            this.label4.TabIndex = 10;
+            this.label4.Text = "\r\n\r\n\r\n\r\n\r\n\r\n";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.BackColor = System.Drawing.Color.Transparent;
+            this.label3.Font = new System.Drawing.Font("Calibri", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.ForeColor = System.Drawing.Color.White;
+            this.label3.Location = new System.Drawing.Point(408, 274);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(195, 13);
+            this.label3.TabIndex = 1;
+            this.label3.Text = "Realized by Davide B. , Filippo B.  2014 ©";
+            // 
+            // TitleInfoLabel
+            // 
+            this.TitleInfoLabel.AutoSize = true;
+            this.TitleInfoLabel.BackColor = System.Drawing.Color.Transparent;
+            this.TitleInfoLabel.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TitleInfoLabel.ForeColor = System.Drawing.Color.White;
+            this.TitleInfoLabel.Location = new System.Drawing.Point(151, 14);
+            this.TitleInfoLabel.Name = "TitleInfoLabel";
+            this.TitleInfoLabel.Size = new System.Drawing.Size(297, 23);
+            this.TitleInfoLabel.TabIndex = 0;
+            this.TitleInfoLabel.Text = "Informazioni sulla schermata di Login";
             // 
             // LoginForm
             // 
@@ -408,13 +465,16 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(602, 297);
+            this.ClientSize = new System.Drawing.Size(615, 320);
             this.Controls.Add(this.MainPanel);
+            this.Controls.Add(this.InfoPanel);
             this.Controls.Add(this.RegistraPanel);
             this.Controls.Add(this.menuStrip1);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "LoginForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Progetto PDS - CLIENT Login";
@@ -427,6 +487,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.InfoPanel.ResumeLayout(false);
+            this.InfoPanel.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -462,6 +524,10 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem infoToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem indirizzoIPToolStripMenuItem;
+        private System.Windows.Forms.Panel InfoPanel;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label TitleInfoLabel;
     }
 }
 
