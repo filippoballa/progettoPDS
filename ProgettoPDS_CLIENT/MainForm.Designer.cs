@@ -127,7 +127,7 @@
             this.groupBox1.ForeColor = System.Drawing.Color.White;
             this.groupBox1.Location = new System.Drawing.Point(565, 22);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(358, 334);
+            this.groupBox1.Size = new System.Drawing.Size(358, 343);
             this.groupBox1.TabIndex = 5;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Configurazione Server";
@@ -184,7 +184,7 @@
             this.groupBox2.BackColor = System.Drawing.Color.Sienna;
             this.groupBox2.Controls.Add(this.label5);
             this.groupBox2.ForeColor = System.Drawing.Color.White;
-            this.groupBox2.Location = new System.Drawing.Point(565, 393);
+            this.groupBox2.Location = new System.Drawing.Point(565, 409);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(358, 100);
             this.groupBox2.TabIndex = 7;
@@ -239,6 +239,7 @@
             this.DisconnectButton.TabIndex = 7;
             this.DisconnectButton.Text = "DISCONNETTI";
             this.DisconnectButton.UseVisualStyleBackColor = false;
+            this.DisconnectButton.Click += new System.EventHandler(this.DisconnectButton_Click);
             // 
             // pictureBox1
             // 
@@ -268,7 +269,7 @@
             this.InfoButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.InfoButton.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.InfoButton.Image = ((System.Drawing.Image)(resources.GetObject("InfoButton.Image")));
-            this.InfoButton.Location = new System.Drawing.Point(845, 535);
+            this.InfoButton.Location = new System.Drawing.Point(858, 536);
             this.InfoButton.Name = "InfoButton";
             this.InfoButton.Size = new System.Drawing.Size(66, 58);
             this.InfoButton.TabIndex = 8;
