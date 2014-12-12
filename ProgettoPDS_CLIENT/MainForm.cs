@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading;
 
 namespace ProgettoPDS_CLIENT
 {
@@ -17,6 +18,7 @@ namespace ProgettoPDS_CLIENT
         private User user;
         private List<SocketConnection> connessioni;
         private int AltezzaForm, BaseForm, currServ;
+        private MouseCord mouse;
 
         public MainForm( User aux)
         {
@@ -29,11 +31,18 @@ namespace ProgettoPDS_CLIENT
             this.connessioni = new List<SocketConnection>();
             this.currServ = -1;
             this.user = aux;
+            this.mouse = new MouseCord(Cursor.Position.X, Cursor.Position.Y);
             this.Text += " - USER: \"" + aux.Username + "\" - HOST : " + Dns.GetHostName() + " - IP Address : " + 
                 SocketConnection.MyIpInfo() + " - Port Number: " + SocketConnection.localPort.ToString();
             this.AltezzaForm = this.Height;
             this.BaseForm = this.Width;
             this.Ridimensiona();
+        }
+
+        // Handler for the click message.
+        void RoundButton_Click(Object sender, System.EventArgs e)
+        {
+            MessageBox.Show("Click");
         }
 
         private void AddButton_Click(object sender, EventArgs e)
@@ -290,6 +299,43 @@ namespace ProgettoPDS_CLIENT
             }
 
             this.connessioni[this.currServ].SockDisconnect();
+        }
+
+        private void StartButton_Click(object sender, EventArgs e)
+        {
+            if (this.listBox1.SelectedIndex == -1) {
+                MessageBox.Show("Seleziona un server prima di cliccare sul bottone \"Start&Use\"!!", "ERRORE!!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            this.currServ = this.listBox1.SelectedIndex;
+
+            if (!this.connessioni[this.currServ].IsConnected()) {
+                MessageBox.Show("Il server non è connesso!!", "ERRORE!!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            this.MouseBackgroundWorker.RunWorkerAsync();
+
+        }
+
+        private void MouseBackgroundWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            while (true) {
+                Thread.Sleep(1);
+                int result = mouse.aggiornaCordinate(Cursor.Position.X, Cursor.Position.Y);
+                this.MouseBackgroundWorker.ReportProgress(result);
+            }
+        }
+
+        private void MouseBackgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            if (Convert.ToBoolean(Convert.ToInt32(e.ProgressPercentage))) { 
+                // Costruzione Pacchetto
+                string aux = "M-";
+                aux += Cursor.Position.X / Screen.PrimaryScreen.WorkingArea.Width;
+                aux += "-" + Cursor.Position.Y / Screen.PrimaryScreen.WorkingArea.Height;
+            }
         }
 
     }

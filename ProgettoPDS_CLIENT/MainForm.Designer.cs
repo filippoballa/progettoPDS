@@ -48,6 +48,8 @@
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.InfoButton = new System.Windows.Forms.Button();
             this.RemoveButton = new System.Windows.Forms.Button();
+            this.StartButton = new System.Windows.Forms.Button();
+            this.MouseBackgroundWorker = new System.ComponentModel.BackgroundWorker();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -293,12 +295,30 @@
             this.RemoveButton.UseVisualStyleBackColor = false;
             this.RemoveButton.Click += new System.EventHandler(this.RemoveButton_Click);
             // 
+            // StartButton
+            // 
+            this.StartButton.Location = new System.Drawing.Point(593, 545);
+            this.StartButton.Name = "StartButton";
+            this.StartButton.Size = new System.Drawing.Size(75, 23);
+            this.StartButton.TabIndex = 13;
+            this.StartButton.Text = "Start && Use";
+            this.StartButton.UseVisualStyleBackColor = true;
+            this.StartButton.Click += new System.EventHandler(this.StartButton_Click);
+            // 
+            // MouseBackgroundWorker
+            // 
+            this.MouseBackgroundWorker.WorkerReportsProgress = true;
+            this.MouseBackgroundWorker.WorkerSupportsCancellation = true;
+            this.MouseBackgroundWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.MouseBackgroundWorker_DoWork);
+            this.MouseBackgroundWorker.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.MouseBackgroundWorker_ProgressChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Sienna;
             this.ClientSize = new System.Drawing.Size(1071, 605);
+            this.Controls.Add(this.StartButton);
             this.Controls.Add(this.RemoveButton);
             this.Controls.Add(this.InfoButton);
             this.Controls.Add(this.pictureBox2);
@@ -349,5 +369,7 @@
         private System.Windows.Forms.Button RemoveButton;
         private System.Windows.Forms.Label HostNameLabel;
         private System.Windows.Forms.TextBox HostNameTextBox;
+        private System.Windows.Forms.Button StartButton;
+        private System.ComponentModel.BackgroundWorker MouseBackgroundWorker;
     }
 }
