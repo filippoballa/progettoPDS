@@ -275,6 +275,22 @@ namespace ProgettoPDS_CLIENT
             this.IPAddressTextBox.Focus();    
         }
 
+        private void DisconnectButton_Click(object sender, EventArgs e)
+        {
+            if (this.listBox1.SelectedIndex == -1) {
+                MessageBox.Show("Seleziona un server prima di cliccare sul bottone Disconetti!!", "ERRORE!!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            this.currServ = this.listBox1.SelectedIndex;
+
+            if (!this.connessioni[this.currServ].IsConnected()) {
+                MessageBox.Show("Impossbile Disconettere perchè il Server è già disconesso!!", "AVVISO", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            this.connessioni[this.currServ].SockDisconnect();
+        }
 
     }
 }
