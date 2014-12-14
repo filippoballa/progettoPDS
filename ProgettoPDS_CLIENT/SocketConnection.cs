@@ -98,7 +98,6 @@ namespace ProgettoPDS_CLIENT
             catch (Exception ecc) {
                 MessageBox.Show(ecc.Message, "ANOMALY", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 SocketConnection.connectDone.Set();
-                SockDisconnect();
             }
         }
 
@@ -190,7 +189,6 @@ namespace ProgettoPDS_CLIENT
             catch (Exception ecc) {
                 MessageBox.Show(ecc.Message, "ANOMALY", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 SocketConnection.connectDone.Set();
-                SockDisconnect();
             }
         }
 
@@ -252,6 +250,12 @@ namespace ProgettoPDS_CLIENT
                 SocketConnection.receiveDone.Set();
                 SockDisconnect();
             }
+        }
+
+        public Socket Sock
+        {
+            get { return this.sock; }
+            set { this.sock = value; }
         }
 
     }

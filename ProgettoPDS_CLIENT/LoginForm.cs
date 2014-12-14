@@ -25,6 +25,7 @@ namespace ProgettoPDS_CLIENT
             SetStyle(ControlStyles.SupportsTransparentBackColor, true);
             SetStyle(ControlStyles.ResizeRedraw, true);
             SetStyle(ControlStyles.AllPaintingInWmPaint, true);
+            SetStyle(ControlStyles.DoubleBuffer, true);
             InitializeComponent();
             this.user = aux;
             this.mng = new XmlManager("XMLUsers.xml");
@@ -90,7 +91,7 @@ namespace ProgettoPDS_CLIENT
             this.InfoPanel.Visible = false;
             this.MainPanel.Visible = false;          
             this.RegistraPanel.Visible = true;
-            this.NameRegTextBox.Focus();  
+            this.NameRegTextBox.Focus();
         }
 
         private void loginPageToolStripMenuItem_Click(object sender, EventArgs e)

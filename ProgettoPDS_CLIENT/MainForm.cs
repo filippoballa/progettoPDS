@@ -27,6 +27,7 @@ namespace ProgettoPDS_CLIENT
             SetStyle(ControlStyles.SupportsTransparentBackColor, true);
             SetStyle(ControlStyles.ResizeRedraw, true);
             SetStyle(ControlStyles.AllPaintingInWmPaint, true);
+            SetStyle(ControlStyles.DoubleBuffer, true);
             InitializeComponent();
             this.connessioni = new List<SocketConnection>();
             this.currServ = -1;
@@ -37,129 +38,9 @@ namespace ProgettoPDS_CLIENT
             this.AltezzaForm = this.Height;
             this.BaseForm = this.Width;
             this.Ridimensiona();
+            
         }
 
-        // Handler for the click message.
-        void RoundButton_Click(Object sender, System.EventArgs e)
-        {
-            MessageBox.Show("Click");
-        }
-
-        private void AddButton_Click(object sender, EventArgs e)
-        {
-            int aux;
-
-            if ( this.IPAddressTextBox.Text == "" && this.PortaTextBox.Text == "" && this.HostNameTextBox.Text == "") {
-                MessageBox.Show("Specifica la configurazione del server prima de cliccare su tasto \"Add\"!!", "AVVISO", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                this.IPAddressTextBox.Focus();
-                return;
-            }
-            else if (this.HostNameTextBox.Text == "") {
-                MessageBox.Show("Specifica il nome del dispositivo Server!!", "AVVISO", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                this.HostNameTextBox.Focus();
-                return;
-            }
-            else if (this.IPAddressTextBox.Text == "") {
-                MessageBox.Show("Specifica un indirizzo IP per il Server!!", "AVVISO", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                this.IPAddressTextBox.Focus();
-                return;
-            }
-            else if (this.PortaTextBox.Text == "") {
-                MessageBox.Show("Specifica un numero di Porta valido per il Server!!", "AVVISO", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                this.IPAddressTextBox.Focus();
-                return;
-            }
-
-            // Controllo Numero di porta
-            if (!Int32.TryParse(this.PortaTextBox.Text, out aux) || Int32.Parse(this.PortaTextBox.Text) < 1024 || Int32.Parse(this.PortaTextBox.Text) > 65535) {
-                MessageBox.Show("Il numero di Porta specificato non è corretto!!\nDeve trattarsi di un numero intero compreso tra 1024 e 65535!!", "ERRORE!!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                this.PortaTextBox.Clear();
-                this.PortaTextBox.Focus();
-                return;
-            }
-
-            // Controllo validità indirizzo IP
-            if (!verificaIPAddres(this.IPAddressTextBox.Text)) {
-                MessageBox.Show("L'indirizzo IP inserito non è corretto!!\n" +
-                    "Deve presentarsi nel seguente formato: xxx.xxx.xxx.xxx ,\ndove \"xxx\" è un numero compreso tra 0 e 255!!", 
-                    "ERRORE!!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                this.IPAddressTextBox.Clear();
-                this.IPAddressTextBox.Focus();
-                return;
-            }
-
-            this.listBox1.Items.Add( this.HostNameTextBox.Text + " -  IP: " + this.IPAddressTextBox.Text + " , PORTA: " + this.PortaTextBox.Text );
-            this.connessioni.Add(new SocketConnection(this.IPAddressTextBox.Text, Convert.ToInt32(this.PortaTextBox.Text),this.user));
-            this.PortaTextBox.Clear();
-            this.IPAddressTextBox.Clear();
-            this.HostNameTextBox.Clear();
-            this.HostNameTextBox.Focus();
-        }
-
-        private void ConnectButton_Click(object sender, EventArgs e)
-        {
-            if (this.listBox1.SelectedIndex == -1) {
-                MessageBox.Show("Seleziona un server prima di cliccare sul bottone Connetti!!", "ERRORE!!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            this.currServ = this.listBox1.SelectedIndex;
-
-            if (!this.connessioni[this.currServ].IsConnected())
-                this.connessioni[this.currServ].StartClientConnection();
-            else
-                MessageBox.Show("La connessione con il server è già attiva!!", "ERRORE!!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
-
-        private void RemoveButton_Click(object sender, EventArgs e)
-        {
-            if (this.listBox1.SelectedIndex == -1) {
-                MessageBox.Show("Seleziona un server prima di cliccare sul bottone Rimuovi!!", "ERRORE!!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            this.currServ = this.listBox1.SelectedIndex;
-
-            if (!this.connessioni[this.currServ].IsConnected()) {
-                this.listBox1.Items.RemoveAt(this.listBox1.SelectedIndex);
-                this.connessioni.RemoveAt(this.currServ);
-            }
-            else
-                MessageBox.Show("Disconnetti il Server prima di rimuoverlo dalla Lista!!", "ERRORE!!", MessageBoxButtons.OK, MessageBoxIcon.Error);                
-        }
-
-        // La funzione controlla la correttezza di un indirizzo IP e restituisce true se è corretto.
-        private bool verificaIPAddres(string addr) 
-        {
-            string[] nums = addr.Split('.');
-
-            if (nums.Length != 4)
-                return false;
-
-            int aux, res;
-
-            for (int i = 0; i < nums.Length; i++) {
-
-                if (!Int32.TryParse(this.PortaTextBox.Text, out res))
-                    return false;
-
-                aux = Convert.ToInt32(nums[i]);
-
-                if (aux < 0 || aux > 255)
-                    return false;
-            }
-
-            return true;
-        }
-
-        protected override void OnPaint(PaintEventArgs e)
-        {
-            base.OnPaint(e);
-            Graphics g = e.Graphics;
-            Rectangle r = new Rectangle(this.listBox1.Location.X, this.listBox1.Location.Y, this.listBox1.Width, this.listBox1.Height);
-            Pen p = new Pen(Color.White, 6);
-            g.DrawRectangle(p, r);
-        }
 
         private void Ridimensiona() 
         {
@@ -281,7 +162,75 @@ namespace ProgettoPDS_CLIENT
             this.HostNameTextBox.Location = new Point(X, Y);
             this.HostNameTextBox.Width = (this.HostNameTextBox.Width * this.Width) / this.BaseForm;
 
-            this.IPAddressTextBox.Focus();    
+            aux = (this.StartButton.Font.Size * this.Height) / this.AltezzaForm;
+            this.StartButton.Font = new System.Drawing.Font("Comic Sans MS", aux, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.StartButton.Height = (this.StartButton.Height * this.Height) / this.AltezzaForm;
+            this.StartButton.Width = (this.StartButton.Width * this.Width) / this.BaseForm;
+            X = (this.StartButton.Location.X * this.Width) / this.BaseForm;
+            Y = (this.StartButton.Location.Y * this.Height) / this.AltezzaForm;
+            this.StartButton.Location = new Point(X, Y);
+
+            // Resize ActionServer label
+            aux = (this.ActionServerLabel.Font.Size * this.Height) / this.AltezzaForm;
+            this.ActionServerLabel.Font = new System.Drawing.Font("Comic Sans MS", aux, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            X = (this.ActionServerLabel.Location.X * this.Width) / this.BaseForm;
+            Y = (this.ActionServerLabel.Location.Y * this.Height) / this.AltezzaForm;
+            this.ActionServerLabel.Location = new Point(X, Y);
+
+            // Resize Escape label
+            aux = (this.EscapeLabel.Font.Size * this.Height) / this.AltezzaForm;
+            this.EscapeLabel.Font = new System.Drawing.Font("Comic Sans MS", aux, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            X = (this.EscapeLabel.Location.X * this.Width) / this.BaseForm;
+            Y = (this.EscapeLabel.Location.Y * this.Height) / this.AltezzaForm;
+            this.EscapeLabel.Location = new Point(X, Y);
+
+        }
+
+        private void MouseBackgroundWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            while (true) {
+                Thread.Sleep(1);
+                int result = mouse.aggiornaCordinate(Cursor.Position.X, Cursor.Position.Y);
+                this.MouseBackgroundWorker.ReportProgress(result);
+            }
+        }
+
+        private void MouseBackgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            if ( Convert.ToBoolean(Convert.ToInt32(e.ProgressPercentage) ) ) { 
+                // Costruzione Pacchetto
+                string aux = "M-";
+                aux += Cursor.Position.X / Screen.PrimaryScreen.WorkingArea.Width;
+                aux += "-" + Cursor.Position.Y / Screen.PrimaryScreen.WorkingArea.Height;
+                byte[] pdu = Encoding.ASCII.GetBytes(aux);
+                // Invio Pacchetto
+                this.connessioni[this.currServ].Sock.Send(pdu);
+            }
+        }
+
+
+        private void MainPanel_Paint(object sender, PaintEventArgs e)
+        {
+            Graphics g = e.Graphics;
+            Rectangle r = new Rectangle(this.listBox1.Location.X, this.listBox1.Location.Y, this.listBox1.Width, this.listBox1.Height);
+            Pen p = new Pen(Color.White, 6);
+            g.DrawRectangle(p, r);
+        }
+
+        private void ConnectButton_Click(object sender, EventArgs e)
+        {
+            if (this.listBox1.SelectedIndex == -1) {
+                MessageBox.Show("Seleziona un server prima di cliccare sul bottone Connetti!!", "ERRORE!!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            this.currServ = this.listBox1.SelectedIndex;
+
+            if (!this.connessioni[this.currServ].IsConnected())
+                this.connessioni[this.currServ].StartClientConnection();
+            else
+                MessageBox.Show("La connessione con il server è già attiva!!", "ERRORE!!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
         }
 
         private void DisconnectButton_Click(object sender, EventArgs e)
@@ -315,28 +264,147 @@ namespace ProgettoPDS_CLIENT
                 return;
             }
 
+            this.ActionPanel.Visible = true;
+            this.MainPanel.Visible = false;
             this.MouseBackgroundWorker.RunWorkerAsync();
-
         }
 
-        private void MouseBackgroundWorker_DoWork(object sender, DoWorkEventArgs e)
+        private void RemoveButton_Click(object sender, EventArgs e)
         {
-            while (true) {
-                Thread.Sleep(1);
-                int result = mouse.aggiornaCordinate(Cursor.Position.X, Cursor.Position.Y);
-                this.MouseBackgroundWorker.ReportProgress(result);
+            if (this.listBox1.SelectedIndex == -1) {
+                MessageBox.Show("Seleziona un server prima di cliccare sul bottone Rimuovi!!", 
+                    "ERRORE!!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
             }
+
+            this.currServ = this.listBox1.SelectedIndex;
+
+            if (!this.connessioni[this.currServ].IsConnected()) {
+                this.listBox1.Items.RemoveAt(this.listBox1.SelectedIndex);
+                this.connessioni.RemoveAt(this.currServ);
+            }
+            else
+                MessageBox.Show("Disconnetti il Server prima di rimuoverlo dalla Lista!!", 
+                    "ERRORE!!", MessageBoxButtons.OK, MessageBoxIcon.Error);                
         }
 
-        private void MouseBackgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        // La funzione controlla la correttezza di un indirizzo IP e restituisce true se è corretto.
+        private bool verificaIPAddres(string addr)
         {
-            if (Convert.ToBoolean(Convert.ToInt32(e.ProgressPercentage))) { 
-                // Costruzione Pacchetto
-                string aux = "M-";
-                aux += Cursor.Position.X / Screen.PrimaryScreen.WorkingArea.Width;
-                aux += "-" + Cursor.Position.Y / Screen.PrimaryScreen.WorkingArea.Height;
+            string[] nums = addr.Split('.');
+
+            if (nums.Length != 4)
+                return false;
+
+            int aux, res;
+
+            for (int i = 0; i < nums.Length; i++)
+            {
+
+                if (!Int32.TryParse(this.PortaTextBox.Text, out res))
+                    return false;
+
+                aux = Convert.ToInt32(nums[i]);
+
+                if (aux < 0 || aux > 255)
+                    return false;
             }
+
+            return true;
         }
+
+        private void AddButton_Click(object sender, EventArgs e)
+        {
+            int aux;
+
+            if (this.IPAddressTextBox.Text == "" && this.PortaTextBox.Text == "" && this.HostNameTextBox.Text == "") {
+                MessageBox.Show("Specifica la configurazione del server prima de cliccare su tasto \"Add\"!!", "AVVISO", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                this.IPAddressTextBox.Focus();
+                return;
+            }
+            else if (this.HostNameTextBox.Text == "") {
+                MessageBox.Show("Specifica il nome del dispositivo Server!!", "AVVISO", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                this.HostNameTextBox.Focus();
+                return;
+            }
+            else if (this.IPAddressTextBox.Text == "") {
+                MessageBox.Show("Specifica un indirizzo IP per il Server!!", "AVVISO", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                this.IPAddressTextBox.Focus();
+                return;
+            }
+            else if (this.PortaTextBox.Text == "") {
+                MessageBox.Show("Specifica un numero di Porta valido per il Server!!", "AVVISO", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                this.IPAddressTextBox.Focus();
+                return;
+            }
+
+            // Controllo Numero di porta
+            if (!Int32.TryParse(this.PortaTextBox.Text, out aux) || Int32.Parse(this.PortaTextBox.Text) < 1024 || Int32.Parse(this.PortaTextBox.Text) > 65535) {
+                MessageBox.Show("Il numero di Porta specificato non è corretto!!\nDeve trattarsi di un numero intero compreso tra 1024 e 65535!!", "ERRORE!!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.PortaTextBox.Clear();
+                this.PortaTextBox.Focus();
+                return;
+            }
+
+            // Controllo validità indirizzo IP
+            if (!verificaIPAddres(this.IPAddressTextBox.Text)) {
+                MessageBox.Show("L'indirizzo IP inserito non è corretto!!\n" +
+                    "Deve presentarsi nel seguente formato: xxx.xxx.xxx.xxx ,\ndove \"xxx\" è un numero compreso tra 0 e 255!!",
+                    "ERRORE!!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.IPAddressTextBox.Clear();
+                this.IPAddressTextBox.Focus();
+                return;
+            }
+
+            this.listBox1.Items.Add(this.HostNameTextBox.Text + " -  IP: " + this.IPAddressTextBox.Text + " , PORTA: " + this.PortaTextBox.Text);
+            this.connessioni.Add(new SocketConnection(this.IPAddressTextBox.Text, Convert.ToInt32(this.PortaTextBox.Text), this.user));
+            this.PortaTextBox.Clear();
+            this.IPAddressTextBox.Clear();
+            this.HostNameTextBox.Clear();
+            this.HostNameTextBox.Focus();
+
+        }
+
+        private void MainForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (this.ActionPanel.Visible) {
+
+                if (e.KeyCode == Keys.Escape) {
+                    this.ActionPanel.Visible = false;
+                    this.MainPanel.Visible = true;
+                    this.HostNameTextBox.Focus();
+                    // gestione BWs!!
+                }
+                else {
+                    // Invio PDU legati alla tastiera
+
+                    // Costruzione Pacchetto
+                    string aux = "T-";
+
+                    if (e.Control && e.KeyCode == Keys.C)
+                        aux += Keys.Control.ToString() + "-" + Keys.C.ToString();
+                    else if (e.Control && e.KeyCode == Keys.V)
+                        aux += Keys.Control.ToString() + "-" + Keys.V.ToString();
+                    else if (e.Control && e.KeyCode == Keys.S)
+                        aux += Keys.Control.ToString() + "-" + Keys.S.ToString();
+                    else if (e.Control && e.KeyCode == Keys.A)
+                        aux += Keys.Control.ToString() + "-" + Keys.A.ToString();
+                    else if (e.Control && e.KeyCode == Keys.X)
+                        aux += Keys.Control.ToString() + "-" + Keys.X.ToString();
+                    else if (!e.Alt && !e.Control && !e.Shift)
+                        aux += e.KeyCode.ToString();
+
+                    // Parte il KeyBW per invio pdu al server!!
+                    // ...
+
+                }
+
+            }
+                
+        }
+
+
+
 
     }
 }
