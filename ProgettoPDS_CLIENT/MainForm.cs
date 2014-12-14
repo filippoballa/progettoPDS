@@ -19,6 +19,7 @@ namespace ProgettoPDS_CLIENT
         private List<SocketConnection> connessioni;
         private int AltezzaForm, BaseForm, currServ;
         private MouseCord mouse;
+        private static Mutex mut = new Mutex();
 
         public MainForm( User aux)
         {
@@ -204,7 +205,9 @@ namespace ProgettoPDS_CLIENT
                 aux += "-" + Cursor.Position.Y / Screen.PrimaryScreen.WorkingArea.Height;
                 byte[] pdu = Encoding.ASCII.GetBytes(aux);
                 // Invio Pacchetto
+                mut.WaitOne();
                 this.connessioni[this.currServ].Sock.Send(pdu);
+                mut.ReleaseMutex();
             }
         }
 
@@ -367,15 +370,21 @@ namespace ProgettoPDS_CLIENT
 
         private void MainForm_KeyDown(object sender, KeyEventArgs e)
         {
-            if (this.ActionPanel.Visible) {
+            if (this.ActionPanel.Visible)
+            {
 
-                if (e.KeyCode == Keys.Escape) {
+                if (e.KeyCode == Keys.Escape)
+                {
                     this.ActionPanel.Visible = false;
                     this.MainPanel.Visible = true;
                     this.HostNameTextBox.Focus();
+
+                    this.MouseBackgroundWorker.CancelAsync();
+                    this.KeyBackgroundWorker.CancelAsync();
                     // gestione BWs!!
                 }
-                else {
+                else
+                {
                     // Invio PDU legati alla tastiera
 
                     // Costruzione Pacchetto
@@ -394,13 +403,28 @@ namespace ProgettoPDS_CLIENT
                     else if (!e.Alt && !e.Control && !e.Shift)
                         aux += e.KeyCode.ToString();
 
+
+
                     // Parte il KeyBW per invio pdu al server!!
-                    // ...
+                    this.KeyBackgroundWorker.RunWorkerAsync(aux);
 
                 }
 
             }
+            /*else {
+                if (e.KeyCode == Keys.F5) 
+            }*/
                 
+        }
+
+        private void KeyBackgroundWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            // Invio PDU relativa alla tastiera
+            mut.WaitOne();
+            string aux = e.Argument.ToString();
+            byte[] pdu = Encoding.ASCII.GetBytes(aux);
+            this.connessioni[this.currServ].Sock.Send(pdu);
+            mut.ReleaseMutex();
         }
 
 

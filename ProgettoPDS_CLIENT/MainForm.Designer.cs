@@ -56,6 +56,7 @@
             this.pictureBox4 = new System.Windows.Forms.PictureBox();
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.ActionServerLabel = new System.Windows.Forms.Label();
+            this.KeyBackgroundWorker = new System.ComponentModel.BackgroundWorker();
             this.MainPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -168,7 +169,7 @@
             this.ConfigLabel.ForeColor = System.Drawing.Color.DarkOrange;
             this.ConfigLabel.Location = new System.Drawing.Point(32, 45);
             this.ConfigLabel.Name = "ConfigLabel";
-            this.ConfigLabel.Size = new System.Drawing.Size(289, 22);
+            this.ConfigLabel.Size = new System.Drawing.Size(289, 21);
             this.ConfigLabel.TabIndex = 5;
             this.ConfigLabel.Text = "Inserisci i Parametri di Configurazione";
             // 
@@ -408,6 +409,11 @@
             this.ActionServerLabel.TabIndex = 0;
             this.ActionServerLabel.Text = "Stai Comandando il seguente Server: ";
             // 
+            // KeyBackgroundWorker
+            // 
+            this.KeyBackgroundWorker.WorkerSupportsCancellation = true;
+            this.KeyBackgroundWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.KeyBackgroundWorker_DoWork);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -471,5 +477,6 @@
         private System.Windows.Forms.PictureBox pictureBox4;
         private System.Windows.Forms.PictureBox pictureBox3;
         private System.Windows.Forms.Label EscapeLabel;
+        private System.ComponentModel.BackgroundWorker KeyBackgroundWorker;
     }
 }
