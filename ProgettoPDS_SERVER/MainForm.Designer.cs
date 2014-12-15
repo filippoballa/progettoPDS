@@ -32,6 +32,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.button_connect = new System.Windows.Forms.Button();
+            this.Mouse_backgroundWorker = new System.ComponentModel.BackgroundWorker();
             this.SuspendLayout();
             // 
             // notifyIcon1
@@ -73,11 +74,11 @@
             this.TopMost = true;
             this.TransparencyKey = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.WindowState = System.Windows.Forms.FormWindowState.Minimized;
-            this.Activated += new System.EventHandler(this.PopUpShow);
             this.Load += new System.EventHandler(this.MainForm_Load);
-            this.Shown += new System.EventHandler(this.PopUpShow);
-            this.Click += new System.EventHandler(this.PopUpShow);
-            this.DoubleClick += new System.EventHandler(this.PopUpShow);
+            this.Click += new System.EventHandler(this.notifyIcon1_BalloonTipClicked);
+            this.DoubleClick += new System.EventHandler(this.MainForm_DoubleClicked);
+            this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseClick);
+            this.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseDoubleClick);
             this.ResumeLayout(false);
 
         }
@@ -86,5 +87,6 @@
 
         private System.Windows.Forms.NotifyIcon notifyIcon1;
         private System.Windows.Forms.Button button_connect;
+        private System.ComponentModel.BackgroundWorker Mouse_backgroundWorker;
     }
 }

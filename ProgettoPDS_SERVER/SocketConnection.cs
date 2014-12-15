@@ -52,10 +52,16 @@ namespace ProgettoPDS_SERVER
         private const String REG_PWD = "+REG_PWD";
         private const String OK = "+OK";
         private const String ERR = "-ERR";
+        private const String CONNESSO = "CONNESSO";
+        private const String DISCONNESSO = "DISCONNESSO";
+
+        private static String stato;
+        private const char[] SEPARATOR = {'-'};
+        private const string MOUSECODE = "M";
 
         public SocketConnection(int porta)
         {
-
+            stato = DISCONNESSO;
             // Create a TCP/IP socket.
             this.porta = porta;
             sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
@@ -63,7 +69,7 @@ namespace ProgettoPDS_SERVER
             // Bind the socket to the local endpoint and 
             sock.Bind(new IPEndPoint(IPAddress.Any, porta));
         }
-        public void StartListening()
+        public bool StartListening()
         {
             try
             {
@@ -71,10 +77,17 @@ namespace ProgettoPDS_SERVER
                 // Program is suspended while waiting for an incoming connection.
                 sock.BeginAccept(new AsyncCallback(AcceptCallback), sock);
                 // Wait until a connection is made before continuing.
+                if (stato == CONNESSO)
+                {
+                    return true;
+                }
+                else
+                    return false;
             }
             catch (Exception e)
             {
                 MessageBox.Show(e.Message);
+                return false;
             }
         }
 
@@ -241,6 +254,32 @@ namespace ProgettoPDS_SERVER
         public void SockDisconnect() {
             sock.Shutdown(SocketShutdown.Both);
             sock.Close();
+        }
+        public void PacketsHandler(MainForm form)
+        {
+            byte[] data;
+            String comando;
+            while (true)//ricevo i pachetti del client 
+            {
+                //String[] MouseData = null;
+                data = new byte[128];
+                passiv.Receive(data);//password ricevuta
+                comando = Encoding.ASCII.GetString(data);
+
+                String[] MouseData = comando.Split(SEPARATOR);
+
+                if (MouseData[0]!=null && MouseData[0] == MOUSECODE)
+                {
+                    double X,Y;
+
+                    if(MouseData[1]!=null)
+                        X = Convert.ToDouble(MouseData[1]);
+                    if(MouseData[2]!=null)
+                        Y = Convert.ToDouble(MouseData[2]);
+
+                    int PosX = (int)X * Screen.PrimaryScreen.WorkingArea.Width;
+                }
+            }
         }
 
     }
