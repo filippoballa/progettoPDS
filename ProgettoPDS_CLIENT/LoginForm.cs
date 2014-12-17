@@ -88,19 +88,44 @@ namespace ProgettoPDS_CLIENT
 
         private void registraToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            this.SuspendLayout();           
+            this.label3.Visible = false;
+            this.label4.Visible = false;
+            this.TitleInfoLabel.Visible = false;
+            this.UsernameLabel.Visible = false;
+            this.PasswordLabel.Visible = false;
+            this.UsernameTextBox.Visible = false;
+            this.PasswordTextBox.Visible = false;
+            this.groupBox1.Visible = true;
+            this.RegistraButton.Visible = true;
+            Thread.Sleep(10);
+            this.NotaLabel.Visible = false;
             this.InfoPanel.Visible = false;
             this.MainPanel.Visible = false;          
             this.RegistraPanel.Visible = true;
+            this.ResumeLayout();
             this.NameRegTextBox.Focus();
         }
 
         private void loginPageToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            this.SuspendLayout();           
+            this.UsernameTextBox.Visible = true;
+            this.PasswordTextBox.Visible = true;
+            this.groupBox1.Visible = false;
+            this.RegistraButton.Visible = false;
+            this.NotaLabel.Visible = true;
+            this.UsernameLabel.Visible = true;
+            this.PasswordLabel.Visible = true;
+            this.label3.Visible = false;
+            this.label4.Visible = false;
+            this.TitleInfoLabel.Visible = false;
+            Thread.Sleep(10);
+            this.MainPanel.Visible = true;
             this.InfoPanel.Visible = false;
             this.RegistraPanel.Visible = false;
-            this.MainPanel.Visible = true;
+            this.ResumeLayout();
             this.UsernameTextBox.Focus();
-
         }
 
         private void RegistraButton_Click(object sender, EventArgs e)
@@ -156,16 +181,35 @@ namespace ProgettoPDS_CLIENT
 
         private void indirizzoIPToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("INDIRIZZO IP: " + SocketConnection.MyIpInfo(), "INFORMAZIONI", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            string ip = SocketConnection.MyIpInfo();
+
+            if( ip != null )
+                MessageBox.Show("INDIRIZZO IP: " + ip, "INFORMAZIONI", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            else
+                MessageBox.Show("Dispositivo non collegato ad Internet!!", "INFORMAZIONI", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
         }
 
         private void infoToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            this.SuspendLayout();
+            this.label3.Visible = true;
+            this.label4.Visible = true;
+            this.TitleInfoLabel.Visible = true;
+            this.UsernameLabel.Visible = false;
+            this.PasswordLabel.Visible = false;
+            this.UsernameTextBox.Visible = false;
+            this.PasswordTextBox.Visible = false;
+            this.groupBox1.Visible = false;
+            this.RegistraButton.Visible = false;
+            this.NotaLabel.Visible = false;
             this.InfoPanel.Visible = true;
             this.MainPanel.Visible = false;
             this.RegistraPanel.Visible = false;
+            this.ResumeLayout();
 
         }
+
         
     }
 }

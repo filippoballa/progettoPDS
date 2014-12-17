@@ -47,7 +47,7 @@
             this.UsernameTextBox = new System.Windows.Forms.TextBox();
             this.PasswordTextBox = new System.Windows.Forms.TextBox();
             this.LoginButton = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
+            this.NotaLabel = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -219,7 +219,7 @@
             this.MainPanel.Controls.Add(this.UsernameTextBox);
             this.MainPanel.Controls.Add(this.PasswordTextBox);
             this.MainPanel.Controls.Add(this.LoginButton);
-            this.MainPanel.Controls.Add(this.label1);
+            this.MainPanel.Controls.Add(this.NotaLabel);
             this.MainPanel.Controls.Add(this.pictureBox1);
             this.MainPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.MainPanel.Location = new System.Drawing.Point(0, 24);
@@ -291,21 +291,21 @@
             this.LoginButton.UseVisualStyleBackColor = false;
             this.LoginButton.Click += new System.EventHandler(this.LoginButton_Click);
             // 
-            // label1
+            // NotaLabel
             // 
-            this.label1.AutoSize = true;
-            this.label1.BackColor = System.Drawing.Color.Transparent;
-            this.label1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.label1.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.label1.Location = new System.Drawing.Point(44, 240);
-            this.label1.Name = "label1";
-            this.label1.Padding = new System.Windows.Forms.Padding(2);
-            this.label1.Size = new System.Drawing.Size(497, 34);
-            this.label1.TabIndex = 9;
-            this.label1.Text = "NOTA :  Se stai usando l\'applicativo per la prima volta e quindi non sei ancora i" +
+            this.NotaLabel.AutoSize = true;
+            this.NotaLabel.BackColor = System.Drawing.Color.Transparent;
+            this.NotaLabel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.NotaLabel.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.NotaLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.NotaLabel.Location = new System.Drawing.Point(44, 240);
+            this.NotaLabel.Name = "NotaLabel";
+            this.NotaLabel.Padding = new System.Windows.Forms.Padding(2);
+            this.NotaLabel.Size = new System.Drawing.Size(497, 34);
+            this.NotaLabel.TabIndex = 9;
+            this.NotaLabel.Text = "NOTA :  Se stai usando l\'applicativo per la prima volta e quindi non sei ancora i" +
     "scritto nel sistema, \r\n             sei pregato di registrare le tue credenziali" +
-    ".";
+    ". ";
             // 
             // pictureBox1
             // 
@@ -394,7 +394,7 @@
             this.indirizzoIPToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.indirizzoIPToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("indirizzoIPToolStripMenuItem.Image")));
             this.indirizzoIPToolStripMenuItem.Name = "indirizzoIPToolStripMenuItem";
-            this.indirizzoIPToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.indirizzoIPToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.indirizzoIPToolStripMenuItem.Text = "Indirizzo IP";
             this.indirizzoIPToolStripMenuItem.Click += new System.EventHandler(this.indirizzoIPToolStripMenuItem_Click);
             // 
@@ -404,7 +404,7 @@
             this.infoToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.infoToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("infoToolStripMenuItem.Image")));
             this.infoToolStripMenuItem.Name = "infoToolStripMenuItem";
-            this.infoToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.infoToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.infoToolStripMenuItem.Text = "Informazioni";
             this.infoToolStripMenuItem.Click += new System.EventHandler(this.infoToolStripMenuItem_Click);
             // 
@@ -428,12 +428,12 @@
             this.label4.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.label4.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.label4.Location = new System.Drawing.Point(21, 62);
+            this.label4.Location = new System.Drawing.Point(21, 51);
             this.label4.Name = "label4";
-            this.label4.Padding = new System.Windows.Forms.Padding(2);
-            this.label4.Size = new System.Drawing.Size(573, 191);
+            this.label4.Padding = new System.Windows.Forms.Padding(8, 8, 2, 2);
+            this.label4.Size = new System.Drawing.Size(573, 210);
             this.label4.TabIndex = 10;
-            this.label4.Text = "\r\n\r\n\r\n\r\n\r\n\r\n";
+            this.label4.Text = resources.GetString("label4.Text");
             // 
             // label3
             // 
@@ -513,7 +513,7 @@
         private System.Windows.Forms.TextBox UsernameTextBox;
         private System.Windows.Forms.TextBox PasswordTextBox;
         private System.Windows.Forms.Button LoginButton;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label NotaLabel;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;

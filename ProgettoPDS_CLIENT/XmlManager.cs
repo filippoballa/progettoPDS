@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.IO;
 using System.Security.Cryptography;
+using System.Windows.Forms;
 
 namespace ProgettoPDS_CLIENT
 {
@@ -19,7 +20,6 @@ namespace ProgettoPDS_CLIENT
             this.document = new XmlDocument();
             this.FileName = file;
             this.document.Load(file);
-
         }
 
         public User SearchUser(string user) 

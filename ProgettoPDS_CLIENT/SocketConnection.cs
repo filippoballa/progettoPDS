@@ -59,11 +59,10 @@ namespace ProgettoPDS_CLIENT
             IPHostEntry host = Dns.GetHostEntry(Dns.GetHostName());
             string AddrInformation = null;
 
-            foreach (IPAddress ip in host.AddressList)
-            {
-                if (ip.AddressFamily == AddressFamily.InterNetwork)
-                {
+            foreach (IPAddress ip in host.AddressList) {
+                if (ip.AddressFamily == AddressFamily.InterNetwork) {
                     AddrInformation = ip.ToString();
+                    return AddrInformation;
                 }
             }
 
@@ -92,7 +91,7 @@ namespace ProgettoPDS_CLIENT
         {
             try {
                 this.sock.BeginConnect(this.remoteEP, new AsyncCallback(this.ConnectCallback), sock);
-                SocketConnection.connectDone.WaitOne();
+                SocketConnection.connectDone.WaitOne();                
                 
             }
             catch (Exception ecc) {

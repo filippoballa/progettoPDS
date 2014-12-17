@@ -57,6 +57,11 @@
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.ActionServerLabel = new System.Windows.Forms.Label();
             this.KeyBackgroundWorker = new System.ComponentModel.BackgroundWorker();
+            this.InfoPanel = new System.Windows.Forms.Panel();
+            this.pictureBox5 = new System.Windows.Forms.PictureBox();
+            this.pictureBox6 = new System.Windows.Forms.PictureBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.BackButton = new System.Windows.Forms.Button();
             this.MainPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -65,6 +70,9 @@
             this.ActionPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
+            this.InfoPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).BeginInit();
             this.SuspendLayout();
             // 
             // MouseBackgroundWorker
@@ -169,7 +177,7 @@
             this.ConfigLabel.ForeColor = System.Drawing.Color.DarkOrange;
             this.ConfigLabel.Location = new System.Drawing.Point(32, 45);
             this.ConfigLabel.Name = "ConfigLabel";
-            this.ConfigLabel.Size = new System.Drawing.Size(289, 21);
+            this.ConfigLabel.Size = new System.Drawing.Size(289, 22);
             this.ConfigLabel.TabIndex = 5;
             this.ConfigLabel.Text = "Inserisci i Parametri di Configurazione";
             // 
@@ -305,6 +313,7 @@
             this.InfoButton.TabIndex = 17;
             this.InfoButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.InfoButton.UseVisualStyleBackColor = true;
+            this.InfoButton.Click += new System.EventHandler(this.InfoButton_Click);
             // 
             // pictureBox1
             // 
@@ -411,8 +420,71 @@
             // 
             // KeyBackgroundWorker
             // 
+            this.KeyBackgroundWorker.WorkerReportsProgress = true;
             this.KeyBackgroundWorker.WorkerSupportsCancellation = true;
             this.KeyBackgroundWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.KeyBackgroundWorker_DoWork);
+            // 
+            // InfoPanel
+            // 
+            this.InfoPanel.BackColor = System.Drawing.Color.Linen;
+            this.InfoPanel.Controls.Add(this.BackButton);
+            this.InfoPanel.Controls.Add(this.label1);
+            this.InfoPanel.Controls.Add(this.pictureBox6);
+            this.InfoPanel.Controls.Add(this.pictureBox5);
+            this.InfoPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.InfoPanel.Location = new System.Drawing.Point(0, 0);
+            this.InfoPanel.Name = "InfoPanel";
+            this.InfoPanel.Size = new System.Drawing.Size(1071, 608);
+            this.InfoPanel.TabIndex = 27;
+            this.InfoPanel.Visible = false;
+            // 
+            // pictureBox5
+            // 
+            this.pictureBox5.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox5.BackgroundImage")));
+            this.pictureBox5.Dock = System.Windows.Forms.DockStyle.Right;
+            this.pictureBox5.Location = new System.Drawing.Point(971, 0);
+            this.pictureBox5.Name = "pictureBox5";
+            this.pictureBox5.Size = new System.Drawing.Size(100, 608);
+            this.pictureBox5.TabIndex = 0;
+            this.pictureBox5.TabStop = false;
+            // 
+            // pictureBox6
+            // 
+            this.pictureBox6.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox6.BackgroundImage")));
+            this.pictureBox6.Dock = System.Windows.Forms.DockStyle.Left;
+            this.pictureBox6.Location = new System.Drawing.Point(0, 0);
+            this.pictureBox6.Name = "pictureBox6";
+            this.pictureBox6.Size = new System.Drawing.Size(100, 608);
+            this.pictureBox6.TabIndex = 1;
+            this.pictureBox6.TabStop = false;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Comic Sans MS", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.Maroon;
+            this.label1.Location = new System.Drawing.Point(214, 18);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(627, 25);
+            this.label1.TabIndex = 2;
+            this.label1.Text = "INFORMAZIONI SULL\'UTILIZZO DELLA SCHERMATA PRINCIPALE";
+            // 
+            // BackButton
+            // 
+            this.BackButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.BackButton.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.BackButton.FlatAppearance.BorderSize = 0;
+            this.BackButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Linen;
+            this.BackButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Linen;
+            this.BackButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BackButton.Image = ((System.Drawing.Image)(resources.GetObject("BackButton.Image")));
+            this.BackButton.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
+            this.BackButton.Location = new System.Drawing.Point(106, 547);
+            this.BackButton.Name = "BackButton";
+            this.BackButton.Size = new System.Drawing.Size(118, 59);
+            this.BackButton.TabIndex = 3;
+            this.BackButton.UseVisualStyleBackColor = true;
+            this.BackButton.Click += new System.EventHandler(this.BackButton_Click);
             // 
             // MainForm
             // 
@@ -420,8 +492,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Sienna;
             this.ClientSize = new System.Drawing.Size(1071, 608);
-            this.Controls.Add(this.ActionPanel);
+            this.Controls.Add(this.InfoPanel);
             this.Controls.Add(this.MainPanel);
+            this.Controls.Add(this.ActionPanel);
             this.Cursor = System.Windows.Forms.Cursors.Default;
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
@@ -444,6 +517,10 @@
             this.ActionPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
+            this.InfoPanel.ResumeLayout(false);
+            this.InfoPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -478,5 +555,10 @@
         private System.Windows.Forms.PictureBox pictureBox3;
         private System.Windows.Forms.Label EscapeLabel;
         private System.ComponentModel.BackgroundWorker KeyBackgroundWorker;
+        private System.Windows.Forms.Panel InfoPanel;
+        private System.Windows.Forms.PictureBox pictureBox5;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.PictureBox pictureBox6;
+        private System.Windows.Forms.Button BackButton;
     }
 }

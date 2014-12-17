@@ -17,7 +17,8 @@ namespace ProgettoPDS_CLIENT
     {
         private User user;
         private List<SocketConnection> connessioni;
-        private int AltezzaForm, BaseForm, currServ;
+        private List<Server> servers;
+        private int AltezzaForm, BaseForm, currServ, CountServerConnected;
         private MouseCord mouse;
         private static Mutex mut = new Mutex();
 
@@ -31,15 +32,17 @@ namespace ProgettoPDS_CLIENT
             SetStyle(ControlStyles.DoubleBuffer, true);
             InitializeComponent();
             this.connessioni = new List<SocketConnection>();
+            this.servers = new List<Server>();
             this.currServ = -1;
             this.user = aux;
+            this.CountServerConnected = 0;
             this.mouse = new MouseCord(Cursor.Position.X, Cursor.Position.Y);
             this.Text += " - USER: \"" + aux.Username + "\" - HOST : " + Dns.GetHostName() + " - IP Address : " + 
                 SocketConnection.MyIpInfo() + " - Port Number: " + SocketConnection.localPort.ToString();
             this.AltezzaForm = this.Height;
             this.BaseForm = this.Width;
             this.Ridimensiona();
-            
+            this.HostNameTextBox.Focus();
         }
 
 
@@ -185,30 +188,19 @@ namespace ProgettoPDS_CLIENT
             Y = (this.EscapeLabel.Location.Y * this.Height) / this.AltezzaForm;
             this.EscapeLabel.Location = new Point(X, Y);
 
-        }
+            // Riposizionamento Back Button
+            this.BackButton.Height = (this.BackButton.Height * this.Height) / this.AltezzaForm;
+            this.BackButton.Width = (this.BackButton.Width * this.Width) / this.BaseForm;
+            X = (this.BackButton.Location.X * this.Width) / this.BaseForm;
+            Y = (this.BackButton.Location.Y * this.Height) / this.AltezzaForm;
+            this.BackButton.Location = new Point(X, Y);
 
-        private void MouseBackgroundWorker_DoWork(object sender, DoWorkEventArgs e)
-        {
-            while (true) {
-                Thread.Sleep(1);
-                int result = mouse.aggiornaCordinate(Cursor.Position.X, Cursor.Position.Y);
-                this.MouseBackgroundWorker.ReportProgress(result);
-            }
-        }
-
-        private void MouseBackgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
-        {
-            if ( Convert.ToBoolean(Convert.ToInt32(e.ProgressPercentage) ) ) { 
-                // Costruzione Pacchetto
-                string aux = "M-";
-                aux += Cursor.Position.X / Screen.PrimaryScreen.WorkingArea.Width;
-                aux += "-" + Cursor.Position.Y / Screen.PrimaryScreen.WorkingArea.Height;
-                byte[] pdu = Encoding.ASCII.GetBytes(aux);
-                // Invio Pacchetto
-                mut.WaitOne();
-                this.connessioni[this.currServ].Sock.Send(pdu);
-                mut.ReleaseMutex();
-            }
+            // Resize ActionServer label
+            aux = (this.label1.Font.Size * this.Height) / this.AltezzaForm;
+            this.label1.Font = new System.Drawing.Font("Comic Sans MS", aux, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            X = (this.label1.Location.X * this.Width) / this.BaseForm;
+            Y = (this.label1.Location.Y * this.Height) / this.AltezzaForm;
+            this.label1.Location = new Point(X, Y);
         }
 
 
@@ -229,8 +221,18 @@ namespace ProgettoPDS_CLIENT
 
             this.currServ = this.listBox1.SelectedIndex;
 
-            if (!this.connessioni[this.currServ].IsConnected())
+            if (!this.connessioni[this.currServ].IsConnected()) {
                 this.connessioni[this.currServ].StartClientConnection();
+
+                if ( this.connessioni[this.currServ].IsConnected() && this.CountServerConnected == 0) {
+                    this.label5.Text = "Connesioni Attive: " + servers[this.currServ].HostName;
+                    this.CountServerConnected++;
+                }
+                else if (this.connessioni[this.currServ].IsConnected() && this.CountServerConnected >= 1) {
+                    this.label5.Text += " , " + servers[this.currServ].HostName;
+                    this.CountServerConnected++;
+                }
+            }
             else
                 MessageBox.Show("La connessione con il server è già attiva!!", "ERRORE!!", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
@@ -251,6 +253,11 @@ namespace ProgettoPDS_CLIENT
             }
 
             this.connessioni[this.currServ].SockDisconnect();
+            this.CountServerConnected--;
+
+            if (this.CountServerConnected == 0) 
+                this.label5.Text = "Non Connesso con Nessun Server al momento!!";
+
         }
 
         private void StartButton_Click(object sender, EventArgs e)
@@ -285,35 +292,11 @@ namespace ProgettoPDS_CLIENT
             if (!this.connessioni[this.currServ].IsConnected()) {
                 this.listBox1.Items.RemoveAt(this.listBox1.SelectedIndex);
                 this.connessioni.RemoveAt(this.currServ);
+                this.servers.RemoveAt(this.currServ);
             }
             else
                 MessageBox.Show("Disconnetti il Server prima di rimuoverlo dalla Lista!!", 
                     "ERRORE!!", MessageBoxButtons.OK, MessageBoxIcon.Error);                
-        }
-
-        // La funzione controlla la correttezza di un indirizzo IP e restituisce true se è corretto.
-        private bool verificaIPAddres(string addr)
-        {
-            string[] nums = addr.Split('.');
-
-            if (nums.Length != 4)
-                return false;
-
-            int aux, res;
-
-            for (int i = 0; i < nums.Length; i++)
-            {
-
-                if (!Int32.TryParse(this.PortaTextBox.Text, out res))
-                    return false;
-
-                aux = Convert.ToInt32(nums[i]);
-
-                if (aux < 0 || aux > 255)
-                    return false;
-            }
-
-            return true;
         }
 
         private void AddButton_Click(object sender, EventArgs e)
@@ -358,9 +341,10 @@ namespace ProgettoPDS_CLIENT
                 this.IPAddressTextBox.Focus();
                 return;
             }
-
-            this.listBox1.Items.Add(this.HostNameTextBox.Text + " -  IP: " + this.IPAddressTextBox.Text + " , PORTA: " + this.PortaTextBox.Text);
+         
             this.connessioni.Add(new SocketConnection(this.IPAddressTextBox.Text, Convert.ToInt32(this.PortaTextBox.Text), this.user));
+            this.servers.Add(new Server(this.HostNameTextBox.Text, this.IPAddressTextBox.Text, Convert.ToInt32(this.PortaTextBox.Text)));   
+            this.listBox1.Items.Add(this.servers.Last().ToString());
             this.PortaTextBox.Clear();
             this.IPAddressTextBox.Clear();
             this.HostNameTextBox.Clear();
@@ -370,21 +354,18 @@ namespace ProgettoPDS_CLIENT
 
         private void MainForm_KeyDown(object sender, KeyEventArgs e)
         {
-            if (this.ActionPanel.Visible)
-            {
+            if (this.ActionPanel.Visible) {
 
-                if (e.KeyCode == Keys.Escape)
-                {
+                if (e.KeyCode == Keys.Escape) {
                     this.ActionPanel.Visible = false;
                     this.MainPanel.Visible = true;
                     this.HostNameTextBox.Focus();
 
+                    // gestione BWs!!
                     this.MouseBackgroundWorker.CancelAsync();
                     this.KeyBackgroundWorker.CancelAsync();
-                    // gestione BWs!!
                 }
-                else
-                {
+                else {
                     // Invio PDU legati alla tastiera
 
                     // Costruzione Pacchetto
@@ -403,32 +384,84 @@ namespace ProgettoPDS_CLIENT
                     else if (!e.Alt && !e.Control && !e.Shift)
                         aux += e.KeyCode.ToString();
 
-
-
                     // Parte il KeyBW per invio pdu al server!!
                     this.KeyBackgroundWorker.RunWorkerAsync(aux);
-
+                    
                 }
 
             }
-            /*else {
-                if (e.KeyCode == Keys.F5) 
-            }*/
                 
+        }
+
+        // La funzione controlla la correttezza di un indirizzo IP e restituisce true se è corretto.
+        private bool verificaIPAddres(string addr)
+        {
+            string[] nums = addr.Split('.');
+
+            if (nums.Length != 4)
+                return false;
+
+            int aux, res;
+
+            for (int i = 0; i < nums.Length; i++) {
+
+                if (!Int32.TryParse(nums[i], out res))
+                    return false;
+
+                aux = Convert.ToInt32(nums[i]);
+
+                if (aux < 0 || aux > 255)
+                    return false;
+            }
+
+            return true;
         }
 
         private void KeyBackgroundWorker_DoWork(object sender, DoWorkEventArgs e)
         {
             // Invio PDU relativa alla tastiera
-            mut.WaitOne();
             string aux = e.Argument.ToString();
             byte[] pdu = Encoding.ASCII.GetBytes(aux);
+            mut.WaitOne();
             this.connessioni[this.currServ].Sock.Send(pdu);
             mut.ReleaseMutex();
         }
 
+        private void MouseBackgroundWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            while (true) {
+                Thread.Sleep(1);
+                int result = mouse.aggiornaCordinate(Cursor.Position.X, Cursor.Position.Y);
+                this.MouseBackgroundWorker.ReportProgress(result);
+            }
+        }
 
+        private void MouseBackgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            if (Convert.ToBoolean(Convert.ToInt32(e.ProgressPercentage))) {
+                // Costruzione Pacchetto
+                string aux = "M-";
+                aux += Cursor.Position.X / Screen.PrimaryScreen.WorkingArea.Width;
+                aux += "-" + Cursor.Position.Y / Screen.PrimaryScreen.WorkingArea.Height;
+                byte[] pdu = Encoding.ASCII.GetBytes(aux);
+                // Invio Pacchetto
+                mut.WaitOne();
+                this.connessioni[this.currServ].Sock.Send(pdu);
+                mut.ReleaseMutex();
+            }
+        }
 
+        private void InfoButton_Click(object sender, EventArgs e)
+        {
+            this.MainPanel.Visible = false;
+            this.InfoPanel.Visible = true;
+        }
+
+        private void BackButton_Click(object sender, EventArgs e)
+        {
+            this.MainPanel.Visible = true;
+            this.InfoPanel.Visible = false;
+        }
 
     }
 }
