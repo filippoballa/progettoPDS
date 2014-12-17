@@ -36,8 +36,6 @@ C:\Users\Dave\Documents\PDS - PROGETTO\ProgettoPDS_SERVER\ProgettoPDS_SERVER\obj
 C:\Users\Dave\Documents\PDS - PROGETTO\ProgettoPDS_SERVER\ProgettoPDS_SERVER\obj\Debug\ProgettoPDS_SERVER.pdb
 C:\Users\Dave\Documents\PDS - PROGETTO\ProgettoPDS_SERVER\ProgettoPDS_SERVER\bin\Debug\ProgettoPDS_SERVER.exe
 C:\Users\Dave\Documents\PDS - PROGETTO\ProgettoPDS_SERVER\ProgettoPDS_SERVER\bin\Debug\ProgettoPDS_SERVER.pdb
-C:\Users\Dave\Documents\PDS - PROGETTO\ProgettoPDS_SERVER\ProgettoPDS_SERVER\bin\Debug\EntityFramework.xml
-C:\Users\Dave\Documents\PDS - PROGETTO\ProgettoPDS_SERVER\ProgettoPDS_SERVER\bin\Debug\it\EntityFramework.resources.dll
 C:\Users\Dave\Documents\PDS - PROGETTO\ProgettoPDS_SERVER\ProgettoPDS_SERVER\obj\Debug\ProgettoPDS_SERVER.csprojResolveAssemblyReference.cache
 C:\Users\Dave\Documents\PDS - PROGETTO\ProgettoPDS_SERVER\ProgettoPDS_SERVER\obj\Debug\ProgettoPDS_SERVER.LoginForm.resources
 C:\Users\Dave\Documents\PDS - PROGETTO\ProgettoPDS_SERVER\ProgettoPDS_SERVER\obj\Debug\ProgettoPDS_SERVER.MainForm.resources
@@ -46,3 +44,5 @@ C:\Users\Dave\Documents\PDS - PROGETTO\ProgettoPDS_SERVER\ProgettoPDS_SERVER\obj
 E:\PDS - PROGETTO\ProgettoPDS_SERVER\ProgettoPDS_SERVER\bin\Debug\ProgettoPDS_SERVER.exe.config
 E:\PDS - PROGETTO\ProgettoPDS_SERVER\ProgettoPDS_SERVER\obj\Debug\ProgettoPDS_SERVER.exe
 E:\PDS - PROGETTO\ProgettoPDS_SERVER\ProgettoPDS_SERVER\obj\Debug\ProgettoPDS_SERVER.pdb
+C:\Users\Dave\Documents\PDS - PROGETTO\ProgettoPDS_SERVER\ProgettoPDS_SERVER\bin\Debug\XMLClients.xml
+C:\Users\Dave\Documents\PDS - PROGETTO\ProgettoPDS_SERVER\ProgettoPDS_SERVER\bin\Debug\XMLUsers.xml

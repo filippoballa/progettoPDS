@@ -27,225 +27,155 @@ using System.Security.Cryptography;
  *  </MYUSER>  
 
  * </USERS>
+ * 
+ * 
+ * 
+ * <CLIENTS>
+ * 
+ *      <CLIENT>filippo.balla</CLIENT>
+ *          
+ *      <PASSWORD>fballa1</PASSWORD>
+ *      
+ * </CLIENTS>
 */
 
 namespace ProgettoPDS_SERVER
 {
     class XmlManager
     {
-        private string root = "C:\\Users\\filippo\\Documents\\GitHub\\progettoPDS\\ProgettoPDS_SERVER\\"; // Path.GetDirectoryName(Application.UserAppDataPath);
-        private string FileNameUsers = "XMLUsers.xml";
-        private string FileNameClients = "XMLClients.xml";
         private XmlDocument XmlDoc;
-        private Rijndael myRijndael;
-        private bool criptography = false;// se è settato su true memorizza i dati codificati sul file xml, ma non funziona ancora
-
-         public XmlManager(char c)
+        private const string FileNameUsers = "XMLUsers.xml";
+        private const string FileNameClients = "XMLClients.xml";
+        private string FileName;
+        private bool errorLoad;
+      
+        public XmlManager( char c )
         {
-            string FileName,p;
-
-            if (c == 'C')
-                FileName = FileNameClients;
-            else //if(c =='U')
-                FileName = FileNameUsers;
-
+            string path;
             this.XmlDoc = new XmlDocument();
+            this.errorLoad = false;
 
-            if (File.Exists(p = Path.Combine(root, FileName)))
-                XmlDoc.Load(p);
+            if (c == 'U')
+                this.FileName = XmlManager.FileNameUsers;
             else
-                MessageBox.Show(p + "\n file non trovato!");
+                this.FileName = XmlManager.FileNameClients;
 
-            if(criptography)
-                CreateRijandel();
+            path = Path.Combine(Environment.CurrentDirectory, this.FileName);
+
+            if (File.Exists(path))
+                this.XmlDoc.Load(FileName);
+            else {
+                MessageBox.Show("Il file \"" + path + "\" non è stato trovato!! Informazioni non caricate!!", "ERRORE",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.errorLoad = true;
+            }
         }
-         public string[] SearchUser(string user)//potrebbe essere un'operazione pesante
-         {
-             string [] data= new string[4]{"","","",""};
-             int i;
-             XmlNodeList xmlnode;
-             byte[] encrypted;
 
-             try{
-
-                 xmlnode = XmlDoc.GetElementsByTagName("MYUSER");
-
-                 for (i = 0; i <= xmlnode.Count - 1; i++)//scorre tutti  i nodi MYUSER
-                 {
-                     #region c_on
-                     if (criptography)
-                     {
-                         encrypted = GetBytes(xmlnode[i].ChildNodes.Item(0).InnerText.Trim());//decodifica il campo 0 (USER) codificato sul file
-                         if (user == DecryptStringFromBytes(encrypted, myRijndael.Key, myRijndael.IV))//se è uguale
-                         {
-                             data[0] = user;
-                             int j;
-                             for (j = 1; j < 4; j++)
-                             {
-                                 encrypted = GetBytes(xmlnode[i].ChildNodes.Item(j).InnerText.Trim());//trasformo in bit il campo J
-                                 data[j] = DecryptStringFromBytes(encrypted, myRijndael.Key, myRijndael.IV); //e lo decodifico
-                             }
-                         }
-                     }
-                     else
-                     #endregion c_on
-                     {
-                         if (user == xmlnode[i].ChildNodes.Item(0).InnerText.Trim())//se trovo lo user
-                         {
-                             data[0] = user;//assegno lo user
-                             data[1] = xmlnode[i].ChildNodes.Item(1).InnerText.Trim();//assegno la password
-                             data[2] = xmlnode[i].ChildNodes.Item(2).InnerText.Trim();//assegno il nome
-                             data[3] = xmlnode[i].ChildNodes.Item(3).InnerText.Trim();//assegno il cognome
-                         }
-                     }
-                 }
-             }catch(Exception e)
-             {
-                 MessageBox.Show(e.Message);
-             }
-             return data;
-         }
-         #region criptography
-         private string DecryptStringFromBytes(byte[] cipherText, byte[] Key, byte[] IV)
-         {
-             // Check arguments.
-             if (cipherText == null || cipherText.Length <= 0)
-                 throw new ArgumentNullException("cipherText");
-             if (Key == null || Key.Length <= 0)
-                 throw new ArgumentNullException("Key");
-             if (IV == null || IV.Length <= 0)
-                 throw new ArgumentNullException("Key");
-
-             // Declare the string used to hold
-             // the decrypted text.
-             string plaintext = null;
-
-             // Create an Rijndael object
-             // with the specified key and IV.
-             RijndaelManaged rijAlg = new RijndaelManaged();
-                 rijAlg.Key = myRijndael.Key;
-                 rijAlg.IV = myRijndael.IV;
-                 // Create a decrytor to perform the stream transform.
-                 ICryptoTransform decryptor = rijAlg.CreateDecryptor(rijAlg.Key, rijAlg.IV);
-
-                 // Create the streams used for decryption.
-                 using (MemoryStream msDecrypt = new MemoryStream(cipherText))
-                 {
-                     using (CryptoStream csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read))
-                     {
-                         using (StreamReader srDecrypt = new StreamReader(csDecrypt))
-                         {
-
-                             // Read the decrypted bytes from the decrypting stream
-                             // and place them in a string.
-                             plaintext = srDecrypt.ReadToEnd();
-                         }
-                     }
-                 }
-
-             
-
-             return plaintext;
-
-         }
-         private byte[] EncryptStringToBytes(string plainText, byte[] Key, byte[] IV)
-         {
-             // Check arguments.
-             if (plainText == null || plainText.Length <= 0)
-                 throw new ArgumentNullException("plainText");
-             if (Key == null || Key.Length <= 0)
-                 throw new ArgumentNullException("Key");
-             if (IV == null || IV.Length <= 0)
-                 throw new ArgumentNullException("Key");
-             byte[] encrypted;
-             // Create an Rijndael object
-             // with the specified key and IV.
-             RijndaelManaged rijAlg = new RijndaelManaged();
-                 rijAlg.Key = myRijndael.Key;
-                 rijAlg.IV = myRijndael.IV;
-                 // Create a decrytor to perform the stream transform.
-                 ICryptoTransform encryptor = rijAlg.CreateEncryptor(rijAlg.Key, rijAlg.IV);
-
-                 // Create the streams used for encryption.
-                 using (MemoryStream msEncrypt = new MemoryStream())
-                 {
-                     using (CryptoStream csEncrypt = new CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write))
-                     {
-                         using (StreamWriter swEncrypt = new StreamWriter(csEncrypt))
-                         {
-
-                             //Write all data to the stream.
-                             swEncrypt.Write(plainText);
-                         }
-                         encrypted = msEncrypt.ToArray();
-                     }
-                 }
-             
-
-
-             // Return the encrypted bytes from the memory stream.
-             return encrypted;
-
-         }
-         static byte[] GetBytes(string str)
-         {
-             byte[] bytes = new byte[str.Length * sizeof(char)];
-             System.Buffer.BlockCopy(str.ToCharArray(), 0, bytes, 0, bytes.Length);
-             return bytes;
-         }
-
-         static string GetString(byte[] bytes)
-         {
-             char[] chars = new char[bytes.Length / sizeof(char)];
-             System.Buffer.BlockCopy(bytes, 0, chars, 0, bytes.Length);
-             return new string(chars);
-         }
-        private void CreateRijandel(){
-            myRijndael = Rijndael.Create();
-            //create key
-            var key = new Rfc2898DeriveBytes(root, GetBytes(FileNameUsers));//due stringhe a caso in teoria la prima è una chiave privata la seconda un 'salt'
-            myRijndael.Key = key.GetBytes(myRijndael.KeySize / 8);
-            myRijndael.IV = key.GetBytes(myRijndael.BlockSize / 8);
-        }
-        #endregion criptography
-        public void AddNewUser(string user, string pswd)
+        public bool Error
         {
-            try
-            {
-                string p;
-
-                if (File.Exists(p = Path.Combine(FileNameUsers, this.root)))
-                    XmlDoc.Load(p);
-                else
-                    MessageBox.Show(p + "\n file non trovato!");
-
-                XmlNode root = XmlDoc.DocumentElement;
-
-                //Create a new node.
-                XmlElement myUser = XmlDoc.CreateElement("MYUSER");
-
-                XmlElement campo = XmlDoc.CreateElement("USER");
-                campo.InnerText = GetString(EncryptStringToBytes(user, myRijndael.Key, myRijndael.IV));
-                myUser.AppendChild(campo);
-
-                campo = XmlDoc.CreateElement("PASSWORD");
-                campo.InnerText = GetString(EncryptStringToBytes(user, myRijndael.Key, myRijndael.IV));
-                myUser.AppendChild(campo);
-
-                //Add the new Node
-                root.AppendChild(myUser);
-
-                XmlDoc.Save(p);
-
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message);
-            }
-           
+            get { return this.errorLoad; }
+            set { this.errorLoad = value; }
         }
-        public void AddNewClient()
-        {}
+
+
+        // Aggiunta di un nuovo Utente al file "XMLUsers.xml" .
+        // La password inserita nel documento sarà cifrata.
+        public void AddNewUser(User NuovoUtente)
+        {
+            XmlNode root = this.XmlDoc.DocumentElement;
+            SHA1 shaM = new SHA1Managed();
+
+            //Create a new node.
+            XmlElement myUser = this.XmlDoc.CreateElement("MYUSER");
+            XmlElement campo = this.XmlDoc.CreateElement("USERNAME");
+            campo.InnerText = NuovoUtente.Username;
+            myUser.AppendChild(campo);
+            campo = this.XmlDoc.CreateElement("PASSWORD");
+            byte[] pwd = Encoding.ASCII.GetBytes(NuovoUtente.Password);
+            campo.InnerText = Encoding.ASCII.GetString(shaM.ComputeHash(pwd)); //Cifratura Password!!
+            myUser.AppendChild(campo);
+            campo = this.XmlDoc.CreateElement("NAME");
+            campo.InnerText = NuovoUtente.Name;
+            myUser.AppendChild(campo);
+            campo = this.XmlDoc.CreateElement("SURNAME");
+            campo.InnerText = NuovoUtente.Surname;
+            myUser.AppendChild(campo);
+
+            //Add the new Node
+            root.AppendChild(myUser);
+
+            this.XmlDoc.Save(this.FileName);
+            this.XmlDoc.Save("..\\..\\" + this.FileName);
+
+        }
+
+        // Aggiunta di un nuovo "Client" al file "XMLClients.xml".
+        // La funzione si asppetta di ricevere due parametri di tipo stringa: lo username e la
+        // password ( già cifrata lato CLIENT ) dell'utente (client) che desidera usare il server,
+        // durante la fase di autenticazione/registrazione.
+        public void AddNewClient(string user, string pwd) 
+        {
+            XmlNode root = this.XmlDoc.DocumentElement;
+
+            //Create a new node.
+            XmlElement myClient = this.XmlDoc.CreateElement("CLIENT");
+            XmlElement campo = this.XmlDoc.CreateElement("USER");
+            campo.InnerText = user;
+            myClient.AppendChild(campo);
+            campo = this.XmlDoc.CreateElement("PASSWORD");
+            campo.InnerText = pwd;
+            myClient.AppendChild(campo);
+
+            //Add the new Node
+            root.AppendChild(myClient);
+
+            this.XmlDoc.Save(this.FileName);
+            this.XmlDoc.Save("..\\..\\" + this.FileName);
+        }
+
+        // Ricerca di un utente all'interno del file "XMLUsers.xml".
+        // La funzione ritorna un oggetto User opportunamente inizializzato oppure null!!
+        public User SearchUser(string user)
+        {
+            XmlNodeList xmlnodes;
+            User aux;
+
+            xmlnodes = this.XmlDoc.GetElementsByTagName("MYUSER");
+
+            for (int i = 0; i < xmlnodes.Count; i++) {
+
+                if (xmlnodes[i].ChildNodes.Item(0).InnerText == user) {
+                    aux = new User();
+                    aux.Username = xmlnodes[i].ChildNodes.Item(0).InnerText;
+                    aux.Password = xmlnodes[i].ChildNodes.Item(1).InnerText;
+                    aux.Name = xmlnodes[i].ChildNodes.Item(2).InnerText;
+                    aux.Surname = xmlnodes[i].ChildNodes.Item(3).InnerText;
+
+                    return aux;
+                }
+            }
+
+            return null;
+        }
+
+        // La funzione SearchClient cerca all'interno del file "XMLClients.xml" se è presente un determinato
+        // utente che desidera usare il server ( user/client). Se è presente la funzione ritornerà la password
+        // salvata nel file che dovrà essere confrontata con quella che è giunta al server dal client!!
+        public string SearchClient(string user) 
+        {
+            string pwd = null;
+            XmlNodeList xmlnodes = this.XmlDoc.GetElementsByTagName("CLIENT");
+
+            for (int i = 0; i < xmlnodes.Count; i++) {
+
+                if (xmlnodes[i].ChildNodes.Item(0).InnerText == user) {
+                    pwd = xmlnodes[i].ChildNodes.Item(1).InnerText;
+                    return pwd;
+                }
+            }
+
+            return pwd;
+        }
 
     }
 }

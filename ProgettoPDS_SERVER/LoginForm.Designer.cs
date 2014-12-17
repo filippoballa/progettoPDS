@@ -43,10 +43,10 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.UsernameTextBox = new System.Windows.Forms.TextBox();
             this.PasswordTextBox = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
+            this.NotaLabel = new System.Windows.Forms.Label();
             this.RegistraPanel = new System.Windows.Forms.Panel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.RegistraButton = new System.Windows.Forms.Button();
             this.PwdRegTextBox = new System.Windows.Forms.TextBox();
             this.UserRegTextBox = new System.Windows.Forms.TextBox();
             this.CognomeRegTextBox = new System.Windows.Forms.TextBox();
@@ -56,11 +56,17 @@
             this.CognomeRegLabel = new System.Windows.Forms.Label();
             this.NameRegLabel = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.indirizzoIPToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.InfoPanel = new System.Windows.Forms.Panel();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.TitleInfoLabel = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.MainPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.RegistraPanel.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            this.InfoPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -71,7 +77,7 @@
             this.toolStripMenuItem1});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(579, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(611, 24);
             this.menuStrip1.TabIndex = 5;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -118,6 +124,7 @@
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.indirizzoIPToolStripMenuItem,
             this.informazioniToolStripMenuItem});
             this.toolStripMenuItem1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.toolStripMenuItem1.ForeColor = System.Drawing.Color.Black;
@@ -130,8 +137,9 @@
             this.informazioniToolStripMenuItem.BackColor = System.Drawing.SystemColors.Info;
             this.informazioniToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("informazioniToolStripMenuItem.Image")));
             this.informazioniToolStripMenuItem.Name = "informazioniToolStripMenuItem";
-            this.informazioniToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.informazioniToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.informazioniToolStripMenuItem.Text = "Informazioni";
+            this.informazioniToolStripMenuItem.Click += new System.EventHandler(this.informazioniToolStripMenuItem_Click);
             // 
             // MainPanel
             // 
@@ -143,11 +151,11 @@
             this.MainPanel.Controls.Add(this.pictureBox1);
             this.MainPanel.Controls.Add(this.UsernameTextBox);
             this.MainPanel.Controls.Add(this.PasswordTextBox);
-            this.MainPanel.Controls.Add(this.label1);
+            this.MainPanel.Controls.Add(this.NotaLabel);
             this.MainPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.MainPanel.Location = new System.Drawing.Point(0, 24);
             this.MainPanel.Name = "MainPanel";
-            this.MainPanel.Size = new System.Drawing.Size(579, 296);
+            this.MainPanel.Size = new System.Drawing.Size(611, 296);
             this.MainPanel.TabIndex = 11;
             // 
             // UsernameLabel
@@ -156,7 +164,7 @@
             this.UsernameLabel.BackColor = System.Drawing.Color.Transparent;
             this.UsernameLabel.Font = new System.Drawing.Font("Comic Sans MS", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.UsernameLabel.ForeColor = System.Drawing.Color.White;
-            this.UsernameLabel.Location = new System.Drawing.Point(18, 46);
+            this.UsernameLabel.Location = new System.Drawing.Point(17, 50);
             this.UsernameLabel.Name = "UsernameLabel";
             this.UsernameLabel.Size = new System.Drawing.Size(101, 19);
             this.UsernameLabel.TabIndex = 17;
@@ -168,7 +176,7 @@
             this.PasswordLabel.BackColor = System.Drawing.Color.Transparent;
             this.PasswordLabel.Font = new System.Drawing.Font("Comic Sans MS", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.PasswordLabel.ForeColor = System.Drawing.Color.White;
-            this.PasswordLabel.Location = new System.Drawing.Point(18, 99);
+            this.PasswordLabel.Location = new System.Drawing.Point(17, 101);
             this.PasswordLabel.Name = "PasswordLabel";
             this.PasswordLabel.Size = new System.Drawing.Size(115, 19);
             this.PasswordLabel.TabIndex = 16;
@@ -183,7 +191,7 @@
             this.LoginButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.LoginButton.Font = new System.Drawing.Font("Comic Sans MS", 10F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LoginButton.ForeColor = System.Drawing.Color.White;
-            this.LoginButton.Location = new System.Drawing.Point(139, 152);
+            this.LoginButton.Location = new System.Drawing.Point(152, 152);
             this.LoginButton.Name = "LoginButton";
             this.LoginButton.Size = new System.Drawing.Size(75, 48);
             this.LoginButton.TabIndex = 3;
@@ -195,7 +203,7 @@
             // 
             this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(419, 21);
+            this.pictureBox1.Location = new System.Drawing.Point(454, 30);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(115, 115);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -206,7 +214,7 @@
             // 
             this.UsernameTextBox.BackColor = System.Drawing.Color.Silver;
             this.UsernameTextBox.Font = new System.Drawing.Font("Comic Sans MS", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UsernameTextBox.Location = new System.Drawing.Point(139, 45);
+            this.UsernameTextBox.Location = new System.Drawing.Point(152, 49);
             this.UsernameTextBox.Name = "UsernameTextBox";
             this.UsernameTextBox.Size = new System.Drawing.Size(254, 24);
             this.UsernameTextBox.TabIndex = 1;
@@ -215,24 +223,25 @@
             // 
             this.PasswordTextBox.BackColor = System.Drawing.Color.Silver;
             this.PasswordTextBox.Font = new System.Drawing.Font("Comic Sans MS", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.PasswordTextBox.Location = new System.Drawing.Point(139, 98);
+            this.PasswordTextBox.Location = new System.Drawing.Point(152, 100);
             this.PasswordTextBox.Name = "PasswordTextBox";
+            this.PasswordTextBox.PasswordChar = '*';
             this.PasswordTextBox.Size = new System.Drawing.Size(254, 24);
             this.PasswordTextBox.TabIndex = 2;
             // 
-            // label1
+            // NotaLabel
             // 
-            this.label1.AutoSize = true;
-            this.label1.BackColor = System.Drawing.Color.Transparent;
-            this.label1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.label1.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.label1.Location = new System.Drawing.Point(22, 230);
-            this.label1.Name = "label1";
-            this.label1.Padding = new System.Windows.Forms.Padding(2);
-            this.label1.Size = new System.Drawing.Size(497, 34);
-            this.label1.TabIndex = 11;
-            this.label1.Text = "NOTA :  Se stai usando l\'applicativo per la prima volta e quindi non sei ancora i" +
+            this.NotaLabel.AutoSize = true;
+            this.NotaLabel.BackColor = System.Drawing.Color.Transparent;
+            this.NotaLabel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.NotaLabel.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.NotaLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.NotaLabel.Location = new System.Drawing.Point(44, 240);
+            this.NotaLabel.Name = "NotaLabel";
+            this.NotaLabel.Padding = new System.Windows.Forms.Padding(2);
+            this.NotaLabel.Size = new System.Drawing.Size(497, 34);
+            this.NotaLabel.TabIndex = 11;
+            this.NotaLabel.Text = "NOTA :  Se stai usando l\'applicativo per la prima volta e quindi non sei ancora i" +
     "scritto nel sistema, \r\n             sei pregato di registrare le tue credenziali" +
     ".";
             // 
@@ -246,14 +255,14 @@
             this.RegistraPanel.Font = new System.Drawing.Font("Comic Sans MS", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.RegistraPanel.Location = new System.Drawing.Point(0, 24);
             this.RegistraPanel.Name = "RegistraPanel";
-            this.RegistraPanel.Size = new System.Drawing.Size(579, 296);
+            this.RegistraPanel.Size = new System.Drawing.Size(611, 296);
             this.RegistraPanel.TabIndex = 19;
             this.RegistraPanel.Visible = false;
             // 
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.Color.Transparent;
-            this.groupBox1.Controls.Add(this.button1);
+            this.groupBox1.Controls.Add(this.RegistraButton);
             this.groupBox1.Controls.Add(this.PwdRegTextBox);
             this.groupBox1.Controls.Add(this.UserRegTextBox);
             this.groupBox1.Controls.Add(this.CognomeRegTextBox);
@@ -270,24 +279,26 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Credenziali";
             // 
-            // button1
+            // RegistraButton
             // 
-            this.button1.BackColor = System.Drawing.Color.SeaGreen;
-            this.button1.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.button1.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
-            this.button1.FlatAppearance.BorderSize = 3;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Location = new System.Drawing.Point(385, 80);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(89, 38);
-            this.button1.TabIndex = 8;
-            this.button1.Text = "REGISTRA";
-            this.button1.UseVisualStyleBackColor = false;
+            this.RegistraButton.BackColor = System.Drawing.Color.SeaGreen;
+            this.RegistraButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.RegistraButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
+            this.RegistraButton.FlatAppearance.BorderSize = 3;
+            this.RegistraButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.RegistraButton.Location = new System.Drawing.Point(385, 80);
+            this.RegistraButton.Name = "RegistraButton";
+            this.RegistraButton.Size = new System.Drawing.Size(89, 38);
+            this.RegistraButton.TabIndex = 8;
+            this.RegistraButton.Text = "REGISTRA";
+            this.RegistraButton.UseVisualStyleBackColor = false;
+            this.RegistraButton.Click += new System.EventHandler(this.RegistraButton_Click);
             // 
             // PwdRegTextBox
             // 
             this.PwdRegTextBox.BackColor = System.Drawing.Color.Tan;
-            this.PwdRegTextBox.Font = new System.Drawing.Font("Comic Sans MS", 8F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.PwdRegTextBox.Font = new System.Drawing.Font("Comic Sans MS", 8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.PwdRegTextBox.ForeColor = System.Drawing.Color.Maroon;
             this.PwdRegTextBox.Location = new System.Drawing.Point(118, 143);
             this.PwdRegTextBox.MaxLength = 15;
             this.PwdRegTextBox.Name = "PwdRegTextBox";
@@ -298,7 +309,8 @@
             // UserRegTextBox
             // 
             this.UserRegTextBox.BackColor = System.Drawing.Color.Tan;
-            this.UserRegTextBox.Font = new System.Drawing.Font("Comic Sans MS", 8F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.UserRegTextBox.Font = new System.Drawing.Font("Comic Sans MS", 8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.UserRegTextBox.ForeColor = System.Drawing.Color.Maroon;
             this.UserRegTextBox.Location = new System.Drawing.Point(117, 108);
             this.UserRegTextBox.MaxLength = 30;
             this.UserRegTextBox.Name = "UserRegTextBox";
@@ -308,7 +320,8 @@
             // CognomeRegTextBox
             // 
             this.CognomeRegTextBox.BackColor = System.Drawing.Color.Tan;
-            this.CognomeRegTextBox.Font = new System.Drawing.Font("Comic Sans MS", 8F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CognomeRegTextBox.Font = new System.Drawing.Font("Comic Sans MS", 8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CognomeRegTextBox.ForeColor = System.Drawing.Color.Maroon;
             this.CognomeRegTextBox.Location = new System.Drawing.Point(117, 71);
             this.CognomeRegTextBox.MaxLength = 30;
             this.CognomeRegTextBox.Name = "CognomeRegTextBox";
@@ -318,7 +331,7 @@
             // NameRegTextBox
             // 
             this.NameRegTextBox.BackColor = System.Drawing.Color.Tan;
-            this.NameRegTextBox.Font = new System.Drawing.Font("Comic Sans MS", 8F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.NameRegTextBox.Font = new System.Drawing.Font("Comic Sans MS", 8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.NameRegTextBox.ForeColor = System.Drawing.Color.Maroon;
             this.NameRegTextBox.Location = new System.Drawing.Point(117, 37);
             this.NameRegTextBox.MaxLength = 30;
@@ -331,7 +344,7 @@
             this.PwdRegLabel.AutoSize = true;
             this.PwdRegLabel.Location = new System.Drawing.Point(23, 146);
             this.PwdRegLabel.Name = "PwdRegLabel";
-            this.PwdRegLabel.Size = new System.Drawing.Size(84, 17);
+            this.PwdRegLabel.Size = new System.Drawing.Size(86, 17);
             this.PwdRegLabel.TabIndex = 3;
             this.PwdRegLabel.Text = "PASSWORD :";
             // 
@@ -340,7 +353,7 @@
             this.UserRegLabel.AutoSize = true;
             this.UserRegLabel.Location = new System.Drawing.Point(23, 111);
             this.UserRegLabel.Name = "UserRegLabel";
-            this.UserRegLabel.Size = new System.Drawing.Size(84, 17);
+            this.UserRegLabel.Size = new System.Drawing.Size(87, 17);
             this.UserRegLabel.TabIndex = 2;
             this.UserRegLabel.Text = "USERNAME :";
             // 
@@ -349,7 +362,7 @@
             this.CognomeRegLabel.AutoSize = true;
             this.CognomeRegLabel.Location = new System.Drawing.Point(23, 73);
             this.CognomeRegLabel.Name = "CognomeRegLabel";
-            this.CognomeRegLabel.Size = new System.Drawing.Size(79, 17);
+            this.CognomeRegLabel.Size = new System.Drawing.Size(80, 17);
             this.CognomeRegLabel.TabIndex = 1;
             this.CognomeRegLabel.Text = "COGNOME :";
             // 
@@ -358,7 +371,7 @@
             this.NameRegLabel.AutoSize = true;
             this.NameRegLabel.Location = new System.Drawing.Point(23, 37);
             this.NameRegLabel.Name = "NameRegLabel";
-            this.NameRegLabel.Size = new System.Drawing.Size(54, 17);
+            this.NameRegLabel.Size = new System.Drawing.Size(55, 17);
             this.NameRegLabel.TabIndex = 0;
             this.NameRegLabel.Text = "NOME :";
             // 
@@ -374,6 +387,65 @@
             this.label2.TabIndex = 0;
             this.label2.Text = "INSERISCI LE TUE CREDENZIALI";
             // 
+            // indirizzoIPToolStripMenuItem
+            // 
+            this.indirizzoIPToolStripMenuItem.BackColor = System.Drawing.SystemColors.Info;
+            this.indirizzoIPToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("indirizzoIPToolStripMenuItem.Image")));
+            this.indirizzoIPToolStripMenuItem.Name = "indirizzoIPToolStripMenuItem";
+            this.indirizzoIPToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.indirizzoIPToolStripMenuItem.Text = "Indirizzo IP";
+            this.indirizzoIPToolStripMenuItem.Click += new System.EventHandler(this.indirizzoIPToolStripMenuItem_Click);
+            // 
+            // InfoPanel
+            // 
+            this.InfoPanel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("InfoPanel.BackgroundImage")));
+            this.InfoPanel.Controls.Add(this.label4);
+            this.InfoPanel.Controls.Add(this.label3);
+            this.InfoPanel.Controls.Add(this.TitleInfoLabel);
+            this.InfoPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.InfoPanel.Location = new System.Drawing.Point(0, 24);
+            this.InfoPanel.Name = "InfoPanel";
+            this.InfoPanel.Size = new System.Drawing.Size(611, 296);
+            this.InfoPanel.TabIndex = 20;
+            this.InfoPanel.Visible = false;
+            // 
+            // label4
+            // 
+            this.label4.BackColor = System.Drawing.Color.Transparent;
+            this.label4.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.label4.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.label4.Location = new System.Drawing.Point(19, 53);
+            this.label4.Name = "label4";
+            this.label4.Padding = new System.Windows.Forms.Padding(2);
+            this.label4.Size = new System.Drawing.Size(573, 191);
+            this.label4.TabIndex = 11;
+            this.label4.Text = "\r\n\r\n\r\n\r\n\r\n\r\n";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.BackColor = System.Drawing.Color.Transparent;
+            this.label3.Font = new System.Drawing.Font("Calibri", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.ForeColor = System.Drawing.Color.White;
+            this.label3.Location = new System.Drawing.Point(408, 274);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(195, 13);
+            this.label3.TabIndex = 2;
+            this.label3.Text = "Realized by Davide B. , Filippo B.  2014 ©";
+            // 
+            // TitleInfoLabel
+            // 
+            this.TitleInfoLabel.AutoSize = true;
+            this.TitleInfoLabel.BackColor = System.Drawing.Color.Transparent;
+            this.TitleInfoLabel.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TitleInfoLabel.ForeColor = System.Drawing.Color.White;
+            this.TitleInfoLabel.Location = new System.Drawing.Point(151, 14);
+            this.TitleInfoLabel.Name = "TitleInfoLabel";
+            this.TitleInfoLabel.Size = new System.Drawing.Size(297, 23);
+            this.TitleInfoLabel.TabIndex = 1;
+            this.TitleInfoLabel.Text = "Informazioni sulla schermata di Login";
+            // 
             // LoginForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -381,13 +453,15 @@
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(579, 320);
-            this.Controls.Add(this.MainPanel);
+            this.ClientSize = new System.Drawing.Size(611, 320);
             this.Controls.Add(this.RegistraPanel);
+            this.Controls.Add(this.InfoPanel);
+            this.Controls.Add(this.MainPanel);
             this.Controls.Add(this.menuStrip1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
+            this.MaximizeBox = false;
             this.Name = "LoginForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Progetto PDS - SERVER Login";
@@ -400,6 +474,8 @@
             this.RegistraPanel.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.InfoPanel.ResumeLayout(false);
+            this.InfoPanel.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -421,10 +497,10 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.TextBox UsernameTextBox;
         private System.Windows.Forms.TextBox PasswordTextBox;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label NotaLabel;
         private System.Windows.Forms.Panel RegistraPanel;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button RegistraButton;
         private System.Windows.Forms.TextBox PwdRegTextBox;
         private System.Windows.Forms.TextBox UserRegTextBox;
         private System.Windows.Forms.TextBox CognomeRegTextBox;
@@ -434,6 +510,11 @@
         private System.Windows.Forms.Label CognomeRegLabel;
         private System.Windows.Forms.Label NameRegLabel;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.ToolStripMenuItem indirizzoIPToolStripMenuItem;
+        private System.Windows.Forms.Panel InfoPanel;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label TitleInfoLabel;
     }
 }
 

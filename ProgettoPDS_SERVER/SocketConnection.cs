@@ -56,7 +56,7 @@ namespace ProgettoPDS_SERVER
         private const String DISCONNESSO = "DISCONNESSO";
 
         private static String stato;
-        private const char[] SEPARATOR = {'-'};
+        private char[] SEPARATOR = {'-',' '};
         private const string MOUSECODE = "M";
 
         public SocketConnection(int porta)
@@ -128,8 +128,9 @@ namespace ProgettoPDS_SERVER
                 if (user != ERR)
                 {
                     MessageBox.Show(user + " ha richiesto di autenticarsi.");
+                    string passwordXML = ControlloUser(user);
 
-                    if (ControlloUser(user))
+                    if ( passwordXML != null )
                     {
                         comando = AUTH_PWD;
 
@@ -142,7 +143,7 @@ namespace ProgettoPDS_SERVER
 
                         if (pwd != ERR)
                         {
-                            if (ControlloPassword(user, pwd))
+                            if ( passwordXML == pwd ) // Controllo Password!!
                             {
                                 comando = OK;
                                 data = Encoding.ASCII.GetBytes(comando);
@@ -220,20 +221,26 @@ namespace ProgettoPDS_SERVER
 
         private bool AddNewUser(string user, string pwd)
         {
-            //TODO
+            XmlManager document = new XmlManager('C');
+
+            if ( document.Error )
+                return false;
+
+            document.AddNewClient(user, pwd);
+
             return true;
         }
 
-        private bool ControlloPassword(string user, string pwd)
+        private string ControlloUser(string user)
         {
-            //TODO
-            return true;
-        }
+            XmlManager document = new XmlManager('C');
 
-        private bool ControlloUser(string user)
-        {
-            //TODO
-            return true;
+            if (document.Error)
+                return null;
+
+            string pwd = document.SearchClient(user);
+
+            return pwd;
         }
 
         public String GetMyIp()
@@ -270,7 +277,7 @@ namespace ProgettoPDS_SERVER
 
                 if (MouseData[0]!=null && MouseData[0] == MOUSECODE)
                 {
-                    double X,Y;
+                    double X=0.0,Y=0.0;
 
                     if(MouseData[1]!=null)
                         X = Convert.ToDouble(MouseData[1]);
