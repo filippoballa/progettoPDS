@@ -1,0 +1,11 @@
+
+-------  Application and Global Mouse and Keyboard Hooks .Net Libary in C# ---------
+
+https://globalmousekeyhook.codeplex.com/SourceControl/latest#Main/MouseKeyboardActivityMonitor/MouseHookListener.cs
+
+
+------- Left/Right Mouse Click ------
+
+http://www.programmingforums.org/thread15427.html
+
+
