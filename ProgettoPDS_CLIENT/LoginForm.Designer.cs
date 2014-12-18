@@ -394,7 +394,7 @@
             this.indirizzoIPToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.indirizzoIPToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("indirizzoIPToolStripMenuItem.Image")));
             this.indirizzoIPToolStripMenuItem.Name = "indirizzoIPToolStripMenuItem";
-            this.indirizzoIPToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.indirizzoIPToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.indirizzoIPToolStripMenuItem.Text = "Indirizzo IP";
             this.indirizzoIPToolStripMenuItem.Click += new System.EventHandler(this.indirizzoIPToolStripMenuItem_Click);
             // 
@@ -404,7 +404,7 @@
             this.infoToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.infoToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("infoToolStripMenuItem.Image")));
             this.infoToolStripMenuItem.Name = "infoToolStripMenuItem";
-            this.infoToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.infoToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.infoToolStripMenuItem.Text = "Informazioni";
             this.infoToolStripMenuItem.Click += new System.EventHandler(this.infoToolStripMenuItem_Click);
             // 

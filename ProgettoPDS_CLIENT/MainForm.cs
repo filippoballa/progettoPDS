@@ -354,6 +354,7 @@ namespace ProgettoPDS_CLIENT
 
         private void MainForm_KeyDown(object sender, KeyEventArgs e)
         {
+            
             if (this.ActionPanel.Visible) {
 
                 if (e.KeyCode == Keys.Escape) {
@@ -364,31 +365,11 @@ namespace ProgettoPDS_CLIENT
                     // gestione BWs!!
                     this.MouseBackgroundWorker.CancelAsync();
                     this.KeyBackgroundWorker.CancelAsync();
+
                 }
-                else {
-                    // Invio PDU legati alla tastiera
-
-                    // Costruzione Pacchetto
-                    string aux = "T-";
-
-                    if (e.Control && e.KeyCode == Keys.C)
-                        aux += Keys.Control.ToString() + "-" + Keys.C.ToString();
-                    else if (e.Control && e.KeyCode == Keys.V)
-                        aux += Keys.Control.ToString() + "-" + Keys.V.ToString();
-                    else if (e.Control && e.KeyCode == Keys.S)
-                        aux += Keys.Control.ToString() + "-" + Keys.S.ToString();
-                    else if (e.Control && e.KeyCode == Keys.A)
-                        aux += Keys.Control.ToString() + "-" + Keys.A.ToString();
-                    else if (e.Control && e.KeyCode == Keys.X)
-                        aux += Keys.Control.ToString() + "-" + Keys.X.ToString();
-                    else if (!e.Alt && !e.Control && !e.Shift)
-                        aux += e.KeyCode.ToString();
-
-                    // Parte il KeyBW per invio pdu al server!!
-                    this.KeyBackgroundWorker.RunWorkerAsync(aux);
-                    
-                }
-
+                else 
+                    this.KeyBackgroundWorker.RunWorkerAsync(e);  // Parte il KeyBW per invio pdu al server!!         
+                
             }
                 
         }
@@ -419,9 +400,27 @@ namespace ProgettoPDS_CLIENT
 
         private void KeyBackgroundWorker_DoWork(object sender, DoWorkEventArgs e)
         {
-            // Invio PDU relativa alla tastiera
-            string aux = e.Argument.ToString();
+            KeyEventArgs key = (KeyEventArgs)e.Argument;
+
+            // Costruzione Pacchetto
+            string aux = "K-";
+
+            if (key.Control && key.KeyCode == Keys.C)
+                aux += "MORE-" + Keys.Control.ToString() + "-" + Keys.C.ToString();
+            else if (key.Control && key.KeyCode == Keys.V)
+                aux += "MORE-" + Keys.Control.ToString() + "-" + Keys.V.ToString();
+            else if (key.Control && key.KeyCode == Keys.S)
+                aux += "MORE-" + Keys.Control.ToString() + "-" + Keys.S.ToString();
+            else if (key.Control && key.KeyCode == Keys.A)
+                aux += "MORE-" + Keys.Control.ToString() + "-" + Keys.A.ToString();
+            else if (key.Control && key.KeyCode == Keys.X)
+                aux += "MORE-" + Keys.Control.ToString() + "-" + Keys.X.ToString();
+            else if (!key.Alt && !key.Control && !key.Shift)
+                aux += "SINGLE-" + key.KeyCode.ToString();
+
             byte[] pdu = Encoding.ASCII.GetBytes(aux);
+
+            // Invio PDU relativa alla tastiera
             mut.WaitOne();
             this.connessioni[this.currServ].Sock.Send(pdu);
             mut.ReleaseMutex();
@@ -440,7 +439,7 @@ namespace ProgettoPDS_CLIENT
         {
             if (Convert.ToBoolean(Convert.ToInt32(e.ProgressPercentage))) {
                 // Costruzione Pacchetto
-                string aux = "M-";
+                string aux = "M-MOVE-";
                 aux += Cursor.Position.X / Screen.PrimaryScreen.WorkingArea.Width;
                 aux += "-" + Cursor.Position.Y / Screen.PrimaryScreen.WorkingArea.Height;
                 byte[] pdu = Encoding.ASCII.GetBytes(aux);

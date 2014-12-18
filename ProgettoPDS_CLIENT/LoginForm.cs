@@ -29,7 +29,6 @@ namespace ProgettoPDS_CLIENT
             InitializeComponent();
             this.user = aux;
             this.mng = new XmlManager("XMLUsers.xml");
-
         }
 
         private void LoginButton_Click(object sender, EventArgs e)
@@ -209,7 +208,6 @@ namespace ProgettoPDS_CLIENT
             this.ResumeLayout();
 
         }
-
         
     }
 }
