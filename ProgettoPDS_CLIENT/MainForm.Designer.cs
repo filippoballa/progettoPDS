@@ -80,7 +80,6 @@
             this.MouseBackgroundWorker.WorkerReportsProgress = true;
             this.MouseBackgroundWorker.WorkerSupportsCancellation = true;
             this.MouseBackgroundWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.MouseBackgroundWorker_DoWork);
-            this.MouseBackgroundWorker.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.MouseBackgroundWorker_ProgressChanged);
             // 
             // MainPanel
             // 
@@ -177,7 +176,7 @@
             this.ConfigLabel.ForeColor = System.Drawing.Color.DarkOrange;
             this.ConfigLabel.Location = new System.Drawing.Point(32, 45);
             this.ConfigLabel.Name = "ConfigLabel";
-            this.ConfigLabel.Size = new System.Drawing.Size(289, 22);
+            this.ConfigLabel.Size = new System.Drawing.Size(289, 21);
             this.ConfigLabel.TabIndex = 5;
             this.ConfigLabel.Text = "Inserisci i Parametri di Configurazione";
             // 
@@ -373,6 +372,7 @@
             this.ActionPanel.Size = new System.Drawing.Size(1071, 608);
             this.ActionPanel.TabIndex = 26;
             this.ActionPanel.Visible = false;
+            this.ActionPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ActionPanel_MouseMove);
             // 
             // EscapeLabel
             // 
@@ -505,6 +505,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Progetto PDS - Main Form";
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
+            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MainForm_MouseMove);
             this.MainPanel.ResumeLayout(false);
             this.MainPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();

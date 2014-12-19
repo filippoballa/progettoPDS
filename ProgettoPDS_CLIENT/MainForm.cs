@@ -19,7 +19,6 @@ namespace ProgettoPDS_CLIENT
         private List<SocketConnection> connessioni;
         private List<Server> servers;
         private int AltezzaForm, BaseForm, currServ, CountServerConnected;
-        private MouseCord mouse;
         private static Mutex mut = new Mutex();
 
         public MainForm( User aux)
@@ -36,7 +35,6 @@ namespace ProgettoPDS_CLIENT
             this.currServ = -1;
             this.user = aux;
             this.CountServerConnected = 0;
-            this.mouse = new MouseCord(Cursor.Position.X, Cursor.Position.Y);
             this.Text += " - USER: \"" + aux.Username + "\" - HOST : " + Dns.GetHostName() + " - IP Address : " + 
                 SocketConnection.MyIpInfo() + " - Port Number: " + SocketConnection.localPort.ToString();
             this.AltezzaForm = this.Height;
@@ -222,6 +220,10 @@ namespace ProgettoPDS_CLIENT
             this.currServ = this.listBox1.SelectedIndex;
 
             if (!this.connessioni[this.currServ].IsConnected()) {
+
+                if (this.connessioni[this.currServ].IsDisconnect)
+                    this.connessioni[this.currServ] = new SocketConnection(servers[this.currServ].IPAddr, servers[this.currServ].Porta, this.user);
+
                 this.connessioni[this.currServ].StartClientConnection();
 
                 if ( this.connessioni[this.currServ].IsConnected() && this.CountServerConnected == 0) {
@@ -253,6 +255,8 @@ namespace ProgettoPDS_CLIENT
             }
 
             this.connessioni[this.currServ].SockDisconnect();
+            this.connessioni[this.currServ].IsDisconnect = true;
+            SocketConnection.isBindLocal = false;
             this.CountServerConnected--;
 
             if (this.CountServerConnected == 0) 
@@ -276,7 +280,6 @@ namespace ProgettoPDS_CLIENT
 
             this.ActionPanel.Visible = true;
             this.MainPanel.Visible = false;
-            this.MouseBackgroundWorker.RunWorkerAsync();
         }
 
         private void RemoveButton_Click(object sender, EventArgs e)
@@ -428,26 +431,17 @@ namespace ProgettoPDS_CLIENT
 
         private void MouseBackgroundWorker_DoWork(object sender, DoWorkEventArgs e)
         {
-            while (true) {
-                Thread.Sleep(1);
-                int result = mouse.aggiornaCordinate(Cursor.Position.X, Cursor.Position.Y);
-                this.MouseBackgroundWorker.ReportProgress(result);
-            }
-        }
-
-        private void MouseBackgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
-        {
-            if (Convert.ToBoolean(Convert.ToInt32(e.ProgressPercentage))) {
-                // Costruzione Pacchetto
-                string aux = "M-MOVE-";
-                aux += Cursor.Position.X / Screen.PrimaryScreen.WorkingArea.Width;
-                aux += "-" + Cursor.Position.Y / Screen.PrimaryScreen.WorkingArea.Height;
-                byte[] pdu = Encoding.ASCII.GetBytes(aux);
-                // Invio Pacchetto
-                mut.WaitOne();
-                this.connessioni[this.currServ].Sock.Send(pdu);
-                mut.ReleaseMutex();
-            }
+            // Costruzione Pacchetto
+            string aux = "M-MOVE-";    
+            aux += Cursor.Position.X / Screen.PrimaryScreen.WorkingArea.Width;
+            aux += "-" + Cursor.Position.Y / Screen.PrimaryScreen.WorkingArea.Height;
+            byte[] pdu = Encoding.ASCII.GetBytes(aux);
+            
+            // Invio Pacchetto
+            mut.WaitOne();
+            this.connessioni[this.currServ].Sock.Send(pdu);
+            mut.ReleaseMutex();
+                            
         }
 
         private void InfoButton_Click(object sender, EventArgs e)
@@ -460,6 +454,17 @@ namespace ProgettoPDS_CLIENT
         {
             this.MainPanel.Visible = true;
             this.InfoPanel.Visible = false;
+        }
+
+        private void MainForm_MouseMove(object sender, MouseEventArgs e)
+        {
+            //TODO
+        }
+
+        private void ActionPanel_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (this.ActionPanel.Visible)
+                this.MouseBackgroundWorker.RunWorkerAsync();
         }
 
     }
