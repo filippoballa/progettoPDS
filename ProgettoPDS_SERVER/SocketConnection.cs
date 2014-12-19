@@ -45,6 +45,12 @@ namespace ProgettoPDS_SERVER
         private int porta;
         private String myIP;
 
+        enum Stato
+        {
+            CONNESSO = 1,
+            DISCONNESSO = 0
+        };
+
         private const String AUTH_USER = "+AUTH_USER";
         private const String AUTH_PWD = "+AUTH_PWD";
         private const String REG_USER = "+REG_USER";
@@ -52,16 +58,15 @@ namespace ProgettoPDS_SERVER
         private const String REG_PWD = "+REG_PWD";
         private const String OK = "+OK";
         private const String ERR = "-ERR";
-        private const String CONNESSO = "CONNESSO";
-        private const String DISCONNESSO = "DISCONNESSO";
 
-        private static String stato;
-        private char[] SEPARATOR = {'-',' '};
+        private Stato stato;
+        private char[] SEPARATOR = {'-'};
         private const string MOUSECODE = "M";
+        private MainForm main;
 
         public SocketConnection(int porta)
         {
-            stato = DISCONNESSO;
+            stato = Stato.DISCONNESSO;
             // Create a TCP/IP socket.
             this.porta = porta;
             sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
@@ -69,25 +74,21 @@ namespace ProgettoPDS_SERVER
             // Bind the socket to the local endpoint and 
             sock.Bind(new IPEndPoint(IPAddress.Any, porta));
         }
-        public bool StartListening()
+        public void StartListening(MainForm main)
         {
+            this.main = main;
+
+            if(sock == null)
+                sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             try
             {
                 sock.Listen(backlog);
                 // Program is suspended while waiting for an incoming connection.
                 sock.BeginAccept(new AsyncCallback(AcceptCallback), sock);
-                // Wait until a connection is made before continuing.
-                if (stato == CONNESSO)
-                {
-                    return true;
-                }
-                else
-                    return false;
             }
             catch (Exception e)
             {
                 MessageBox.Show(e.Message);
-                return false;
             }
         }
 
@@ -96,14 +97,18 @@ namespace ProgettoPDS_SERVER
             passiv = (Socket)ar.AsyncState;
             passiv = passiv.EndAccept(ar);
 
-            MessageBox.Show("Connessione avvenuta inizio autenticazione client("+passiv.RemoteEndPoint.ToString()+")");
+            main.notifyIcon1.ShowBalloonTip(2, "INFO STATO", "Inizio procedura autenticazione client . . .(" + passiv.RemoteEndPoint.ToString() + ")", ToolTipIcon.Info);
             if(ClientAutentication())
             {
-                MessageBox.Show("Autenticazione Client effettuata con successo! Connessione avviata.");
+                main.notifyIcon1.ShowBalloonTip(2, "INFO STATO", "Autenticazione Client effettuata con successo! Connessione avviata.",ToolTipIcon.Info);
+                stato = Stato.CONNESSO;
+                main.PopUpShow(null,null);
+                //lancio il controllo del mouse
+                PacketsHandler(main);
             }
             else
             {
-                MessageBox.Show("Autenticazione Client non riuscita. Chiusura connessione.","errore",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                main.notifyIcon1.ShowBalloonTip(2, "ERRORE", "Autenticazione Client non riuscita. Chiusura connessione.", ToolTipIcon.Warning);
             }
         }
 
@@ -123,87 +128,107 @@ namespace ProgettoPDS_SERVER
                 data = new byte[128];
                 passiv.Receive(data);//ricevo l'USER
                 user = Encoding.ASCII.GetString(data);
+                user = user.Substring(0, user.IndexOf('\0'));
 
                 // controllo che l'user sia già registrato
                 if (user != ERR)
                 {
-                    MessageBox.Show(user + " ha richiesto di autenticarsi.");
-                    string passwordXML = ControlloUser(user);
-
-                    if ( passwordXML != null )
+                    if (user != " ")
                     {
-                        comando = AUTH_PWD;
+                        DialogResult res = MessageBox.Show(user + " ha richiesto di autenticarsi.","DURO DURO",MessageBoxButtons.OKCancel,MessageBoxIcon.Information);
 
-                        data = Encoding.ASCII.GetBytes(comando);
-                        passiv.Send(data);//se l'user è registrato gli chiedo la pswrd AUTH_PWD
-
-                        data = new byte[128];
-                        passiv.Receive(data);//ricevo la password
-                        pwd = Encoding.ASCII.GetString(data);
-
-                        if (pwd != ERR)
+                        if (res == DialogResult.OK)
                         {
-                            if ( passwordXML == pwd ) // Controllo Password!!
-                            {
-                                comando = OK;
-                                data = Encoding.ASCII.GetBytes(comando);
-                                passiv.Send(data);//invio che l'autenticazione è riuscita
-                            }
-                            else//se la password non è corretta si chiude la connessione
-                            {
-                                comando = ERR;
-                                data = Encoding.ASCII.GetBytes(comando);
-                                passiv.Send(data);//invio che c'è stato un errore
+                            string passwordXML = ControlloUser(user);
 
-                                SockDisconnect();//e chiudo
-                                return false;
+                            if (passwordXML != null)//SE USER è PRESENTE
+                            {
+                                comando = AUTH_PWD;
+
+                                data = Encoding.ASCII.GetBytes(comando);
+                                passiv.Send(data);//se l'user è registrato gli chiedo la pswrd AUTH_PWD
+
+                                data = new byte[128];
+                                passiv.Receive(data);//ricevo la password
+                                pwd = Encoding.ASCII.GetString(data);
+                                pwd = pwd.Substring(0, pwd.IndexOf('\0'));
+
+                                if (pwd != ERR)
+                                {
+                                    if (passwordXML == pwd) // Controllo Password!!
+                                    {
+                                        comando = OK;
+                                        data = Encoding.ASCII.GetBytes(comando);
+                                        passiv.Send(data);//invio che l'autenticazione è riuscita
+                                    }
+                                    else//se la password non è corretta si chiude la connessione
+                                    {
+                                        comando = ERR;
+                                        data = Encoding.ASCII.GetBytes(comando);
+                                        passiv.Send(data);//invio che c'è stato un errore
+
+                                        SockDisconnect();//e chiudo
+                                        return false;
+                                    }
+                                }
+                                else//è arrivato un ERR dopo AUTH_PWD
+                                {
+                                    SockDisconnect();//e chiudo
+                                    return false;
+                                }
+                            }
+                            else//se il client non è presente chiedo di registrarsi
+                            {
+                                comando = REG_USER;
+                                data = Encoding.ASCII.GetBytes(comando);
+
+                                passiv.Send(data);//INVIO RICHIESTA
+
+                                data = new byte[128];
+                                passiv.Receive(data);//RICEVO LA RISPOSTA
+                                comando = Encoding.ASCII.GetString(data);
+                                comando = comando.Substring(0, comando.IndexOf('\0'));
+
+                                if (comando == YES)//se vuole registrarsi chiedo la password
+                                {
+                                    comando = REG_PWD;
+                                    data = Encoding.ASCII.GetBytes(comando);
+
+                                    passiv.Send(data);//richiesta pswrd
+
+                                    data = new byte[128];
+                                    passiv.Receive(data);//password ricevuta
+                                    pwd = Encoding.ASCII.GetString(data);
+                                    pwd = pwd.Substring(0, pwd.IndexOf('\0'));
+
+                                    if (!AddNewUser(user, pwd))//inserimento non riuscito
+                                    {
+                                        comando = ERR;
+                                        data = Encoding.ASCII.GetBytes(comando);
+                                        passiv.Send(data);//invio che c'è stato un errore
+
+                                        SockDisconnect();//e chiudo
+                                        return false;
+                                    }
+                                }
+                                else// se non ricevo YES
+                                {
+                                    SockDisconnect();
+                                    return false;
+                                }
                             }
                         }
-                        else//è arrivato un ERR dopo AUTH_PWD
+                        else
                         {
-                            SockDisconnect();//e chiudo
-                            return false;
+                            //da gestire Cancel
                         }
                     }
-                    else//se il client non è presente chiedo di registrarsi
+                    else
                     {
-                        comando = REG_USER;
-                        data = Encoding.ASCII.GetBytes(comando);
-
-                        passiv.Send(data);//se l'user è registrato gli chiedo la pswrd
-
-                        data = new byte[128];
-                        passiv.Receive(data);
-                        comando = Encoding.ASCII.GetString(data);
-
-                        if (comando == YES)//se vuole registrarsi chiedo la password
-                        {
-                            comando = REG_PWD;
-                            data = Encoding.ASCII.GetBytes(comando);
-
-                            passiv.Send(data);//richiesta pswrd
-
-                            data = new byte[128];
-                            passiv.Receive(data);//password ricevuta
-                            pwd = Encoding.ASCII.GetString(data);
-
-                            if (!AddNewUser(user, pwd))//inserimento non riuscito
-                            {
-                                comando = ERR;
-                                data = Encoding.ASCII.GetBytes(comando);
-                                passiv.Send(data);//invio che c'è stato un errore
-
-                                SockDisconnect();//e chiudo
-                                return false;
-                            }
-                        }else// se non ricevo YES
-                        {
-                            SockDisconnect();
-                            return false;
-                        }
-
+                        //da gestire user vuoto
                     }
-                }else//se ricevo un ERR dopo AUTH_USER
+                }   
+                else//se ricevo un ERR dopo AUTH_USER
                 {
                     SockDisconnect();
                     return false;
@@ -258,9 +283,50 @@ namespace ProgettoPDS_SERVER
             return myIP;
         }
 
-        public void SockDisconnect() {
-            sock.Shutdown(SocketShutdown.Both);
-            sock.Close();
+        public void SockDisconnect(Socket sock) 
+        {
+            if (this.sock != null)
+            {
+                if (sock.Connected)
+                {
+                    sock.Shutdown(SocketShutdown.Both);
+                    sock.Close();
+                    main.notifyIcon1.ShowBalloonTip(2, "INFO STATO", "Connessione chiusa correttamente.", ToolTipIcon.Info);
+                }
+                else
+                {
+                    main.notifyIcon1.ShowBalloonTip(2, "INFO STATO", "Eri già disconnesso.", ToolTipIcon.Warning);
+                }
+            }
+            else
+            {
+                main.notifyIcon1.ShowBalloonTip(2, "INFO STATO", "Deve ancora essere creata una connessione.", ToolTipIcon.Warning);
+            }
+            stato = Stato.DISCONNESSO;
+            
+        }
+        public void SockDisconnect()
+        {
+            if (this.passiv != null)
+            {
+                if (this.passiv.Connected)
+                {
+                    this.passiv.Shutdown(SocketShutdown.Both);
+                    this.passiv.Close();
+                    main.notifyIcon1.ShowBalloonTip(2, "INFO STATO", "Connessione chiusa correttamente.", ToolTipIcon.Info);
+                }
+                else
+                {
+                    main.notifyIcon1.ShowBalloonTip(2, "INFO STATO", "Eri già disconnesso.", ToolTipIcon.Warning);
+                }
+            }
+            else
+            {
+                main.notifyIcon1.ShowBalloonTip(2, "INFO STATO", "Deve ancora essere creata una connessione.", ToolTipIcon.Warning);
+            }
+            stato = Stato.DISCONNESSO;
+            
+
         }
         public void PacketsHandler(MainForm form)
         {
@@ -268,27 +334,36 @@ namespace ProgettoPDS_SERVER
             String comando;
             while (true)//ricevo i pachetti del client 
             {
-                //String[] MouseData = null;
-                data = new byte[128];
-                passiv.Receive(data);//password ricevuta
-                comando = Encoding.ASCII.GetString(data);
-
-                String[] MouseData = comando.Split(SEPARATOR);
-
-                if (MouseData[0]!=null && MouseData[0] == MOUSECODE)
+                try
                 {
-                    double X=0.0,Y=0.0;
+                    //String[] MouseData = null;
+                    data = new byte[128];
+                    passiv.Receive(data);//password ricevuta
+                    comando = Encoding.ASCII.GetString(data);
+                    comando = comando.Substring(0, comando.IndexOf('\0'));
 
-                    if(MouseData[1]!=null)
-                        X = Convert.ToDouble(MouseData[1]);
-                    if(MouseData[2]!=null)
-                        Y = Convert.ToDouble(MouseData[2]);
+                    String[] MouseData = comando.Split(SEPARATOR);
+                   
 
-                    int PosX = (int)X * Screen.PrimaryScreen.WorkingArea.Width;
+                    if (MouseData[0] != null && MouseData[0] == MOUSECODE)
+                    {
+                        double X = 0.0, Y = 0.0;
+
+                        if (MouseData[1] != null)
+                            X = Convert.ToDouble(MouseData[1]);
+                        if (MouseData[2] != null)
+                            Y = Convert.ToDouble(MouseData[2]);
+
+                        int PosX = (int)X * Screen.PrimaryScreen.WorkingArea.Width;
+                    }
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message);
+                    break;
                 }
             }
         }
-
     }
 
 }

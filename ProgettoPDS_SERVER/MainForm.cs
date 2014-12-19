@@ -24,7 +24,7 @@ namespace ProgettoPDS_SERVER
         {
             InitializeComponent();
             this.Text = "SERVER - "+ u.Username;
-            MessageBox.Show("Benvenuto " + u.Name + " " + u.Surname + "!");
+            MessageBox.Show("Bentornato " + u.Name + " " + u.Surname + "!","BENTORNATO!",MessageBoxButtons.OK,MessageBoxIcon.Information);
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -32,10 +32,10 @@ namespace ProgettoPDS_SERVER
             notifyIcon1.ShowBalloonTip(1000);
             this.ShowInTaskbar = false;
             this.Sconnection = new SocketConnection(port);
-            this.Text+=" -IP : "+Sconnection.GetMyIp();
+            this.Text+=" - IP : "+Sconnection.GetMyIp();
         }
 
-        private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
+        /*private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             // Hide the form.
             this.Hide();
@@ -47,33 +47,73 @@ namespace ProgettoPDS_SERVER
         }
         private void notifyIcon1_MouseClick(object sender, MouseEventArgs e)
         {
-            if (this.WindowState != FormWindowState.Normal)
-                this.WindowState = FormWindowState.Normal;
-            //Show the form
-            this.Show();
-        }
+            if (e.Button != MouseButtons.Left)
+            {
+                if (this.WindowState != FormWindowState.Normal)
+                {
+                    this.WindowState = FormWindowState.Normal;
+                }
+
+                this.Show();
+            }
+           
+        }*/
 
         private void notifyIcon1_BalloonTipClicked(object sender, EventArgs e)
         {
-            if (this.WindowState != FormWindowState.Normal)
-                this.WindowState = FormWindowState.Normal;
-            //Show the form
-            this.Show();
+            this.contextMenuStrip.Show(Cursor.Position);
         }
 
         private void button_connect_Click(object sender, EventArgs e)
         {
-            if (Sconnection.StartListening())
-                PopUpShow(null, null);
+            Sconnection.StartListening(this);
+
+            this.notifyIcon1.BalloonTipText = "In attesa di connessioni dal Client";
+            this.notifyIcon1.BalloonTipTitle = "INFO STATO";
+
+            this.notifyIcon1.ShowBalloonTip(2);
         }
 
-        private void PopUpShow(object sender, EventArgs e)
+        public void PopUpShow(object sender, EventArgs e)
         {
             //int border = PopUpWindow.border;
             this.top.Show(0,0);
             //this.right.Show(new Point(Screen.PrimaryScreen.Bounds.Width - border, border));
             //this.left.Show(new Point(0, border));
             //this.bottom.Show(new Point(0, Screen.PrimaryScreen.Bounds.Height - border));
+        }
+        public void PopUpHide(object sender, EventArgs e)
+        {
+            //int border = PopUpWindow.border;
+            this.top.Hide();
+            //this.right.Show(new Point(Screen.PrimaryScreen.Bounds.Width - border, border));
+            //this.left.Show(new Point(0, border));
+            //this.bottom.Show(new Point(0, Screen.PrimaryScreen.Bounds.Height - border));
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Sconnection.SockDisconnect();
+            PopUpHide(null, null);
+            
+        }
+
+        private void MainFormClose(object sender, EventArgs e)
+        {
+            DialogResult res = MessageBox.Show("Sei sicuro di voler chiudere l'applicazione?", "CHIUSURA IN CORSO", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation);
+            
+            if(res == DialogResult.OK)
+                this.Close();
+        }
+
+        private void MenuClose(object sender, EventArgs e)
+        {
+            this.contextMenuStrip.Hide();
+        }
+
+        private void ChangeCursor(object sender, EventArgs e)
+        {
+            this.Cursor = Cursors.Arrow;
         }
 
     }
