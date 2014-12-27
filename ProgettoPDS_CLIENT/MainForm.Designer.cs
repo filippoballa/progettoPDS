@@ -176,7 +176,7 @@
             this.ConfigLabel.ForeColor = System.Drawing.Color.DarkOrange;
             this.ConfigLabel.Location = new System.Drawing.Point(32, 45);
             this.ConfigLabel.Name = "ConfigLabel";
-            this.ConfigLabel.Size = new System.Drawing.Size(289, 21);
+            this.ConfigLabel.Size = new System.Drawing.Size(289, 22);
             this.ConfigLabel.TabIndex = 5;
             this.ConfigLabel.Text = "Inserisci i Parametri di Configurazione";
             // 
@@ -187,7 +187,7 @@
             this.AddButton.FlatAppearance.BorderColor = System.Drawing.Color.Wheat;
             this.AddButton.FlatAppearance.BorderSize = 3;
             this.AddButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.AddButton.Location = new System.Drawing.Point(132, 246);
+            this.AddButton.Location = new System.Drawing.Point(132, 252);
             this.AddButton.Name = "AddButton";
             this.AddButton.Size = new System.Drawing.Size(123, 62);
             this.AddButton.TabIndex = 4;
@@ -412,7 +412,7 @@
             this.ActionServerLabel.AutoSize = true;
             this.ActionServerLabel.Font = new System.Drawing.Font("Comic Sans MS", 19F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ActionServerLabel.ForeColor = System.Drawing.Color.DarkRed;
-            this.ActionServerLabel.Location = new System.Drawing.Point(294, 18);
+            this.ActionServerLabel.Location = new System.Drawing.Point(217, 18);
             this.ActionServerLabel.Name = "ActionServerLabel";
             this.ActionServerLabel.Size = new System.Drawing.Size(495, 36);
             this.ActionServerLabel.TabIndex = 0;
@@ -492,9 +492,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Sienna;
             this.ClientSize = new System.Drawing.Size(1071, 608);
-            this.Controls.Add(this.InfoPanel);
             this.Controls.Add(this.MainPanel);
             this.Controls.Add(this.ActionPanel);
+            this.Controls.Add(this.InfoPanel);
             this.Cursor = System.Windows.Forms.Cursors.Default;
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;

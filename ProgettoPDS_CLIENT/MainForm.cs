@@ -259,8 +259,40 @@ namespace ProgettoPDS_CLIENT
             SocketConnection.isBindLocal = false;
             this.CountServerConnected--;
 
-            if (this.CountServerConnected == 0) 
+            if (this.CountServerConnected == 0)
                 this.label5.Text = "Non Connesso con Nessun Server al momento!!";
+            else {
+                string[] aux = this.label5.Text.Split(',');
+                int index = -1;
+
+                aux[0] = aux[0].Substring(aux[0].LastIndexOf(' '), aux[0].Length - aux[0].LastIndexOf(' '));
+
+                if (aux[0] == this.servers[this.currServ].HostName)
+                    index = 0;
+                else {
+
+                    for (int i = 1; i < aux.Length; i++) {
+
+                        if (aux[i] == this.servers[this.currServ].HostName) {
+                            index = i;
+                            break;
+                        }
+                    }
+                }
+
+                this.label5.Text = "Connessioni attive : ";
+
+                for (int i = 0; i < aux.Length; i++) {
+
+                    if (i != index) {
+
+                        if (i == 0)
+                            this.label5.Text += " " + this.servers[this.currServ].HostName;
+                        else
+                            this.label5.Text += ", " + this.servers[this.currServ].HostName;
+                    }
+                }
+            }
 
         }
 
@@ -278,6 +310,7 @@ namespace ProgettoPDS_CLIENT
                 return;
             }
 
+            this.ActionServerLabel.Text += this.servers[this.currServ].HostName;
             this.ActionPanel.Visible = true;
             this.MainPanel.Visible = false;
         }
@@ -336,7 +369,7 @@ namespace ProgettoPDS_CLIENT
             }
 
             // Controllo validità indirizzo IP
-            if (!verificaIPAddres(this.IPAddressTextBox.Text)) {
+            if (!SocketConnection.verificaIPAddres(this.IPAddressTextBox.Text)) {
                 MessageBox.Show("L'indirizzo IP inserito non è corretto!!\n" +
                     "Deve presentarsi nel seguente formato: xxx.xxx.xxx.xxx ,\ndove \"xxx\" è un numero compreso tra 0 e 255!!",
                     "ERRORE!!", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -358,10 +391,11 @@ namespace ProgettoPDS_CLIENT
         private void MainForm_KeyDown(object sender, KeyEventArgs e)
         {
             
-            if (this.ActionPanel.Visible) {
+            if ( this.ActionPanel.Visible ) {
 
                 if (e.KeyCode == Keys.Escape) {
                     this.ActionPanel.Visible = false;
+                    this.ActionServerLabel.Text = "Stai Comandando il seguente Server: ";
                     this.MainPanel.Visible = true;
                     this.HostNameTextBox.Focus();
 
@@ -375,30 +409,6 @@ namespace ProgettoPDS_CLIENT
                 
             }
                 
-        }
-
-        // La funzione controlla la correttezza di un indirizzo IP e restituisce true se è corretto.
-        private bool verificaIPAddres(string addr)
-        {
-            string[] nums = addr.Split('.');
-
-            if (nums.Length != 4)
-                return false;
-
-            int aux, res;
-
-            for (int i = 0; i < nums.Length; i++) {
-
-                if (!Int32.TryParse(nums[i], out res))
-                    return false;
-
-                aux = Convert.ToInt32(nums[i]);
-
-                if (aux < 0 || aux > 255)
-                    return false;
-            }
-
-            return true;
         }
 
         private void KeyBackgroundWorker_DoWork(object sender, DoWorkEventArgs e)
@@ -432,9 +442,11 @@ namespace ProgettoPDS_CLIENT
         private void MouseBackgroundWorker_DoWork(object sender, DoWorkEventArgs e)
         {
             // Costruzione Pacchetto
-            string aux = "M-MOVE-";    
-            aux += Cursor.Position.X / Screen.PrimaryScreen.WorkingArea.Width;
-            aux += "-" + Cursor.Position.Y / Screen.PrimaryScreen.WorkingArea.Height;
+            string aux = "M-MOVE-"; 
+            double res = Convert.ToDouble(Cursor.Position.X) / Convert.ToDouble(Screen.PrimaryScreen.WorkingArea.Width);
+            aux += res.ToString();
+            res = Convert.ToDouble(Cursor.Position.Y) / Convert.ToDouble(Screen.PrimaryScreen.WorkingArea.Height);
+            aux += "-" + res.ToString();
             byte[] pdu = Encoding.ASCII.GetBytes(aux);
             
             // Invio Pacchetto

@@ -20,11 +20,6 @@ namespace ProgettoPDS_CLIENT
         public static bool isBindLocal = false;
         private bool isDisconect;
 
-        // ManualResetEvent instances signal completion.
-        private static ManualResetEvent connectDone = new ManualResetEvent(false);
-        private static ManualResetEvent sendDone = new ManualResetEvent(false);
-        private static ManualResetEvent receiveDone = new ManualResetEvent(false);
-
         // Costruttore Client usato per Connessione con il server
         public SocketConnection(string addr, int port, User utente ) 
         {
@@ -92,13 +87,10 @@ namespace ProgettoPDS_CLIENT
         public void StartClientConnection() 
         {
             try {
-                this.sock.BeginConnect(this.remoteEP, new AsyncCallback(this.ConnectCallback), sock);
-                SocketConnection.connectDone.WaitOne();                
-                
+                this.sock.BeginConnect(this.remoteEP, new AsyncCallback(this.ConnectCallback), sock);                            
             }
             catch (Exception ecc) {
                 MessageBox.Show(ecc.Message, "ANOMALY", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                SocketConnection.connectDone.Set();
             }
         }
 
@@ -110,64 +102,58 @@ namespace ProgettoPDS_CLIENT
                 client.EndConnect(ar);
 
                 byte[] comando = new byte[128];
-                this.sock.BeginReceive(comando, 0, comando.Length, SocketFlags.None, new AsyncCallback(ReceiveResponseCallback), this.sock );             
-                SocketConnection.receiveDone.WaitOne();
+                client.Receive(comando);
                 string aux = Encoding.ASCII.GetString(comando);                
                 aux = aux.Substring(0, aux.IndexOf('\0') );
 
                 if (aux == "+AUTH_USER") {
                     comando = Encoding.ASCII.GetBytes(this.utente.Username);
-                    this.sock.BeginSend(comando,0,comando.Length, SocketFlags.None, new AsyncCallback(SendCommandCallback), this.sock);                    
-                    SocketConnection.sendDone.WaitOne();
+                    client.Send(comando); // Invio username dell'utente. 
                     comando = new byte[128];
-                    this.sock.BeginReceive(comando, 0, comando.Length, SocketFlags.None, new AsyncCallback(ReceiveResponseCallback), this.sock);
-                    SocketConnection.receiveDone.WaitOne();
+                    client.Receive(comando);
                     aux = Encoding.ASCII.GetString(comando);
                     aux = aux.Substring(0, aux.IndexOf('\0'));
 
-                    if (aux == "+AUTH_PWD") {
+                    if ( aux == "+AUTH_PWD" ) {
                         comando = Encoding.ASCII.GetBytes(this.utente.Password);
-                        this.sock.BeginSend(comando, 0, comando.Length, SocketFlags.None, new AsyncCallback(SendCommandCallback), this.sock);
-                   
-                        SocketConnection.sendDone.WaitOne();
+                        client.Send(comando); // Invio password dell'utente
                     }
                     else if (aux == "+REG_USER") {
-                        DialogResult res = MessageBox.Show("Il Server richiede l'autorizzazione a registrare le tue credenziali. Procede?",
+                        DialogResult res = MessageBox.Show("Il Server richiede l'autorizzazione a registrare le tue credenziali. Procedere?",
                             "AVVISO", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
                         if (res == DialogResult.Yes) {
                             comando = Encoding.ASCII.GetBytes("+YES");
-                            this.sock.BeginSend(comando, 0, comando.Length, SocketFlags.None, new AsyncCallback(SendCommandCallback), this.sock);                            
-                            SocketConnection.sendDone.WaitOne();
+                            client.Send(comando); // Il client accetta di registrarsi sul server!!
                             comando = new byte[128];
-                            this.sock.BeginReceive(comando, 0, comando.Length, SocketFlags.None, new AsyncCallback(ReceiveResponseCallback), this.sock);                            
-                            SocketConnection.receiveDone.WaitOne();
+                            client.Receive(comando);
                             aux = Encoding.ASCII.GetString(comando);
                             aux = aux.Substring(0, aux.IndexOf('\0'));
 
                             if (aux == "+REG_PWD") {
                                 comando = Encoding.ASCII.GetBytes(this.utente.Password);
-                                this.sock.BeginSend(comando, 0, comando.Length, SocketFlags.None, new AsyncCallback(SendCommandCallback), this.sock);                                
-                                SocketConnection.sendDone.WaitOne();
+                                client.Send(comando); // Invio password dell'utente per registrarla sul server.
                             }
-                            else
+                            else {
                                 ErrorProtocol();
+                                return;
+                            }
                         }
                         else {
                             comando = Encoding.ASCII.GetBytes("+NO");
-                            this.sock.BeginSend(comando, 0, comando.Length, SocketFlags.None, new AsyncCallback(SendCommandCallback), this.sock);                           
-                            SocketConnection.sendDone.WaitOne();
+                            client.Send(comando); // Il client NON accetta di registrarsi sul server!!
                             SockDisconnect();
                             return;
                         }
 
                     }
-                    else
+                    else {
                         ErrorProtocol();
+                        return;
+                    }
 
                     comando = new byte[128];
-                    this.sock.BeginReceive(comando, 0, comando.Length, SocketFlags.None, new AsyncCallback(ReceiveResponseCallback), this.sock);                   
-                    SocketConnection.receiveDone.Reset();
+                    client.Receive(comando);
                     aux = Encoding.ASCII.GetString(comando);
                     aux = aux.Substring(0, aux.IndexOf('\0'));
 
@@ -183,20 +169,19 @@ namespace ProgettoPDS_CLIENT
                 else 
                     ErrorProtocol();
 
-                SocketConnection.connectDone.Set();
             }
             catch (Exception ecc) {
                 MessageBox.Show(ecc.Message, "ANOMALY", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                SocketConnection.connectDone.Set();
             }
         }
 
         private void ErrorProtocol() 
         {
             byte[] comando = Encoding.ASCII.GetBytes("-ERR");
-            this.sock.BeginSend(comando, 0, comando.Length, SocketFlags.None, new AsyncCallback(SendCommandCallback), this.sock);
+            this.sock.Send(comando);
             MessageBox.Show("Errore nel protocollo di Autenticazione!! Connessione Fallita", 
-                "ERRORE!!", MessageBoxButtons.OK, MessageBoxIcon.Error);      
+                "ERRORE!!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            this.SockDisconnect();
         }
 
         // La funzione ritorna "true" se il socket è connesso
@@ -215,40 +200,6 @@ namespace ProgettoPDS_CLIENT
             this.sock.Close();
         }
 
-        private void SendCommandCallback(IAsyncResult ar)
-        {
-            try {
-                Socket client = (Socket)ar.AsyncState;
-
-                // Complete sending the data to the remote device.
-                int bytesSent = client.EndSend(ar);
-
-                SocketConnection.sendDone.Set();
-            }
-            catch (Exception ecc) {
-                MessageBox.Show(ecc.Message,"ANOMALY", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                SocketConnection.sendDone.Set();
-                SockDisconnect();
-            }
-        }
-
-        private void ReceiveResponseCallback(IAsyncResult ar)
-        {
-            try {
-                Socket client = (Socket)ar.AsyncState;
-
-                // Read data from the remote device.
-                int bytesRead = client.EndReceive(ar);
-
-                SocketConnection.receiveDone.Set();
-            }
-            catch (Exception ecc) {
-                MessageBox.Show(ecc.Message, "ANOMALY", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                SocketConnection.receiveDone.Set();
-                SockDisconnect();
-            }
-        }
-
         public Socket Sock
         {
             get { return this.sock; }
@@ -261,5 +212,30 @@ namespace ProgettoPDS_CLIENT
             set { this.isDisconect = value; }
         }
 
+        // La funzione controlla la correttezza di un indirizzo IP e restituisce true se è corretto.
+        public static bool verificaIPAddres(string addr)
+        {
+            string[] nums = addr.Split('.');
+
+            if (nums.Length != 4)
+                return false;
+
+            int aux, res;
+
+            for (int i = 0; i < nums.Length; i++) {
+
+                if (!Int32.TryParse(nums[i], out res))
+                    return false;
+
+                aux = Convert.ToInt32(nums[i]);
+
+                if (aux < 0 || aux > 255)
+                    return false;
+            }
+
+            return true;
+        }
+
     }
+
 }

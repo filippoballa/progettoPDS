@@ -45,6 +45,25 @@ namespace ProgettoPDS_CLIENT
             return null;
         }
 
+        public bool ModifyPwdUser(string user, string pwd) 
+        {
+            XmlNodeList xmlnodes = this.document.GetElementsByTagName("MYUSER");
+            SHA1 shaM = new SHA1Managed();
+
+            for (int i = 0; i < xmlnodes.Count; i++) {
+
+                if (xmlnodes[i].ChildNodes.Item(0).InnerText == user) {
+                    byte[] password = Encoding.ASCII.GetBytes(pwd);
+                    xmlnodes[i].ChildNodes.Item(1).InnerText = Encoding.ASCII.GetString(shaM.ComputeHash(password));
+                    this.document.Save(this.FileName);
+                    this.document.Save("..\\..\\" + this.FileName);
+                    return true;
+                }
+            } 
+
+            return false;
+        }
+
         public void AddNewUser( User NuovoUtente ) 
         {
             XmlNode root = this.document.DocumentElement;

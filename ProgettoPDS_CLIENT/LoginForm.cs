@@ -90,17 +90,19 @@ namespace ProgettoPDS_CLIENT
             this.SuspendLayout();           
             this.label3.Visible = false;
             this.label4.Visible = false;
+            this.ChangeButton.Visible = false;
             this.TitleInfoLabel.Visible = false;
             this.UsernameLabel.Visible = false;
             this.PasswordLabel.Visible = false;
             this.UsernameTextBox.Visible = false;
             this.PasswordTextBox.Visible = false;
-            this.groupBox1.Visible = true;
-            this.RegistraButton.Visible = true;
-            Thread.Sleep(10);
             this.NotaLabel.Visible = false;
             this.InfoPanel.Visible = false;
-            this.MainPanel.Visible = false;          
+            this.MainPanel.Visible = false;
+            this.ChangePasswordPanel.Visible = false;
+            Thread.Sleep(10);
+            this.groupBox1.Visible = true;
+            this.RegistraButton.Visible = true;
             this.RegistraPanel.Visible = true;
             this.ResumeLayout();
             this.NameRegTextBox.Focus();
@@ -109,20 +111,22 @@ namespace ProgettoPDS_CLIENT
         private void loginPageToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.SuspendLayout();           
-            this.UsernameTextBox.Visible = true;
-            this.PasswordTextBox.Visible = true;
             this.groupBox1.Visible = false;
             this.RegistraButton.Visible = false;
-            this.NotaLabel.Visible = true;
-            this.UsernameLabel.Visible = true;
-            this.PasswordLabel.Visible = true;
             this.label3.Visible = false;
             this.label4.Visible = false;
             this.TitleInfoLabel.Visible = false;
-            Thread.Sleep(10);
-            this.MainPanel.Visible = true;
+            this.ChangeButton.Visible = false;
             this.InfoPanel.Visible = false;
+            this.ChangePasswordPanel.Visible = false;
             this.RegistraPanel.Visible = false;
+            Thread.Sleep(10);
+            this.UsernameLabel.Visible = true;
+            this.PasswordLabel.Visible = true;
+            this.NotaLabel.Visible = true;
+            this.UsernameTextBox.Visible = true;
+            this.PasswordTextBox.Visible = true;
+            this.MainPanel.Visible = true;
             this.ResumeLayout();
             this.UsernameTextBox.Focus();
         }
@@ -192,21 +196,89 @@ namespace ProgettoPDS_CLIENT
         private void infoToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.SuspendLayout();
-            this.label3.Visible = true;
-            this.label4.Visible = true;
-            this.TitleInfoLabel.Visible = true;
             this.UsernameLabel.Visible = false;
             this.PasswordLabel.Visible = false;
             this.UsernameTextBox.Visible = false;
             this.PasswordTextBox.Visible = false;
             this.groupBox1.Visible = false;
             this.RegistraButton.Visible = false;
-            this.NotaLabel.Visible = false;
+            this.ChangeButton.Visible = false;
+            this.label3.Visible = true;
+            this.label4.Visible = true;
+            this.TitleInfoLabel.Visible = true;
+            Thread.Sleep(10);
             this.InfoPanel.Visible = true;
+            this.NotaLabel.Visible = false;
             this.MainPanel.Visible = false;
             this.RegistraPanel.Visible = false;
+            this.ChangePasswordPanel.Visible = false;
             this.ResumeLayout();
 
+        }
+
+        private void cambiaPasswordToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.SuspendLayout();
+            this.label3.Visible = false;
+            this.label4.Visible = false;
+            this.TitleInfoLabel.Visible = false;
+            this.UsernameLabel.Visible = false;
+            this.PasswordLabel.Visible = false;
+            this.UsernameTextBox.Visible = false;
+            this.PasswordTextBox.Visible = false;
+            this.groupBox1.Visible = false;
+            this.RegistraButton.Visible = false;
+            this.ChangeButton.Visible = true;
+            Thread.Sleep(10);
+            this.ChangePasswordPanel.Visible = true;
+            this.NotaLabel.Visible = false;
+            this.MainPanel.Visible = false;
+            this.RegistraPanel.Visible = false;
+            this.InfoPanel.Visible = false;
+            this.ResumeLayout();
+            this.ChangeUserTextBox.Focus();
+        }
+
+        private void ChangeButton_Click(object sender, EventArgs e)
+        {
+            if (this.ChangePwdTextBox.Text == "" && this.ChangeUserTextBox.Text == "") {
+                MessageBox.Show("Completa tutti i campi del form prima di cliccare\nsul bottone \"CHANGE!!\"", 
+                    "AVVISO", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                this.ChangeUserTextBox.Focus();
+            }
+            else if (this.ChangeUserTextBox.Text == "") {
+                MessageBox.Show("Username assente!! Specificalo prima di procedere oltre...",
+                    "AVVISO", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                this.ChangeUserTextBox.Focus();
+            }
+            else if (this.ChangePwdTextBox.Text == "")
+            {
+                MessageBox.Show("Nuova Password Assente!! Specificala prima di procedere oltre...",
+                    "AVVISO", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                this.ChangePwdTextBox.Focus();
+            }
+            else {
+
+                if ( this.mng.SearchUser(this.ChangeUserTextBox.Text) == null) {
+                    MessageBox.Show("Lo user \"" + this.ChangeUserTextBox.Text + "\" non è mai stato registrato nell'applicazione!!",
+                    "ERRORE", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    this.ChangeUserTextBox.Clear();
+                    this.ChangePwdTextBox.Clear();
+                    this.ChangeUserTextBox.Focus();
+                }
+                else {
+                    DialogResult res = MessageBox.Show("Desideri procedere con la modifica della password??", "AVVISO", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                    if (res == DialogResult.Yes)
+                        this.mng.ModifyPwdUser(this.ChangeUserTextBox.Text, this.ChangePwdTextBox.Text);
+                    
+                    this.ChangeUserTextBox.Clear();
+                    this.ChangePwdTextBox.Clear();
+                    this.ChangeUserTextBox.Focus();
+
+                }
+            }
+            
         }
         
     }
