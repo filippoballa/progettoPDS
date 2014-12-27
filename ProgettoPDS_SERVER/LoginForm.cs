@@ -90,17 +90,23 @@ namespace ProgettoPDS_SERVER
 
         private void loginPageToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            this.SuspendLayout();
             this.InfoPanel.Visible = false;
+            this.ChangePasswordPanel.Visible = false;
             this.RegistraPanel.Visible = false;
             this.MainPanel.Visible = true;
+            this.ResumeLayout();
             this.UsernameTextBox.Focus();
         }
 
         private void registraUtenteToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            this.SuspendLayout();
             this.InfoPanel.Visible = false;
             this.MainPanel.Visible = false;
+            this.ChangePasswordPanel.Visible = false;
             this.RegistraPanel.Visible = true;
+            this.ResumeLayout();
             this.NameRegTextBox.Focus();
         }
 
@@ -180,9 +186,69 @@ namespace ProgettoPDS_SERVER
 
         private void informazioniToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            this.SuspendLayout();
             this.InfoPanel.Visible = true;
             this.MainPanel.Visible = false;
             this.RegistraPanel.Visible = false;
+            this.ChangePasswordPanel.Visible = false;
+            this.ResumeLayout();
+        }
+
+        private void cambiaPasswordToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.SuspendLayout();
+            this.ChangePasswordPanel.Visible = true;
+            this.MainPanel.Visible = false;
+            this.RegistraPanel.Visible = false;
+            this.InfoPanel.Visible = false;
+            this.ResumeLayout();
+            this.ChangeUserTextBox.Focus();
+        }
+
+        private void ChangeButton_Click(object sender, EventArgs e)
+        {
+            if (this.ChangePwdTextBox.Text == "" && this.ChangeUserTextBox.Text == "")
+            {
+                MessageBox.Show("Completa tutti i campi del form prima di cliccare\nsul bottone \"CHANGE!!\"",
+                    "AVVISO", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                this.ChangeUserTextBox.Focus();
+            }
+            else if (this.ChangeUserTextBox.Text == "")
+            {
+                MessageBox.Show("Username assente!! Specificalo prima di procedere oltre...",
+                    "AVVISO", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                this.ChangeUserTextBox.Focus();
+            }
+            else if (this.ChangePwdTextBox.Text == "")
+            {
+                MessageBox.Show("Nuova Password Assente!! Specificala prima di procedere oltre...",
+                    "AVVISO", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                this.ChangePwdTextBox.Focus();
+            }
+            else
+            {
+
+                if (this.mng.SearchUser(this.ChangeUserTextBox.Text) == null)
+                {
+                    MessageBox.Show("Lo user \"" + this.ChangeUserTextBox.Text + "\" non è mai stato registrato nell'applicazione!!",
+                    "ERRORE", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    this.ChangeUserTextBox.Clear();
+                    this.ChangePwdTextBox.Clear();
+                    this.ChangeUserTextBox.Focus();
+                }
+                else
+                {
+                    DialogResult res = MessageBox.Show("Desideri procedere con la modifica della password??", "AVVISO", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                    if (res == DialogResult.Yes)
+                        this.mng.ModifyPwdUser(this.ChangeUserTextBox.Text, this.ChangePwdTextBox.Text);
+
+                    this.ChangeUserTextBox.Clear();
+                    this.ChangePwdTextBox.Clear();
+                    this.ChangeUserTextBox.Focus();
+
+                }
+            }
         }
 
        

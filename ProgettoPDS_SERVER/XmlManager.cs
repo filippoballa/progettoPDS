@@ -177,5 +177,30 @@ namespace ProgettoPDS_SERVER
             return pwd;
         }
 
+        // La funzione ModifyPwdUser cerca all'interno del file "XMLClients.xml" se è presente un determinato utente
+        // e in caso affermativo aggiorna il suo campo password. La password è passata in chiaro come secondo parametro
+        // alla funzione la quale si occuperà anche della cifratura.
+        // La funzione ritornerà true se la modifica è stata effettuata, false altrimenti.
+        public bool ModifyPwdUser(string user, string pwd)
+        {
+            XmlNodeList xmlnodes = this.XmlDoc.GetElementsByTagName("MYUSER");
+            SHA1 shaM = new SHA1Managed();
+
+            for (int i = 0; i < xmlnodes.Count; i++)
+            {
+
+                if (xmlnodes[i].ChildNodes.Item(0).InnerText == user)
+                {
+                    byte[] password = Encoding.ASCII.GetBytes(pwd);
+                    xmlnodes[i].ChildNodes.Item(1).InnerText = Encoding.ASCII.GetString(shaM.ComputeHash(password));
+                    this.XmlDoc.Save(this.FileName);
+                    this.XmlDoc.Save("..\\..\\" + this.FileName);
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
     }
 }
