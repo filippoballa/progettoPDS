@@ -77,7 +77,9 @@ namespace ProgettoPDS_SERVER
         public void PopUpShow(object sender, EventArgs e)
         {
             //int border = PopUpWindow.border;
+            /*
             this.top.Show(0,0);
+             * */
             //this.right.Show(new Point(Screen.PrimaryScreen.Bounds.Width - border, border));
             //this.left.Show(new Point(0, border));
             //this.bottom.Show(new Point(0, Screen.PrimaryScreen.Bounds.Height - border));
@@ -85,7 +87,9 @@ namespace ProgettoPDS_SERVER
         public void PopUpHide(object sender, EventArgs e)
         {
             //int border = PopUpWindow.border;
+            /*
             this.top.Hide();
+             * */
             //this.right.Show(new Point(Screen.PrimaryScreen.Bounds.Width - border, border));
             //this.left.Show(new Point(0, border));
             //this.bottom.Show(new Point(0, Screen.PrimaryScreen.Bounds.Height - border));

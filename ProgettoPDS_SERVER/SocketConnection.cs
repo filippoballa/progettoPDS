@@ -7,6 +7,8 @@ using System.Net.Sockets;
 using System.Net;
 using System.Threading;
 using System.Windows.Forms;
+using System.Globalization;
+using System.Drawing;
 
 namespace ProgettoPDS_SERVER
 {
@@ -337,7 +339,7 @@ namespace ProgettoPDS_SERVER
                 try
                 {
                     //String[] MouseData = null;
-                    data = new byte[128];
+                    data = new byte[45];
                     passiv.Receive(data);//password ricevuta
                     comando = Encoding.ASCII.GetString(data);
                     comando = comando.Substring(0, comando.IndexOf('\0'));
@@ -349,18 +351,21 @@ namespace ProgettoPDS_SERVER
                     {
                         double X = 0.0, Y = 0.0;
 
-                        if (MouseData[1] != null)
-                            X = Convert.ToDouble(MouseData[1]);
                         if (MouseData[2] != null)
-                            Y = Convert.ToDouble(MouseData[2]);
+                            X = Convert.ToDouble(MouseData[2],NumberFormatInfo.CurrentInfo);
+                        if (MouseData[3] != null)
+                            Y = Convert.ToDouble(MouseData[3], NumberFormatInfo.CurrentInfo);
 
                         int PosX = (int)X * Screen.PrimaryScreen.WorkingArea.Width;
+                        int PosY = (int)Y * Screen.PrimaryScreen.WorkingArea.Height;
+
+                        Cursor.Position = new Point(PosX, PosY);
                     }
                 }
                 catch (Exception e)
                 {
                     MessageBox.Show(e.Message);
-                    break;
+                    //break;
                 }
             }
         }

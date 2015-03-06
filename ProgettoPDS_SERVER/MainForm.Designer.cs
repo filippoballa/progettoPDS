@@ -34,13 +34,13 @@
             this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripTextBox1 = new System.Windows.Forms.ToolStripTextBox();
             this.toolStripTextBox2 = new System.Windows.Forms.ToolStripTextBox();
+            this.toolStripTextBox5 = new System.Windows.Forms.ToolStripTextBox();
+            this.toolStripTextBox3 = new System.Windows.Forms.ToolStripTextBox();
+            this.toolStripTextBox4 = new System.Windows.Forms.ToolStripTextBox();
+            this.toolStripTextBox6 = new System.Windows.Forms.ToolStripTextBox();
             this.button_connect = new System.Windows.Forms.Button();
             this.Mouse_backgroundWorker = new System.ComponentModel.BackgroundWorker();
             this.button1 = new System.Windows.Forms.Button();
-            this.toolStripTextBox3 = new System.Windows.Forms.ToolStripTextBox();
-            this.toolStripTextBox4 = new System.Windows.Forms.ToolStripTextBox();
-            this.toolStripTextBox5 = new System.Windows.Forms.ToolStripTextBox();
-            this.toolStripTextBox6 = new System.Windows.Forms.ToolStripTextBox();
             this.contextMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -86,6 +86,36 @@
             this.toolStripTextBox2.Text = "Disconnetti";
             this.toolStripTextBox2.Click += new System.EventHandler(this.button1_Click);
             // 
+            // toolStripTextBox5
+            // 
+            this.toolStripTextBox5.Name = "toolStripTextBox5";
+            this.toolStripTextBox5.ReadOnly = true;
+            this.toolStripTextBox5.Size = new System.Drawing.Size(100, 23);
+            this.toolStripTextBox5.Text = "Console ";
+            // 
+            // toolStripTextBox3
+            // 
+            this.toolStripTextBox3.Name = "toolStripTextBox3";
+            this.toolStripTextBox3.ReadOnly = true;
+            this.toolStripTextBox3.Size = new System.Drawing.Size(100, 23);
+            this.toolStripTextBox3.Text = "LogOut";
+            // 
+            // toolStripTextBox4
+            // 
+            this.toolStripTextBox4.Name = "toolStripTextBox4";
+            this.toolStripTextBox4.ReadOnly = true;
+            this.toolStripTextBox4.Size = new System.Drawing.Size(100, 23);
+            this.toolStripTextBox4.Text = "Chiudi";
+            this.toolStripTextBox4.Click += new System.EventHandler(this.MainFormClose);
+            // 
+            // toolStripTextBox6
+            // 
+            this.toolStripTextBox6.Name = "toolStripTextBox6";
+            this.toolStripTextBox6.ReadOnly = true;
+            this.toolStripTextBox6.Size = new System.Drawing.Size(100, 23);
+            this.toolStripTextBox6.Text = "Chiudi Menù";
+            this.toolStripTextBox6.Click += new System.EventHandler(this.MenuClose);
+            // 
             // button_connect
             // 
             this.button_connect.FlatAppearance.BorderSize = 0;
@@ -107,36 +137,6 @@
             this.button1.Text = "button1";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // toolStripTextBox3
-            // 
-            this.toolStripTextBox3.Name = "toolStripTextBox3";
-            this.toolStripTextBox3.ReadOnly = true;
-            this.toolStripTextBox3.Size = new System.Drawing.Size(100, 23);
-            this.toolStripTextBox3.Text = "LogOut";
-            // 
-            // toolStripTextBox4
-            // 
-            this.toolStripTextBox4.Name = "toolStripTextBox4";
-            this.toolStripTextBox4.ReadOnly = true;
-            this.toolStripTextBox4.Size = new System.Drawing.Size(100, 23);
-            this.toolStripTextBox4.Text = "Chiudi";
-            this.toolStripTextBox4.Click += new System.EventHandler(this.MainFormClose);
-            // 
-            // toolStripTextBox5
-            // 
-            this.toolStripTextBox5.Name = "toolStripTextBox5";
-            this.toolStripTextBox5.ReadOnly = true;
-            this.toolStripTextBox5.Size = new System.Drawing.Size(100, 23);
-            this.toolStripTextBox5.Text = "Console ";
-            // 
-            // toolStripTextBox6
-            // 
-            this.toolStripTextBox6.Name = "toolStripTextBox6";
-            this.toolStripTextBox6.ReadOnly = true;
-            this.toolStripTextBox6.Size = new System.Drawing.Size(100, 23);
-            this.toolStripTextBox6.Text = "Chiudi Menù";
-            this.toolStripTextBox6.Click += new System.EventHandler(this.MenuClose);
             // 
             // MainForm
             // 
