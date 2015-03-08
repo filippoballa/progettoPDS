@@ -188,7 +188,13 @@ namespace ProgettoPDS_SERVER
         public static void ClipBoardThreadProc(object data)
         { }
 
-        [DllImport("user32.dll")]
+        [DllImport("user32.dll",  CallingConvention=CallingConvention.Cdecl)]
         static extern bool SetCursorPos(int X, int Y);
+
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            Sconnection.DrawBorders();
+        }
+
     }
 }

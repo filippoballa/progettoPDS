@@ -38,6 +38,7 @@
             this.toolStripMenuItemCloseForm = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemCloseMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.PacketsHandlerbackgroundWorker = new System.ComponentModel.BackgroundWorker();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -60,9 +61,10 @@
             this.toolStripMenuItemConnetti,
             this.toolStripMenuItemDisconnetti,
             this.toolStripMenuItemCloseForm,
-            this.toolStripMenuItemCloseMenu});
+            this.toolStripMenuItemCloseMenu,
+            this.toolStripMenuItem1});
             this.contextMenuStrip.Name = "contextMenuStrip";
-            this.contextMenuStrip.Size = new System.Drawing.Size(181, 136);
+            this.contextMenuStrip.Size = new System.Drawing.Size(181, 158);
             this.contextMenuStrip.MouseEnter += new System.EventHandler(this.ChangeCursor);
             // 
             // toolStripMenuItemOpenConsole
@@ -110,6 +112,13 @@
             this.PacketsHandlerbackgroundWorker.WorkerSupportsCancellation = true;
             this.PacketsHandlerbackgroundWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.PacketsHandlerbackgroundWorker_DoWork);
             // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem1.Text = "disegna";
+            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -141,5 +150,6 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemCloseForm;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemCloseMenu;
         protected internal System.ComponentModel.BackgroundWorker PacketsHandlerbackgroundWorker;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
     }
 }

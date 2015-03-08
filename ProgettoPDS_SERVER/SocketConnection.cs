@@ -88,6 +88,8 @@ namespace ProgettoPDS_SERVER
             {
                 main.notifyIcon1.ShowBalloonTip(2, "INFO STATO", "Autenticazione Client effettuata con successo! Connessione avviata.",ToolTipIcon.Info);
                 stato = ApplicationConstants.Stato.CONNESSO;
+                //disegno qualcosa per mosrare il controllo
+                Thread t = new Thread(new ThreadStart(DrawBorders));
                 //lancio il backGround worker per il controllo dei pacchetti
                 main.PacketsHandlerbackgroundWorker.RunWorkerAsync();
             }
@@ -95,6 +97,24 @@ namespace ProgettoPDS_SERVER
             {
                 main.notifyIcon1.ShowBalloonTip(2, "ERRORE", "Autenticazione Client non riuscita. Chiusura connessione.", ToolTipIcon.Warning);
             }
+        }
+
+        public void DrawBorders()
+        {
+                IntPtr desktop = GetDC(IntPtr.Zero);
+                using (Graphics g = Graphics.FromHdc(desktop))
+                {
+                    int border = 3;
+                    //top
+                    g.FillRectangle(Brushes.Red, 0, 0, Screen.PrimaryScreen.Bounds.Width, border);
+                    //right
+                    g.FillRectangle(Brushes.Green, Screen.PrimaryScreen.Bounds.Width - border, border, border, Screen.PrimaryScreen.Bounds.Height - (2 * border));
+                    //bottom
+                    g.FillRectangle(Brushes.Red, 0, Screen.PrimaryScreen.Bounds.Height - border, Screen.PrimaryScreen.Bounds.Width, border);
+                    //left
+                    g.FillRectangle(Brushes.Yellow, 0, border, border, Screen.PrimaryScreen.Bounds.Height - (2 * border));
+                }
+                ReleaseDC(IntPtr.Zero, desktop);
         }
 
         private bool ClientAutentication()
@@ -311,54 +331,16 @@ namespace ProgettoPDS_SERVER
             }
             stato = ApplicationConstants.Stato.DISCONNESSO;
             
-
-        }
-        public void PacketsHandler(MainForm form)
-        {
-            byte[] data;
-            String comando;
-            while (true)//ricevo i pachetti del client 
-            {
-                try
-                {
-                    //String[] MouseData = null;
-                    data = new byte[45];
-                    passiv.Receive(data);//password ricevuta
-                    comando = Encoding.ASCII.GetString(data);
-                    comando = comando.Substring(0, comando.IndexOf('\0'));
-
-                    String[] MouseData = comando.Split(ApplicationConstants.SEPARATOR);
-
-
-                    if (MouseData[0] != null && MouseData[0] == ApplicationConstants.MOUSECODE)
-                    {
-                        double X = 0.0, Y = 0.0;
-
-                        if (MouseData[2] != null)
-                            X = Convert.ToDouble(MouseData[2],NumberFormatInfo.CurrentInfo);
-                        if (MouseData[3] != null)
-                            Y = Convert.ToDouble(MouseData[3], NumberFormatInfo.CurrentInfo);
-
-                        int PosX = (int)X * Screen.PrimaryScreen.WorkingArea.Width;
-                        int PosY = (int)Y * Screen.PrimaryScreen.WorkingArea.Height;
-
-                        SetCursorPos(PosX, PosY);
-                    }
-                }
-                catch (Exception e)
-                {
-                    MessageBox.Show(e.Message);
-                    //break;
-                }
-            }
         }
         public Socket Passiv {
             get{return this.passiv;}
         }
 
-        [DllImport("user32.dll")]
-        static extern bool SetCursorPos(int X, int Y);
+        [DllImport("User32.dll")]
+        static extern IntPtr GetDC(IntPtr hwnd);
 
+        [DllImport("User32.dll", EntryPoint = "ReleaseDC", SetLastError = true)]
+        static extern int ReleaseDC(IntPtr hwnd, IntPtr dc);
     }
 
 }
