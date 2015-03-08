@@ -8,17 +8,17 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows;
+using System.Globalization;
+using System.Threading;
 
 namespace ProgettoPDS_SERVER
 {
     public partial class MainForm : Form
     {
-        private SocketConnection Sconnection;
+        private SocketConnection Sconnection = null;
         const int port = 2000;
-        PopUpWindow top = new PopUpWindow(new Panel(),"t");
-        PopUpWindow right = new PopUpWindow(new Panel(), "r");
-        PopUpWindow left = new PopUpWindow(new Panel(), "l");
-        PopUpWindow bottom = new PopUpWindow(new Panel(), "b");
+        //PopUpWindow top = new PopUpWindow(new Panel(),"t");
+
 
         public MainForm(User u)
         {
@@ -31,7 +31,10 @@ namespace ProgettoPDS_SERVER
         {
             notifyIcon1.ShowBalloonTip(1000);
             this.ShowInTaskbar = false;
-            this.Sconnection = new SocketConnection(port);
+
+            if (this.Sconnection==null)
+                this.Sconnection = new SocketConnection(port);
+
             this.Text+=" - IP : "+Sconnection.GetMyIp();
         }
 
@@ -74,39 +77,22 @@ namespace ProgettoPDS_SERVER
             this.notifyIcon1.ShowBalloonTip(2);
         }
 
-        public void PopUpShow(object sender, EventArgs e)
+        /*public void PopUpShow(object sender, EventArgs e)
         {
-            //int border = PopUpWindow.border;
-            /*
-            this.top.Show(0,0);
-             * */
-            //this.right.Show(new Point(Screen.PrimaryScreen.Bounds.Width - border, border));
-            //this.left.Show(new Point(0, border));
-            //this.bottom.Show(new Point(0, Screen.PrimaryScreen.Bounds.Height - border));
+            //this.top.Show(0,0);
         }
         public void PopUpHide(object sender, EventArgs e)
         {
-            //int border = PopUpWindow.border;
-            /*
-            this.top.Hide();
-             * */
-            //this.right.Show(new Point(Screen.PrimaryScreen.Bounds.Width - border, border));
-            //this.left.Show(new Point(0, border));
-            //this.bottom.Show(new Point(0, Screen.PrimaryScreen.Bounds.Height - border));
-        }
+            //this.top.Hide();
+        }*/
 
-        private void button1_Click(object sender, EventArgs e)
+        private void buttonDisconnect_Click(object sender, EventArgs e)
         {
-            Sconnection.SockDisconnect();
-            PopUpHide(null, null);
-            
+            Sconnection.SockDisconnect();          
         }
 
         private void MainFormClose(object sender, EventArgs e)
         {
-            DialogResult res = MessageBox.Show("Sei sicuro di voler chiudere l'applicazione?", "CHIUSURA IN CORSO", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation);
-            
-            if(res == DialogResult.OK)
                 this.Close();
         }
 
@@ -120,5 +106,88 @@ namespace ProgettoPDS_SERVER
             this.Cursor = Cursors.Arrow;
         }
 
+        private void MainFormShow(object sender, EventArgs e)
+        {
+            this.WindowState = FormWindowState.Normal;
+            
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            DialogResult res = MessageBox.Show("Vuoi chiudere l'applicazione?", "CHIUSURA IN CORSO", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation);
+
+            if (res == DialogResult.OK)
+                e.Cancel = false;
+            else
+                e.Cancel = true;
+
+            this.WindowState = FormWindowState.Minimized;
+        }
+
+        private void toolStripMenuItemLogOut_Click(object sender, EventArgs e)
+        {
+            DialogResult res = MessageBox.Show("Vuoi fare Log Out?", "LOG OUT IN CORSO", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+
+            if (res == DialogResult.OK)
+            {
+                this.Close();
+            }
+        }
+
+        private void PacketsHandlerbackgroundWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            byte[] data;
+            String comando;
+            while (true)//ricevo i pachetti del client 
+            {
+                try
+                {
+                    data = new byte[45];
+                    Sconnection.Passiv.Receive(data);//password ricevuta
+                    comando = Encoding.ASCII.GetString(data);
+                    comando = comando.Substring(0, comando.IndexOf('\0'));
+
+                    String[] Data = comando.Split(ApplicationConstants.SEPARATOR);
+
+                    if (Data[0] == ApplicationConstants.MOUSECODE)
+                    {
+                        Thread t = new Thread(new ThreadStart(MouseThreadProc));
+                    }
+                    if (Data[0] == ApplicationConstants.KEYBOARDCODE)
+                    {
+                        Thread t = new Thread(new ThreadStart(KeyBoardThreadProc));
+                    }
+                    if (Data[0] == ApplicationConstants.CLIPBOARDCODE)
+                    {
+                        Thread t = new Thread(new ThreadStart(ClipBoardThreadProc));
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                    Sconnection.SockDisconnect(); 
+                    break;
+                }
+            }
+        }
+
+        private void MouseThreadProc()
+        {
+            double X = 0.0, Y = 0.0;
+
+            if (MouseData[2] != null)
+                X = Convert.ToDouble(MouseData[2], NumberFormatInfo.CurrentInfo);
+            if (MouseData[3] != null)
+                Y = Convert.ToDouble(MouseData[3], NumberFormatInfo.CurrentInfo);
+
+            int PosX = (int)X * Screen.PrimaryScreen.WorkingArea.Width;
+            int PosY = (int)Y * Screen.PrimaryScreen.WorkingArea.Height;
+
+            Cursor.Position = new Point(PosX, PosY);
+        }
+        private void KeyBoardThreadProc()
+        { }
+        private void ClipBoardThreadProc()
+        { }
     }
 }

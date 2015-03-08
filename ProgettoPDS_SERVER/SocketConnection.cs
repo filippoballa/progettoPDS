@@ -43,32 +43,15 @@ namespace ProgettoPDS_SERVER
     {
         private const int backlog = 1;
         private Socket sock, passiv;
-        public static ManualResetEvent allDone = new ManualResetEvent(false);
+        //public static ManualResetEvent allDone = new ManualResetEvent(false);
         private int porta;
         private String myIP;
-
-        enum Stato
-        {
-            CONNESSO = 1,
-            DISCONNESSO = 0
-        };
-
-        private const String AUTH_USER = "+AUTH_USER";
-        private const String AUTH_PWD = "+AUTH_PWD";
-        private const String REG_USER = "+REG_USER";
-        private const String YES = "+YES";
-        private const String REG_PWD = "+REG_PWD";
-        private const String OK = "+OK";
-        private const String ERR = "-ERR";
-
-        private Stato stato;
-        private char[] SEPARATOR = {'-'};
-        private const string MOUSECODE = "M";
+        private ApplicationConstants.Stato stato;
         private MainForm main;
 
         public SocketConnection(int porta)
         {
-            stato = Stato.DISCONNESSO;
+            stato = ApplicationConstants.Stato.DISCONNESSO;
             // Create a TCP/IP socket.
             this.porta = porta;
             sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
@@ -103,10 +86,9 @@ namespace ProgettoPDS_SERVER
             if(ClientAutentication())
             {
                 main.notifyIcon1.ShowBalloonTip(2, "INFO STATO", "Autenticazione Client effettuata con successo! Connessione avviata.",ToolTipIcon.Info);
-                stato = Stato.CONNESSO;
-                main.PopUpShow(null,null);
-                //lancio il controllo del mouse
-                PacketsHandler(main);
+                stato = ApplicationConstants.Stato.CONNESSO;
+                //lancio il backGround worker per il controllo dei pacchetti
+                main.PacketsHandlerbackgroundWorker.RunWorkerAsync();
             }
             else
             {
@@ -121,7 +103,7 @@ namespace ProgettoPDS_SERVER
 
             //richiesta user e password;
 
-            comando = AUTH_USER;
+            comando = ApplicationConstants.AUTH_USER;
             data = Encoding.ASCII.GetBytes(comando);
 
             try {
@@ -133,11 +115,11 @@ namespace ProgettoPDS_SERVER
                 user = user.Substring(0, user.IndexOf('\0'));
 
                 // controllo che l'user sia già registrato
-                if (user != ERR)
+                if (user != ApplicationConstants.ERR)
                 {
                     if (user != " ")
                     {
-                        DialogResult res = MessageBox.Show(user + " ha richiesto di autenticarsi.","DURO DURO",MessageBoxButtons.OKCancel,MessageBoxIcon.Information);
+                        DialogResult res = MessageBox.Show(user + " ha richiesto di autenticarsi.","RICHIESTA AUTENTICAZIONE",MessageBoxButtons.OKCancel,MessageBoxIcon.Information);
 
                         if (res == DialogResult.OK)
                         {
@@ -145,7 +127,7 @@ namespace ProgettoPDS_SERVER
 
                             if (passwordXML != null)//SE USER è PRESENTE
                             {
-                                comando = AUTH_PWD;
+                                comando = ApplicationConstants.AUTH_PWD;
 
                                 data = Encoding.ASCII.GetBytes(comando);
                                 passiv.Send(data);//se l'user è registrato gli chiedo la pswrd AUTH_PWD
@@ -155,17 +137,17 @@ namespace ProgettoPDS_SERVER
                                 pwd = Encoding.ASCII.GetString(data);
                                 pwd = pwd.Substring(0, pwd.IndexOf('\0'));
 
-                                if (pwd != ERR)
+                                if (pwd != ApplicationConstants.ERR)
                                 {
                                     if (passwordXML == pwd) // Controllo Password!!
                                     {
-                                        comando = OK;
+                                        comando = ApplicationConstants.OK;
                                         data = Encoding.ASCII.GetBytes(comando);
                                         passiv.Send(data);//invio che l'autenticazione è riuscita
                                     }
                                     else//se la password non è corretta si chiude la connessione
                                     {
-                                        comando = ERR;
+                                        comando = ApplicationConstants.ERR;
                                         data = Encoding.ASCII.GetBytes(comando);
                                         passiv.Send(data);//invio che c'è stato un errore
 
@@ -181,7 +163,7 @@ namespace ProgettoPDS_SERVER
                             }
                             else//se il client non è presente chiedo di registrarsi
                             {
-                                comando = REG_USER;
+                                comando = ApplicationConstants.REG_USER;
                                 data = Encoding.ASCII.GetBytes(comando);
 
                                 passiv.Send(data);//INVIO RICHIESTA
@@ -191,9 +173,9 @@ namespace ProgettoPDS_SERVER
                                 comando = Encoding.ASCII.GetString(data);
                                 comando = comando.Substring(0, comando.IndexOf('\0'));
 
-                                if (comando == YES)//se vuole registrarsi chiedo la password
+                                if (comando == ApplicationConstants.YES)//se vuole registrarsi chiedo la password
                                 {
-                                    comando = REG_PWD;
+                                    comando = ApplicationConstants.REG_PWD;
                                     data = Encoding.ASCII.GetBytes(comando);
 
                                     passiv.Send(data);//richiesta pswrd
@@ -205,7 +187,7 @@ namespace ProgettoPDS_SERVER
 
                                     if (!AddNewUser(user, pwd))//inserimento non riuscito
                                     {
-                                        comando = ERR;
+                                        comando = ApplicationConstants.ERR;
                                         data = Encoding.ASCII.GetBytes(comando);
                                         passiv.Send(data);//invio che c'è stato un errore
 
@@ -304,7 +286,7 @@ namespace ProgettoPDS_SERVER
             {
                 main.notifyIcon1.ShowBalloonTip(2, "INFO STATO", "Deve ancora essere creata una connessione.", ToolTipIcon.Warning);
             }
-            stato = Stato.DISCONNESSO;
+            stato = ApplicationConstants.Stato.DISCONNESSO;
             
         }
         public void SockDisconnect()
@@ -326,7 +308,7 @@ namespace ProgettoPDS_SERVER
             {
                 main.notifyIcon1.ShowBalloonTip(2, "INFO STATO", "Deve ancora essere creata una connessione.", ToolTipIcon.Warning);
             }
-            stato = Stato.DISCONNESSO;
+            stato = ApplicationConstants.Stato.DISCONNESSO;
             
 
         }
@@ -344,10 +326,10 @@ namespace ProgettoPDS_SERVER
                     comando = Encoding.ASCII.GetString(data);
                     comando = comando.Substring(0, comando.IndexOf('\0'));
 
-                    String[] MouseData = comando.Split(SEPARATOR);
-                   
+                    String[] MouseData = comando.Split(ApplicationConstants.SEPARATOR);
 
-                    if (MouseData[0] != null && MouseData[0] == MOUSECODE)
+
+                    if (MouseData[0] != null && MouseData[0] == ApplicationConstants.MOUSECODE)
                     {
                         double X = 0.0, Y = 0.0;
 
@@ -368,6 +350,9 @@ namespace ProgettoPDS_SERVER
                     //break;
                 }
             }
+        }
+        public Socket Passiv {
+            get{return this.passiv;}
         }
     }
 

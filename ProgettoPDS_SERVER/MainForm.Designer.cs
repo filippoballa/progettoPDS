@@ -32,15 +32,13 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.toolStripTextBox1 = new System.Windows.Forms.ToolStripTextBox();
-            this.toolStripTextBox2 = new System.Windows.Forms.ToolStripTextBox();
-            this.toolStripTextBox5 = new System.Windows.Forms.ToolStripTextBox();
-            this.toolStripTextBox3 = new System.Windows.Forms.ToolStripTextBox();
-            this.toolStripTextBox4 = new System.Windows.Forms.ToolStripTextBox();
-            this.toolStripTextBox6 = new System.Windows.Forms.ToolStripTextBox();
-            this.button_connect = new System.Windows.Forms.Button();
-            this.Mouse_backgroundWorker = new System.ComponentModel.BackgroundWorker();
-            this.button1 = new System.Windows.Forms.Button();
+            this.toolStripMenuItemOpenConsole = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemConnetti = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemDisconnetti = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemLogOut = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemCloseForm = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemCloseMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.PacketsHandlerbackgroundWorker = new System.ComponentModel.BackgroundWorker();
             this.contextMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -59,92 +57,68 @@
             // 
             this.contextMenuStrip.BackColor = System.Drawing.SystemColors.Control;
             this.contextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripTextBox1,
-            this.toolStripTextBox2,
-            this.toolStripTextBox5,
-            this.toolStripTextBox3,
-            this.toolStripTextBox4,
-            this.toolStripTextBox6});
+            this.toolStripMenuItemOpenConsole,
+            this.toolStripMenuItemConnetti,
+            this.toolStripMenuItemDisconnetti,
+            this.toolStripMenuItemLogOut,
+            this.toolStripMenuItemCloseForm,
+            this.toolStripMenuItemCloseMenu});
             this.contextMenuStrip.Name = "contextMenuStrip";
-            this.contextMenuStrip.Size = new System.Drawing.Size(161, 176);
+            this.contextMenuStrip.Size = new System.Drawing.Size(144, 136);
             this.contextMenuStrip.MouseEnter += new System.EventHandler(this.ChangeCursor);
             // 
-            // toolStripTextBox1
+            // toolStripMenuItemOpenConsole
             // 
-            this.toolStripTextBox1.BackColor = System.Drawing.SystemColors.Control;
-            this.toolStripTextBox1.Name = "toolStripTextBox1";
-            this.toolStripTextBox1.ReadOnly = true;
-            this.toolStripTextBox1.Size = new System.Drawing.Size(100, 23);
-            this.toolStripTextBox1.Text = "Connetti";
-            this.toolStripTextBox1.Click += new System.EventHandler(this.button_connect_Click);
+            this.toolStripMenuItemOpenConsole.Name = "toolStripMenuItemOpenConsole";
+            this.toolStripMenuItemOpenConsole.Size = new System.Drawing.Size(143, 22);
+            this.toolStripMenuItemOpenConsole.Text = "Apri Console";
+            this.toolStripMenuItemOpenConsole.Click += new System.EventHandler(this.MainFormShow);
             // 
-            // toolStripTextBox2
+            // toolStripMenuItemConnetti
             // 
-            this.toolStripTextBox2.Name = "toolStripTextBox2";
-            this.toolStripTextBox2.ReadOnly = true;
-            this.toolStripTextBox2.Size = new System.Drawing.Size(100, 23);
-            this.toolStripTextBox2.Text = "Disconnetti";
-            this.toolStripTextBox2.Click += new System.EventHandler(this.button1_Click);
+            this.toolStripMenuItemConnetti.Name = "toolStripMenuItemConnetti";
+            this.toolStripMenuItemConnetti.Size = new System.Drawing.Size(143, 22);
+            this.toolStripMenuItemConnetti.Text = "Connetti";
+            this.toolStripMenuItemConnetti.Click += new System.EventHandler(this.button_connect_Click);
             // 
-            // toolStripTextBox5
+            // toolStripMenuItemDisconnetti
             // 
-            this.toolStripTextBox5.Name = "toolStripTextBox5";
-            this.toolStripTextBox5.ReadOnly = true;
-            this.toolStripTextBox5.Size = new System.Drawing.Size(100, 23);
-            this.toolStripTextBox5.Text = "Console ";
+            this.toolStripMenuItemDisconnetti.Name = "toolStripMenuItemDisconnetti";
+            this.toolStripMenuItemDisconnetti.Size = new System.Drawing.Size(143, 22);
+            this.toolStripMenuItemDisconnetti.Text = "Disconnetti";
             // 
-            // toolStripTextBox3
+            // toolStripMenuItemLogOut
             // 
-            this.toolStripTextBox3.Name = "toolStripTextBox3";
-            this.toolStripTextBox3.ReadOnly = true;
-            this.toolStripTextBox3.Size = new System.Drawing.Size(100, 23);
-            this.toolStripTextBox3.Text = "LogOut";
+            this.toolStripMenuItemLogOut.Name = "toolStripMenuItemLogOut";
+            this.toolStripMenuItemLogOut.Size = new System.Drawing.Size(143, 22);
+            this.toolStripMenuItemLogOut.Text = "LogOut";
+            this.toolStripMenuItemLogOut.Click += new System.EventHandler(this.toolStripMenuItemLogOut_Click);
             // 
-            // toolStripTextBox4
+            // toolStripMenuItemCloseForm
             // 
-            this.toolStripTextBox4.Name = "toolStripTextBox4";
-            this.toolStripTextBox4.ReadOnly = true;
-            this.toolStripTextBox4.Size = new System.Drawing.Size(100, 23);
-            this.toolStripTextBox4.Text = "Chiudi";
-            this.toolStripTextBox4.Click += new System.EventHandler(this.MainFormClose);
+            this.toolStripMenuItemCloseForm.Name = "toolStripMenuItemCloseForm";
+            this.toolStripMenuItemCloseForm.Size = new System.Drawing.Size(143, 22);
+            this.toolStripMenuItemCloseForm.Text = "Chiudi";
+            this.toolStripMenuItemCloseForm.Click += new System.EventHandler(this.MainFormClose);
             // 
-            // toolStripTextBox6
+            // toolStripMenuItemCloseMenu
             // 
-            this.toolStripTextBox6.Name = "toolStripTextBox6";
-            this.toolStripTextBox6.ReadOnly = true;
-            this.toolStripTextBox6.Size = new System.Drawing.Size(100, 23);
-            this.toolStripTextBox6.Text = "Chiudi Menù";
-            this.toolStripTextBox6.Click += new System.EventHandler(this.MenuClose);
+            this.toolStripMenuItemCloseMenu.Name = "toolStripMenuItemCloseMenu";
+            this.toolStripMenuItemCloseMenu.Size = new System.Drawing.Size(143, 22);
+            this.toolStripMenuItemCloseMenu.Text = "Chiudi Menù";
+            this.toolStripMenuItemCloseMenu.Click += new System.EventHandler(this.MenuClose);
             // 
-            // button_connect
+            // PacketsHandlerbackgroundWorker
             // 
-            this.button_connect.FlatAppearance.BorderSize = 0;
-            this.button_connect.Location = new System.Drawing.Point(146, 100);
-            this.button_connect.Margin = new System.Windows.Forms.Padding(0);
-            this.button_connect.Name = "button_connect";
-            this.button_connect.Size = new System.Drawing.Size(75, 23);
-            this.button_connect.TabIndex = 0;
-            this.button_connect.Text = "Connetti";
-            this.button_connect.UseVisualStyleBackColor = true;
-            this.button_connect.Click += new System.EventHandler(this.button_connect_Click);
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(224, 100);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.PacketsHandlerbackgroundWorker.WorkerReportsProgress = true;
+            this.PacketsHandlerbackgroundWorker.WorkerSupportsCancellation = true;
+            this.PacketsHandlerbackgroundWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.PacketsHandlerbackgroundWorker_DoWork);
             // 
             // MainForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(374, 132);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.button_connect);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -154,9 +128,9 @@
             this.Text = "Server";
             this.TransparencyKey = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.WindowState = System.Windows.Forms.FormWindowState.Minimized;
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.contextMenuStrip.ResumeLayout(false);
-            this.contextMenuStrip.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -164,15 +138,13 @@
         #endregion
 
         public System.Windows.Forms.NotifyIcon notifyIcon1;
-        private System.Windows.Forms.Button button_connect;
-        private System.ComponentModel.BackgroundWorker Mouse_backgroundWorker;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip;
-        private System.Windows.Forms.ToolStripTextBox toolStripTextBox1;
-        private System.Windows.Forms.ToolStripTextBox toolStripTextBox2;
-        private System.Windows.Forms.ToolStripTextBox toolStripTextBox5;
-        private System.Windows.Forms.ToolStripTextBox toolStripTextBox3;
-        private System.Windows.Forms.ToolStripTextBox toolStripTextBox4;
-        private System.Windows.Forms.ToolStripTextBox toolStripTextBox6;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemOpenConsole;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemConnetti;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemDisconnetti;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemLogOut;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemCloseForm;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemCloseMenu;
+        protected internal System.ComponentModel.BackgroundWorker PacketsHandlerbackgroundWorker;
     }
 }
