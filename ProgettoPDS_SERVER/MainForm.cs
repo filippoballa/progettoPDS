@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.Windows;
 using System.Globalization;
 using System.Threading;
+using System.Runtime.InteropServices;
 
 namespace ProgettoPDS_SERVER
 {
@@ -122,7 +123,8 @@ namespace ProgettoPDS_SERVER
         {
             byte[] data;
             String comando;
-            while (true)//ricevo i pachetti del client 
+            bool work = true;
+            while (work)//ricevo i pachetti del client 
             {
                 try
                 {
@@ -130,38 +132,63 @@ namespace ProgettoPDS_SERVER
                     Sconnection.Passiv.Receive(data);//password ricevuta
                     comando = Encoding.ASCII.GetString(data);
                     comando = comando.Substring(0, comando.IndexOf('\0'));
+                    Thread t = null;
 
                     String[] Data = comando.Split(ApplicationConstants.SEPARATOR);
 
                     if (Data[0] == ApplicationConstants.MOUSECODE)
                     {
-                        Thread t = new Thread(new ThreadStart(MouseThreadProc));
+                        t = new Thread(MainForm.MouseThreadProc);
                     }
                     if (Data[0] == ApplicationConstants.KEYBOARDCODE)
                     {
-                        Thread t = new Thread(new ThreadStart(KeyBoardThreadProc));
+                        t = new Thread(MainForm.KeyBoardThreadProc);
                     }
                     if (Data[0] == ApplicationConstants.CLIPBOARDCODE)
                     {
-                        Thread t = new Thread(new ThreadStart(ClipBoardThreadProc));
+                        t = new Thread(MainForm.ClipBoardThreadProc);
                     }
+
+                    if(t!=null)
+                        t.Start(Data);
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message);
-                    Sconnection.SockDisconnect(); 
-                    break;
+
+                    DialogResult res = MessageBox.Show("Errore critico, vuoi chiudere la connessione?","ECCEZIONE",MessageBoxButtons.OKCancel,MessageBoxIcon.Question);
+
+                    if (res == DialogResult.OK)
+                    {
+                        Sconnection.SockDisconnect();
+                        work = false;
+                    }
+                    
                 }
             }
         }
 
-        private void MouseThreadProc()
+        public static void MouseThreadProc(object data)
         {
-           
+            double X = 0.0, Y = 0.0;
+            String[] MouseData = data as String[];
+
+            if (MouseData[2] != null)
+                X = Convert.ToDouble(MouseData[2], NumberFormatInfo.CurrentInfo);
+            if (MouseData[3] != null)
+                Y = Convert.ToDouble(MouseData[3], NumberFormatInfo.CurrentInfo);
+
+            int PosX = (int)X * Screen.PrimaryScreen.WorkingArea.Width;
+            int PosY = (int)Y * Screen.PrimaryScreen.WorkingArea.Height;
+
+            SetCursorPos(PosX, PosY);
         }
-        private void KeyBoardThreadProc()
+        public static void KeyBoardThreadProc(object data)
         { }
-        private void ClipBoardThreadProc()
+        public static void ClipBoardThreadProc(object data)
         { }
+
+        [DllImport("user32.dll")]
+        static extern bool SetCursorPos(int X, int Y);
     }
 }
