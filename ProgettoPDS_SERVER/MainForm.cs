@@ -19,7 +19,6 @@ namespace ProgettoPDS_SERVER
         const int port = 2000;
         //PopUpWindow top = new PopUpWindow(new Panel(),"t");
 
-
         public MainForm(User u)
         {
             InitializeComponent();
@@ -37,30 +36,6 @@ namespace ProgettoPDS_SERVER
 
             this.Text+=" - IP : "+Sconnection.GetMyIp();
         }
-
-        /*private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            // Hide the form.
-            this.Hide();
-        }
-        private void MainForm_DoubleClicked(object sender, EventArgs e)
-        {
-            //Show the form
-            this.Hide();
-        }
-        private void notifyIcon1_MouseClick(object sender, MouseEventArgs e)
-        {
-            if (e.Button != MouseButtons.Left)
-            {
-                if (this.WindowState != FormWindowState.Normal)
-                {
-                    this.WindowState = FormWindowState.Normal;
-                }
-
-                this.Show();
-            }
-           
-        }*/
 
         private void notifyIcon1_BalloonTipClicked(object sender, EventArgs e)
         {
@@ -108,8 +83,7 @@ namespace ProgettoPDS_SERVER
 
         private void MainFormShow(object sender, EventArgs e)
         {
-            this.WindowState = FormWindowState.Normal;
-            
+            this.WindowState = FormWindowState.Normal;          
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -117,7 +91,17 @@ namespace ProgettoPDS_SERVER
             DialogResult res = MessageBox.Show("Vuoi chiudere l'applicazione?", "CHIUSURA IN CORSO", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation);
 
             if (res == DialogResult.OK)
+            {
                 e.Cancel = false;
+
+                this.notifyIcon1.BalloonTipText = "Applicazione in Back Ground.";
+                this.notifyIcon1.BalloonTipTitle = "INFO STATO";
+
+                this.notifyIcon1.ShowBalloonTip(2);
+
+                this.notifyIcon1.ShowBalloonTip(1000);
+            }
+               
             else
                 e.Cancel = true;
 
@@ -173,17 +157,7 @@ namespace ProgettoPDS_SERVER
 
         private void MouseThreadProc()
         {
-            double X = 0.0, Y = 0.0;
-
-            if (MouseData[2] != null)
-                X = Convert.ToDouble(MouseData[2], NumberFormatInfo.CurrentInfo);
-            if (MouseData[3] != null)
-                Y = Convert.ToDouble(MouseData[3], NumberFormatInfo.CurrentInfo);
-
-            int PosX = (int)X * Screen.PrimaryScreen.WorkingArea.Width;
-            int PosY = (int)Y * Screen.PrimaryScreen.WorkingArea.Height;
-
-            Cursor.Position = new Point(PosX, PosY);
+           
         }
         private void KeyBoardThreadProc()
         { }

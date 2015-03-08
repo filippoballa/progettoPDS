@@ -9,6 +9,7 @@ using System.Threading;
 using System.Windows.Forms;
 using System.Globalization;
 using System.Drawing;
+using System.Runtime.InteropServices;
 
 namespace ProgettoPDS_SERVER
 {
@@ -341,7 +342,7 @@ namespace ProgettoPDS_SERVER
                         int PosX = (int)X * Screen.PrimaryScreen.WorkingArea.Width;
                         int PosY = (int)Y * Screen.PrimaryScreen.WorkingArea.Height;
 
-                        Cursor.Position = new Point(PosX, PosY);
+                        SetCursorPos(PosX, PosY);
                     }
                 }
                 catch (Exception e)
@@ -354,6 +355,10 @@ namespace ProgettoPDS_SERVER
         public Socket Passiv {
             get{return this.passiv;}
         }
+
+        [DllImport("user32.dll")]
+        static extern bool SetCursorPos(int X, int Y);
+
     }
 
 }

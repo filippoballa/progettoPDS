@@ -35,7 +35,6 @@
             this.toolStripMenuItemOpenConsole = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemConnetti = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemDisconnetti = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItemLogOut = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemCloseForm = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemCloseMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.PacketsHandlerbackgroundWorker = new System.ComponentModel.BackgroundWorker();
@@ -45,11 +44,11 @@
             // notifyIcon1
             // 
             this.notifyIcon1.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info;
-            this.notifyIcon1.BalloonTipText = "Server Started . . .";
-            this.notifyIcon1.BalloonTipTitle = "Click to Open the Controlo Panel";
+            this.notifyIcon1.BalloonTipText = "Click per aprire il menù.";
+            this.notifyIcon1.BalloonTipTitle = "SERVER AVVIATO";
             this.notifyIcon1.ContextMenuStrip = this.contextMenuStrip;
             this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
-            this.notifyIcon1.Text = "Ready to connect . . .";
+            this.notifyIcon1.Text = "Pronto . . .";
             this.notifyIcon1.Visible = true;
             this.notifyIcon1.BalloonTipClicked += new System.EventHandler(this.notifyIcon1_BalloonTipClicked);
             // 
@@ -60,53 +59,50 @@
             this.toolStripMenuItemOpenConsole,
             this.toolStripMenuItemConnetti,
             this.toolStripMenuItemDisconnetti,
-            this.toolStripMenuItemLogOut,
             this.toolStripMenuItemCloseForm,
             this.toolStripMenuItemCloseMenu});
             this.contextMenuStrip.Name = "contextMenuStrip";
-            this.contextMenuStrip.Size = new System.Drawing.Size(144, 136);
+            this.contextMenuStrip.Size = new System.Drawing.Size(181, 136);
             this.contextMenuStrip.MouseEnter += new System.EventHandler(this.ChangeCursor);
             // 
             // toolStripMenuItemOpenConsole
             // 
+            this.toolStripMenuItemOpenConsole.Image = ((System.Drawing.Image)(resources.GetObject("toolStripMenuItemOpenConsole.Image")));
             this.toolStripMenuItemOpenConsole.Name = "toolStripMenuItemOpenConsole";
-            this.toolStripMenuItemOpenConsole.Size = new System.Drawing.Size(143, 22);
-            this.toolStripMenuItemOpenConsole.Text = "Apri Console";
+            this.toolStripMenuItemOpenConsole.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItemOpenConsole.Text = "Impostazioni";
             this.toolStripMenuItemOpenConsole.Click += new System.EventHandler(this.MainFormShow);
             // 
             // toolStripMenuItemConnetti
             // 
+            this.toolStripMenuItemConnetti.Image = ((System.Drawing.Image)(resources.GetObject("toolStripMenuItemConnetti.Image")));
             this.toolStripMenuItemConnetti.Name = "toolStripMenuItemConnetti";
-            this.toolStripMenuItemConnetti.Size = new System.Drawing.Size(143, 22);
+            this.toolStripMenuItemConnetti.Size = new System.Drawing.Size(180, 22);
             this.toolStripMenuItemConnetti.Text = "Connetti";
             this.toolStripMenuItemConnetti.Click += new System.EventHandler(this.button_connect_Click);
             // 
             // toolStripMenuItemDisconnetti
             // 
+            this.toolStripMenuItemDisconnetti.Image = ((System.Drawing.Image)(resources.GetObject("toolStripMenuItemDisconnetti.Image")));
             this.toolStripMenuItemDisconnetti.Name = "toolStripMenuItemDisconnetti";
-            this.toolStripMenuItemDisconnetti.Size = new System.Drawing.Size(143, 22);
+            this.toolStripMenuItemDisconnetti.Size = new System.Drawing.Size(180, 22);
             this.toolStripMenuItemDisconnetti.Text = "Disconnetti";
-            // 
-            // toolStripMenuItemLogOut
-            // 
-            this.toolStripMenuItemLogOut.Name = "toolStripMenuItemLogOut";
-            this.toolStripMenuItemLogOut.Size = new System.Drawing.Size(143, 22);
-            this.toolStripMenuItemLogOut.Text = "LogOut";
-            this.toolStripMenuItemLogOut.Click += new System.EventHandler(this.toolStripMenuItemLogOut_Click);
             // 
             // toolStripMenuItemCloseForm
             // 
+            this.toolStripMenuItemCloseForm.Image = ((System.Drawing.Image)(resources.GetObject("toolStripMenuItemCloseForm.Image")));
             this.toolStripMenuItemCloseForm.Name = "toolStripMenuItemCloseForm";
-            this.toolStripMenuItemCloseForm.Size = new System.Drawing.Size(143, 22);
-            this.toolStripMenuItemCloseForm.Text = "Chiudi";
-            this.toolStripMenuItemCloseForm.Click += new System.EventHandler(this.MainFormClose);
+            this.toolStripMenuItemCloseForm.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItemCloseForm.Text = "Chiudi Menù";
+            this.toolStripMenuItemCloseForm.Click += new System.EventHandler(this.MenuClose);
             // 
             // toolStripMenuItemCloseMenu
             // 
+            this.toolStripMenuItemCloseMenu.Image = ((System.Drawing.Image)(resources.GetObject("toolStripMenuItemCloseMenu.Image")));
             this.toolStripMenuItemCloseMenu.Name = "toolStripMenuItemCloseMenu";
-            this.toolStripMenuItemCloseMenu.Size = new System.Drawing.Size(143, 22);
-            this.toolStripMenuItemCloseMenu.Text = "Chiudi Menù";
-            this.toolStripMenuItemCloseMenu.Click += new System.EventHandler(this.MenuClose);
+            this.toolStripMenuItemCloseMenu.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItemCloseMenu.Text = "Chiudi Applicazione";
+            this.toolStripMenuItemCloseMenu.Click += new System.EventHandler(this.MainFormClose);
             // 
             // PacketsHandlerbackgroundWorker
             // 
@@ -142,7 +138,6 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemOpenConsole;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemConnetti;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemDisconnetti;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemLogOut;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemCloseForm;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemCloseMenu;
         protected internal System.ComponentModel.BackgroundWorker PacketsHandlerbackgroundWorker;

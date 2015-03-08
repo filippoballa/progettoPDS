@@ -33,6 +33,7 @@
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loginPageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.registraUtenteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cambiaPasswordToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.chiudiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.indirizzoIPToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -61,14 +62,13 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.TitleInfoLabel = new System.Windows.Forms.Label();
-            this.cambiaPasswordToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ChangePasswordPanel = new System.Windows.Forms.Panel();
-            this.ChangeButton = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.ChangeUserTextBox = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
             this.ChangePwdTextBox = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.ChangeUserTextBox = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.ChangeButton = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.MainPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -122,6 +122,15 @@
             this.registraUtenteToolStripMenuItem.Text = "Registra Utente";
             this.registraUtenteToolStripMenuItem.Click += new System.EventHandler(this.registraUtenteToolStripMenuItem_Click);
             // 
+            // cambiaPasswordToolStripMenuItem
+            // 
+            this.cambiaPasswordToolStripMenuItem.BackColor = System.Drawing.SystemColors.Info;
+            this.cambiaPasswordToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("cambiaPasswordToolStripMenuItem.Image")));
+            this.cambiaPasswordToolStripMenuItem.Name = "cambiaPasswordToolStripMenuItem";
+            this.cambiaPasswordToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
+            this.cambiaPasswordToolStripMenuItem.Text = "Cambia Password";
+            this.cambiaPasswordToolStripMenuItem.Click += new System.EventHandler(this.cambiaPasswordToolStripMenuItem_Click);
+            // 
             // chiudiToolStripMenuItem
             // 
             this.chiudiToolStripMenuItem.BackColor = System.Drawing.SystemColors.Info;
@@ -147,7 +156,7 @@
             this.indirizzoIPToolStripMenuItem.BackColor = System.Drawing.SystemColors.Info;
             this.indirizzoIPToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("indirizzoIPToolStripMenuItem.Image")));
             this.indirizzoIPToolStripMenuItem.Name = "indirizzoIPToolStripMenuItem";
-            this.indirizzoIPToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.indirizzoIPToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.indirizzoIPToolStripMenuItem.Text = "Indirizzo IP";
             this.indirizzoIPToolStripMenuItem.Click += new System.EventHandler(this.indirizzoIPToolStripMenuItem_Click);
             // 
@@ -156,7 +165,7 @@
             this.informazioniToolStripMenuItem.BackColor = System.Drawing.SystemColors.Info;
             this.informazioniToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("informazioniToolStripMenuItem.Image")));
             this.informazioniToolStripMenuItem.Name = "informazioniToolStripMenuItem";
-            this.informazioniToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.informazioniToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.informazioniToolStripMenuItem.Text = "Informazioni";
             this.informazioniToolStripMenuItem.Click += new System.EventHandler(this.informazioniToolStripMenuItem_Click);
             // 
@@ -454,15 +463,6 @@
             this.TitleInfoLabel.TabIndex = 1;
             this.TitleInfoLabel.Text = "Informazioni sulla schermata di Login";
             // 
-            // cambiaPasswordToolStripMenuItem
-            // 
-            this.cambiaPasswordToolStripMenuItem.BackColor = System.Drawing.SystemColors.Info;
-            this.cambiaPasswordToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("cambiaPasswordToolStripMenuItem.Image")));
-            this.cambiaPasswordToolStripMenuItem.Name = "cambiaPasswordToolStripMenuItem";
-            this.cambiaPasswordToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
-            this.cambiaPasswordToolStripMenuItem.Text = "Cambia Password";
-            this.cambiaPasswordToolStripMenuItem.Click += new System.EventHandler(this.cambiaPasswordToolStripMenuItem_Click);
-            // 
             // ChangePasswordPanel
             // 
             this.ChangePasswordPanel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("ChangePasswordPanel.BackgroundImage")));
@@ -478,6 +478,64 @@
             this.ChangePasswordPanel.Size = new System.Drawing.Size(632, 346);
             this.ChangePasswordPanel.TabIndex = 21;
             this.ChangePasswordPanel.Visible = false;
+            // 
+            // ChangePwdTextBox
+            // 
+            this.ChangePwdTextBox.BackColor = System.Drawing.Color.DimGray;
+            this.ChangePwdTextBox.Font = new System.Drawing.Font("Comic Sans MS", 10F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ChangePwdTextBox.Location = new System.Drawing.Point(176, 233);
+            this.ChangePwdTextBox.Name = "ChangePwdTextBox";
+            this.ChangePwdTextBox.Size = new System.Drawing.Size(248, 26);
+            this.ChangePwdTextBox.TabIndex = 12;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.BackColor = System.Drawing.Color.Transparent;
+            this.label6.Font = new System.Drawing.Font("Calibri", 11F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.ForeColor = System.Drawing.Color.White;
+            this.label6.Location = new System.Drawing.Point(88, 167);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(439, 36);
+            this.label6.TabIndex = 11;
+            this.label6.Text = "Inserisci nella textbox qui sotto la nuova password che sarà associata \r\nallo use" +
+    "rname inserito sopra.";
+            this.label6.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // ChangeUserTextBox
+            // 
+            this.ChangeUserTextBox.BackColor = System.Drawing.Color.DimGray;
+            this.ChangeUserTextBox.Font = new System.Drawing.Font("Comic Sans MS", 10F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ChangeUserTextBox.Location = new System.Drawing.Point(171, 107);
+            this.ChangeUserTextBox.Name = "ChangeUserTextBox";
+            this.ChangeUserTextBox.Size = new System.Drawing.Size(248, 26);
+            this.ChangeUserTextBox.TabIndex = 10;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.BackColor = System.Drawing.Color.Transparent;
+            this.label5.Font = new System.Drawing.Font("Calibri", 11F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.ForeColor = System.Drawing.Color.White;
+            this.label5.Location = new System.Drawing.Point(88, 51);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(421, 36);
+            this.label5.TabIndex = 9;
+            this.label5.Text = "Inserisci nella textbox qui sotto lo \"username\" usato abitualmente \r\nper accedere" +
+    " all\'applicazione.";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.BackColor = System.Drawing.Color.Transparent;
+            this.label1.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.OrangeRed;
+            this.label1.Location = new System.Drawing.Point(172, 14);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(266, 23);
+            this.label1.TabIndex = 8;
+            this.label1.Text = "MODIFICA LA TUA PASSWORD";
             // 
             // ChangeButton
             // 
@@ -496,66 +554,9 @@
             this.ChangeButton.UseVisualStyleBackColor = false;
             this.ChangeButton.Click += new System.EventHandler(this.ChangeButton_Click);
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.BackColor = System.Drawing.Color.Transparent;
-            this.label1.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.OrangeRed;
-            this.label1.Location = new System.Drawing.Point(172, 14);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(266, 23);
-            this.label1.TabIndex = 8;
-            this.label1.Text = "MODIFICA LA TUA PASSWORD";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.BackColor = System.Drawing.Color.Transparent;
-            this.label5.Font = new System.Drawing.Font("Calibri", 11F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.ForeColor = System.Drawing.Color.White;
-            this.label5.Location = new System.Drawing.Point(88, 51);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(421, 36);
-            this.label5.TabIndex = 9;
-            this.label5.Text = "Inserisci nella textbox qui sotto lo \"username\" usato abitualmente \r\nper accedere" +
-    " all\'applicazione.";
-            this.label5.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
-            // ChangeUserTextBox
-            // 
-            this.ChangeUserTextBox.BackColor = System.Drawing.Color.DimGray;
-            this.ChangeUserTextBox.Font = new System.Drawing.Font("Comic Sans MS", 10F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ChangeUserTextBox.Location = new System.Drawing.Point(171, 107);
-            this.ChangeUserTextBox.Name = "ChangeUserTextBox";
-            this.ChangeUserTextBox.Size = new System.Drawing.Size(248, 26);
-            this.ChangeUserTextBox.TabIndex = 10;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.BackColor = System.Drawing.Color.Transparent;
-            this.label6.Font = new System.Drawing.Font("Calibri", 11F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.ForeColor = System.Drawing.Color.White;
-            this.label6.Location = new System.Drawing.Point(88, 167);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(439, 36);
-            this.label6.TabIndex = 11;
-            this.label6.Text = "Inserisci nella textbox qui sotto la nuova password che sarà associata \r\nallo use" +
-    "rname inserito sopra.";
-            this.label6.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
-            // ChangePwdTextBox
-            // 
-            this.ChangePwdTextBox.BackColor = System.Drawing.Color.DimGray;
-            this.ChangePwdTextBox.Font = new System.Drawing.Font("Comic Sans MS", 10F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ChangePwdTextBox.Location = new System.Drawing.Point(176, 233);
-            this.ChangePwdTextBox.Name = "ChangePwdTextBox";
-            this.ChangePwdTextBox.Size = new System.Drawing.Size(248, 26);
-            this.ChangePwdTextBox.TabIndex = 12;
-            // 
             // LoginForm
             // 
+            this.AcceptButton = this.LoginButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
