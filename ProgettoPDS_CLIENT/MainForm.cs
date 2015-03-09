@@ -15,11 +15,19 @@ namespace ProgettoPDS_CLIENT
 {
     public partial class MainForm : Form
     {
+        #region Private Variables
+
         private User user;
         private List<SocketConnection> connessioni;
         private List<Server> servers;
         private int AltezzaForm, BaseForm, currServ, CountServerConnected;
         private static Mutex mut = new Mutex();
+        private MouseHook mouseHook = new MouseHook();
+        private KeyboardHook keyboardHook = new KeyboardHook();
+
+        #endregion
+
+        #region Constructor
 
         public MainForm( User aux)
         {
@@ -41,8 +49,15 @@ namespace ProgettoPDS_CLIENT
             this.BaseForm = this.Width;
             this.Ridimensiona();
             this.HostNameTextBox.Focus();
+            this.mouseHook.MouseMove += new MouseEventHandler(mouseHook_MouseMove);
+            this.keyboardHook.KeyDown += new KeyEventHandler(keyboardHook_KeyDown);
+            //this.mouseHook.MouseDown += new MouseEventHandler(mouseHook_MouseDown);
+            //this.mouseHook.DoubleClick += new EventHandler(mouseHook_DoubleClick);
         }
 
+        #endregion
+
+        #region Ridimensiona
 
         private void Ridimensiona() 
         {
@@ -201,6 +216,7 @@ namespace ProgettoPDS_CLIENT
             this.label1.Location = new Point(X, Y);
         }
 
+        
 
         private void MainPanel_Paint(object sender, PaintEventArgs e)
         {
@@ -209,6 +225,10 @@ namespace ProgettoPDS_CLIENT
             Pen p = new Pen(Color.White, 6);
             g.DrawRectangle(p, r);
         }
+
+        #endregion
+
+        #region Connected Button
 
         private void ConnectButton_Click(object sender, EventArgs e)
         {
@@ -239,6 +259,10 @@ namespace ProgettoPDS_CLIENT
                 MessageBox.Show("La connessione con il server è già attiva!!", "ERRORE!!", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
         }
+
+        #endregion
+
+        #region Disconnected Button
 
         private void DisconnectButton_Click(object sender, EventArgs e)
         {
@@ -273,7 +297,7 @@ namespace ProgettoPDS_CLIENT
 
                     for (int i = 1; i < aux.Length; i++) {
 
-                        if (aux[i] == this.servers[this.currServ].HostName) {
+                        if ( aux[i] == this.servers[this.currServ].HostName) {
                             index = i;
                             break;
                         }
@@ -296,6 +320,23 @@ namespace ProgettoPDS_CLIENT
 
         }
 
+        #endregion
+
+        #region Other Buttons
+
+        private void InfoButton_Click(object sender, EventArgs e)
+        {
+            this.MainPanel.Visible = false;
+            this.InfoPanel.Visible = true;
+        }
+
+        private void BackButton_Click(object sender, EventArgs e)
+        {
+            this.MainPanel.Visible = true;
+            this.InfoPanel.Visible = false;
+        }
+
+
         private void StartButton_Click(object sender, EventArgs e)
         {
             if (this.listBox1.SelectedIndex == -1) {
@@ -313,6 +354,9 @@ namespace ProgettoPDS_CLIENT
             this.ActionServerLabel.Text += this.servers[this.currServ].HostName;
             this.ActionPanel.Visible = true;
             this.MainPanel.Visible = false;
+            this.mouseHook.Install();
+            this.keyboardHook.Install();
+
         }
 
         private void RemoveButton_Click(object sender, EventArgs e)
@@ -388,27 +432,31 @@ namespace ProgettoPDS_CLIENT
 
         }
 
-        private void MainForm_KeyDown(object sender, KeyEventArgs e)
+        #endregion
+
+        #region Keyboard Management
+
+        private void keyboardHook_KeyDown( object sender, KeyEventArgs e ) 
         {
-            
-            if ( this.ActionPanel.Visible ) {
+            if (this.ActionPanel.Visible && this.keyboardHook.IsStarted ) {
 
                 if (e.KeyCode == Keys.Escape) {
                     this.ActionPanel.Visible = false;
                     this.ActionServerLabel.Text = "Stai Comandando il seguente Server: ";
                     this.MainPanel.Visible = true;
                     this.HostNameTextBox.Focus();
+                    this.mouseHook.Unistall();
+                    this.keyboardHook.Unistall();
 
                     // gestione BWs!!
                     this.MouseBackgroundWorker.CancelAsync();
                     this.KeyBackgroundWorker.CancelAsync();
 
                 }
-                else 
+                else
                     this.KeyBackgroundWorker.RunWorkerAsync(e);  // Parte il KeyBW per invio pdu al server!!         
-                
+
             }
-                
         }
 
         private void KeyBackgroundWorker_DoWork(object sender, DoWorkEventArgs e)
@@ -439,10 +487,43 @@ namespace ProgettoPDS_CLIENT
             mut.ReleaseMutex();
         }
 
+        #endregion
+
+        #region Mouse Management
+
+        private void mouseHook_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (this.mouseHook.IsStarted)
+                this.MouseBackgroundWorker.RunWorkerAsync(e);
+        }
+
         private void MouseBackgroundWorker_DoWork(object sender, DoWorkEventArgs e)
         {
+            MouseEventArgs mouse = (MouseEventArgs)e.Argument;
+
             // Costruzione Pacchetto
-            string aux = "M-MOVE-"; 
+            string aux;
+
+            if( mouse.Clicks == 0 )
+                aux = "M-MOVE";
+            else if( mouse.Clicks == 1 ) {
+                if( mouse.Button == MouseButtons.Left )
+                    aux = "M-CLICKSX";
+                else if( mouse.Button == MouseButtons.Right )
+                    aux = "M-CLICKDX";
+                else
+                    aux = "M-CLICKMD";
+            }
+            else {
+
+                if( mouse.Button == MouseButtons.Left )
+                    aux = "M-CLICKSX2";
+                else if( mouse.Button == MouseButtons.Right )
+                    aux = "M-CLICKDX2";
+                else
+                    aux = "M-CLICKMD2";
+            }
+
             double res = Convert.ToDouble(Cursor.Position.X) / Convert.ToDouble(Screen.PrimaryScreen.WorkingArea.Width);
             aux += res.ToString();
             res = Convert.ToDouble(Cursor.Position.Y) / Convert.ToDouble(Screen.PrimaryScreen.WorkingArea.Height);
@@ -456,28 +537,8 @@ namespace ProgettoPDS_CLIENT
                             
         }
 
-        private void InfoButton_Click(object sender, EventArgs e)
-        {
-            this.MainPanel.Visible = false;
-            this.InfoPanel.Visible = true;
-        }
 
-        private void BackButton_Click(object sender, EventArgs e)
-        {
-            this.MainPanel.Visible = true;
-            this.InfoPanel.Visible = false;
-        }
-
-        private void MainForm_MouseMove(object sender, MouseEventArgs e)
-        {
-            //TODO
-        }
-
-        private void ActionPanel_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (this.ActionPanel.Visible)
-                this.MouseBackgroundWorker.RunWorkerAsync();
-        }
+        #endregion
 
     }
 }

@@ -372,7 +372,6 @@
             this.ActionPanel.Size = new System.Drawing.Size(1071, 608);
             this.ActionPanel.TabIndex = 26;
             this.ActionPanel.Visible = false;
-            this.ActionPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ActionPanel_MouseMove);
             // 
             // EscapeLabel
             // 
@@ -504,8 +503,6 @@
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Progetto PDS - Main Form";
-            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
-            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MainForm_MouseMove);
             this.MainPanel.ResumeLayout(false);
             this.MainPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
