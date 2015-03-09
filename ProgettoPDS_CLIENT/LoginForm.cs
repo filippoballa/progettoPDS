@@ -18,6 +18,8 @@ namespace ProgettoPDS_CLIENT
         private User user;
         private XmlManager mng;
 
+        #region Constructor
+
         public LoginForm( User aux )
         {
             SetStyle(ControlStyles.UserPaint, true);
@@ -30,6 +32,10 @@ namespace ProgettoPDS_CLIENT
             this.user = aux;
             this.mng = new XmlManager("XMLUsers.xml");
         }
+
+        #endregion
+
+        #region Login And Registration
 
         private void LoginButton_Click(object sender, EventArgs e)
         {
@@ -78,57 +84,6 @@ namespace ProgettoPDS_CLIENT
             }
             else 
                 return false;
-        }
-
-        private void chiudiToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
-        private void registraToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            this.SuspendLayout();           
-            this.label3.Visible = false;
-            this.label4.Visible = false;
-            this.ChangeButton.Visible = false;
-            this.TitleInfoLabel.Visible = false;
-            this.UsernameLabel.Visible = false;
-            this.PasswordLabel.Visible = false;
-            this.UsernameTextBox.Visible = false;
-            this.PasswordTextBox.Visible = false;
-            this.NotaLabel.Visible = false;
-            this.InfoPanel.Visible = false;
-            this.MainPanel.Visible = false;
-            this.ChangePasswordPanel.Visible = false;
-            Thread.Sleep(10);
-            this.groupBox1.Visible = true;
-            this.RegistraButton.Visible = true;
-            this.RegistraPanel.Visible = true;
-            this.ResumeLayout();
-            this.NameRegTextBox.Focus();
-        }
-
-        private void loginPageToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            this.SuspendLayout();           
-            this.groupBox1.Visible = false;
-            this.RegistraButton.Visible = false;
-            this.label3.Visible = false;
-            this.label4.Visible = false;
-            this.TitleInfoLabel.Visible = false;
-            this.ChangeButton.Visible = false;
-            this.InfoPanel.Visible = false;
-            this.ChangePasswordPanel.Visible = false;
-            this.RegistraPanel.Visible = false;
-            Thread.Sleep(10);
-            this.UsernameLabel.Visible = true;
-            this.PasswordLabel.Visible = true;
-            this.NotaLabel.Visible = true;
-            this.UsernameTextBox.Visible = true;
-            this.PasswordTextBox.Visible = true;
-            this.MainPanel.Visible = true;
-            this.ResumeLayout();
-            this.UsernameTextBox.Focus();
         }
 
         private void RegistraButton_Click(object sender, EventArgs e)
@@ -182,6 +137,38 @@ namespace ProgettoPDS_CLIENT
 
         }
 
+        #endregion
+
+        #region View Management
+
+        private void chiudiToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void registraToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.SuspendLayout();
+            this.label3.Visible = false;
+            this.label4.Visible = false;
+            this.ChangeButton.Visible = false;
+            this.TitleInfoLabel.Visible = false;
+            this.UsernameLabel.Visible = false;
+            this.PasswordLabel.Visible = false;
+            this.UsernameTextBox.Visible = false;
+            this.PasswordTextBox.Visible = false;
+            this.NotaLabel.Visible = false;
+            this.InfoPanel.Visible = false;
+            this.MainPanel.Visible = false;
+            this.ChangePasswordPanel.Visible = false;
+            Thread.Sleep(10);
+            this.groupBox1.Visible = true;
+            this.RegistraButton.Visible = true;
+            this.RegistraPanel.Visible = true;
+            this.ResumeLayout();
+            this.NameRegTextBox.Focus();
+        }
+
         private void indirizzoIPToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string ip = SocketConnection.MyIpInfo();
@@ -191,6 +178,29 @@ namespace ProgettoPDS_CLIENT
             else
                 MessageBox.Show("Dispositivo non collegato ad Internet!!", "INFORMAZIONI", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
+        } 
+
+        private void loginPageToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.SuspendLayout();
+            this.groupBox1.Visible = false;
+            this.RegistraButton.Visible = false;
+            this.label3.Visible = false;
+            this.label4.Visible = false;
+            this.TitleInfoLabel.Visible = false;
+            this.ChangeButton.Visible = false;
+            this.InfoPanel.Visible = false;
+            this.ChangePasswordPanel.Visible = false;
+            this.RegistraPanel.Visible = false;
+            Thread.Sleep(10);
+            this.UsernameLabel.Visible = true;
+            this.PasswordLabel.Visible = true;
+            this.NotaLabel.Visible = true;
+            this.UsernameTextBox.Visible = true;
+            this.PasswordTextBox.Visible = true;
+            this.MainPanel.Visible = true;
+            this.ResumeLayout();
+            this.UsernameTextBox.Focus();
         }
 
         private void infoToolStripMenuItem_Click(object sender, EventArgs e)
@@ -239,6 +249,10 @@ namespace ProgettoPDS_CLIENT
             this.ChangeUserTextBox.Focus();
         }
 
+        #endregion
+
+        #region Change PWD
+
         private void ChangeButton_Click(object sender, EventArgs e)
         {
             if (this.ChangePwdTextBox.Text == "" && this.ChangeUserTextBox.Text == "") {
@@ -269,8 +283,10 @@ namespace ProgettoPDS_CLIENT
                 else {
                     DialogResult res = MessageBox.Show("Desideri procedere con la modifica della password??", "AVVISO", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
-                    if (res == DialogResult.Yes)
+                    if (res == DialogResult.Yes) {
                         this.mng.ModifyPwdUser(this.ChangeUserTextBox.Text, this.ChangePwdTextBox.Text);
+                        MessageBox.Show("Password modificata correttamente!!", "AVVISO", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
                     
                     this.ChangeUserTextBox.Clear();
                     this.ChangePwdTextBox.Clear();
@@ -278,8 +294,10 @@ namespace ProgettoPDS_CLIENT
 
                 }
             }
-            
+
         }
-        
+
+        #endregion
+
     }
 }

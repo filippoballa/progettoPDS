@@ -24,6 +24,8 @@ namespace ProgettoPDS_CLIENT
         private static Mutex mut = new Mutex();
         private MouseHook mouseHook = new MouseHook();
         private KeyboardHook keyboardHook = new KeyboardHook();
+        private static ManualResetEvent mreMouse = new ManualResetEvent(false);
+        private static ManualResetEvent mreKeyboard = new ManualResetEvent(false);
 
         #endregion
 
@@ -51,8 +53,7 @@ namespace ProgettoPDS_CLIENT
             this.HostNameTextBox.Focus();
             this.mouseHook.MouseMove += new MouseEventHandler(mouseHook_MouseMove);
             this.keyboardHook.KeyDown += new KeyEventHandler(keyboardHook_KeyDown);
-            //this.mouseHook.MouseDown += new MouseEventHandler(mouseHook_MouseDown);
-            //this.mouseHook.DoubleClick += new EventHandler(mouseHook_DoubleClick);
+            this.mouseHook.Click += new EventHandler(mouseHook_MouseClick);
         }
 
         #endregion
@@ -453,9 +454,16 @@ namespace ProgettoPDS_CLIENT
                     this.KeyBackgroundWorker.CancelAsync();
 
                 }
-                else
-                    this.KeyBackgroundWorker.RunWorkerAsync(e);  // Parte il KeyBW per invio pdu al server!!         
+                else {
 
+                    if (this.KeyBackgroundWorker.IsBusy)
+                        mreKeyboard.WaitOne();
+
+                    this.KeyBackgroundWorker.RunWorkerAsync(e);  
+
+                    mreKeyboard.Reset();
+
+                }
             }
         }
 
@@ -482,23 +490,45 @@ namespace ProgettoPDS_CLIENT
             byte[] pdu = Encoding.ASCII.GetBytes(aux);
 
             // Invio PDU relativa alla tastiera
-            mut.WaitOne();
-            this.connessioni[this.currServ].Sock.Send(pdu);
-            mut.ReleaseMutex();
+            try {
+                mut.WaitOne();
+                this.connessioni[this.currServ].Sock.Send(pdu);
+            }
+            finally {
+                mut.ReleaseMutex();
+            }
         }
 
         #endregion
 
         #region Mouse Management
 
+        private void mouseHook_MouseClick(object sender, EventArgs e) 
+        {
+            MouseManagement( (MouseEventArgs)e );
+        }
+
         private void mouseHook_MouseMove(object sender, MouseEventArgs e)
         {
-            if (this.mouseHook.IsStarted)
+            MouseManagement(e);
+        }
+
+        private void MouseManagement( MouseEventArgs e ) 
+        {
+            if (this.mouseHook.IsStarted && this.ActionPanel.Visible) {
+                if (this.MouseBackgroundWorker.IsBusy)
+                    mreMouse.WaitOne();
+
                 this.MouseBackgroundWorker.RunWorkerAsync(e);
+
+                mreMouse.Reset();
+
+            }   
         }
 
         private void MouseBackgroundWorker_DoWork(object sender, DoWorkEventArgs e)
         {
+
             MouseEventArgs mouse = (MouseEventArgs)e.Argument;
 
             // Costruzione Pacchetto
@@ -531,10 +561,15 @@ namespace ProgettoPDS_CLIENT
             byte[] pdu = Encoding.ASCII.GetBytes(aux);
             
             // Invio Pacchetto
-            mut.WaitOne();
-            this.connessioni[this.currServ].Sock.Send(pdu);
-            mut.ReleaseMutex();
-                            
+            try {
+                mut.WaitOne();
+                this.connessioni[this.currServ].Sock.Send(pdu);
+                mreMouse.Set();
+            }
+            finally {
+                mut.ReleaseMutex();
+            }
+                                       
         }
 
 

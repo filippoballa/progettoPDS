@@ -11,7 +11,9 @@ using System.Windows.Forms;
 namespace ProgettoPDS_CLIENT
 {
     class SocketConnection
-    { 
+    {
+        #region Variables
+
         private Socket sock;
         private IPEndPoint remoteEP, localEP;
         private User utente;
@@ -20,7 +22,10 @@ namespace ProgettoPDS_CLIENT
         public static bool isBindLocal = false;
         private bool isDisconect;
 
-        // Costruttore Client usato per Connessione con il server
+        #endregion
+
+        #region Constructor
+
         public SocketConnection(string addr, int port, User utente ) 
         {
             this.utente = utente;
@@ -41,47 +46,9 @@ namespace ProgettoPDS_CLIENT
 
         }
 
-        // Bind dell'endpoint locale
-        private void BindingLocalEP() 
-        {
-            if (this.sock != null) {
-                this.sock.Bind(this.localEP);
-                SocketConnection.isBindLocal = true;
-            }
-        }
+        #endregion
 
-        // La funzione ritorna l'indirizzo IP della macchina
-        public static string MyIpInfo() 
-        {
-            IPHostEntry host = Dns.GetHostEntry(Dns.GetHostName());
-            string AddrInformation = null;
-
-            foreach (IPAddress ip in host.AddressList) {
-                if (ip.AddressFamily == AddressFamily.InterNetwork) {
-                    AddrInformation = ip.ToString();
-                    return AddrInformation;
-                }
-            }
-
-            return AddrInformation;           
-            
-        }
-
-        // Ottiene configurazione Locale dell'Host
-        private void GetLocalIP()
-        {
-            IPHostEntry host = Dns.GetHostEntry( Dns.GetHostName() );
-
-            foreach (IPAddress ip in host.AddressList)
-            {
-                if (ip.AddressFamily == AddressFamily.InterNetwork)
-                {
-                    localEP = new IPEndPoint(ip, localPort);
-                    break;
-                }
-            }
-
-        }
+        #region PROTOCOLLO DI AUTENTICAZIONE
 
         // Esegue una connessione al Server
         public void StartClientConnection() 
@@ -184,6 +151,55 @@ namespace ProgettoPDS_CLIENT
             this.SockDisconnect();
         }
 
+        #endregion
+
+        #region Other Methods...
+
+        // Bind dell'endpoint locale
+        private void BindingLocalEP()
+        {
+            if (this.sock != null)
+            {
+                this.sock.Bind(this.localEP);
+                SocketConnection.isBindLocal = true;
+            }
+        }
+
+        // La funzione ritorna l'indirizzo IP della macchina
+        public static string MyIpInfo()
+        {
+            IPHostEntry host = Dns.GetHostEntry(Dns.GetHostName());
+            string AddrInformation = null;
+
+            foreach (IPAddress ip in host.AddressList)
+            {
+                if (ip.AddressFamily == AddressFamily.InterNetwork)
+                {
+                    AddrInformation = ip.ToString();
+                    return AddrInformation;
+                }
+            }
+
+            return AddrInformation;
+
+        }
+
+        // Ottiene configurazione Locale dell'Host
+        private void GetLocalIP()
+        {
+            IPHostEntry host = Dns.GetHostEntry(Dns.GetHostName());
+
+            foreach (IPAddress ip in host.AddressList)
+            {
+                if (ip.AddressFamily == AddressFamily.InterNetwork)
+                {
+                    localEP = new IPEndPoint(ip, localPort);
+                    break;
+                }
+            }
+
+        }
+
         // La funzione ritorna "true" se il socket è connesso
         public bool IsConnected() 
         {
@@ -248,6 +264,8 @@ namespace ProgettoPDS_CLIENT
                 return true;
 
         }
+
+        #endregion
 
     }
 
