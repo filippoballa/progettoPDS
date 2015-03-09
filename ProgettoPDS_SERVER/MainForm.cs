@@ -10,7 +10,6 @@ using System.Windows.Forms;
 using System.Windows;
 using System.Globalization;
 using System.Threading;
-using System.Runtime.InteropServices;
 
 namespace ProgettoPDS_SERVER
 {
@@ -138,15 +137,15 @@ namespace ProgettoPDS_SERVER
 
                     if (Data[0] == ApplicationConstants.MOUSECODE)
                     {
-                        t = new Thread(MainForm.MouseThreadProc);
+                        t = new Thread(ThreadHandler.MouseThreadProc);
                     }
                     if (Data[0] == ApplicationConstants.KEYBOARDCODE)
                     {
-                        t = new Thread(MainForm.KeyBoardThreadProc);
+                        t = new Thread(ThreadHandler.KeyBoardThreadProc);
                     }
                     if (Data[0] == ApplicationConstants.CLIPBOARDCODE)
                     {
-                        t = new Thread(MainForm.ClipBoardThreadProc);
+                        t = new Thread(ThreadHandler.ClipBoardThreadProc);
                     }
 
                     if(t!=null)
@@ -163,34 +162,9 @@ namespace ProgettoPDS_SERVER
                         Sconnection.SockDisconnect();
                         work = false;
                     }
-                    
                 }
             }
         }
-
-        public static void MouseThreadProc(object data)
-        {
-            double X = 0.0, Y = 0.0;
-            String[] MouseData = data as String[];
-
-            if (MouseData[2] != null)
-                X = Convert.ToDouble(MouseData[2], NumberFormatInfo.CurrentInfo);
-            if (MouseData[3] != null)
-                Y = Convert.ToDouble(MouseData[3], NumberFormatInfo.CurrentInfo);
-
-            int PosX = (int)X * Screen.PrimaryScreen.WorkingArea.Width;
-            int PosY = (int)Y * Screen.PrimaryScreen.WorkingArea.Height;
-
-            SetCursorPos(PosX, PosY);
-        }
-        public static void KeyBoardThreadProc(object data)
-        { }
-        public static void ClipBoardThreadProc(object data)
-        { }
-
-        [DllImport("user32.dll",  CallingConvention=CallingConvention.Cdecl)]
-        static extern bool SetCursorPos(int X, int Y);
-
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
             Sconnection.DrawBorders();
