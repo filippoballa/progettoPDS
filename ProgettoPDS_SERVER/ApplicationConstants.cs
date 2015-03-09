@@ -15,21 +15,21 @@ namespace ProgettoPDS_SERVER
             DISCONNESSO = 0
         };
         //protocol messages
-        private const string auth_user = "+AUTH_USER";
-        private const string auth_pwd = "+AUTH_PWD";
-        private const string reg_user = "+REG_USER";
-        private const string yes = "+YES";
-        private const string reg_pwd = "+REG_PWD";
-        private const string ok = "+OK";
-        private const string err = "-ERR";
+        const string auth_user = "+AUTH_USER";
+        const string auth_pwd = "+AUTH_PWD";
+        const string reg_user = "+REG_USER";
+        const string yes = "+YES";
+        const string reg_pwd = "+REG_PWD";
+        const string ok = "+OK";
+        const string err = "-ERR";
 
         //protocol fields separator
-        private const char[] separator= { '-' };
+        const char[] separator= { '-' };
 
         //type of packets
-        private const string mousecode = "M";
-        private const string keyboardcode = "K";
-        private const string clipboardcode = "C";
+        const string mousecode = "M";
+        const string keyboardcode = "K";
+        const string clipboardcode = "C";
 
         //mouse flags
         const uint mouseeventf_absolute = 0x8000;

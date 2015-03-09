@@ -42,13 +42,21 @@ namespace ProgettoPDS_SERVER
      */
     class SocketConnection
     {
+        //attributi
+
         private const int backlog = 1;
         private Socket sock, passiv;
-        //public static ManualResetEvent allDone = new ManualResetEvent(false);
         private int porta;
         private String myIP;
         private ApplicationConstants.Stato stato;
         private MainForm main;
+
+        public Socket Passiv
+        {
+            get { return this.passiv; }
+        }
+
+        //costruttore
 
         public SocketConnection(int porta)
         {
@@ -57,9 +65,11 @@ namespace ProgettoPDS_SERVER
             this.porta = porta;
             sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
-            // Bind the socket to the local endpoint and 
+            // Bind the socket to the local endpoint
             sock.Bind(new IPEndPoint(IPAddress.Any, porta));
         }
+
+        #region Socket Methods
         public void StartListening(MainForm main)
         {
             this.main = main;
@@ -88,7 +98,7 @@ namespace ProgettoPDS_SERVER
             {
                 main.notifyIcon1.ShowBalloonTip(2, "INFO STATO", "Autenticazione Client effettuata con successo! Connessione avviata.",ToolTipIcon.Info);
                 stato = ApplicationConstants.Stato.CONNESSO;
-                //disegno qualcosa per mosrare il controllo
+                //disegno qualcosa per mostrare il controllo
                 Thread t = new Thread(new ThreadStart(DrawBorders));
                 //lancio il backGround worker per il controllo dei pacchetti
                 main.PacketsHandlerbackgroundWorker.RunWorkerAsync();
@@ -99,24 +109,55 @@ namespace ProgettoPDS_SERVER
             }
         }
 
-        public void DrawBorders()
+        public void SockDisconnect(Socket sock)
         {
-                IntPtr desktop = GetDC(IntPtr.Zero);
-                using (Graphics g = Graphics.FromHdc(desktop))
+            if (this.sock != null)
+            {
+                if (sock.Connected)
                 {
-                    int border = 3;
-                    //top
-                    g.FillRectangle(Brushes.Red, 0, 0, Screen.PrimaryScreen.Bounds.Width, border);
-                    //right
-                    g.FillRectangle(Brushes.Green, Screen.PrimaryScreen.Bounds.Width - border, border, border, Screen.PrimaryScreen.Bounds.Height - (2 * border));
-                    //bottom
-                    g.FillRectangle(Brushes.Red, 0, Screen.PrimaryScreen.Bounds.Height - border, Screen.PrimaryScreen.Bounds.Width, border);
-                    //left
-                    g.FillRectangle(Brushes.Yellow, 0, border, border, Screen.PrimaryScreen.Bounds.Height - (2 * border));
+                    sock.Shutdown(SocketShutdown.Both);
+                    sock.Close();
+                    main.notifyIcon1.ShowBalloonTip(2, "INFO STATO", "Connessione chiusa correttamente.", ToolTipIcon.Info);
                 }
-                ReleaseDC(IntPtr.Zero, desktop);
+                else
+                {
+                    main.notifyIcon1.ShowBalloonTip(2, "INFO STATO", "Eri già disconnesso.", ToolTipIcon.Warning);
+                }
+            }
+            else
+            {
+                main.notifyIcon1.ShowBalloonTip(2, "INFO STATO", "Deve ancora essere creata una connessione.", ToolTipIcon.Warning);
+            }
+            stato = ApplicationConstants.Stato.DISCONNESSO;
+
         }
 
+        public void SockDisconnect()
+        {
+            if (this.passiv != null)
+            {
+                if (this.passiv.Connected)
+                {
+                    this.passiv.Shutdown(SocketShutdown.Both);
+                    this.passiv.Close();
+                    main.notifyIcon1.ShowBalloonTip(2, "INFO STATO", "Connessione chiusa correttamente.", ToolTipIcon.Info);
+                }
+                else
+                {
+                    main.notifyIcon1.ShowBalloonTip(2, "INFO STATO", "Eri già disconnesso.", ToolTipIcon.Warning);
+                }
+            }
+            else
+            {
+                main.notifyIcon1.ShowBalloonTip(2, "INFO STATO", "Deve ancora essere creata una connessione.", ToolTipIcon.Warning);
+            }
+            stato = ApplicationConstants.Stato.DISCONNESSO;
+
+        }
+        #endregion
+
+        #region Client Authentication
+        //protocollo di autenticazione/regisrazione
         private bool ClientAutentication()
         {
             string comando, user, pwd;
@@ -170,7 +211,7 @@ namespace ProgettoPDS_SERVER
                                     {
                                         comando = ApplicationConstants.ERR;
                                         data = Encoding.ASCII.GetBytes(comando);
-                                        passiv.Send(data);//invio che c'è stato un errore
+                                        passiv.Send(data);//invio messaggio di errore
 
                                         SockDisconnect();//e chiudo
                                         return false;
@@ -206,7 +247,7 @@ namespace ProgettoPDS_SERVER
                                     pwd = Encoding.ASCII.GetString(data);
                                     pwd = pwd.Substring(0, pwd.IndexOf('\0'));
 
-                                    if (!AddNewUser(user, pwd))//inserimento non riuscito
+                                    if (!AddNewUser(user, pwd))//inserimento nuovo user non riuscito
                                     {
                                         comando = ApplicationConstants.ERR;
                                         data = Encoding.ASCII.GetBytes(comando);
@@ -216,7 +257,7 @@ namespace ProgettoPDS_SERVER
                                         return false;
                                     }
                                 }
-                                else// se non ricevo YES
+                                else// se non ricevo YES, ovvero l'user non vuole reistrarsi
                                 {
                                     SockDisconnect();
                                     return false;
@@ -225,7 +266,7 @@ namespace ProgettoPDS_SERVER
                         }
                         else
                         {
-                            //da gestire Cancel
+                            //da gestire Cancel, ovvero non voglio che un certo user si connetta
                         }
                     }
                     else
@@ -248,12 +289,14 @@ namespace ProgettoPDS_SERVER
             }
             return true;
         }
+        #endregion
 
+        #region XML methods
         private bool AddNewUser(string user, string pwd)
         {
             XmlManager document = new XmlManager('C');
 
-            if ( document.Error )
+            if (document.Error)
                 return false;
 
             document.AddNewClient(user, pwd);
@@ -272,6 +315,33 @@ namespace ProgettoPDS_SERVER
 
             return pwd;
         }
+        #endregion
+        
+        #region Graphics
+        public void DrawBorders()
+        {
+            IntPtr desktop = GetDC(IntPtr.Zero);
+            using (Graphics g = Graphics.FromHdc(desktop))
+            {
+                int border = 3;
+                //top
+                g.FillRectangle(Brushes.Red, 0, 0, Screen.PrimaryScreen.Bounds.Width, border);
+                //right
+                g.FillRectangle(Brushes.Green, Screen.PrimaryScreen.Bounds.Width - border, border, border, Screen.PrimaryScreen.Bounds.Height - (2 * border));
+                //bottom
+                g.FillRectangle(Brushes.Red, 0, Screen.PrimaryScreen.Bounds.Height - border, Screen.PrimaryScreen.Bounds.Width, border);
+                //left
+                g.FillRectangle(Brushes.Yellow, 0, border, border, Screen.PrimaryScreen.Bounds.Height - (2 * border));
+            }
+            ReleaseDC(IntPtr.Zero, desktop);
+        }
+
+        [DllImport("User32.dll")]
+        static extern IntPtr GetDC(IntPtr hwnd);
+
+        [DllImport("User32.dll", EntryPoint = "ReleaseDC", SetLastError = true)]
+        static extern int ReleaseDC(IntPtr hwnd, IntPtr dc);
+        #endregion
 
         public String GetMyIp()
         {
@@ -287,60 +357,6 @@ namespace ProgettoPDS_SERVER
             }
             return myIP;
         }
-
-        public void SockDisconnect(Socket sock) 
-        {
-            if (this.sock != null)
-            {
-                if (sock.Connected)
-                {
-                    sock.Shutdown(SocketShutdown.Both);
-                    sock.Close();
-                    main.notifyIcon1.ShowBalloonTip(2, "INFO STATO", "Connessione chiusa correttamente.", ToolTipIcon.Info);
-                }
-                else
-                {
-                    main.notifyIcon1.ShowBalloonTip(2, "INFO STATO", "Eri già disconnesso.", ToolTipIcon.Warning);
-                }
-            }
-            else
-            {
-                main.notifyIcon1.ShowBalloonTip(2, "INFO STATO", "Deve ancora essere creata una connessione.", ToolTipIcon.Warning);
-            }
-            stato = ApplicationConstants.Stato.DISCONNESSO;
-            
-        }
-        public void SockDisconnect()
-        {
-            if (this.passiv != null)
-            {
-                if (this.passiv.Connected)
-                {
-                    this.passiv.Shutdown(SocketShutdown.Both);
-                    this.passiv.Close();
-                    main.notifyIcon1.ShowBalloonTip(2, "INFO STATO", "Connessione chiusa correttamente.", ToolTipIcon.Info);
-                }
-                else
-                {
-                    main.notifyIcon1.ShowBalloonTip(2, "INFO STATO", "Eri già disconnesso.", ToolTipIcon.Warning);
-                }
-            }
-            else
-            {
-                main.notifyIcon1.ShowBalloonTip(2, "INFO STATO", "Deve ancora essere creata una connessione.", ToolTipIcon.Warning);
-            }
-            stato = ApplicationConstants.Stato.DISCONNESSO;
-            
-        }
-        public Socket Passiv {
-            get{return this.passiv;}
-        }
-
-        [DllImport("User32.dll")]
-        static extern IntPtr GetDC(IntPtr hwnd);
-
-        [DllImport("User32.dll", EntryPoint = "ReleaseDC", SetLastError = true)]
-        static extern int ReleaseDC(IntPtr hwnd, IntPtr dc);
     }
 
 }
