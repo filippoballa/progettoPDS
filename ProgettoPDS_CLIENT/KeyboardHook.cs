@@ -26,7 +26,7 @@ namespace ProgettoPDS_CLIENT
 
         public KeyboardHook()
         {
-            hookID = WH_KEYBOARD_LL;
+            HookType = WH_KEYBOARD_LL;
         }
 
         #endregion

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 using System.Reflection;
+using System.Diagnostics;
 
 namespace ProgettoPDS_CLIENT
 {
@@ -115,6 +116,9 @@ namespace ProgettoPDS_CLIENT
         [DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
         protected static extern short GetKeyState(int vKey);
 
+        [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        private static extern IntPtr GetModuleHandle(string lpModuleName);
+
         #endregion
 
         #region Properties
@@ -133,8 +137,9 @@ namespace ProgettoPDS_CLIENT
         {
             if (!isStarted && HookType != 0) {
                 HookCallback = new HookProc(HookCallbackProcedure);
+                ProcessModule module = Process.GetCurrentProcess().MainModule;
 
-                hookID = SetWindowsHookEx(HookType, HookCallback, Marshal.GetHINSTANCE(Assembly.GetExecutingAssembly().GetModules()[0]), 0);
+                hookID = SetWindowsHookEx(HookType, HookCallback, GetModuleHandle(module.ModuleName), 0);
 
                 if ( hookID != 0)
                     isStarted = true;

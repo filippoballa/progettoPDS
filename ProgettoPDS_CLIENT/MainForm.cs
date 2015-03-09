@@ -516,7 +516,7 @@ namespace ProgettoPDS_CLIENT
         private void MouseManagement( MouseEventArgs e ) 
         {
             if (this.mouseHook.IsStarted && this.ActionPanel.Visible) {
-                if (this.MouseBackgroundWorker.IsBusy)
+                if( this.MouseBackgroundWorker.IsBusy)
                     mreMouse.WaitOne();
 
                 this.MouseBackgroundWorker.RunWorkerAsync(e);
