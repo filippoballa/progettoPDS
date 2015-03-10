@@ -34,9 +34,8 @@ namespace ProgettoPDS_CLIENT
         public event MouseEventHandler MouseUp;
         public event MouseEventHandler MouseMove;
         public event MouseEventHandler MouseWheel;
-
-        public event EventHandler Click;
-        public event EventHandler DoubleClick;
+        public event MouseEventHandler Click;
+        public event MouseEventHandler DoubleClick;
 
         #endregion
 
@@ -84,7 +83,7 @@ namespace ProgettoPDS_CLIENT
 
                     case MouseEventType.MouseUp:
                         if (Click != null)
-                            Click(this, new EventArgs());
+                            Click(this, e);
                         
                         if (MouseUp != null)                        
                             MouseUp(this, e);
@@ -93,7 +92,7 @@ namespace ProgettoPDS_CLIENT
 
                     case MouseEventType.DoubleClick:
                         if (DoubleClick != null)
-                            DoubleClick(this, new EventArgs());
+                            DoubleClick(this, e);
 
                         break;
 

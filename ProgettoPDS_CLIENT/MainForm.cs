@@ -26,6 +26,7 @@ namespace ProgettoPDS_CLIENT
         private KeyboardHook keyboardHook = new KeyboardHook();
         private static ManualResetEvent mreMouse = new ManualResetEvent(false);
         private static ManualResetEvent mreKeyboard = new ManualResetEvent(false);
+        private MouseCord mc;
 
         #endregion
 
@@ -53,7 +54,8 @@ namespace ProgettoPDS_CLIENT
             this.HostNameTextBox.Focus();
             this.mouseHook.MouseMove += new MouseEventHandler(mouseHook_MouseMove);
             this.keyboardHook.KeyDown += new KeyEventHandler(keyboardHook_KeyDown);
-            this.mouseHook.Click += new EventHandler(mouseHook_MouseClick);
+            this.mouseHook.Click += new MouseEventHandler(mouseHook_DoubleClick);
+            this.mouseHook.DoubleClick += new MouseEventHandler(mouseHook_DoubleClick);
         }
 
         #endregion
@@ -357,6 +359,7 @@ namespace ProgettoPDS_CLIENT
             this.MainPanel.Visible = false;
             this.mouseHook.Install();
             this.keyboardHook.Install();
+            this.mc = new MouseCord(Cursor.Position.X, Cursor.Position.Y); 
 
         }
 
@@ -490,22 +493,29 @@ namespace ProgettoPDS_CLIENT
             byte[] pdu = Encoding.ASCII.GetBytes(aux);
 
             // Invio PDU relativa alla tastiera
-            try {
+            try{
                 mut.WaitOne();
                 this.connessioni[this.currServ].Sock.Send(pdu);
+                mreKeyboard.Set();
             }
             finally {
                 mut.ReleaseMutex();
             }
+            
         }
 
         #endregion
 
         #region Mouse Management
 
-        private void mouseHook_MouseClick(object sender, EventArgs e) 
+        private void mouseHook_DoubleClick(object sender, MouseEventArgs e) 
         {
-            MouseManagement( (MouseEventArgs)e );
+            MouseManagement(e);
+        }
+
+        private void mouseHook_MouseClick(object sender, MouseEventArgs e) 
+        {
+            MouseManagement(e);
         }
 
         private void mouseHook_MouseMove(object sender, MouseEventArgs e)
@@ -534,30 +544,35 @@ namespace ProgettoPDS_CLIENT
             // Costruzione Pacchetto
             string aux;
 
-            if( mouse.Clicks == 0 )
-                aux = "M-MOVE";
-            else if( mouse.Clicks == 1 ) {
-                if( mouse.Button == MouseButtons.Left )
-                    aux = "M-CLICKSX";
-                else if( mouse.Button == MouseButtons.Right )
-                    aux = "M-CLICKDX";
+            if (mouse.Clicks == 0) {   
+                // Se le coordinate non sono state modificate esco dal BW 
+                if ( !mc.aggiornaCord(mouse.X, mouse.Y))
+                    return;
                 else
-                    aux = "M-CLICKMD";
+                    aux = "M-MOVE";
+            }
+            else if (mouse.Clicks == 1) {
+                if (mouse.Button == MouseButtons.Left)
+                    aux = "M-LCLK";
+                else if (mouse.Button == MouseButtons.Right)
+                    aux = "M-RCLK";
+                else
+                    aux = "M-MCLK";
             }
             else {
 
-                if( mouse.Button == MouseButtons.Left )
-                    aux = "M-CLICKSX2";
-                else if( mouse.Button == MouseButtons.Right )
-                    aux = "M-CLICKDX2";
+                if (mouse.Button == MouseButtons.Left)
+                    aux = "M-LDBCLK";
+                else if (mouse.Button == MouseButtons.Right)
+                    aux = "M-RDBCLK";
                 else
-                    aux = "M-CLICKMD2";
+                    aux = "M-MDBCLK";
             }
 
-            double res = Convert.ToDouble(Cursor.Position.X) / Convert.ToDouble(Screen.PrimaryScreen.WorkingArea.Width);
-            aux += res.ToString();
-            res = Convert.ToDouble(Cursor.Position.Y) / Convert.ToDouble(Screen.PrimaryScreen.WorkingArea.Height);
+            int res = (Cursor.Position.X *1000 ) / Screen.PrimaryScreen.WorkingArea.Width;
             aux += "-" + res.ToString();
+            res = (Cursor.Position.Y * 1000 ) / Screen.PrimaryScreen.WorkingArea.Height;
+            aux += "-" + res.ToString() + "-";
             byte[] pdu = Encoding.ASCII.GetBytes(aux);
             
             // Invio Pacchetto
@@ -569,9 +584,8 @@ namespace ProgettoPDS_CLIENT
             finally {
                 mut.ReleaseMutex();
             }
-                                       
+                                                   
         }
-
 
         #endregion
 
