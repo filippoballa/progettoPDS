@@ -19,44 +19,126 @@ namespace ProgettoPDS_SERVER
         
         public static void MouseThreadProc(object data)
         {
-            int X = 0, Y = 0, Xold = Cursor.Position.X, Yold = Cursor.Position.Y;
+            int X = 0, Y = 0;
             String[] MouseData = data as String[];
 
-            if (MouseData[2] != null)
-                X = Convert.ToInt32(MouseData[2]);
-            if (MouseData[3] != null)
-                Y = Convert.ToInt32(MouseData[3]);
+            ApplicationConstants.POINT p;
+            GetCursorPos(out p);
 
-            int PosX = ((X * Screen.PrimaryScreen.WorkingArea.Width) / 1000) - Xold;
-            int PosY = ((Y * Screen.PrimaryScreen.WorkingArea.Height) / 1000) - Yold;
+            if (MouseData[2] != null)
+                X = Convert.ToInt32(MouseData[2])*Screen.PrimaryScreen.WorkingArea.Width / 1000;
+            if (MouseData[3] != null)
+                Y = Convert.ToInt32(MouseData[3]) * Screen.PrimaryScreen.WorkingArea.Width / 1000;
+
+            //controllo di non uscire dallo schermo
+            if (X < 0)
+                X = 0;
+            else if (X > Screen.PrimaryScreen.WorkingArea.Width)
+                X = Screen.PrimaryScreen.WorkingArea.Width;
+            if (Y < 0)
+                Y = 0;
+            else if (Y > Screen.PrimaryScreen.WorkingArea.Height)
+                Y = Screen.PrimaryScreen.WorkingArea.Height;
+
+            int ScrollX = X- p.X;
+
+            int ScrollY = Y - p.Y ;
+
 
             if (MouseData[1] == ApplicationConstants.MOUSEEVENT_MOVE)
             {
-                mouse_event(ApplicationConstants.MOUSEEVENTF_ABSOLUTE | ApplicationConstants.MOUSEEVENTF_MOVE, PosX, PosY, 0, UIntPtr.Zero);
+                int M = 0;
+                if(ScrollX == ScrollY)
+                {
+                    for(int i = 0; i<ScrollY;i++)
+                    {
+                        MouseMove(1, 0, p);
+                        MouseMove(0, 1, p);
+                    }
+                }
+                if (ScrollX > ScrollY)
+                {
+                    M = ScrollX / ScrollY;
+                    //da finire
+                }
+                else
+                {
+                    M = ScrollY / ScrollX;
+                }
+
+                MouseMove(ScrollX,ScrollY, p);
             }
             else if (MouseData[1] == ApplicationConstants.MOUSEEVENT_LEFTCLICK)
             {
-                mouse_event(ApplicationConstants.MOUSEEVENTF_LEFTDOWN | ApplicationConstants.MOUSEEVENTF_LEFTUP, 0, 0, 0, UIntPtr.Zero);
+                mouse_event(ApplicationConstants.MOUSEEVENTF_LEFTDOWN | ApplicationConstants.MOUSEEVENTF_LEFTUP, ScrollX, ScrollY, 0, UIntPtr.Zero);
             }
             else if (MouseData[1] == ApplicationConstants.MOUSEEVENT_LEFTDBCLICK)
             {
-                mouse_event(ApplicationConstants.MOUSEEVENTF_LEFTDOWN | ApplicationConstants.MOUSEEVENTF_LEFTUP, 0, 0, 0, UIntPtr.Zero);
+                mouse_event(ApplicationConstants.MOUSEEVENTF_LEFTDOWN | ApplicationConstants.MOUSEEVENTF_LEFTUP, ScrollX, ScrollY, 0, UIntPtr.Zero);
                 Thread.Sleep(150);
-                mouse_event(ApplicationConstants.MOUSEEVENTF_LEFTDOWN | ApplicationConstants.MOUSEEVENTF_LEFTUP, 0, 0, 0, UIntPtr.Zero);
+                mouse_event(ApplicationConstants.MOUSEEVENTF_LEFTDOWN | ApplicationConstants.MOUSEEVENTF_LEFTUP, ScrollX, ScrollY, 0, UIntPtr.Zero);
             }
             else if (MouseData[1] == ApplicationConstants.MOUSEEVENT_RIGHTCLICK)
             {
-                mouse_event(ApplicationConstants.MOUSEEVENTF_RIGHTDOWN | ApplicationConstants.MOUSEEVENTF_RIGHTUP, 0, 0, 0, UIntPtr.Zero);
+                mouse_event(ApplicationConstants.MOUSEEVENTF_RIGHTDOWN | ApplicationConstants.MOUSEEVENTF_RIGHTUP, ScrollX, ScrollY, 0, UIntPtr.Zero);
             }
             else if (MouseData[1] == ApplicationConstants.MOUSEEVENT_RIGHTDBCLICK)
             {
-                mouse_event(ApplicationConstants.MOUSEEVENTF_RIGHTDOWN | ApplicationConstants.MOUSEEVENTF_RIGHTUP, 0, 0, 0, UIntPtr.Zero);
+                mouse_event(ApplicationConstants.MOUSEEVENTF_RIGHTDOWN | ApplicationConstants.MOUSEEVENTF_RIGHTUP, ScrollX, ScrollY, 0, UIntPtr.Zero);
                 Thread.Sleep(150);
-                mouse_event(ApplicationConstants.MOUSEEVENTF_RIGHTDOWN | ApplicationConstants.MOUSEEVENTF_RIGHTUP, 0, 0, 0, UIntPtr.Zero);
+                mouse_event(ApplicationConstants.MOUSEEVENTF_RIGHTDOWN | ApplicationConstants.MOUSEEVENTF_RIGHTUP, ScrollX, ScrollY, 0, UIntPtr.Zero);
             }
 
             ThreadCounter--;
             mr.Set();
+        }
+
+        private static void MouseMove(int ScrollX, int ScrollY, ApplicationConstants.POINT old)
+        {
+            if(ScrollX == 0)//solo asse Y
+            {
+                if (ScrollX < 0)//spostamento in basso
+                {
+                    for (int i = ScrollY; i > 0; i--)
+                    { 
+                        mouse_event(ApplicationConstants.MOUSEEVENTF_MOVE, 0, old.Y + i, 0, UIntPtr.Zero);
+                        Thread.Sleep(10);
+                    } 
+
+                }
+                else//spostamento in alto
+                {
+                    for (int i = 1; i <= ScrollY; i++)
+                    {
+                        mouse_event(ApplicationConstants.MOUSEEVENTF_MOVE, 0, old.Y + i, 0, UIntPtr.Zero);
+                        Thread.Sleep(10);
+                    } 
+                }
+            }
+            else if (ScrollY == 0)//solo asse X
+            {
+                if (ScrollY < 0)//spostamento a sx
+                {
+                    for (int i = ScrollX; i > 0; i--)
+                    {
+                        mouse_event(ApplicationConstants.MOUSEEVENTF_MOVE, old.X + i, 0, 0, UIntPtr.Zero);
+                        Thread.Sleep(10);
+                    } 
+                }
+                else//spostamento a dx
+                {
+                    for (int i = 1; i <= ScrollX; i++)
+                    {
+                        mouse_event(ApplicationConstants.MOUSEEVENTF_MOVE, old.X + i, 0, 0, UIntPtr.Zero);
+                        Thread.Sleep(10);
+                    } 
+                }
+            }
+            else
+            {
+
+            }
+            
         }
         public static void KeyBoardThreadProc(object data)
         {
@@ -91,5 +173,9 @@ namespace ProgettoPDS_SERVER
 
         [DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
         public static extern void mouse_event(uint dwFlags, int dx, int dy, uint cButtons, UIntPtr dwExtraInfo);
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        static extern bool GetCursorPos(out ApplicationConstants.POINT lpPoint);
     }
 }
