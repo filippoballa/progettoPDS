@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Net.Sockets;
 
 namespace ProgettoPDS_SERVER
 {
@@ -14,6 +15,16 @@ namespace ProgettoPDS_SERVER
             CONNESSO = 1,
             DISCONNESSO = 0
         };
+        //structs
+        public struct Data
+        {
+            //socket
+            public Socket sock;
+            //data[]
+            public byte[] data;
+            //buffer size
+            public int BufferSize;
+        }
         //protocol messages
         const string auth_user = "+AUTH_USER";
         const string auth_pwd = "+AUTH_PWD";
@@ -24,7 +35,7 @@ namespace ProgettoPDS_SERVER
         const string err = "-ERR";
 
         //protocol fields separator
-        const char[] separator= { '-' };
+        static char[] separator = { '-' };
 
         //type of packets
         const string mousecode = "M";
@@ -47,15 +58,15 @@ namespace ProgettoPDS_SERVER
 
         //mouse events
         const string mouseeventAbsolute = "ABSOLUTE";
-        const string mouseeventLeftclick = "LEFTCLICK";
-        const string mouseeventLeftdbclick = "LEFTDBCLICK";
-        const string mouseeventMiddleclick = "MIDDLECLICK";
-        const string mouseeventMiddledbclick = "MIDDLEDBCLICK";
+        const string mouseeventLeftclick = "LCLK";
+        const string mouseeventLeftdbclick = "LDBCLCK";
+        const string mouseeventMiddleclick = "MCLK";
+        const string mouseeventMiddledbclick = "MDBCLK";
         const string mouseeventMove = "MOVE";
-        const string mouseeventRightclick = "RIGHTCLICK";
-        const string mouseeventRightdbclick = "RIGHTDBCLICK";
-        const string mouseeventXclick = "XCLICK";
-        const string mouseeventXdbclick = "XDBCLICK";
+        const string mouseeventRightclick = "RCLK";
+        const string mouseeventRightdbclick = "RDBCLK";
+        const string mouseeventXclick = "XCLK";
+        const string mouseeventXdbclick = "XDBCLK";
         const string mouseeventWheel = "WHEEL";
         const string mouseeventHwheel = "HWHEEL";
 

@@ -12,49 +12,79 @@ namespace ProgettoPDS_SERVER
 {
     class ThreadHandler
     {
+        public const int MAXTHREAD = 5;
+        private static int threadcounter = 0;
+        private static Mutex mut = new Mutex();
+        public static ManualResetEvent mr = new ManualResetEvent(false);
+        
         public static void MouseThreadProc(object data)
         {
-            double X = 0.0, Y = 0.0;
+            int X = 0, Y = 0, Xold = Cursor.Position.X, Yold = Cursor.Position.Y;
             String[] MouseData = data as String[];
 
             if (MouseData[2] != null)
-                X = Convert.ToDouble(MouseData[2], NumberFormatInfo.CurrentInfo);
+                X = Convert.ToInt32(MouseData[2]);
             if (MouseData[3] != null)
-                Y = Convert.ToDouble(MouseData[3], NumberFormatInfo.CurrentInfo);
+                Y = Convert.ToInt32(MouseData[3]);
 
-            int PosX = (int)X * Screen.PrimaryScreen.WorkingArea.Width;
-            int PosY = (int)Y * Screen.PrimaryScreen.WorkingArea.Height;
+            int PosX = ((X * Screen.PrimaryScreen.WorkingArea.Width) / 1000) - Xold;
+            int PosY = ((Y * Screen.PrimaryScreen.WorkingArea.Height) / 1000) - Yold;
 
             if (MouseData[1] == ApplicationConstants.MOUSEEVENT_MOVE)
             {
-                SetCursorPos(PosX, PosY);
+                mouse_event(ApplicationConstants.MOUSEEVENTF_ABSOLUTE | ApplicationConstants.MOUSEEVENTF_MOVE, PosX, PosY, 0, UIntPtr.Zero);
             }
-            if (MouseData[1] == ApplicationConstants.MOUSEEVENT_LEFTCLICK)
+            else if (MouseData[1] == ApplicationConstants.MOUSEEVENT_LEFTCLICK)
             {
-                mouse_event(ApplicationConstants.MOUSEEVENTF_LEFTDOWN | ApplicationConstants.MOUSEEVENTF_LEFTUP, PosX, PosY, 0, UIntPtr.Zero);
+                mouse_event(ApplicationConstants.MOUSEEVENTF_LEFTDOWN | ApplicationConstants.MOUSEEVENTF_LEFTUP, 0, 0, 0, UIntPtr.Zero);
             }
-            if (MouseData[1] == ApplicationConstants.MOUSEEVENT_LEFTDBCLICK)
+            else if (MouseData[1] == ApplicationConstants.MOUSEEVENT_LEFTDBCLICK)
             {
-                mouse_event(ApplicationConstants.MOUSEEVENTF_LEFTDOWN | ApplicationConstants.MOUSEEVENTF_LEFTUP, PosX, PosY, 0, UIntPtr.Zero);
+                mouse_event(ApplicationConstants.MOUSEEVENTF_LEFTDOWN | ApplicationConstants.MOUSEEVENTF_LEFTUP, 0, 0, 0, UIntPtr.Zero);
                 Thread.Sleep(150);
-                mouse_event(ApplicationConstants.MOUSEEVENTF_LEFTDOWN | ApplicationConstants.MOUSEEVENTF_LEFTUP, PosX, PosY, 0, UIntPtr.Zero);
+                mouse_event(ApplicationConstants.MOUSEEVENTF_LEFTDOWN | ApplicationConstants.MOUSEEVENTF_LEFTUP, 0, 0, 0, UIntPtr.Zero);
             }
-            if (MouseData[1] == ApplicationConstants.MOUSEEVENT_RIGHTCLICK)
+            else if (MouseData[1] == ApplicationConstants.MOUSEEVENT_RIGHTCLICK)
             {
-                mouse_event(ApplicationConstants.MOUSEEVENTF_RIGHTDOWN | ApplicationConstants.MOUSEEVENTF_RIGHTUP, PosX, PosY, 0, UIntPtr.Zero);
+                mouse_event(ApplicationConstants.MOUSEEVENTF_RIGHTDOWN | ApplicationConstants.MOUSEEVENTF_RIGHTUP, 0, 0, 0, UIntPtr.Zero);
             }
-            if (MouseData[1] == ApplicationConstants.MOUSEEVENT_RIGHTDBCLICK)
+            else if (MouseData[1] == ApplicationConstants.MOUSEEVENT_RIGHTDBCLICK)
             {
-                mouse_event(ApplicationConstants.MOUSEEVENTF_RIGHTDOWN | ApplicationConstants.MOUSEEVENTF_RIGHTUP, PosX, PosY, 0, UIntPtr.Zero);
+                mouse_event(ApplicationConstants.MOUSEEVENTF_RIGHTDOWN | ApplicationConstants.MOUSEEVENTF_RIGHTUP, 0, 0, 0, UIntPtr.Zero);
                 Thread.Sleep(150);
-                mouse_event(ApplicationConstants.MOUSEEVENTF_RIGHTDOWN | ApplicationConstants.MOUSEEVENTF_RIGHTUP, PosX, PosY, 0, UIntPtr.Zero);
+                mouse_event(ApplicationConstants.MOUSEEVENTF_RIGHTDOWN | ApplicationConstants.MOUSEEVENTF_RIGHTUP, 0, 0, 0, UIntPtr.Zero);
             }
 
+            ThreadCounter--;
+            mr.Set();
         }
         public static void KeyBoardThreadProc(object data)
-        { }
+        {
+            ThreadCounter--;
+            mr.Set();
+        }
         public static void ClipBoardThreadProc(object data)
-        { }
+        {
+            ThreadCounter--;
+            mr.Set();
+        }
+
+        public static int ThreadCounter 
+        {
+            get 
+            {
+                mut.WaitOne(); 
+                int td =threadcounter;
+                mut.ReleaseMutex();
+                return td;
+            } 
+            set 
+            { 
+                mut.WaitOne();
+                threadcounter=value;
+                mut.ReleaseMutex();
+            } 
+        }
 
         [DllImport("user32.dll", CallingConvention = CallingConvention.Cdecl)]
         static extern bool SetCursorPos(int X, int Y);

@@ -37,8 +37,8 @@
             this.toolStripMenuItemDisconnetti = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemCloseForm = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemCloseMenu = new System.Windows.Forms.ToolStripMenuItem();
-            this.PacketsHandlerbackgroundWorker = new System.ComponentModel.BackgroundWorker();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.PacketsHandlerbackgroundWorker = new System.ComponentModel.BackgroundWorker();
             this.contextMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -72,7 +72,7 @@
             this.toolStripMenuItemOpenConsole.Image = ((System.Drawing.Image)(resources.GetObject("toolStripMenuItemOpenConsole.Image")));
             this.toolStripMenuItemOpenConsole.Name = "toolStripMenuItemOpenConsole";
             this.toolStripMenuItemOpenConsole.Size = new System.Drawing.Size(180, 22);
-            this.toolStripMenuItemOpenConsole.Text = "Impostazioni";
+            this.toolStripMenuItemOpenConsole.Text = "Console";
             this.toolStripMenuItemOpenConsole.Click += new System.EventHandler(this.MainFormShow);
             // 
             // toolStripMenuItemConnetti
@@ -106,18 +106,18 @@
             this.toolStripMenuItemCloseMenu.Text = "Chiudi Applicazione";
             this.toolStripMenuItemCloseMenu.Click += new System.EventHandler(this.MainFormClose);
             // 
-            // PacketsHandlerbackgroundWorker
-            // 
-            this.PacketsHandlerbackgroundWorker.WorkerReportsProgress = true;
-            this.PacketsHandlerbackgroundWorker.WorkerSupportsCancellation = true;
-            this.PacketsHandlerbackgroundWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.PacketsHandlerbackgroundWorker_DoWork);
-            // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
             this.toolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
             this.toolStripMenuItem1.Text = "disegna";
             this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
+            // 
+            // PacketsHandlerbackgroundWorker
+            // 
+            this.PacketsHandlerbackgroundWorker.WorkerReportsProgress = true;
+            this.PacketsHandlerbackgroundWorker.WorkerSupportsCancellation = true;
+            this.PacketsHandlerbackgroundWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.PacketsHandlerbackgroundWorker_DoWork);
             // 
             // MainForm
             // 
