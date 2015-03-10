@@ -10,6 +10,7 @@ namespace ProgettoPDS_CLIENT
     {
         private int cordX;
         private int cordY;
+        private const int DIFF = 5;
 
         public MouseCord() 
         {
@@ -38,8 +39,10 @@ namespace ProgettoPDS_CLIENT
         public bool aggiornaCord(int x, int y)
         { 
             bool result = false;
+            int part1 = Math.Abs(this.cordX - x );
+            int part2 = Math.Abs(this.cordY - y );
 
-            if ( x != this.cordX || y != this.cordY )
+            if ( part1 > DIFF || part2 > DIFF )
                 result = true;
 
             if (result) {

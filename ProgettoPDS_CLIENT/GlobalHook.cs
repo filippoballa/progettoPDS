@@ -119,6 +119,7 @@ namespace ProgettoPDS_CLIENT
         [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         private static extern IntPtr GetModuleHandle(string lpModuleName);
 
+
         #endregion
 
         #region Properties
