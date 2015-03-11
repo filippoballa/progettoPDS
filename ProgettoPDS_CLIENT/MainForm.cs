@@ -358,9 +358,10 @@ namespace ProgettoPDS_CLIENT
             this.ActionServerLabel.Text += this.servers[this.currServ].HostName;
             this.ActionPanel.Visible = true;
             this.MainPanel.Visible = false;
+            this.mc = new MouseCord(Cursor.Position.X, Cursor.Position.Y);
             this.mouseHook.Install();
             this.keyboardHook.Install();
-            this.mc = new MouseCord(Cursor.Position.X, Cursor.Position.Y); 
+             
 
         }
 
@@ -527,12 +528,13 @@ namespace ProgettoPDS_CLIENT
         private void MouseManagement( MouseEventArgs e ) 
         {
             if (this.mouseHook.IsStarted && this.ActionPanel.Visible) {
+
                 if( this.MouseBackgroundWorker.IsBusy)
                     mreMouse.WaitOne();
 
-                this.MouseBackgroundWorker.RunWorkerAsync(e);
-
                 mreMouse.Reset();
+
+                this.MouseBackgroundWorker.RunWorkerAsync(e);
 
             }   
         }
@@ -541,14 +543,14 @@ namespace ProgettoPDS_CLIENT
         {
 
             MouseEventArgs mouse = (MouseEventArgs)e.Argument;
-
+           
             // Costruzione Pacchetto
             string aux;
 
             if (mouse.Clicks == 0) {   
                 // Se le coordinate non sono state modificate esco dal BW 
-                if ( !mc.aggiornaCord(mouse.X, mouse.Y))
-                    return;
+                if (!mc.aggiornaCord(mouse.X, mouse.Y))
+                    aux = "";
                 else
                     aux = "M-MOVE";
             }
@@ -570,22 +572,25 @@ namespace ProgettoPDS_CLIENT
                     aux = "M-MDBCLK";
             }
 
-            int res = (Cursor.Position.X *1000 ) / Screen.PrimaryScreen.WorkingArea.Width;
-            aux += "-" + res.ToString();
-            res = (Cursor.Position.Y * 1000 ) / Screen.PrimaryScreen.WorkingArea.Height;
-            aux += "-" + res.ToString() + "-";
-            byte[] pdu = Encoding.ASCII.GetBytes(aux);
-            
-            // Invio Pacchetto
-            try {
-                mut.WaitOne();
-                this.connessioni[this.currServ].Sock.Send(pdu);
-                mreMouse.Set();
+            if (aux != "") {
+                int res = (Cursor.Position.X * 1000) / Screen.PrimaryScreen.WorkingArea.Width;
+                aux += "-" + res.ToString();
+                res = (Cursor.Position.Y * 1000) / Screen.PrimaryScreen.WorkingArea.Height;
+                aux += "-" + res.ToString() + "-";
+                byte[] pdu = Encoding.ASCII.GetBytes(aux);
+
+                // Invio Pacchetto
+                try {
+                    mut.WaitOne();
+                    this.connessioni[this.currServ].Sock.Send(pdu);
+                }
+                finally{
+                    mut.ReleaseMutex();
+                }
             }
-            finally {
-                mut.ReleaseMutex();
-            }
-                                                   
+
+            mreMouse.Set();
+                                                                           
         }
 
         #endregion
