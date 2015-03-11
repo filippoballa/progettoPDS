@@ -27,30 +27,30 @@ namespace ProgettoPDS_SERVER
             public int BufferSize;
         }
 
-    [StructLayout(LayoutKind.Sequential)]
-    public struct POINT
-    {
-        public int X;
-        public int Y;
-
-        public POINT(int x, int y)
+        [StructLayout(LayoutKind.Sequential)]
+        public struct POINT
         {
-            this.X = x;
-            this.Y = y;
-        }
+            public int X;
+            public int Y;
 
-        public POINT(System.Drawing.Point pt) : this(pt.X, pt.Y) { }
+            public POINT(int x, int y)
+            {
+                this.X = x;
+                this.Y = y;
+            }
 
-        public static implicit operator System.Drawing.Point(POINT p)
-        {
-            return new System.Drawing.Point(p.X, p.Y);
-        }
+            public POINT(System.Drawing.Point pt) : this(pt.X, pt.Y) { }
 
-        public static implicit operator POINT(System.Drawing.Point p)
-        {
-            return new POINT(p.X, p.Y);
+            public static implicit operator System.Drawing.Point(POINT p)
+            {
+                return new System.Drawing.Point(p.X, p.Y);
+            }
+
+            public static implicit operator POINT(System.Drawing.Point p)
+            {
+                return new POINT(p.X, p.Y);
+            }
         }
-    }
         //protocol messages
         const string auth_user = "+AUTH_USER";
         const string auth_pwd = "+AUTH_PWD";
@@ -96,6 +96,15 @@ namespace ProgettoPDS_SERVER
         const string mouseeventWheel = "WHEEL";
         const string mouseeventHwheel = "HWHEEL";
 
+        //keyboard flags
+        const uint keyeventf_extendedkey = 0x0001;
+        const uint keyeventf_keyup = 0x0002;
+
+        //keyboard events
+        const string keyboardeventsinglekey = "single";
+        const string keyboardeventsystemkey = "sistem";
+        const string keyboardeventhotkey = "hot";
+
         //readonly methods
         public static string AUTH_USER { get { return auth_user; } }
         public static string AUTH_PWD { get { return auth_pwd; } }
@@ -136,5 +145,12 @@ namespace ProgettoPDS_SERVER
         public static string MOUSEEVENT_XDBCLICK { get { return mouseeventXdbclick; } }
         public static string MOUSEEVENT_WHEEL { get { return mouseeventWheel; } }
         public static string MOUSEEVENT_HWHEEL { get { return mouseeventHwheel; } }
+
+        public static uint KEYEVENTF_EXTENDEDKEY { get { return keyeventf_extendedkey; } }
+        public static uint KEYEVENTF_KEYUP { get { return keyeventf_keyup; } }
+
+        public static string KEYBOARDEVENT_SINGLEKEY { get { return keyboardeventsinglekey; } }
+        public static string KEYBOARDEVENT_HOTKEY { get { return keyboardeventhotkey; } }
+        public static string KEYBOARDEVENT_SYSTEMKEY { get { return keyboardeventsystemkey; } }
     }
 }

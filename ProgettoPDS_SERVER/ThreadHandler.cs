@@ -322,6 +322,10 @@ namespace ProgettoPDS_SERVER
         }
         public static void KeyBoardThreadProc(object data)
         {
+            String[] KBData = data as String[];
+
+            //case KBData[1]
+
             ThreadCounter--;
             mr.Set();
         }
@@ -329,6 +333,13 @@ namespace ProgettoPDS_SERVER
         {
             ThreadCounter--;
             mr.Set();
+        }
+
+        private void PressKey(byte keyCode)
+        {
+            
+            keybd_event(keyCode, 0x45, ApplicationConstants.KEYEVENTF_EXTENDEDKEY, UIntPtr.Zero);
+            keybd_event(keyCode, 0x45, ApplicationConstants.KEYEVENTF_EXTENDEDKEY | ApplicationConstants.KEYEVENTF_KEYUP, UIntPtr.Zero);
         }
 
         public static int ThreadCounter 
@@ -348,14 +359,22 @@ namespace ProgettoPDS_SERVER
             } 
         }
 
+        //set cursor method
         [DllImport("user32.dll", CallingConvention = CallingConvention.Cdecl)]
         static extern bool SetCursorPos(int X, int Y);
 
+        //mouse event method
         [DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
         public static extern void mouse_event(uint dwFlags, int dx, int dy, uint cButtons, UIntPtr dwExtraInfo);
 
+        //get cursor method
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
         static extern bool GetCursorPos(out ApplicationConstants.POINT lpPoint);
+
+        //keyboard event method
+        [DllImport("user32.dll")]
+        static extern bool keybd_event(byte bVk, byte bScan, uint dwFlags,
+           UIntPtr dwExtraInfo);
     }
 }
