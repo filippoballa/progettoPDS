@@ -22,9 +22,11 @@ namespace ProgettoPDS_SERVER
             int X = 0, Y = 0;
             String[] MouseData = data as String[];
 
+            //get actual cursor position
             ApplicationConstants.POINT p;
             GetCursorPos(out p);
 
+            //get proportion from data
             if (MouseData[2] != null)
                 X = Convert.ToInt32(MouseData[2])*Screen.PrimaryScreen.WorkingArea.Width / 1000;
             if (MouseData[3] != null)
@@ -40,32 +42,12 @@ namespace ProgettoPDS_SERVER
             else if (Y > Screen.PrimaryScreen.WorkingArea.Height)
                 Y = Screen.PrimaryScreen.WorkingArea.Height;
 
-            int ScrollX = X- p.X;
-
+            //Scroll size
+            int ScrollX = X - p.X;
             int ScrollY = Y - p.Y ;
-
 
             if (MouseData[1] == ApplicationConstants.MOUSEEVENT_MOVE)
             {
-                int M = 0;
-                if(ScrollX == ScrollY)
-                {
-                    for(int i = 0; i<ScrollY;i++)
-                    {
-                        MouseMove(1, 0, p);
-                        MouseMove(0, 1, p);
-                    }
-                }
-                if (ScrollX > ScrollY)
-                {
-                    M = ScrollX / ScrollY;
-                    //da finire
-                }
-                else
-                {
-                    M = ScrollY / ScrollX;
-                }
-
                 MouseMove(ScrollX,ScrollY, p);
             }
             else if (MouseData[1] == ApplicationConstants.MOUSEEVENT_LEFTCLICK)
@@ -95,7 +77,8 @@ namespace ProgettoPDS_SERVER
 
         private static void MouseMove(int ScrollX, int ScrollY, ApplicationConstants.POINT old)
         {
-            if(ScrollX == 0)//solo asse Y
+            #region spostamento solo asse Y
+            if (ScrollX == 0)//spostamento solo asse Y
             {
                 if (ScrollX < 0)//spostamento in basso
                 {
@@ -115,7 +98,9 @@ namespace ProgettoPDS_SERVER
                     } 
                 }
             }
-            else if (ScrollY == 0)//solo asse X
+            #endregion
+            #region spostamento solo asse X
+            else if (ScrollY == 0)//spostamento solo asse X
             {
                 if (ScrollY < 0)//spostamento a sx
                 {
@@ -134,9 +119,199 @@ namespace ProgettoPDS_SERVER
                     } 
                 }
             }
-            else
+            #endregion
+ /*         spostamento entrambi gli assi
+  */        else
             {
+                int M = 0;
+                int counter = 0;
+                #region solo X negativo
+                if (ScrollX < 0 && ScrollY > 0)//solo X negativo
+                {
+                    ScrollX = -ScrollX;
+                    M = ScrollY / ScrollX;
 
+                    if (ScrollX == ScrollY)//spostamenti uguali asse x e Y
+                    {
+                        for (int i = 0; i < ScrollY; i++)
+                        {
+                            mouse_event(ApplicationConstants.MOUSEEVENTF_MOVE, -1, 0, 0, UIntPtr.Zero);
+                            mouse_event(ApplicationConstants.MOUSEEVENTF_MOVE, 0, 1, 0, UIntPtr.Zero);
+                            Thread.Sleep(10);
+                        }
+                    }
+                    if (ScrollX > ScrollY)//spostamento maggiore sull'asse x
+                    {
+                        M = ScrollX / ScrollY;
+
+                        for (int i = 1; i <= ScrollX; i++)
+                        {
+                            mouse_event(ApplicationConstants.MOUSEEVENTF_MOVE, -1, 0, 0, UIntPtr.Zero);
+                            if (counter >= M)
+                            {
+                                counter = 0;
+                                mouse_event(ApplicationConstants.MOUSEEVENTF_MOVE, 0, 1, 0, UIntPtr.Zero);
+                            }
+                            Thread.Sleep(10);
+                        }
+                    }
+                    else//spostamento maggiore sull'asse y
+                    {
+                        M = ScrollY / ScrollX;
+
+                        for (int i = 1; i <= ScrollY; i++)
+                        {
+                            mouse_event(ApplicationConstants.MOUSEEVENTF_MOVE, 0, 1, 0, UIntPtr.Zero);
+                            if (counter >= M)
+                            {
+                                counter = 0;
+                                mouse_event(ApplicationConstants.MOUSEEVENTF_MOVE, -1, 0, 0, UIntPtr.Zero);
+                            }
+                            Thread.Sleep(10);
+                        }
+                    }
+                }
+                #endregion
+                #region solo Y negativo
+                else if (ScrollX > 0 && ScrollY < 0)//solo Y negativo
+                {
+                    ScrollY = -ScrollY;
+                    M = ScrollY / ScrollX;
+
+                    if (ScrollX == ScrollY)//spostamenti uguali asse x e Y
+                    {
+                        for (int i = 0; i < ScrollY; i++)
+                        {
+                            mouse_event(ApplicationConstants.MOUSEEVENTF_MOVE, 1, 0, 0, UIntPtr.Zero);
+                            mouse_event(ApplicationConstants.MOUSEEVENTF_MOVE, 0, -1, 0, UIntPtr.Zero);
+                            Thread.Sleep(10);
+                        }
+                    }
+                    if (ScrollX > ScrollY)//spostamento maggiore sull'asse x
+                    {
+                        M = ScrollX / ScrollY;
+
+                        for (int i = 1; i <= ScrollX; i++)
+                        {
+                            mouse_event(ApplicationConstants.MOUSEEVENTF_MOVE, 1, 0, 0, UIntPtr.Zero);
+                            if (counter >= M)
+                            {
+                                counter = 0;
+                                mouse_event(ApplicationConstants.MOUSEEVENTF_MOVE, 0, -1, 0, UIntPtr.Zero);
+                            }
+                            Thread.Sleep(10);
+                        }
+                    }
+                    else//spostamento maggiore sull'asse y
+                    {
+                        M = ScrollY / ScrollX;
+
+                        for (int i = 1; i <= ScrollY; i++)
+                        {
+                            mouse_event(ApplicationConstants.MOUSEEVENTF_MOVE, 0, -1, 0, UIntPtr.Zero);
+                            if (counter >= M)
+                            {
+                                counter = 0;
+                                mouse_event(ApplicationConstants.MOUSEEVENTF_MOVE, 1, 0, 0, UIntPtr.Zero);
+                            }
+                            Thread.Sleep(10);
+                        }
+                    }
+                }
+                #endregion
+                #region X&Y entrambi negativi
+                else if (ScrollX < 0 && ScrollY < 0)//entrambi negativi
+                {
+                    ScrollY = -ScrollY;
+                    ScrollX = -ScrollX;
+                    M = ScrollY / ScrollX;
+
+                    if (ScrollX == ScrollY)//spostamenti uguali asse x e Y
+                    {
+                        for (int i = 0; i < ScrollY; i++)
+                        {
+                            mouse_event(ApplicationConstants.MOUSEEVENTF_MOVE, -1, 0, 0, UIntPtr.Zero);
+                            mouse_event(ApplicationConstants.MOUSEEVENTF_MOVE, 0, -1, 0, UIntPtr.Zero);
+                            Thread.Sleep(10);
+                        }
+                    }
+                    if (ScrollX > ScrollY)//spostamento maggiore sull'asse x
+                    {
+                        M = ScrollX / ScrollY;
+
+                        for (int i = 1; i <= ScrollX; i++)
+                        {
+                            mouse_event(ApplicationConstants.MOUSEEVENTF_MOVE, -1, 0, 0, UIntPtr.Zero);
+                            if (counter >= M)
+                            {
+                                counter = 0;
+                                mouse_event(ApplicationConstants.MOUSEEVENTF_MOVE, 0, -1, 0, UIntPtr.Zero);
+                            }
+                            Thread.Sleep(10);
+                        }
+                    }
+                    else//spostamento maggiore sull'asse y
+                    {
+                        M = ScrollY / ScrollX;
+
+                        for (int i = 1; i <= ScrollY; i++)
+                        {
+                            mouse_event(ApplicationConstants.MOUSEEVENTF_MOVE, 0, -1, 0, UIntPtr.Zero);
+                            if (counter >= M)
+                            {
+                                counter = 0;
+                                mouse_event(ApplicationConstants.MOUSEEVENTF_MOVE, -1, 0, 0, UIntPtr.Zero);
+                            }
+                            Thread.Sleep(10);
+                        }
+                    }
+                }
+                #endregion
+                #region X&Y entrambi positivi
+                else//entrambi positivi
+                {
+
+                    if (ScrollX == ScrollY)//spostamenti uguali asse x e Y
+                    {
+                        for (int i = 0; i < ScrollY; i++)
+                        {
+                            mouse_event(ApplicationConstants.MOUSEEVENTF_MOVE, 1, 0, 0, UIntPtr.Zero);
+                            mouse_event(ApplicationConstants.MOUSEEVENTF_MOVE, 0, 1, 0, UIntPtr.Zero);
+                            Thread.Sleep(10);
+                        }
+                    }
+                    if (ScrollX > ScrollY)//spostamento maggiore sull'asse x
+                    {
+                        M = ScrollX / ScrollY;
+
+                        for (int i = 1; i <= ScrollX; i++)
+                        {
+                            mouse_event(ApplicationConstants.MOUSEEVENTF_MOVE, 1, 0, 0, UIntPtr.Zero);
+                            if (counter >= M)
+                            {
+                                counter = 0;
+                                mouse_event(ApplicationConstants.MOUSEEVENTF_MOVE, 0, 1, 0, UIntPtr.Zero);
+                            }
+                            Thread.Sleep(10);
+                        }
+                    }
+                    else//spostamento maggiore sull'asse y
+                    {
+                        M = ScrollY / ScrollX;
+
+                        for (int i = 1; i <= ScrollY; i++)
+                        {
+                            mouse_event(ApplicationConstants.MOUSEEVENTF_MOVE, 0, 1, 0, UIntPtr.Zero);
+                            if (counter >= M)
+                            {
+                                counter = 0;
+                                mouse_event(ApplicationConstants.MOUSEEVENTF_MOVE, 1, 0, 0, UIntPtr.Zero);
+                            }
+                            Thread.Sleep(10);
+                        }
+                    }
+                }
+                #endregion
             }
             
         }
