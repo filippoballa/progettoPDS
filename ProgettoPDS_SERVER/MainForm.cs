@@ -121,7 +121,7 @@ namespace ProgettoPDS_SERVER
             Sconnection.DrawBorders();
         }
 
-#region async recive 
+        #region async recive [DEPRECATED]
         private void PacketsHandlerbackgroundWorker_DoWorkAsync(object sender, DoWorkEventArgs e)
         {
             byte[] data;

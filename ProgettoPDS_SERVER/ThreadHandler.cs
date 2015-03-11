@@ -46,24 +46,29 @@ namespace ProgettoPDS_SERVER
             int ScrollX = X - p.X;
             int ScrollY = Y - p.Y ;
 
+            //MOUSE MOVE
             if (MouseData[1] == ApplicationConstants.MOUSEEVENT_MOVE)
             {
                 MouseMove(ScrollX,ScrollY, p);
             }
+            //MOUSE LEFT CLICK
             else if (MouseData[1] == ApplicationConstants.MOUSEEVENT_LEFTCLICK)
             {
                 mouse_event(ApplicationConstants.MOUSEEVENTF_LEFTDOWN | ApplicationConstants.MOUSEEVENTF_LEFTUP, ScrollX, ScrollY, 0, UIntPtr.Zero);
             }
+            //MOUSE LEFT DOUBLE CLICK
             else if (MouseData[1] == ApplicationConstants.MOUSEEVENT_LEFTDBCLICK)
             {
                 mouse_event(ApplicationConstants.MOUSEEVENTF_LEFTDOWN | ApplicationConstants.MOUSEEVENTF_LEFTUP, ScrollX, ScrollY, 0, UIntPtr.Zero);
                 Thread.Sleep(150);
                 mouse_event(ApplicationConstants.MOUSEEVENTF_LEFTDOWN | ApplicationConstants.MOUSEEVENTF_LEFTUP, ScrollX, ScrollY, 0, UIntPtr.Zero);
             }
+            //MOUSE RIGHT CLICK
             else if (MouseData[1] == ApplicationConstants.MOUSEEVENT_RIGHTCLICK)
             {
                 mouse_event(ApplicationConstants.MOUSEEVENTF_RIGHTDOWN | ApplicationConstants.MOUSEEVENTF_RIGHTUP, ScrollX, ScrollY, 0, UIntPtr.Zero);
             }
+            //MOUSE RIGHT DOUBLE CLICK
             else if (MouseData[1] == ApplicationConstants.MOUSEEVENT_RIGHTDBCLICK)
             {
                 mouse_event(ApplicationConstants.MOUSEEVENTF_RIGHTDOWN | ApplicationConstants.MOUSEEVENTF_RIGHTUP, ScrollX, ScrollY, 0, UIntPtr.Zero);
