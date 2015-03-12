@@ -12,11 +12,13 @@ namespace ProgettoPDS_SERVER
 {
     class ThreadHandler
     {
+        private const int T = 10;//tempo di attesa per lo spostamento del mouse
         public const int MAXTHREAD = 5;
         private static int threadcounter = 0;
         private static Mutex mut = new Mutex();
         public static ManualResetEvent mr = new ManualResetEvent(false);
-        
+
+        #region MOUSE
         public static void MouseThreadProc(object data)
         {
             int X = 0, Y = 0;
@@ -42,7 +44,7 @@ namespace ProgettoPDS_SERVER
             else if (Y > Screen.PrimaryScreen.WorkingArea.Height)
                 Y = Screen.PrimaryScreen.WorkingArea.Height;
 
-            //Scroll size
+            //calculate Scroll size
             int ScrollX = X - p.X;
             int ScrollY = Y - p.Y ;
 
@@ -90,7 +92,7 @@ namespace ProgettoPDS_SERVER
                     for (int i = ScrollY; i > 0; i--)
                     { 
                         mouse_event(ApplicationConstants.MOUSEEVENTF_MOVE, 0, old.Y + i, 0, UIntPtr.Zero);
-                        Thread.Sleep(10);
+                        Thread.Sleep(T);
                     } 
 
                 }
@@ -99,7 +101,7 @@ namespace ProgettoPDS_SERVER
                     for (int i = 1; i <= ScrollY; i++)
                     {
                         mouse_event(ApplicationConstants.MOUSEEVENTF_MOVE, 0, old.Y + i, 0, UIntPtr.Zero);
-                        Thread.Sleep(10);
+                        Thread.Sleep(T);
                     } 
                 }
             }
@@ -112,7 +114,7 @@ namespace ProgettoPDS_SERVER
                     for (int i = ScrollX; i > 0; i--)
                     {
                         mouse_event(ApplicationConstants.MOUSEEVENTF_MOVE, old.X + i, 0, 0, UIntPtr.Zero);
-                        Thread.Sleep(10);
+                        Thread.Sleep(T);
                     } 
                 }
                 else//spostamento a dx
@@ -120,13 +122,13 @@ namespace ProgettoPDS_SERVER
                     for (int i = 1; i <= ScrollX; i++)
                     {
                         mouse_event(ApplicationConstants.MOUSEEVENTF_MOVE, old.X + i, 0, 0, UIntPtr.Zero);
-                        Thread.Sleep(10);
+                        Thread.Sleep(T);
                     } 
                 }
             }
             #endregion
- /*         spostamento entrambi gli assi
-  */        else
+            #region spostamento entrambi gli assi
+            else
             {
                 int M = 0;
                 int counter = 0;
@@ -142,7 +144,7 @@ namespace ProgettoPDS_SERVER
                         {
                             mouse_event(ApplicationConstants.MOUSEEVENTF_MOVE, -1, 0, 0, UIntPtr.Zero);
                             mouse_event(ApplicationConstants.MOUSEEVENTF_MOVE, 0, 1, 0, UIntPtr.Zero);
-                            Thread.Sleep(10);
+                            Thread.Sleep(T);
                         }
                     }
                     if (ScrollX > ScrollY)//spostamento maggiore sull'asse x
@@ -157,7 +159,7 @@ namespace ProgettoPDS_SERVER
                                 counter = 0;
                                 mouse_event(ApplicationConstants.MOUSEEVENTF_MOVE, 0, 1, 0, UIntPtr.Zero);
                             }
-                            Thread.Sleep(10);
+                            Thread.Sleep(T);
                         }
                     }
                     else//spostamento maggiore sull'asse y
@@ -172,7 +174,7 @@ namespace ProgettoPDS_SERVER
                                 counter = 0;
                                 mouse_event(ApplicationConstants.MOUSEEVENTF_MOVE, -1, 0, 0, UIntPtr.Zero);
                             }
-                            Thread.Sleep(10);
+                            Thread.Sleep(T);
                         }
                     }
                 }
@@ -189,7 +191,7 @@ namespace ProgettoPDS_SERVER
                         {
                             mouse_event(ApplicationConstants.MOUSEEVENTF_MOVE, 1, 0, 0, UIntPtr.Zero);
                             mouse_event(ApplicationConstants.MOUSEEVENTF_MOVE, 0, -1, 0, UIntPtr.Zero);
-                            Thread.Sleep(10);
+                            Thread.Sleep(T);
                         }
                     }
                     if (ScrollX > ScrollY)//spostamento maggiore sull'asse x
@@ -204,7 +206,7 @@ namespace ProgettoPDS_SERVER
                                 counter = 0;
                                 mouse_event(ApplicationConstants.MOUSEEVENTF_MOVE, 0, -1, 0, UIntPtr.Zero);
                             }
-                            Thread.Sleep(10);
+                            Thread.Sleep(T);
                         }
                     }
                     else//spostamento maggiore sull'asse y
@@ -219,7 +221,7 @@ namespace ProgettoPDS_SERVER
                                 counter = 0;
                                 mouse_event(ApplicationConstants.MOUSEEVENTF_MOVE, 1, 0, 0, UIntPtr.Zero);
                             }
-                            Thread.Sleep(10);
+                            Thread.Sleep(T);
                         }
                     }
                 }
@@ -237,7 +239,7 @@ namespace ProgettoPDS_SERVER
                         {
                             mouse_event(ApplicationConstants.MOUSEEVENTF_MOVE, -1, 0, 0, UIntPtr.Zero);
                             mouse_event(ApplicationConstants.MOUSEEVENTF_MOVE, 0, -1, 0, UIntPtr.Zero);
-                            Thread.Sleep(10);
+                            Thread.Sleep(T);
                         }
                     }
                     if (ScrollX > ScrollY)//spostamento maggiore sull'asse x
@@ -252,7 +254,7 @@ namespace ProgettoPDS_SERVER
                                 counter = 0;
                                 mouse_event(ApplicationConstants.MOUSEEVENTF_MOVE, 0, -1, 0, UIntPtr.Zero);
                             }
-                            Thread.Sleep(10);
+                            Thread.Sleep(T);
                         }
                     }
                     else//spostamento maggiore sull'asse y
@@ -267,7 +269,7 @@ namespace ProgettoPDS_SERVER
                                 counter = 0;
                                 mouse_event(ApplicationConstants.MOUSEEVENTF_MOVE, -1, 0, 0, UIntPtr.Zero);
                             }
-                            Thread.Sleep(10);
+                            Thread.Sleep(T);
                         }
                     }
                 }
@@ -282,7 +284,7 @@ namespace ProgettoPDS_SERVER
                         {
                             mouse_event(ApplicationConstants.MOUSEEVENTF_MOVE, 1, 0, 0, UIntPtr.Zero);
                             mouse_event(ApplicationConstants.MOUSEEVENTF_MOVE, 0, 1, 0, UIntPtr.Zero);
-                            Thread.Sleep(10);
+                            Thread.Sleep(T);
                         }
                     }
                     if (ScrollX > ScrollY)//spostamento maggiore sull'asse x
@@ -297,7 +299,7 @@ namespace ProgettoPDS_SERVER
                                 counter = 0;
                                 mouse_event(ApplicationConstants.MOUSEEVENTF_MOVE, 0, 1, 0, UIntPtr.Zero);
                             }
-                            Thread.Sleep(10);
+                            Thread.Sleep(T);
                         }
                     }
                     else//spostamento maggiore sull'asse y
@@ -312,14 +314,16 @@ namespace ProgettoPDS_SERVER
                                 counter = 0;
                                 mouse_event(ApplicationConstants.MOUSEEVENTF_MOVE, 1, 0, 0, UIntPtr.Zero);
                             }
-                            Thread.Sleep(10);
+                            Thread.Sleep(T);
                         }
                     }
                 }
                 #endregion
             }
-            
+            #endregion
         }
+        #endregion
+        #region KEYBOARD
         public static void KeyBoardThreadProc(object data)
         {
             String[] KBData = data as String[];
@@ -329,36 +333,22 @@ namespace ProgettoPDS_SERVER
             ThreadCounter--;
             mr.Set();
         }
+
+        private void PressKey(byte keyCode)
+        {
+
+            keybd_event(keyCode, 0x45, ApplicationConstants.KEYEVENTF_EXTENDEDKEY, UIntPtr.Zero);
+            keybd_event(keyCode, 0x45, ApplicationConstants.KEYEVENTF_EXTENDEDKEY | ApplicationConstants.KEYEVENTF_KEYUP, UIntPtr.Zero);
+        }
+        #endregion
+        #region CLIPBOARD
         public static void ClipBoardThreadProc(object data)
         {
             ThreadCounter--;
             mr.Set();
         }
-
-        private void PressKey(byte keyCode)
-        {
-            
-            keybd_event(keyCode, 0x45, ApplicationConstants.KEYEVENTF_EXTENDEDKEY, UIntPtr.Zero);
-            keybd_event(keyCode, 0x45, ApplicationConstants.KEYEVENTF_EXTENDEDKEY | ApplicationConstants.KEYEVENTF_KEYUP, UIntPtr.Zero);
-        }
-
-        public static int ThreadCounter 
-        {
-            get 
-            {
-                mut.WaitOne(); 
-                int td =threadcounter;
-                mut.ReleaseMutex();
-                return td;
-            } 
-            set 
-            { 
-                mut.WaitOne();
-                threadcounter=value;
-                mut.ReleaseMutex();
-            } 
-        }
-
+        #endregion
+        #region Dll imports
         //set cursor method
         [DllImport("user32.dll", CallingConvention = CallingConvention.Cdecl)]
         static extern bool SetCursorPos(int X, int Y);
@@ -376,5 +366,22 @@ namespace ProgettoPDS_SERVER
         [DllImport("user32.dll")]
         static extern bool keybd_event(byte bVk, byte bScan, uint dwFlags,
            UIntPtr dwExtraInfo);
+        #endregion
+        public static int ThreadCounter
+        {
+            get
+            {
+                mut.WaitOne();
+                int td = threadcounter;
+                mut.ReleaseMutex();
+                return td;
+            }
+            set
+            {
+                mut.WaitOne();
+                threadcounter = value;
+                mut.ReleaseMutex();
+            }
+        }
     }
 }

@@ -24,26 +24,38 @@ namespace ProgettoPDS_SERVER
         public MainForm(User u)
         {
             InitializeComponent();
+            //scrivo il nome dell'utente nel form
             this.Text = "SERVER - "+ u.Username;
+            //avvio un message box di benvenuto
             MessageBox.Show("Bentornato " + u.Name + " " + u.Surname + "!","BENTORNATO!",MessageBoxButtons.OK,MessageBoxIcon.Information);
         }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            //lancio la notify icon
             this.notifyIcon1.ShowBalloonTip(1000);
+            //rendo il form invisibile
             this.ShowInTaskbar = false;
 
+            //inizializzo la classe per gestire la connessione
             if (this.Sconnection==null)
                 this.Sconnection = new SocketConnection(port);
 
-            this.Text+=" - IP : "+Sconnection.GetMyIp();
+            //aggiungo nel form l'IP corrente
+            this.Text+=" - IP : " + Sconnection.GetMyIp();
         }
 
+        /// <summary>
+        /// Click sulla Notify Icon: mostra il menu.
+        /// </summary>
         private void notifyIcon1_BalloonTipClicked(object sender, EventArgs e)
         {
             this.contextMenuStrip.Show(Cursor.Position);
         }
 
+        /// <summary>
+        /// Click sul pulsante 'Connetti' del menu: avvia la connessione.
+        /// </summary>
         private void button_connect_Click(object sender, EventArgs e)
         {
             Sconnection.StartListening(this);
@@ -62,31 +74,47 @@ namespace ProgettoPDS_SERVER
             //this.top.Hide();
         }*/
 
+        /// <summary>
+        /// Click sul pulsante 'Disconnetti' del menu: chiude la connessione.
+        /// </summary>
         private void buttonDisconnect_Click(object sender, EventArgs e)
         {
-            Sconnection.SockDisconnect();          
+            EndBackgroundWorker();          
         }
 
+        /// <summary>
+        /// Click sul pulsante 'Chiudi Applicazione' del menu: chiude l'applicazione.
+        /// </summary>
         private void MainFormClose(object sender, EventArgs e)
         {
                 this.Close();
         }
 
+        /// <summary>
+        /// Click sul pulsante 'Chiudi Menu' del menu: nasconde il menu.
+        /// </summary>
         private void MenuClose(object sender, EventArgs e)
         {
             this.contextMenuStrip.Hide();
         }
 
+        //non so se serve ??
         private void ChangeCursor(object sender, EventArgs e)
         {
             this.Cursor = Cursors.Arrow;
         }
 
+        /// <summary>
+        /// Click sul pulsante 'Console' del menu: mostra il form che funge da console.
+        /// </summary>
         private void MainFormShow(object sender, EventArgs e)
         {
             this.WindowState = FormWindowState.Normal;          
         }
 
+        /// <summary>
+        /// Metodo chiamato quando il form si sta chiudendo, da la possibilita di chiudere oppure no.
+        /// </summary>
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             DialogResult res = MessageBox.Show("Vuoi chiudere l'applicazione?", "CHIUSURA IN CORSO", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation);
@@ -104,18 +132,12 @@ namespace ProgettoPDS_SERVER
                 e.Cancel = true;
 
             this.WindowState = FormWindowState.Minimized;
+            this.ShowInTaskbar = false;
         }
 
-        private void toolStripMenuItemLogOut_Click(object sender, EventArgs e)
-        {
-            DialogResult res = MessageBox.Show("Vuoi fare Log Out?", "LOG OUT IN CORSO", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
-
-            if (res == DialogResult.OK)
-            {
-                this.Close();
-            }
-        }
-
+        /// <summary>
+        /// Click sul pulsante 'disegna' del menu: disegna un bordo.
+        /// </summary>
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
             Sconnection.DrawBorders();
@@ -226,8 +248,11 @@ namespace ProgettoPDS_SERVER
             }
         }
 #endregion
-        #region sync recive
+        #region PacketsHandler backgroundWorker
 
+        /// <summary>
+        /// Work del PacketsHandlerbackgroundWorker, gestione dei pacchetti ricevuti e smistamento nei thread corrispondenti alla funzionalità(mouse, keyboard, clipboard).
+        /// </summary>
         private void PacketsHandlerbackgroundWorker_DoWork(object sender, DoWorkEventArgs e)
         {
             byte[] data;
@@ -314,21 +339,27 @@ namespace ProgettoPDS_SERVER
         }
 
         #endregion
+        /// <summary>
+        /// Gestione di un'eccezione. Messaggio di errore e possibilita' di chiudere la connessione.
+        /// </summary>
         private void ExceptionManagement(Exception ex)
         {
-            MessageBox.Show(ex.Message);
-
-            DialogResult res = MessageBox.Show("Errore critico, vuoi chiudere la connessione?", "ECCEZIONE", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+            DialogResult res = MessageBox.Show("\""+ex.Message+"\" Errore critico, vuoi chiudere la connessione?", "ECCEZIONE", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
 
             if (res == DialogResult.OK)
             {
-                Sconnection.SockDisconnect();
-                work = false;
+                EndBackgroundWorker();
             }
         }
+        /// <summary>
+        /// Chiusura del PacketsHandlerbackgroundWorker, disconnessione e terminazione BW.
+        /// </summary>
         private void EndBackgroundWorker()
         {
-            PacketsHandlerbackgroundWorker.CancelAsync();
+            Sconnection.SockDisconnect();
+
+            if(PacketsHandlerbackgroundWorker.IsBusy)
+                PacketsHandlerbackgroundWorker.CancelAsync();
         }
     }
 }
