@@ -12,7 +12,7 @@ namespace ProgettoPDS_SERVER
 {
     class ThreadHandler
     {
-        private const int T = 10;//tempo di attesa per lo spostamento del mouse
+        private const int T = 3;//tempo di attesa per lo spostamento del mouse
         public const int MAXTHREAD = 5;
         private static int threadcounter = 0;
         private static Mutex mut = new Mutex();
