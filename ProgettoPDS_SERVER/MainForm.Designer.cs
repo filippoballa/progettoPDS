@@ -39,6 +39,7 @@
             this.toolStripMenuItemCloseMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.PacketsHandlerbackgroundWorker = new System.ComponentModel.BackgroundWorker();
+            this.labelStato = new System.Windows.Forms.Label();
             this.contextMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -65,7 +66,6 @@
             this.toolStripMenuItem1});
             this.contextMenuStrip.Name = "contextMenuStrip";
             this.contextMenuStrip.Size = new System.Drawing.Size(181, 158);
-            this.contextMenuStrip.MouseEnter += new System.EventHandler(this.ChangeCursor);
             // 
             // toolStripMenuItemOpenConsole
             // 
@@ -89,6 +89,7 @@
             this.toolStripMenuItemDisconnetti.Name = "toolStripMenuItemDisconnetti";
             this.toolStripMenuItemDisconnetti.Size = new System.Drawing.Size(180, 22);
             this.toolStripMenuItemDisconnetti.Text = "Disconnetti";
+            this.toolStripMenuItemDisconnetti.Click += new System.EventHandler(this.buttonDisconnect_Click);
             // 
             // toolStripMenuItemCloseForm
             // 
@@ -119,11 +120,21 @@
             this.PacketsHandlerbackgroundWorker.WorkerSupportsCancellation = true;
             this.PacketsHandlerbackgroundWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.PacketsHandlerbackgroundWorker_DoWork);
             // 
+            // labelStato
+            // 
+            this.labelStato.AutoSize = true;
+            this.labelStato.Location = new System.Drawing.Point(277, 9);
+            this.labelStato.Name = "labelStato";
+            this.labelStato.Size = new System.Drawing.Size(85, 13);
+            this.labelStato.TabIndex = 1;
+            this.labelStato.Text = "DISCONNESSO";
+            // 
             // MainForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(374, 132);
+            this.Controls.Add(this.labelStato);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -137,6 +148,7 @@
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.contextMenuStrip.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -151,5 +163,6 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemCloseMenu;
         protected internal System.ComponentModel.BackgroundWorker PacketsHandlerbackgroundWorker;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        protected internal System.Windows.Forms.Label labelStato;
     }
 }

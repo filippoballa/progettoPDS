@@ -16,14 +16,23 @@ namespace ProgettoPDS_SERVER
     public partial class MainForm : Form
     {
         static bool work = true;
-        
-        private SocketConnection Sconnection = null;
-        const int port = 2000;
+        //public delegate void Handler(Cursor c);
+        //public Handler myHandler;
         //PopUpWindow top = new PopUpWindow(new Panel(),"t");
+        private SocketConnection Sconnection = null;
+        private static int port = 2000;
+        public int Port { get { return port; } set { port = value; } }
+        private const int toolTipTimeOut = 200;
+        public int ToolTipTimeOut { get { return toolTipTimeOut; } }
+        
 
         public MainForm(User u)
         {
             InitializeComponent();
+
+            //aggancio l'Handler per poter fare una safe invoke
+            //this.myHandler = new Handler(ChangeCursor);
+
             //scrivo il nome dell'utente nel form
             this.Text = "SERVER - "+ u.Username;
             //avvio un message box di benvenuto
@@ -33,13 +42,13 @@ namespace ProgettoPDS_SERVER
         private void MainForm_Load(object sender, EventArgs e)
         {
             //lancio la notify icon
-            this.notifyIcon1.ShowBalloonTip(1000);
+            this.notifyIcon1.ShowBalloonTip(ToolTipTimeOut);
             //rendo il form invisibile
             this.ShowInTaskbar = false;
 
             //inizializzo la classe per gestire la connessione
             if (this.Sconnection==null)
-                this.Sconnection = new SocketConnection(port);
+                this.Sconnection = new SocketConnection(Port);
 
             //aggiungo nel form l'IP corrente
             this.Text+=" - IP : " + Sconnection.GetMyIp();
@@ -60,9 +69,7 @@ namespace ProgettoPDS_SERVER
         {
             Sconnection.StartListening(this);
 
-            this.notifyIcon1.BalloonTipText = "In attesa di connessioni dal Client";
-            this.notifyIcon1.BalloonTipTitle = "INFO STATO";
-            this.notifyIcon1.ShowBalloonTip(1000);
+            notifyIcon1.ShowBalloonTip(ToolTipTimeOut, "INFO STATO", "In attesa di connessioni dal Client.", ToolTipIcon.Info);
         }
 
         /*public void PopUpShow(object sender, EventArgs e)
@@ -99,10 +106,11 @@ namespace ProgettoPDS_SERVER
         }
 
         //non so se serve ??
-        private void ChangeCursor(object sender, EventArgs e)
+        private void ChangeCursor(Cursor c )
         {
-            this.Cursor = Cursors.Arrow;
+            this.Cursor = c;
         }
+
 
         /// <summary>
         /// Click sul pulsante 'Console' del menu: mostra il form che funge da console.
@@ -123,9 +131,7 @@ namespace ProgettoPDS_SERVER
             {
                 e.Cancel = false;
 
-                this.notifyIcon1.BalloonTipText = "Applicazione in Back Ground.";
-                this.notifyIcon1.BalloonTipTitle = "INFO STATO";
-                this.notifyIcon1.ShowBalloonTip(1000);
+                notifyIcon1.ShowBalloonTip(ToolTipTimeOut, "INFO STATO", "Applicazione in Back Ground.", ToolTipIcon.Info);
             }
                
             else
@@ -190,7 +196,7 @@ namespace ProgettoPDS_SERVER
                     Thread t = null;
                     //controllo il counter dei thread, se ne ho già lanciati MAXTHREAD mi metto in attesa
                     while (ThreadHandler.ThreadCounter >= ThreadHandler.MAXTHREAD)
-                        ThreadHandler.mr.WaitOne();
+                        ThreadHandler.mrMaxThreads.WaitOne();
 
                     String s = Data[i];
                     String[] d;
@@ -237,7 +243,7 @@ namespace ProgettoPDS_SERVER
                         ThreadHandler.ThreadCounter++;
 
                         if (ThreadHandler.ThreadCounter >= ThreadHandler.MAXTHREAD)
-                            ThreadHandler.mr.Reset();
+                            ThreadHandler.mrMaxThreads.Reset();
                     }
                 }
   
@@ -279,7 +285,7 @@ namespace ProgettoPDS_SERVER
                         Thread t = null;
                         //controllo il counter dei thread, se ne ho già lanciati MAXTHREAD mi metto in attesa
                         while (ThreadHandler.ThreadCounter >= ThreadHandler.MAXTHREAD)
-                            ThreadHandler.mr.WaitOne();
+                            ThreadHandler.mrMaxThreads.WaitOne();
 
                         String s = Data[i];
                         String[] d = null;
@@ -287,6 +293,7 @@ namespace ProgettoPDS_SERVER
                         //caso ricezione mouse
                         if (s == ApplicationConstants.MOUSECODE)
                         {
+                            //[M]-[EVENTKEY]-[X]-[Y]
                             d = new String[4];
                             d[0] = s;
                             d[1] = Data[i + 1];
@@ -295,11 +302,17 @@ namespace ProgettoPDS_SERVER
 
                             i += 3;
 
-                            t = new Thread(ThreadHandler.MouseThreadProc);
+                            ThreadHandler.Queue.Enqueue(d);
+
+                            if (ThreadHandler.Queue.Count == 1)
+                            {
+                                t = new Thread(ThreadHandler.MouseThreadProc);
+                            }
                         }
                         //caso ricezione keyboard
                         else if (s == ApplicationConstants.KEYBOARDCODE)
                         {
+                            //[K]-[EVENTKEY]-[KEYCODE]
                             d = new String[3];
                             d[0] = s;
                             d[1] = Data[i + 1];
@@ -326,7 +339,7 @@ namespace ProgettoPDS_SERVER
                             ThreadHandler.ThreadCounter++;
 
                             if (ThreadHandler.ThreadCounter >= ThreadHandler.MAXTHREAD)
-                                ThreadHandler.mr.Reset();
+                                ThreadHandler.mrMaxThreads.Reset();
                         }
                     }
                 }
@@ -360,6 +373,11 @@ namespace ProgettoPDS_SERVER
 
             if(PacketsHandlerbackgroundWorker.IsBusy)
                 PacketsHandlerbackgroundWorker.CancelAsync();
+        }
+
+        public void ChangeLabelStato(string stato)
+        {
+            this.labelStato.Text = stato;
         }
     }
 }

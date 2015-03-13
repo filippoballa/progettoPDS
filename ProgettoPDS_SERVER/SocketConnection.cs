@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.Globalization;
 using System.Drawing;
 using System.Runtime.InteropServices;
+using System.ComponentModel;
 
 namespace ProgettoPDS_SERVER
 {
@@ -48,7 +49,6 @@ namespace ProgettoPDS_SERVER
         private Socket sock, passiv;
         private int porta;
         private String myIP;
-        private ApplicationConstants.Stato stato;
         private MainForm main;
 
         public Socket Passiv
@@ -56,11 +56,14 @@ namespace ProgettoPDS_SERVER
             get { return this.passiv; }
         }
 
+        private ApplicationConstants.Stato stato = ApplicationConstants.Stato.DISCONNESSO;
+        public ApplicationConstants.Stato Stato { get { return stato; } set { StatoChanged(value); stato = value; } }
+
         //costruttore
 
         public SocketConnection(int porta)
         {
-            stato = ApplicationConstants.Stato.DISCONNESSO;
+            Stato = ApplicationConstants.Stato.DISCONNESSO;
             // Create a TCP/IP socket.
             this.porta = porta;
             sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
@@ -93,13 +96,13 @@ namespace ProgettoPDS_SERVER
             passiv = (Socket)ar.AsyncState;
             passiv = passiv.EndAccept(ar);
 
-            main.notifyIcon1.ShowBalloonTip(2, "INFO STATO", "Inizio procedura autenticazione client . . .(" + passiv.RemoteEndPoint.ToString() + ")", ToolTipIcon.Info);
+            main.notifyIcon1.ShowBalloonTip(main.ToolTipTimeOut, "INFO STATO", "Inizio procedura autenticazione client . . .(" + passiv.RemoteEndPoint.ToString() + ")", ToolTipIcon.Info);
             if(ClientAutentication())
             {
-                main.notifyIcon1.ShowBalloonTip(2, "INFO STATO", "Autenticazione Client effettuata con successo! Connessione avviata.",ToolTipIcon.Info);
-                stato = ApplicationConstants.Stato.CONNESSO;
+                main.notifyIcon1.ShowBalloonTip(main.ToolTipTimeOut, "INFO STATO", "Autenticazione Client effettuata con successo! Connessione avviata.",ToolTipIcon.Info);
+                Stato = ApplicationConstants.Stato.CONNESSO;
                 //disegno qualcosa per mostrare il controllo
-                Thread t = new Thread(new ThreadStart(DrawBorders));
+                DrawBorders();
                 //lancio il backGround worker per il controllo dei pacchetti
                 main.PacketsHandlerbackgroundWorker.RunWorkerAsync();
             }
@@ -128,30 +131,31 @@ namespace ProgettoPDS_SERVER
             {
                 main.notifyIcon1.ShowBalloonTip(2, "INFO STATO", "Deve ancora essere creata una connessione.", ToolTipIcon.Warning);
             }
-            stato = ApplicationConstants.Stato.DISCONNESSO;
+            Stato = ApplicationConstants.Stato.DISCONNESSO;
 
         }
 
         public void SockDisconnect()
         {
+            //mettere bolocchi try catch
             if (this.passiv != null)
             {
                 if (this.passiv.Connected)
                 {
                     this.passiv.Shutdown(SocketShutdown.Both);
                     this.passiv.Close();
-                    main.notifyIcon1.ShowBalloonTip(2, "INFO STATO", "Connessione chiusa correttamente.", ToolTipIcon.Info);
+                    main.notifyIcon1.ShowBalloonTip(main.ToolTipTimeOut, "INFO STATO", "Connessione chiusa correttamente.", ToolTipIcon.Info);
                 }
                 else
                 {
-                    main.notifyIcon1.ShowBalloonTip(2, "INFO STATO", "Eri già disconnesso.", ToolTipIcon.Warning);
+                    main.notifyIcon1.ShowBalloonTip(main.ToolTipTimeOut, "INFO STATO", "Eri già disconnesso.", ToolTipIcon.Warning);
                 }
             }
             else
             {
-                main.notifyIcon1.ShowBalloonTip(2, "INFO STATO", "Deve ancora essere creata una connessione.", ToolTipIcon.Warning);
+                main.notifyIcon1.ShowBalloonTip(main.ToolTipTimeOut, "INFO STATO", "Deve ancora essere creata una connessione.", ToolTipIcon.Warning);
             }
-            stato = ApplicationConstants.Stato.DISCONNESSO;
+            Stato = ApplicationConstants.Stato.DISCONNESSO;
 
         }
         #endregion
@@ -323,15 +327,15 @@ namespace ProgettoPDS_SERVER
             IntPtr desktop = GetDC(IntPtr.Zero);
             using (Graphics g = Graphics.FromHdc(desktop))
             {
-                int border = 3;
+                int border = 5;
                 //top
                 g.FillRectangle(Brushes.Red, 0, 0, Screen.PrimaryScreen.Bounds.Width, border);
                 //right
-                g.FillRectangle(Brushes.Green, Screen.PrimaryScreen.Bounds.Width - border, border, border, Screen.PrimaryScreen.Bounds.Height - (2 * border));
+                g.FillRectangle(Brushes.Red, Screen.PrimaryScreen.Bounds.Width - border, border, border, Screen.PrimaryScreen.Bounds.Height - (2 * border));
                 //bottom
                 g.FillRectangle(Brushes.Red, 0, Screen.PrimaryScreen.Bounds.Height - border, Screen.PrimaryScreen.Bounds.Width, border);
                 //left
-                g.FillRectangle(Brushes.Yellow, 0, border, border, Screen.PrimaryScreen.Bounds.Height - (2 * border));
+                g.FillRectangle(Brushes.Red, 0, border, border, Screen.PrimaryScreen.Bounds.Height - (2 * border));
             }
             ReleaseDC(IntPtr.Zero, desktop);
         }
@@ -357,7 +361,18 @@ namespace ProgettoPDS_SERVER
             }
             return myIP;
         }
-    }
 
+        private void StatoChanged(ApplicationConstants.Stato value)
+        {
+            //
+            if (main != null) 
+            {
+                main.notifyIcon1.ShowBalloonTip(main.ToolTipTimeOut, "INFO STATO", "Lo stato dell' applicazione é " + value.ToString(), ToolTipIcon.Info);
+
+                main.labelStato.Invoke((MethodInvoker)(() => main.labelStato.Text = value.ToString()));
+            }
+            
+        }
+    }
 }
 
