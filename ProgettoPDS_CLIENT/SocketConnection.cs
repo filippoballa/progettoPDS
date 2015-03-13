@@ -21,14 +21,16 @@ namespace ProgettoPDS_CLIENT
         private int remotePort;
         public static bool isBindLocal = false;
         private bool isDisconect;
+        private MainForm m;
 
         #endregion
 
         #region Constructor
 
-        public SocketConnection(string addr, int port, User utente ) 
+        public SocketConnection(string addr, int port, User utente, MainForm m ) 
         {
             this.utente = utente;
+            this.m = m;
             this.GetLocalIP();
             this.remoteEP = new IPEndPoint(IPAddress.Parse(addr), Convert.ToInt32(port) );
             this.remotePort = port;
@@ -109,7 +111,7 @@ namespace ProgettoPDS_CLIENT
                         else {
                             comando = Encoding.ASCII.GetBytes("+NO");
                             client.Send(comando); // Il client NON accetta di registrarsi sul server!!
-                            SockDisconnect();
+                            SockClose();
                             return;
                         }
 
@@ -136,6 +138,9 @@ namespace ProgettoPDS_CLIENT
                 else 
                     ErrorProtocol();
 
+                this.m.Invoke(this.m.myHandler);
+                
+
             }
             catch (Exception ecc) {
                 MessageBox.Show(ecc.Message, "ANOMALY", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -148,12 +153,12 @@ namespace ProgettoPDS_CLIENT
             this.sock.Send(comando);
             MessageBox.Show("Errore nel protocollo di Autenticazione!! Connessione Fallita", 
                 "ERRORE!!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            this.SockDisconnect();
+            this.SockClose();
         }
 
         #endregion
 
-        #region Other Methods...
+        #region Other Methods and Properties
 
         // Bind dell'endpoint locale
         private void BindingLocalEP()
@@ -211,6 +216,12 @@ namespace ProgettoPDS_CLIENT
 
         // La funzione rilascia le risorse associate al socket
         public void SockDisconnect() 
+        {
+            this.sock.Shutdown(SocketShutdown.Both);
+            this.sock.Disconnect(true);
+        }
+
+        public void SockClose()
         {
             this.sock.Shutdown(SocketShutdown.Both);
             this.sock.Close();

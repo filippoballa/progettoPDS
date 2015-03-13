@@ -58,6 +58,9 @@ namespace ProgettoPDS_CLIENT
         protected const byte VK_RCONTROL = 0x3;
         protected const byte VK_LALT = 0xA4;
         protected const byte VK_RALT = 0xA5;
+        protected const byte VK_PAUSE = 0x13;
+        protected const byte VK_BACK = 0x08;
+        protected const byte VK_TAB = 0x09;
 
         protected const byte LLKHF_ALTDOWN = 0x20;
 

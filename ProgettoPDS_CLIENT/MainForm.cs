@@ -16,8 +16,10 @@ namespace ProgettoPDS_CLIENT
 {
     public partial class MainForm : Form
     {
-        #region Private Variables
+        #region Variables
 
+        public delegate void Handler();
+        public Handler myHandler;
         private User user;
         private List<SocketConnection> connessioni;
         private List<Server> servers;
@@ -44,6 +46,7 @@ namespace ProgettoPDS_CLIENT
             InitializeComponent();
             this.connessioni = new List<SocketConnection>();
             this.servers = new List<Server>();
+            this.myHandler = new Handler(RefreshLabel); 
             this.currServ = -1;
             this.user = aux;
             this.CountServerConnected = 0;
@@ -54,7 +57,7 @@ namespace ProgettoPDS_CLIENT
             this.Ridimensiona();
             this.HostNameTextBox.Focus();
             this.mouseHook.MouseMove += new MouseEventHandler(mouseHook_MouseMove);
-            this.keyboardHook.KeyDown += new KeyEventHandler(keyboardHook_KeyDown);
+            this.keyboardHook.KeyUp += new KeyEventHandler(keyboardHook_KeyUp);
             this.mouseHook.Click += new MouseEventHandler(mouseHook_DoubleClick);
             this.mouseHook.DoubleClick += new MouseEventHandler(mouseHook_DoubleClick);
         }
@@ -246,22 +249,13 @@ namespace ProgettoPDS_CLIENT
             if (!this.connessioni[this.currServ].IsConnected()) {
 
                 if (this.connessioni[this.currServ].IsDisconnect)
-                    this.connessioni[this.currServ] = new SocketConnection(servers[this.currServ].IPAddr, servers[this.currServ].Porta, this.user);
+                    this.connessioni[this.currServ] = new SocketConnection(servers[this.currServ].IPAddr, servers[this.currServ].Porta, this.user, this);
 
                 this.connessioni[this.currServ].StartClientConnection();
 
-                if ( this.connessioni[this.currServ].IsConnected() && this.CountServerConnected == 0) {
-                    this.label5.Text = "Connesioni Attive: " + servers[this.currServ].HostName;
-                    this.CountServerConnected++;
-                }
-                else if (this.connessioni[this.currServ].IsConnected() && this.CountServerConnected >= 1) {
-                    this.label5.Text += " , " + servers[this.currServ].HostName;
-                    this.CountServerConnected++;
-                }
             }
             else
                 MessageBox.Show("La connessione con il server è già attiva!!", "ERRORE!!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
         }
 
         #endregion
@@ -326,7 +320,28 @@ namespace ProgettoPDS_CLIENT
 
         #endregion
 
-        #region Other Buttons
+        #region Other Buttons and Form's Functions
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            for (int i = 0; i < this.connessioni.Count; i++) {
+                if (this.connessioni[i].IsConnected())
+                    this.connessioni[i].SockClose();
+            }
+
+        }
+
+        private void RefreshLabel()
+        {
+            if (this.connessioni[this.currServ].IsConnected() && this.CountServerConnected == 0) {
+                this.label5.Text = "Connesioni Attive: " + servers[this.currServ].HostName;
+                this.CountServerConnected++;
+            }
+            else if (this.connessioni[this.currServ].IsConnected() && this.CountServerConnected >= 1) {
+                this.label5.Text += " , " + servers[this.currServ].HostName;
+                this.CountServerConnected++;
+            }    
+        }
 
         private void InfoButton_Click(object sender, EventArgs e)
         {
@@ -428,7 +443,7 @@ namespace ProgettoPDS_CLIENT
                 return;
             }
          
-            this.connessioni.Add(new SocketConnection(this.IPAddressTextBox.Text, Convert.ToInt32(this.PortaTextBox.Text), this.user));
+            this.connessioni.Add(new SocketConnection(this.IPAddressTextBox.Text, Convert.ToInt32(this.PortaTextBox.Text), this.user, this));
             this.servers.Add(new Server(this.HostNameTextBox.Text, this.IPAddressTextBox.Text, Convert.ToInt32(this.PortaTextBox.Text)));   
             this.listBox1.Items.Add(this.servers.Last().ToString());
             this.PortaTextBox.Clear();
@@ -442,7 +457,7 @@ namespace ProgettoPDS_CLIENT
 
         #region Keyboard Management
 
-        private void keyboardHook_KeyDown( object sender, KeyEventArgs e ) 
+        private void keyboardHook_KeyUp( object sender, KeyEventArgs e ) 
         {
             if (this.ActionPanel.Visible && this.keyboardHook.IsStarted ) {
 
@@ -478,19 +493,35 @@ namespace ProgettoPDS_CLIENT
 
             // Costruzione Pacchetto
             string aux = "K-";
+            bool mod = true;
 
-            if (key.Control && key.KeyCode == Keys.C)
-                aux += "MORE-" + Keys.Control.ToString() + "-" + Keys.C.ToString();
-            else if (key.Control && key.KeyCode == Keys.V)
-                aux += "MORE-" + Keys.Control.ToString() + "-" + Keys.V.ToString();
-            else if (key.Control && key.KeyCode == Keys.S)
-                aux += "MORE-" + Keys.Control.ToString() + "-" + Keys.S.ToString();
-            else if (key.Control && key.KeyCode == Keys.A)
-                aux += "MORE-" + Keys.Control.ToString() + "-" + Keys.A.ToString();
-            else if (key.Control && key.KeyCode == Keys.X)
-                aux += "MORE-" + Keys.Control.ToString() + "-" + Keys.X.ToString();
-            else if (!key.Alt && !key.Control && !key.Shift)
-                aux += "SINGLE-" + key.KeyCode.ToString();
+            if (key.Control && key.Alt && key.Shift)
+                aux += KeyboardHook.Modificatore.CAS.ToString() + "-";
+            else if (key.Control && key.Alt)
+                aux += KeyboardHook.Modificatore.CA.ToString() + "-";
+            else if (key.Control && key.Shift)
+                aux += KeyboardHook.Modificatore.CS.ToString() + "-";
+            else if (key.Alt && key.Shift )
+                aux += KeyboardHook.Modificatore.AS.ToString() + "-";
+            else if( key.Control )
+                aux += KeyboardHook.Modificatore.C.ToString() + "-";
+            else if( key.Alt )
+                aux += KeyboardHook.Modificatore.A.ToString() + "-";
+            else if (key.Shift)
+                aux += aux += KeyboardHook.Modificatore.S.ToString() + "-";
+            else { 
+
+                string sys = KeyboardHook.VirtualKeys[key.KeyValue.ToString("X")];
+                mod = false;
+
+                if (sys != null)
+                    aux += "SYSKEY-" + sys + "-";
+                else
+                    aux += "SNGKEY-" + key.KeyData.ToString().ToLower() + "-";
+            }
+
+            if (mod)
+                aux += key.KeyData.ToString().ToLower() + "-";
 
             byte[] pdu = Encoding.ASCII.GetBytes(aux);
 
@@ -498,11 +529,12 @@ namespace ProgettoPDS_CLIENT
             try{
                 mut.WaitOne();
                 this.connessioni[this.currServ].Sock.Send(pdu);
-                mreKeyboard.Set();
             }
             finally {
                 mut.ReleaseMutex();
             }
+
+            mreKeyboard.Set();
             
         }
 
