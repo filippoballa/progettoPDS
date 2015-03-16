@@ -381,11 +381,11 @@
             this.EscapeLabel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.EscapeLabel.Font = new System.Drawing.Font("Calibri", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.EscapeLabel.ForeColor = System.Drawing.Color.DarkRed;
-            this.EscapeLabel.Location = new System.Drawing.Point(300, 561);
+            this.EscapeLabel.Location = new System.Drawing.Point(280, 561);
             this.EscapeLabel.Name = "EscapeLabel";
-            this.EscapeLabel.Size = new System.Drawing.Size(400, 20);
+            this.EscapeLabel.Size = new System.Drawing.Size(504, 20);
             this.EscapeLabel.TabIndex = 3;
-            this.EscapeLabel.Text = "Premere il tasto \"ESC\" per tornare alla schermata precedente...";
+            this.EscapeLabel.Text = "Premere la combinazione  di tasti \"Esc\" per tornare alla schermata precedente...";
             // 
             // pictureBox4
             // 

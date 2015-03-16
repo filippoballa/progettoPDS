@@ -461,7 +461,7 @@ namespace ProgettoPDS_CLIENT
         {
             if (this.ActionPanel.Visible && this.keyboardHook.IsStarted ) {
 
-                if (e.KeyCode == Keys.Escape) {
+                if (e.KeyCode == Keys.Escape ) {
                     this.ActionPanel.Visible = false;
                     this.ActionServerLabel.Text = "Stai Comandando il seguente Server: ";
                     this.MainPanel.Visible = true;
