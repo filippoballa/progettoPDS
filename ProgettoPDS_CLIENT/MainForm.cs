@@ -508,20 +508,14 @@ namespace ProgettoPDS_CLIENT
             else if( key.Alt )
                 aux += KeyboardHook.Modificatore.A.ToString() + "-";
             else if (key.Shift)
-                aux += aux += KeyboardHook.Modificatore.S.ToString() + "-";
-            else { 
-
-                string sys = KeyboardHook.VirtualKeys[key.KeyValue.ToString("X")];
+                aux += KeyboardHook.Modificatore.S.ToString() + "-";
+            else {            
                 mod = false;
-
-                if (sys != null)
-                    aux += "SYSKEY-" + sys + "-";
-                else
-                    aux += "SNGKEY-" + key.KeyData.ToString().ToLower() + "-";
+                aux += "SNGKEY-" + key.KeyValue.ToString("X") + "-";
             }
 
             if (mod)
-                aux += key.KeyData.ToString().ToLower() + "-";
+                aux += key.KeyValue.ToString("X") + "-";
 
             byte[] pdu = Encoding.ASCII.GetBytes(aux);
 
