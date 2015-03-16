@@ -302,9 +302,10 @@ namespace ProgettoPDS_SERVER
 
                             i += 3;
 
-                            ThreadHandler.Queue.Enqueue(d);
+                            ThreadHandler.MouseQueue.Enqueue(d);
 
-                            if (ThreadHandler.Queue.Count == 1)
+                            //se il pacchetto è l'unico in coda creao il thread
+                            if (ThreadHandler.MouseQueue.Count == 1)
                             {
                                 t = new Thread(ThreadHandler.MouseThreadProc);
                             }
@@ -320,7 +321,14 @@ namespace ProgettoPDS_SERVER
 
                             i += 2;
 
-                            t = new Thread(ThreadHandler.KeyBoardThreadProc);
+                            ThreadHandler.KeyBoardQueue.Enqueue(d);
+
+                            //se il pacchetto è l'unico in coda creao il thread
+                            if (ThreadHandler.KeyBoardQueue.Count == 1)
+                            {
+                                t = new Thread(ThreadHandler.KeyBoardThreadProc);
+                            }
+                            
                         }
                         //caso ricezione cliboard
                         else if (s == ApplicationConstants.CLIPBOARDCODE)

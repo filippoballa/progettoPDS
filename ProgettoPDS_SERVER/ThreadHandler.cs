@@ -19,7 +19,8 @@ namespace ProgettoPDS_SERVER
         private static Mutex mut = new Mutex();
         public static ManualResetEvent mrMaxThreads = new ManualResetEvent(false);
         public static ManualResetEvent mrMouseThreads = new ManualResetEvent(false);
-        public static Queue<string[]> Queue = new Queue<string[]>();
+        public static Queue<string[]> MouseQueue = new Queue<string[]>();
+        public static Queue<string[]> KeyBoardQueue = new Queue<string[]>();
 
         #region MOUSE
         public static void MouseThreadProc(object data)
@@ -82,12 +83,12 @@ namespace ProgettoPDS_SERVER
             }
 
             //elimino il pacchetto dalla coda
-            Queue.Dequeue();
+            MouseQueue.Dequeue();
 
             //se ci sono altri pacchetti in coda lancio il primo della lista
-            if(Queue.Count>0)
+            if(MouseQueue.Count>0)
             {
-                string[] d = Queue.Peek();
+                string[] d = MouseQueue.Peek();
 
                 Thread t = new Thread(MouseThreadProc);
 
@@ -241,18 +242,124 @@ namespace ProgettoPDS_SERVER
         {
             String[] KBData = data as String[];
 
-            //case KBData[1]
+            //caso tasto singolo/semplice
+            if(KBData[1]==ApplicationConstants.KEYBOARDEVENT_SINGLEKEY)
+            {
+                PressKey(Byte.Parse(KBData[2],System.Globalization.NumberStyles.HexNumber));
+            }
+            else
+            {
+                ApplicationConstants.Modificatore m = (ApplicationConstants.Modificatore)Enum.Parse(typeof(ApplicationConstants.Modificatore),KBData[1]);
 
+                byte mod1,mod2,mod3;
+                switch(m)
+                {
+                    case ApplicationConstants.Modificatore.A :
+                        //attivazione combinazione
+                        mod1 = Convert.ToByte(ApplicationConstants.VK_MENU);
+
+                        keybd_event(mod1, 0, ApplicationConstants.KEYEVENTF_EXTENDEDKEY, UIntPtr.Zero);
+                        PressKey(Byte.Parse(KBData[2], System.Globalization.NumberStyles.HexNumber));
+                        keybd_event(mod1, 0, ApplicationConstants.KEYEVENTF_EXTENDEDKEY | ApplicationConstants.KEYEVENTF_KEYUP, UIntPtr.Zero);
+                        break;
+                    case ApplicationConstants.Modificatore.C:
+                        //attivazione combinazione
+                        mod1 = Convert.ToByte(ApplicationConstants.VK_CONTROL);
+
+                        keybd_event(mod1, 0, ApplicationConstants.KEYEVENTF_EXTENDEDKEY, UIntPtr.Zero);
+                        PressKey(Byte.Parse(KBData[2], System.Globalization.NumberStyles.HexNumber));
+                        keybd_event(mod1, 0, ApplicationConstants.KEYEVENTF_EXTENDEDKEY | ApplicationConstants.KEYEVENTF_KEYUP, UIntPtr.Zero);
+                        break;
+                    case ApplicationConstants.Modificatore.S:
+                        //attivazione combinazione
+                        mod1 = Convert.ToByte(ApplicationConstants.VK_SHIFT);
+
+                        keybd_event(mod1, 0, ApplicationConstants.KEYEVENTF_EXTENDEDKEY, UIntPtr.Zero);
+                        PressKey(Byte.Parse(KBData[2], System.Globalization.NumberStyles.HexNumber));
+                        keybd_event(mod1, 0, ApplicationConstants.KEYEVENTF_EXTENDEDKEY | ApplicationConstants.KEYEVENTF_KEYUP, UIntPtr.Zero);
+                        break;
+                    case ApplicationConstants.Modificatore.CA:
+                        //attivazione combinazione
+                        mod1 = Convert.ToByte(ApplicationConstants.VK_MENU);
+                        mod2 = Convert.ToByte(ApplicationConstants.VK_CONTROL);
+
+                        keybd_event(mod1, 0, ApplicationConstants.KEYEVENTF_EXTENDEDKEY, UIntPtr.Zero);
+                        keybd_event(mod2, 0, ApplicationConstants.KEYEVENTF_EXTENDEDKEY, UIntPtr.Zero);
+                        PressKey(Byte.Parse(KBData[2], System.Globalization.NumberStyles.HexNumber));
+                        keybd_event(mod1, 0, ApplicationConstants.KEYEVENTF_EXTENDEDKEY | ApplicationConstants.KEYEVENTF_KEYUP, UIntPtr.Zero);
+                        keybd_event(mod2, 0, ApplicationConstants.KEYEVENTF_EXTENDEDKEY | ApplicationConstants.KEYEVENTF_KEYUP, UIntPtr.Zero);
+                        break;
+                    case ApplicationConstants.Modificatore.CS:
+                        //attivazione combinazione
+                        mod1 = Convert.ToByte(ApplicationConstants.VK_SHIFT);
+                        mod2 = Convert.ToByte(ApplicationConstants.VK_CONTROL);
+
+                        keybd_event(mod1, 0, ApplicationConstants.KEYEVENTF_EXTENDEDKEY, UIntPtr.Zero);
+                        keybd_event(mod2, 0, ApplicationConstants.KEYEVENTF_EXTENDEDKEY, UIntPtr.Zero);
+                        PressKey(Byte.Parse(KBData[2], System.Globalization.NumberStyles.HexNumber));
+                        keybd_event(mod1, 0, ApplicationConstants.KEYEVENTF_EXTENDEDKEY | ApplicationConstants.KEYEVENTF_KEYUP, UIntPtr.Zero);
+                        keybd_event(mod2, 0, ApplicationConstants.KEYEVENTF_EXTENDEDKEY | ApplicationConstants.KEYEVENTF_KEYUP, UIntPtr.Zero);
+                        break;
+                    case ApplicationConstants.Modificatore.CAS:
+                        //attivazione combinazione
+                        mod1 = Convert.ToByte(ApplicationConstants.VK_SHIFT);
+                        mod2 = Convert.ToByte(ApplicationConstants.VK_CONTROL);
+                        mod3 = Convert.ToByte(ApplicationConstants.VK_MENU);
+
+                        keybd_event(mod1, 0, ApplicationConstants.KEYEVENTF_EXTENDEDKEY, UIntPtr.Zero);
+                        keybd_event(mod2, 0, ApplicationConstants.KEYEVENTF_EXTENDEDKEY, UIntPtr.Zero);
+                        keybd_event(mod3, 0, ApplicationConstants.KEYEVENTF_EXTENDEDKEY, UIntPtr.Zero);
+                        PressKey(Byte.Parse(KBData[2], System.Globalization.NumberStyles.HexNumber));
+                        keybd_event(mod1, 0, ApplicationConstants.KEYEVENTF_EXTENDEDKEY | ApplicationConstants.KEYEVENTF_KEYUP, UIntPtr.Zero);
+                        keybd_event(mod2, 0, ApplicationConstants.KEYEVENTF_EXTENDEDKEY | ApplicationConstants.KEYEVENTF_KEYUP, UIntPtr.Zero);
+                        keybd_event(mod3, 0, ApplicationConstants.KEYEVENTF_EXTENDEDKEY | ApplicationConstants.KEYEVENTF_KEYUP, UIntPtr.Zero);
+                        break;
+                    case ApplicationConstants.Modificatore.AS:
+                        //attivazione combinazione
+                        mod1 = Convert.ToByte(ApplicationConstants.VK_SHIFT);
+                        mod2 = Convert.ToByte(ApplicationConstants.VK_MENU);
+
+                        keybd_event(mod1, 0, ApplicationConstants.KEYEVENTF_EXTENDEDKEY, UIntPtr.Zero);
+                        keybd_event(mod2, 0, ApplicationConstants.KEYEVENTF_EXTENDEDKEY, UIntPtr.Zero);
+                        PressKey(Byte.Parse(KBData[2], System.Globalization.NumberStyles.HexNumber));
+                        keybd_event(mod1, 0, ApplicationConstants.KEYEVENTF_EXTENDEDKEY | ApplicationConstants.KEYEVENTF_KEYUP, UIntPtr.Zero);
+                        keybd_event(mod2, 0, ApplicationConstants.KEYEVENTF_EXTENDEDKEY | ApplicationConstants.KEYEVENTF_KEYUP, UIntPtr.Zero);
+                        break;
+                }
+ 
+            }
+
+            //elimino il pacchetto dalla coda
+            KeyBoardQueue.Dequeue();
+
+            //se ci sono altri pacchetti in coda lancio il primo della lista
+            if (KeyBoardQueue.Count > 0)
+            {
+                string[] d = KeyBoardQueue.Peek();
+
+                Thread t = new Thread(KeyBoardThreadProc);
+
+                while (ThreadHandler.ThreadCounter >= ThreadHandler.MAXTHREAD)
+                    ThreadHandler.mrMaxThreads.WaitOne();
+
+                t.Start(d);
+                ThreadHandler.ThreadCounter++;
+
+                if (ThreadHandler.ThreadCounter >= ThreadHandler.MAXTHREAD)
+                    ThreadHandler.mrMaxThreads.Reset();
+            }
+
+            //decremento il contatore dei thread attivi e segnalo di aver finito la gestione di un Thread
             ThreadCounter--;
             mrMaxThreads.Set();
         }
 
-        private void PressKey(byte keyCode)
+        private static void PressKey(byte keyCode)
         {
-
-            keybd_event(keyCode, 0x45, ApplicationConstants.KEYEVENTF_EXTENDEDKEY, UIntPtr.Zero);
-            keybd_event(keyCode, 0x45, ApplicationConstants.KEYEVENTF_EXTENDEDKEY | ApplicationConstants.KEYEVENTF_KEYUP, UIntPtr.Zero);
+            keybd_event(keyCode, 0, ApplicationConstants.KEYEVENTF_EXTENDEDKEY, UIntPtr.Zero);
+            keybd_event(keyCode, 0, ApplicationConstants.KEYEVENTF_EXTENDEDKEY | ApplicationConstants.KEYEVENTF_KEYUP, UIntPtr.Zero);
         }
+
         #endregion
         #region CLIPBOARD
         public static void ClipBoardThreadProc(object data)
@@ -279,6 +386,9 @@ namespace ProgettoPDS_SERVER
         [DllImport("user32.dll")]
         static extern bool keybd_event(byte bVk, byte bScan, uint dwFlags,
            UIntPtr dwExtraInfo);
+        //Virtual Key Scan  char to short
+        [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+        static extern short VkKeyScan(char ch);
         #endregion
         public static int ThreadCounter
         {
