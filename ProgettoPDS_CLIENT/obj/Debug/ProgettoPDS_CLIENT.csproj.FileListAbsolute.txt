@@ -58,3 +58,4 @@ C:\Users\Dave\Documents\GitHub\progettoPDS\ProgettoPDS_CLIENT\obj\Debug\Progetto
 C:\Users\Dave\Documents\GitHub\progettoPDS\ProgettoPDS_CLIENT\obj\Debug\ProgettoPDS_CLIENT.Properties.Resources.resources
 C:\Users\Dave\Documents\GitHub\progettoPDS\ProgettoPDS_CLIENT\obj\Debug\ProgettoPDS_CLIENT.csproj.GenerateResource.Cache
 C:\Users\Dave\Documents\GitHub\progettoPDS\ProgettoPDS_CLIENT\bin\Debug\XMLServers.xml
+C:\Users\Dave\Documents\PDS - PROGETTO\ProgettoPDS_CLIENT\ProgettoPDS_CLIENT\bin\Debug\XMLServers.xml

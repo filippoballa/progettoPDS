@@ -551,12 +551,63 @@ namespace ProgettoPDS_CLIENT
                         this.KeyBackgroundWorker.CancelAsync();
 
                 }
+                else if ( e.Alt && e.KeyCode == Keys.PageUp ) {
+                    int index = this.currServ;
+
+                    do { 
+                        this.currServ++;
+
+                        if( this.currServ > ( this.connessioni.Count - 1 ) )
+                            this.currServ = 0;
+
+                        if( this.connessioni[this.currServ].IsConnected() ) {
+                            this.ActionServerLabel.Text = "Stai Comandando il seguente Server: " + this.servers[this.currServ].HostName;
+                            break;
+                        }
+                    } while( this.currServ != index );
+
+                    if( this.currServ == index )
+                        MessageBox.Show("Al momento sei connesso solo con il server : " + this.servers[this.currServ].HostName,
+                            "AVVISO!!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                }
+                else if ( e.Alt && e.KeyCode == Keys.PageDown ) {
+                    int index = this.currServ;
+
+                    do {
+                        this.currServ--;
+
+                        if (this.currServ < 0)
+                            this.currServ = this.connessioni.Count - 1;
+
+                        if (this.connessioni[this.currServ].IsConnected()) {
+                            this.ActionServerLabel.Text = "Stai Comandando il seguente Server: " + this.servers[this.currServ].HostName;
+                            break;
+                        }
+                    } while (this.currServ != index);
+
+                    if (this.currServ == index)
+                        MessageBox.Show("Al momento sei connesso solo con il server : " + this.servers[this.currServ].HostName,
+                            "AVVISO!!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else if (e.Alt && e.KeyCode == Keys.R ) { 
+
+                    // Invio Richiesta Clipboard Server
+                    // TODO
+
+                }
+                else if (e.Alt && e.KeyCode == Keys.S) { 
+
+                    // Imposto la Clipboard del server con quella attuale
+                    // TODO
+
+                }
                 else {
 
                     if (this.KeyBackgroundWorker.IsBusy)
                         mreKeyboard.WaitOne();
 
-                    this.KeyBackgroundWorker.RunWorkerAsync(e);  
+                    this.KeyBackgroundWorker.RunWorkerAsync(e);
 
                     mreKeyboard.Reset();
 

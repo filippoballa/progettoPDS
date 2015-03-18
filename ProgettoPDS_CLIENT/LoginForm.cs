@@ -160,6 +160,7 @@ namespace ProgettoPDS_CLIENT
             this.NotaLabel.Visible = false;
             this.InfoPanel.Visible = false;
             this.MainPanel.Visible = false;
+            this.RemovePanel.Visible = false;
             this.ChangePasswordPanel.Visible = false;
             Thread.Sleep(10);
             this.groupBox1.Visible = true;
@@ -192,6 +193,7 @@ namespace ProgettoPDS_CLIENT
             this.InfoPanel.Visible = false;
             this.ChangePasswordPanel.Visible = false;
             this.RegistraPanel.Visible = false;
+            this.RemovePanel.Visible = false;
             Thread.Sleep(10);
             this.UsernameLabel.Visible = true;
             this.PasswordLabel.Visible = true;
@@ -220,6 +222,7 @@ namespace ProgettoPDS_CLIENT
             this.InfoPanel.Visible = true;
             this.NotaLabel.Visible = false;
             this.MainPanel.Visible = false;
+            this.RemovePanel.Visible = false;
             this.RegistraPanel.Visible = false;
             this.ChangePasswordPanel.Visible = false;
             this.ResumeLayout();
@@ -243,6 +246,7 @@ namespace ProgettoPDS_CLIENT
             this.ChangePasswordPanel.Visible = true;
             this.NotaLabel.Visible = false;
             this.MainPanel.Visible = false;
+            this.RemovePanel.Visible = false;
             this.RegistraPanel.Visible = false;
             this.InfoPanel.Visible = false;
             this.ResumeLayout();
@@ -312,28 +316,101 @@ namespace ProgettoPDS_CLIENT
             }
         }
 
-        #endregion
-
         private void pictureBox2_MouseHover(object sender, EventArgs e)
         {
             ToolTip tt = new ToolTip();
-            tt.SetToolTip(this.pictureBox2, "Inserisci nella textbox qui sotto\nlo \"username\" " +
+            tt.SetToolTip(this.pictureBox2, "Inserisci nella textbox a sinistra\nlo \"username\" " +
                 " usato abitualmente per\naccedere all'applicazione.");
         }
 
         private void pictureBox3_MouseHover(object sender, EventArgs e)
         {
             ToolTip tt = new ToolTip();
-            tt.SetToolTip(this.pictureBox3, "Inserisci nella textbox qui sotto\nla " + 
+            tt.SetToolTip(this.pictureBox3, "Inserisci nella textbox a sinistra\nla " + 
                 "\"password\" usata abitualmente per\naccedere all'applicazione.");
         }
 
         private void pictureBox4_MouseHover(object sender, EventArgs e)
         {
             ToolTip tt = new ToolTip();
-            tt.SetToolTip(this.pictureBox4, "Inserisci nella textbox qui sotto\n" + 
+            tt.SetToolTip(this.pictureBox4, "Inserisci nella textbox a sinistra\n" + 
                 "la nuova password che sarà associata\nallo username inserito sopra");
         }
+
+        #endregion
+
+        #region Rimuovi Account
+
+        private void rimuoviAccountToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.SuspendLayout();
+            this.RemovePanel.Visible = true;
+            Thread.Sleep(5);
+            this.ChangePasswordPanel.Visible = false;
+            this.NotaLabel.Visible = false;
+            this.MainPanel.Visible = false;
+            this.RegistraPanel.Visible = false;
+            this.InfoPanel.Visible = false;         
+            this.ResumeLayout();
+            this.RemoveUserTextBox.Focus();
+        }
+
+        private void RemoveButton_Click(object sender, EventArgs e)
+        {
+            if (this.RemoveUserTextBox.Text == "" && this.RemovePwdTextBox.Text == "" ) {
+                MessageBox.Show("Completa tutti i campi del form prima di cliccare\nsul bottone \"Remove!!\"",
+                    "AVVISO", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                this.RemoveUserTextBox.Focus();
+            }
+            else if (this.RemoveUserTextBox.Text == "") {
+                MessageBox.Show("Specificare lo username dell'account che desideri\neliminare prima di procedere oltre...",
+                    "AVVISO", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                this.RemoveUserTextBox.Focus();
+            }
+            else if (this.RemovePwdTextBox.Text == "") {
+                MessageBox.Show("Specificare la password dell'account che desideri\neliminare prima di procedere oltre...",
+                    "AVVISO", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                this.ChangeOldPwdTextBox.Focus();
+            }
+            else {
+
+                User u = this.mng.SearchUser(this.RemoveUserTextBox.Text);
+                SHA1 shaM = new SHA1Managed();
+
+                if (u == null) {
+                    MessageBox.Show("Lo user \"" + this.RemoveUserTextBox.Text + "\" non è mai stato registrato nell'applicazione!!",
+                        "ERRORE", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    this.RemoveUserTextBox.Clear();
+                    this.RemovePwdTextBox.Clear();
+                    this.RemoveUserTextBox.Focus();
+                }
+                else {
+
+                    byte[] pwd = Encoding.ASCII.GetBytes(this.RemovePwdTextBox.Text);
+
+                    if (u.Password == Encoding.ASCII.GetString(shaM.ComputeHash(pwd))) {
+                        DialogResult res = MessageBox.Show("Desideri procedere alla rimozione di questo account??", "AVVISO", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                        if (res == DialogResult.Yes) {
+                            this.mng.RemoveUsers(u);
+                            MessageBox.Show("Account rimosso correttamente!!", "AVVISO", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+
+                    }
+                    else
+                        MessageBox.Show("La password digitata non è quella associata all'account specificato!!", 
+                            "ERRORE!!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                    this.RemoveUserTextBox.Clear();
+                    this.RemovePwdTextBox.Clear();
+                    this.RemoveUserTextBox.Focus();
+                    
+                }
+
+            }
+        }
+
+        #endregion
 
     }
 }

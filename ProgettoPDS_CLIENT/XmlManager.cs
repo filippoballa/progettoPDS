@@ -129,5 +129,26 @@ namespace ProgettoPDS_CLIENT
             this.documentTwo.Save("..\\..\\" + this.FileServers);
 
         }
+
+        public void RemoveUsers(User u) 
+        {
+            XmlNodeList xmlnodes = this.documentOne.GetElementsByTagName("MYUSER");
+            bool res1, res2;
+
+            for (int i = 0; i < xmlnodes.Count; i++) {
+                res1 = (xmlnodes[i].ChildNodes.Item(0).InnerText == u.Username);
+                res2 = (xmlnodes[i].ChildNodes.Item(1).InnerText == u.Password);
+
+                if ( res1 && res2 ) {
+                    XmlNode a1 = xmlnodes[i].ParentNode;
+                    xmlnodes[i].RemoveAll();
+                    a1.RemoveChild(xmlnodes[i]);
+                    this.documentOne.Save(this.FileUsers);
+                    this.documentOne.Save("..\\..\\" + this.FileUsers);
+                    break;
+                }
+            } 
+
+        }
     }
 }
