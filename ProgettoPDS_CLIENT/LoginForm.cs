@@ -30,7 +30,7 @@ namespace ProgettoPDS_CLIENT
             SetStyle(ControlStyles.DoubleBuffer, true);
             InitializeComponent();
             this.user = aux;
-            this.mng = new XmlManager("XMLUsers.xml");
+            this.mng = new XmlManager();
         }
 
         #endregion
@@ -239,7 +239,7 @@ namespace ProgettoPDS_CLIENT
             this.groupBox1.Visible = false;
             this.RegistraButton.Visible = false;
             this.ChangeButton.Visible = true;
-            Thread.Sleep(10);
+            Thread.Sleep(5);
             this.ChangePasswordPanel.Visible = true;
             this.NotaLabel.Visible = false;
             this.MainPanel.Visible = false;
@@ -255,49 +255,85 @@ namespace ProgettoPDS_CLIENT
 
         private void ChangeButton_Click(object sender, EventArgs e)
         {
-            if (this.ChangePwdTextBox.Text == "" && this.ChangeUserTextBox.Text == "") {
+            if (this.ChangePwdTextBox.Text == "" && this.ChangeOldPwdTextBox.Text == "" && this.ChangeUserTextBox.Text == "" ) {
                 MessageBox.Show("Completa tutti i campi del form prima di cliccare\nsul bottone \"CHANGE!!\"", 
                     "AVVISO", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                this.ChangeUserTextBox.Focus();
+                this.ChangeOldPwdTextBox.Focus();
             }
-            else if (this.ChangeUserTextBox.Text == "") {
+            else if (this.ChangeUserTextBox.Text == ""){
                 MessageBox.Show("Username assente!! Specificalo prima di procedere oltre...",
                     "AVVISO", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                this.ChangeUserTextBox.Focus();
+                this.ChangeOldPwdTextBox.Focus();
             }
-            else if (this.ChangePwdTextBox.Text == "")
-            {
+            else if (this.ChangeOldPwdTextBox.Text == "") {
+                MessageBox.Show("Vecchia Password Assente!! Specificala prima di procedere oltre...",
+                    "AVVISO", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                this.ChangeOldPwdTextBox.Focus();
+            }
+            else if (this.ChangePwdTextBox.Text == "") {
                 MessageBox.Show("Nuova Password Assente!! Specificala prima di procedere oltre...",
                     "AVVISO", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 this.ChangePwdTextBox.Focus();
             }
             else {
 
-                if ( this.mng.SearchUser(this.ChangeUserTextBox.Text) == null) {
+                User u = this.mng.SearchUser(this.ChangeUserTextBox.Text);
+                SHA1 shaM = new SHA1Managed();
+
+                if ( u == null) {
                     MessageBox.Show("Lo user \"" + this.ChangeUserTextBox.Text + "\" non è mai stato registrato nell'applicazione!!",
                     "ERRORE", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     this.ChangeUserTextBox.Clear();
+                    this.ChangeOldPwdTextBox.Clear();
                     this.ChangePwdTextBox.Clear();
                     this.ChangeUserTextBox.Focus();
                 }
                 else {
-                    DialogResult res = MessageBox.Show("Desideri procedere con la modifica della password??", "AVVISO", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
-                    if (res == DialogResult.Yes) {
-                        this.mng.ModifyPwdUser(this.ChangeUserTextBox.Text, this.ChangePwdTextBox.Text);
-                        MessageBox.Show("Password modificata correttamente!!", "AVVISO", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    byte[] old = Encoding.ASCII.GetBytes(this.ChangeOldPwdTextBox.Text);
+
+                    if (u.Password == Encoding.ASCII.GetString(shaM.ComputeHash(old))) {
+                        DialogResult res = MessageBox.Show("Desideri procedere con la modifica della password??", "AVVISO", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                        if (res == DialogResult.Yes) {                       
+                            this.mng.ModifyPwdUser(this.ChangeUserTextBox.Text, this.ChangePwdTextBox.Text);
+                            MessageBox.Show("Password modificata correttamente!!", "AVVISO", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+
                     }
+                    else
+                        MessageBox.Show("La Vecchia Password inserita non è corretta!!", "ERRORE!!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     
-                    this.ChangeUserTextBox.Clear();
+                    this.ChangeOldPwdTextBox.Clear();
                     this.ChangePwdTextBox.Clear();
-                    this.ChangeUserTextBox.Focus();
+                    this.ChangeOldPwdTextBox.Focus();
 
                 }
             }
-
         }
 
         #endregion
+
+        private void pictureBox2_MouseHover(object sender, EventArgs e)
+        {
+            ToolTip tt = new ToolTip();
+            tt.SetToolTip(this.pictureBox2, "Inserisci nella textbox qui sotto\nlo \"username\" " +
+                " usato abitualmente per\naccedere all'applicazione.");
+        }
+
+        private void pictureBox3_MouseHover(object sender, EventArgs e)
+        {
+            ToolTip tt = new ToolTip();
+            tt.SetToolTip(this.pictureBox3, "Inserisci nella textbox qui sotto\nla " + 
+                "\"password\" usata abitualmente per\naccedere all'applicazione.");
+        }
+
+        private void pictureBox4_MouseHover(object sender, EventArgs e)
+        {
+            ToolTip tt = new ToolTip();
+            tt.SetToolTip(this.pictureBox4, "Inserisci nella textbox qui sotto\n" + 
+                "la nuova password che sarà associata\nallo username inserito sopra");
+        }
 
     }
 }

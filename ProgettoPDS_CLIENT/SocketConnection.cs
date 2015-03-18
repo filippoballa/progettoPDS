@@ -134,13 +134,12 @@ namespace ProgettoPDS_CLIENT
                             "CONNECTION FAILURE!!", MessageBoxButtons.OK, MessageBoxIcon.Error );
                     }
 
+                    this.m.Invoke(this.m.myHandler);
+
                 }
                 else 
                     ErrorProtocol();
-
-                this.m.Invoke(this.m.myHandler);
                 
-
             }
             catch (Exception ecc) {
                 MessageBox.Show(ecc.Message, "ANOMALY", MessageBoxButtons.OK, MessageBoxIcon.Error);

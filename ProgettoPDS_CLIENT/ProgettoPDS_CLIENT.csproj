@@ -99,6 +99,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="LogoApp.ico" />
+    <Content Include="XMLServers.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="XMLUsers.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>

@@ -31,6 +31,9 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.MouseBackgroundWorker = new System.ComponentModel.BackgroundWorker();
             this.MainPanel = new System.Windows.Forms.Panel();
+            this.ClearCacheButton = new System.Windows.Forms.Button();
+            this.LoadConfButton = new System.Windows.Forms.Button();
+            this.SaveServButton = new System.Windows.Forms.Button();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.ConnectButton = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -83,6 +86,9 @@
             // 
             // MainPanel
             // 
+            this.MainPanel.Controls.Add(this.ClearCacheButton);
+            this.MainPanel.Controls.Add(this.LoadConfButton);
+            this.MainPanel.Controls.Add(this.SaveServButton);
             this.MainPanel.Controls.Add(this.pictureBox2);
             this.MainPanel.Controls.Add(this.ConnectButton);
             this.MainPanel.Controls.Add(this.groupBox1);
@@ -100,6 +106,57 @@
             this.MainPanel.Size = new System.Drawing.Size(1071, 608);
             this.MainPanel.TabIndex = 14;
             this.MainPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.MainPanel_Paint);
+            // 
+            // ClearCacheButton
+            // 
+            this.ClearCacheButton.BackColor = System.Drawing.Color.DarkOliveGreen;
+            this.ClearCacheButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.ClearCacheButton.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.ClearCacheButton.FlatAppearance.BorderSize = 3;
+            this.ClearCacheButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ClearCacheButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ClearCacheButton.ForeColor = System.Drawing.Color.White;
+            this.ClearCacheButton.Location = new System.Drawing.Point(461, 237);
+            this.ClearCacheButton.Name = "ClearCacheButton";
+            this.ClearCacheButton.Size = new System.Drawing.Size(83, 61);
+            this.ClearCacheButton.TabIndex = 28;
+            this.ClearCacheButton.Text = "Clear Configuration Cache";
+            this.ClearCacheButton.UseVisualStyleBackColor = false;
+            this.ClearCacheButton.Click += new System.EventHandler(this.ClearCacheButton_Click);
+            // 
+            // LoadConfButton
+            // 
+            this.LoadConfButton.BackColor = System.Drawing.Color.DarkOliveGreen;
+            this.LoadConfButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.LoadConfButton.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.LoadConfButton.FlatAppearance.BorderSize = 3;
+            this.LoadConfButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.LoadConfButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoadConfButton.ForeColor = System.Drawing.Color.White;
+            this.LoadConfButton.Location = new System.Drawing.Point(461, 145);
+            this.LoadConfButton.Name = "LoadConfButton";
+            this.LoadConfButton.Size = new System.Drawing.Size(83, 61);
+            this.LoadConfButton.TabIndex = 27;
+            this.LoadConfButton.Text = "Load Configuration Saved";
+            this.LoadConfButton.UseVisualStyleBackColor = false;
+            this.LoadConfButton.Click += new System.EventHandler(this.LoadConfButton_Click);
+            // 
+            // SaveServButton
+            // 
+            this.SaveServButton.BackColor = System.Drawing.Color.Olive;
+            this.SaveServButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.SaveServButton.FlatAppearance.BorderColor = System.Drawing.Color.Wheat;
+            this.SaveServButton.FlatAppearance.BorderSize = 3;
+            this.SaveServButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.SaveServButton.Font = new System.Drawing.Font("Comic Sans MS", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SaveServButton.ForeColor = System.Drawing.Color.White;
+            this.SaveServButton.Location = new System.Drawing.Point(281, 542);
+            this.SaveServButton.Name = "SaveServButton";
+            this.SaveServButton.Size = new System.Drawing.Size(136, 53);
+            this.SaveServButton.TabIndex = 25;
+            this.SaveServButton.Text = "Save Configuration Server";
+            this.SaveServButton.UseVisualStyleBackColor = false;
+            this.SaveServButton.Click += new System.EventHandler(this.SaveServButton_Click);
             // 
             // pictureBox2
             // 
@@ -307,7 +364,7 @@
             this.InfoButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.InfoButton.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.InfoButton.Image = ((System.Drawing.Image)(resources.GetObject("InfoButton.Image")));
-            this.InfoButton.Location = new System.Drawing.Point(808, 537);
+            this.InfoButton.Location = new System.Drawing.Point(811, 535);
             this.InfoButton.Name = "InfoButton";
             this.InfoButton.Size = new System.Drawing.Size(66, 58);
             this.InfoButton.TabIndex = 17;
@@ -334,9 +391,9 @@
             this.RemoveButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.RemoveButton.Font = new System.Drawing.Font("Comic Sans MS", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.RemoveButton.ForeColor = System.Drawing.Color.White;
-            this.RemoveButton.Location = new System.Drawing.Point(272, 509);
+            this.RemoveButton.Location = new System.Drawing.Point(281, 475);
             this.RemoveButton.Name = "RemoveButton";
-            this.RemoveButton.Size = new System.Drawing.Size(126, 55);
+            this.RemoveButton.Size = new System.Drawing.Size(136, 55);
             this.RemoveButton.TabIndex = 15;
             this.RemoveButton.Text = "Remove Server From List";
             this.RemoveButton.UseVisualStyleBackColor = false;
@@ -351,7 +408,7 @@
             this.StartButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.StartButton.Font = new System.Drawing.Font("Comic Sans MS", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.StartButton.ForeColor = System.Drawing.Color.White;
-            this.StartButton.Location = new System.Drawing.Point(660, 537);
+            this.StartButton.Location = new System.Drawing.Point(637, 537);
             this.StartButton.Name = "StartButton";
             this.StartButton.Size = new System.Drawing.Size(103, 56);
             this.StartButton.TabIndex = 14;
@@ -383,9 +440,10 @@
             this.EscapeLabel.ForeColor = System.Drawing.Color.DarkRed;
             this.EscapeLabel.Location = new System.Drawing.Point(280, 561);
             this.EscapeLabel.Name = "EscapeLabel";
-            this.EscapeLabel.Size = new System.Drawing.Size(504, 20);
+            this.EscapeLabel.Size = new System.Drawing.Size(546, 20);
             this.EscapeLabel.TabIndex = 3;
-            this.EscapeLabel.Text = "Premere la combinazione  di tasti \"Esc\" per tornare alla schermata precedente...";
+            this.EscapeLabel.Text = "Premere la combinazione  di tasti \"Shift + Esc\" per tornare alla schermata preced" +
+    "ente...";
             // 
             // pictureBox4
             // 
@@ -560,5 +618,8 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.PictureBox pictureBox6;
         private System.Windows.Forms.Button BackButton;
+        private System.Windows.Forms.Button ClearCacheButton;
+        private System.Windows.Forms.Button LoadConfButton;
+        private System.Windows.Forms.Button SaveServButton;
     }
 }

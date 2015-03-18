@@ -10,7 +10,7 @@ using System.Windows.Forms;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
-
+using System.Xml;
 
 namespace ProgettoPDS_CLIENT
 {
@@ -30,6 +30,7 @@ namespace ProgettoPDS_CLIENT
         private static ManualResetEvent mreMouse = new ManualResetEvent(false);
         private static ManualResetEvent mreKeyboard = new ManualResetEvent(false);
         private MouseCord mc;
+        private XmlManager mng;
 
         #endregion
 
@@ -46,6 +47,7 @@ namespace ProgettoPDS_CLIENT
             InitializeComponent();
             this.connessioni = new List<SocketConnection>();
             this.servers = new List<Server>();
+            this.mng = new XmlManager();
             this.myHandler = new Handler(RefreshLabel); 
             this.currServ = -1;
             this.user = aux;
@@ -108,9 +110,33 @@ namespace ProgettoPDS_CLIENT
             Y = (this.ConnectButton.Location.Y * this.Height) / this.AltezzaForm;
             this.ConnectButton.Location = new Point(X, Y);
 
+            // Riposizionamento Bottone "Save Configuration Server"
+            aux = (this.SaveServButton.Font.Size * this.Height) / this.AltezzaForm;
+            this.SaveServButton.Font = new System.Drawing.Font("Comic Sans MS", aux, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SaveServButton.Height = (this.SaveServButton.Height * this.Height) / this.AltezzaForm;
+            this.SaveServButton.Width = (this.SaveServButton.Width * this.Width) / this.BaseForm;
+            X = (this.SaveServButton.Location.X * this.Width) / this.BaseForm;
+            Y = (this.SaveServButton.Location.Y * this.Height) / this.AltezzaForm;
+            this.SaveServButton.Location = new Point(X, Y);
+
+            // Riposizionamento Bottone "Load Configuration Server"
+            aux = (this.LoadConfButton.Font.Size * this.Height) / this.AltezzaForm;
+            this.LoadConfButton.Height = (this.LoadConfButton.Height * this.Height) / this.AltezzaForm;
+            this.LoadConfButton.Width = (this.LoadConfButton.Width * this.Width) / this.BaseForm;
+            X = (this.LoadConfButton.Location.X * this.Width) / this.BaseForm;
+            Y = (this.LoadConfButton.Location.Y * this.Height) / this.AltezzaForm;
+            this.LoadConfButton.Location = new Point(X, Y);
+
+            // Riposizionamento Bottone "Clear Configuration Server"
+            aux = (this.ClearCacheButton.Font.Size * this.Height) / this.AltezzaForm;
+            this.ClearCacheButton.Height = (this.ClearCacheButton.Height * this.Height) / this.AltezzaForm;
+            this.ClearCacheButton.Width = (this.ClearCacheButton.Width * this.Width) / this.BaseForm;
+            X = (this.ClearCacheButton.Location.X * this.Width) / this.BaseForm;
+            Y = (this.ClearCacheButton.Location.Y * this.Height) / this.AltezzaForm;
+            this.ClearCacheButton.Location = new Point(X, Y);
+
             // Riposizionamento Bottone Disconnetti
             aux = (this.DisconnectButton.Font.Size * this.Height) / this.AltezzaForm;
-            this.DisconnectButton.Font = new System.Drawing.Font("Comic Sans MS", aux, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.DisconnectButton.Height = (this.DisconnectButton.Height * this.Height) / this.AltezzaForm;
             this.DisconnectButton.Width = (this.DisconnectButton.Width * this.Width) / this.BaseForm;
             X = (this.DisconnectButton.Location.X * this.Width) / this.BaseForm;
@@ -442,15 +468,63 @@ namespace ProgettoPDS_CLIENT
                 this.IPAddressTextBox.Focus();
                 return;
             }
-         
-            this.connessioni.Add(new SocketConnection(this.IPAddressTextBox.Text, Convert.ToInt32(this.PortaTextBox.Text), this.user, this));
-            this.servers.Add(new Server(this.HostNameTextBox.Text, this.IPAddressTextBox.Text, Convert.ToInt32(this.PortaTextBox.Text)));   
-            this.listBox1.Items.Add(this.servers.Last().ToString());
+
+            Server s = new Server(this.HostNameTextBox.Text, this.IPAddressTextBox.Text, Convert.ToInt32(this.PortaTextBox.Text));
+            Predicate<Server> ipFinder = (Server p) => { return p.IPAddr == this.IPAddressTextBox.Text; };
+            Predicate<Server> portFinder = (Server p) => { return p.Porta == Convert.ToInt32(this.PortaTextBox.Text); };
+            
+            if ( this.servers.Exists(ipFinder) && this.servers.Exists(portFinder) ) 
+                MessageBox.Show("Il server specificato è già presente in elenco!!",
+                    "AVVISO!!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            else {
+                this.connessioni.Add(new SocketConnection(this.IPAddressTextBox.Text, Convert.ToInt32(this.PortaTextBox.Text), this.user, this));
+                this.servers.Add(s);
+                this.listBox1.Items.Add(this.servers.Last().ToString());
+            }
+                
+
             this.PortaTextBox.Clear();
             this.IPAddressTextBox.Clear();
             this.HostNameTextBox.Clear();
             this.HostNameTextBox.Focus();
 
+        }
+
+        private void SaveServButton_Click(object sender, EventArgs e)
+        {
+            if (this.listBox1.SelectedIndex == -1)
+            {
+                MessageBox.Show("Seleziona prima il Server di cui desideri salvarne la configurazione",
+                    "ERRORE!!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            this.mng.AddNewServer(this.servers[this.listBox1.SelectedIndex]);
+
+            MessageBox.Show("Configurazione Salvata con Successo!!", "AVVISO",
+                MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void LoadConfButton_Click(object sender, EventArgs e)
+        {
+            XmlNodeList xmlnodes = this.mng.documentTwo.GetElementsByTagName("MYSERVER");
+
+            for (int i = 0; i < xmlnodes.Count; i++)
+            {
+                Server aux = new Server();
+                aux.HostName = xmlnodes[i].ChildNodes.Item(0).InnerText;
+                aux.IPAddr = xmlnodes[i].ChildNodes.Item(1).InnerText;
+                aux.Porta = Convert.ToInt32(xmlnodes[i].ChildNodes.Item(2).InnerText);
+
+                this.listBox1.Items.Add(aux.ToString());
+                this.servers.Add(aux);
+                this.connessioni.Add(new SocketConnection(aux.IPAddr, aux.Porta, this.user, this));
+            }
+        }
+
+        private void ClearCacheButton_Click(object sender, EventArgs e)
+        {
+            this.mng.RemoveServers();
         }
 
         #endregion
@@ -461,7 +535,7 @@ namespace ProgettoPDS_CLIENT
         {
             if (this.ActionPanel.Visible && this.keyboardHook.IsStarted ) {
 
-                if (e.KeyCode == Keys.Escape ) {
+                if ( e.Shift && e.KeyCode == Keys.Escape ) {
                     this.ActionPanel.Visible = false;
                     this.ActionServerLabel.Text = "Stai Comandando il seguente Server: ";
                     this.MainPanel.Visible = true;
@@ -470,8 +544,11 @@ namespace ProgettoPDS_CLIENT
                     this.keyboardHook.Unistall();
 
                     // gestione BWs!!
-                    this.MouseBackgroundWorker.CancelAsync();
-                    this.KeyBackgroundWorker.CancelAsync();
+                    if( this.MouseBackgroundWorker.IsBusy )
+                        this.MouseBackgroundWorker.CancelAsync();
+
+                    if( this.KeyBackgroundWorker.IsBusy )
+                        this.KeyBackgroundWorker.CancelAsync();
 
                 }
                 else {

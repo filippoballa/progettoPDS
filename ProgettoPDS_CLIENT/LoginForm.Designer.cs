@@ -66,9 +66,14 @@
             this.ChangeButton = new System.Windows.Forms.Button();
             this.ChangePwdTextBox = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
-            this.ChangeUserTextBox = new System.Windows.Forms.TextBox();
+            this.ChangeOldPwdTextBox = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.ChangeUserTextBox = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.pictureBox3 = new System.Windows.Forms.PictureBox();
+            this.pictureBox4 = new System.Windows.Forms.PictureBox();
             this.RegistraPanel.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.MainPanel.SuspendLayout();
@@ -76,6 +81,9 @@
             this.menuStrip1.SuspendLayout();
             this.InfoPanel.SuspendLayout();
             this.ChangePasswordPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
             this.SuspendLayout();
             // 
             // RegistraPanel
@@ -480,10 +488,15 @@
             // ChangePasswordPanel
             // 
             this.ChangePasswordPanel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("ChangePasswordPanel.BackgroundImage")));
+            this.ChangePasswordPanel.Controls.Add(this.pictureBox4);
+            this.ChangePasswordPanel.Controls.Add(this.pictureBox3);
+            this.ChangePasswordPanel.Controls.Add(this.pictureBox2);
+            this.ChangePasswordPanel.Controls.Add(this.label7);
+            this.ChangePasswordPanel.Controls.Add(this.ChangeUserTextBox);
             this.ChangePasswordPanel.Controls.Add(this.ChangeButton);
             this.ChangePasswordPanel.Controls.Add(this.ChangePwdTextBox);
             this.ChangePasswordPanel.Controls.Add(this.label6);
-            this.ChangePasswordPanel.Controls.Add(this.ChangeUserTextBox);
+            this.ChangePasswordPanel.Controls.Add(this.ChangeOldPwdTextBox);
             this.ChangePasswordPanel.Controls.Add(this.label5);
             this.ChangePasswordPanel.Controls.Add(this.label1);
             this.ChangePasswordPanel.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -502,7 +515,7 @@
             this.ChangeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ChangeButton.Font = new System.Drawing.Font("Comic Sans MS", 9F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ChangeButton.ForeColor = System.Drawing.Color.White;
-            this.ChangeButton.Location = new System.Drawing.Point(247, 262);
+            this.ChangeButton.Location = new System.Drawing.Point(247, 256);
             this.ChangeButton.Name = "ChangeButton";
             this.ChangeButton.Size = new System.Drawing.Size(108, 35);
             this.ChangeButton.TabIndex = 6;
@@ -514,11 +527,12 @@
             // 
             this.ChangePwdTextBox.BackColor = System.Drawing.Color.DimGray;
             this.ChangePwdTextBox.Font = new System.Drawing.Font("Comic Sans MS", 10F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ChangePwdTextBox.Location = new System.Drawing.Point(176, 211);
+            this.ChangePwdTextBox.Location = new System.Drawing.Point(177, 195);
             this.ChangePwdTextBox.Name = "ChangePwdTextBox";
             this.ChangePwdTextBox.PasswordChar = '*';
             this.ChangePwdTextBox.Size = new System.Drawing.Size(248, 26);
             this.ChangePwdTextBox.TabIndex = 5;
+            this.ChangePwdTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label6
             // 
@@ -526,22 +540,23 @@
             this.label6.BackColor = System.Drawing.Color.Transparent;
             this.label6.Font = new System.Drawing.Font("Calibri", 11F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label6.ForeColor = System.Drawing.Color.White;
-            this.label6.Location = new System.Drawing.Point(83, 159);
+            this.label6.Location = new System.Drawing.Point(18, 199);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(439, 36);
+            this.label6.Size = new System.Drawing.Size(136, 18);
             this.label6.TabIndex = 4;
-            this.label6.Text = "Inserisci nella textbox qui sotto la nuova password che sarà associata \r\nallo use" +
-    "rname inserito sopra.";
+            this.label6.Text = "NUOVA PASSWORD :";
             this.label6.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
-            // ChangeUserTextBox
+            // ChangeOldPwdTextBox
             // 
-            this.ChangeUserTextBox.BackColor = System.Drawing.Color.DimGray;
-            this.ChangeUserTextBox.Font = new System.Drawing.Font("Comic Sans MS", 10F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ChangeUserTextBox.Location = new System.Drawing.Point(175, 116);
-            this.ChangeUserTextBox.Name = "ChangeUserTextBox";
-            this.ChangeUserTextBox.Size = new System.Drawing.Size(248, 26);
-            this.ChangeUserTextBox.TabIndex = 3;
+            this.ChangeOldPwdTextBox.BackColor = System.Drawing.Color.DimGray;
+            this.ChangeOldPwdTextBox.Font = new System.Drawing.Font("Comic Sans MS", 10F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ChangeOldPwdTextBox.Location = new System.Drawing.Point(177, 137);
+            this.ChangeOldPwdTextBox.Name = "ChangeOldPwdTextBox";
+            this.ChangeOldPwdTextBox.PasswordChar = '*';
+            this.ChangeOldPwdTextBox.Size = new System.Drawing.Size(248, 26);
+            this.ChangeOldPwdTextBox.TabIndex = 3;
+            this.ChangeOldPwdTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label5
             // 
@@ -549,12 +564,11 @@
             this.label5.BackColor = System.Drawing.Color.Transparent;
             this.label5.Font = new System.Drawing.Font("Calibri", 11F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.ForeColor = System.Drawing.Color.White;
-            this.label5.Location = new System.Drawing.Point(90, 57);
+            this.label5.Location = new System.Drawing.Point(19, 142);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(421, 36);
+            this.label5.Size = new System.Drawing.Size(143, 18);
             this.label5.TabIndex = 2;
-            this.label5.Text = "Inserisci nella textbox qui sotto lo \"username\" usato abitualmente \r\nper accedere" +
-    " all\'applicazione.";
+            this.label5.Text = "VECCHIA PASSWORD :";
             this.label5.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // label1
@@ -569,6 +583,68 @@
             this.label1.TabIndex = 1;
             this.label1.Text = "MODIFICA LA TUA PASSWORD";
             // 
+            // ChangeUserTextBox
+            // 
+            this.ChangeUserTextBox.BackColor = System.Drawing.Color.DimGray;
+            this.ChangeUserTextBox.Font = new System.Drawing.Font("Comic Sans MS", 10F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ChangeUserTextBox.Location = new System.Drawing.Point(176, 80);
+            this.ChangeUserTextBox.Name = "ChangeUserTextBox";
+            this.ChangeUserTextBox.Size = new System.Drawing.Size(248, 26);
+            this.ChangeUserTextBox.TabIndex = 7;
+            this.ChangeUserTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.BackColor = System.Drawing.Color.Transparent;
+            this.label7.Font = new System.Drawing.Font("Calibri", 11F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.ForeColor = System.Drawing.Color.White;
+            this.label7.Location = new System.Drawing.Point(19, 84);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(86, 18);
+            this.label7.TabIndex = 8;
+            this.label7.Text = "USERNAME :";
+            this.label7.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.BackColor = System.Drawing.Color.Transparent;
+            this.pictureBox2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox2.BackgroundImage")));
+            this.pictureBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.pictureBox2.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.pictureBox2.Location = new System.Drawing.Point(475, 80);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(29, 26);
+            this.pictureBox2.TabIndex = 9;
+            this.pictureBox2.TabStop = false;
+            this.pictureBox2.MouseHover += new System.EventHandler(this.pictureBox2_MouseHover);
+            // 
+            // pictureBox3
+            // 
+            this.pictureBox3.BackColor = System.Drawing.Color.Transparent;
+            this.pictureBox3.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox3.BackgroundImage")));
+            this.pictureBox3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.pictureBox3.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.pictureBox3.Location = new System.Drawing.Point(475, 137);
+            this.pictureBox3.Name = "pictureBox3";
+            this.pictureBox3.Size = new System.Drawing.Size(29, 26);
+            this.pictureBox3.TabIndex = 10;
+            this.pictureBox3.TabStop = false;
+            this.pictureBox3.MouseHover += new System.EventHandler(this.pictureBox3_MouseHover);
+            // 
+            // pictureBox4
+            // 
+            this.pictureBox4.BackColor = System.Drawing.Color.Transparent;
+            this.pictureBox4.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox4.BackgroundImage")));
+            this.pictureBox4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.pictureBox4.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.pictureBox4.Location = new System.Drawing.Point(475, 196);
+            this.pictureBox4.Name = "pictureBox4";
+            this.pictureBox4.Size = new System.Drawing.Size(29, 26);
+            this.pictureBox4.TabIndex = 11;
+            this.pictureBox4.TabStop = false;
+            this.pictureBox4.MouseHover += new System.EventHandler(this.pictureBox4_MouseHover);
+            // 
             // LoginForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -576,10 +652,10 @@
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(622, 339);
+            this.Controls.Add(this.RegistraPanel);
+            this.Controls.Add(this.ChangePasswordPanel);
             this.Controls.Add(this.MainPanel);
             this.Controls.Add(this.InfoPanel);
-            this.Controls.Add(this.ChangePasswordPanel);
-            this.Controls.Add(this.RegistraPanel);
             this.Controls.Add(this.menuStrip1);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -601,6 +677,9 @@
             this.InfoPanel.PerformLayout();
             this.ChangePasswordPanel.ResumeLayout(false);
             this.ChangePasswordPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -645,9 +724,14 @@
         private System.Windows.Forms.Button ChangeButton;
         private System.Windows.Forms.TextBox ChangePwdTextBox;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.TextBox ChangeUserTextBox;
+        private System.Windows.Forms.TextBox ChangeOldPwdTextBox;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TextBox ChangeUserTextBox;
+        private System.Windows.Forms.PictureBox pictureBox4;
+        private System.Windows.Forms.PictureBox pictureBox3;
+        private System.Windows.Forms.PictureBox pictureBox2;
     }
 }
 

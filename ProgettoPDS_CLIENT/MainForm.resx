@@ -7486,7 +7486,7 @@
   <data name="BackButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAGkAAAAsCAYAAABmF5blAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        vwAADr8BOAVTJAAAABh0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMC4zjOaXUAAABnRJREFUeF7tm1tQ
+        vAAADrwBlbxySQAAABh0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMC4zjOaXUAAABnRJREFUeF7tm1tQ
         E1cYx6OWgIoIQ7iGCIQAEi6iKKiIEgGHKjdbL+1QsRd1+tBO67Qd7l7a4lNFDGhL8TatfRHU2rfqi3bK
         WH1Si2NHoTM+aR0fCjowinq6Z/NtzjmbkwsJJZnh/GZ+Q/Z83xfW/N3sZgENQkgY4AoEgklnYGBgw1tv
         16JNm7ei8vLXUWlJqXCK3LChQn7dG5uanb+/Wa2dUTUb30RpKSaUkpgk9JNFq4oQzgFiYamorEapxhTu
@@ -13207,6 +13207,9 @@
         da8ttP8Aul3N5ylQflG4s4IB/u7WI57npRRVRirGcqkjHnkVZmVm+ZTtP7v04/u8/XvRRRW3Kjn5mf/Z
 </value>
   </data>
+  <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>67</value>
+  </metadata>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         AAABAAUAEBAAAAAAIABoBAAAVgAAACAgAAAAACAAqBAAAL4EAAAwMAAAAAAgAKglAABmFQAAQEAAAAAA
