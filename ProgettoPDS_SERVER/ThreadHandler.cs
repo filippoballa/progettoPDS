@@ -365,6 +365,17 @@ namespace ProgettoPDS_SERVER
         #region CLIPBOARD
         public static void ClipBoardThreadProc(object data)
         {
+            String[] CBData = data as String[];
+
+            if(CBData[1]==ApplicationConstants.CLIPBOARDEVENTGET)
+            {
+                //gestione invio clipboard
+            }
+            else if(CBData[1]==ApplicationConstants.CLIPBOARDEVENTSET)
+            {
+                //gestione ricezione clipboard
+            }
+
             ThreadCounter--;
             mrMaxThreads.Set();
         }

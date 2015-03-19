@@ -63,10 +63,26 @@ namespace ProgettoPDS_SERVER
 
         private void ClipboardChanghed()
         {
-            IDataObject d = Clipboard.GetDataObject();
-
-            ApplicationConstants.StatoClipBoard s = (d.Equals(null)) ? ApplicationConstants.StatoClipBoard.VUOTA : ApplicationConstants.StatoClipBoard.PIENA;
-
+             // Retrieves the data from the clipboard.
+            ApplicationConstants.StatoClipBoard s = ApplicationConstants.StatoClipBoard.VUOTA;
+          
+            if(Clipboard.ContainsAudio())
+            {
+                s = ApplicationConstants.StatoClipBoard.PIENA;
+            }
+            else if(Clipboard.ContainsImage())
+            {
+                s = ApplicationConstants.StatoClipBoard.PIENA;
+            }
+            else if(Clipboard.ContainsText())
+            {
+                s = ApplicationConstants.StatoClipBoard.PIENA;
+            }
+            else if(Clipboard.ContainsFileDropList())
+            {
+                s = ApplicationConstants.StatoClipBoard.PIENA;
+            }
+                
             this.labelClipboardState.Text = s.ToString();
 
             if(s==ApplicationConstants.StatoClipBoard.VUOTA)
@@ -244,15 +260,19 @@ namespace ProgettoPDS_SERVER
                         //caso ricezione cliboard
                         else if (s == ApplicationConstants.CLIPBOARDCODE)
                         {
-                            //da gestire la costruzione del pacchetto
-                            d = new String[1];
+                            //[C]-[EVENTKEY]
+                            d = new String[2];
                             d[0] = s;
+                            d[1] = d[1] = Data[i + 1]; ;
+
+                            i += 1;
 
                             t = new Thread(ThreadHandler.ClipBoardThreadProc);
                         }
                         else if(s==ApplicationConstants.QUITCODE)
                         {
                             work = false;
+                            break;
                         }
 
                         //se è stato creato un thread lo lancio e aggiorno il counter e la condition variable se ho lanciato il 20esimo
