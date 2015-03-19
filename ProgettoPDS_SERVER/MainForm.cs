@@ -19,6 +19,8 @@ namespace ProgettoPDS_SERVER
         //attributi
 
         static bool work = true;
+        private const int minheight = 160;
+        private const int maxheight = 250;
         private SocketConnection Sconnection = null;
         private static int port = 2000;
         public int Port { get { return port; } set { port = value; } }
@@ -37,7 +39,8 @@ namespace ProgettoPDS_SERVER
             LabelStatoChangedDelegate = new LabelStatoChanged(LabelStatoChangedMethod);
 
             InitializeComponent();
-            this.Height = 150;
+
+            this.Height = minheight;
             this.u = u;
             //scrivo il nome dell'utente nel form
             this.Text = "SERVER - "+ u.Username;
@@ -60,8 +63,9 @@ namespace ProgettoPDS_SERVER
 
         private void ClipboardChanghed()
         {
-            IDataObject d = System.Windows.Forms.Clipboard.GetDataObject();
-            ApplicationConstants.StatoClipBoard s = (d == null) ? ApplicationConstants.StatoClipBoard.VUOTA : ApplicationConstants.StatoClipBoard.PIENA;
+            IDataObject d = Clipboard.GetDataObject();
+
+            ApplicationConstants.StatoClipBoard s = (d.Equals(null)) ? ApplicationConstants.StatoClipBoard.VUOTA : ApplicationConstants.StatoClipBoard.PIENA;
 
             this.labelClipboardState.Text = s.ToString();
 
@@ -94,7 +98,18 @@ namespace ProgettoPDS_SERVER
         /// </summary>
         private void buttonDisconnect_Click(object sender, EventArgs e)
         {
-            EndBackgroundWorker();          
+            if (PacketsHandlerbackgroundWorker.IsBusy)
+                work = false;
+            else
+            {
+                if (Sconnection.Stato == ApplicationConstants.Stato.DISCONNESSO)
+                    notifyIcon1.ShowBalloonTip(ToolTipTimeOut, "INFO STATO", "Deve ancora essere creata una connessione.", ToolTipIcon.Warning);
+                else
+                    notifyIcon1.ShowBalloonTip(ToolTipTimeOut, "INFO STATO", "Eri ancora in attesa di connessioni.", ToolTipIcon.Warning);
+
+                Thread.Sleep(1000);
+                Sconnection.Stato = ApplicationConstants.Stato.DISCONNESSO;
+            } 
         }
 
         /// <summary>
@@ -102,7 +117,7 @@ namespace ProgettoPDS_SERVER
         /// </summary>
         private void MainFormClose(object sender, EventArgs e)
         {
-                this.Close();
+               this.Close();
         }
 
         /// <summary>
@@ -235,6 +250,10 @@ namespace ProgettoPDS_SERVER
 
                             t = new Thread(ThreadHandler.ClipBoardThreadProc);
                         }
+                        else if(s==ApplicationConstants.QUITCODE)
+                        {
+                            work = false;
+                        }
 
                         //se è stato creato un thread lo lancio e aggiorno il counter e la condition variable se ho lanciato il 20esimo
                         if (t != null && d !=null )
@@ -265,7 +284,8 @@ namespace ProgettoPDS_SERVER
 
             if (res == DialogResult.OK)
             {
-                EndBackgroundWorker();
+                //EndBackgroundWorker();
+                work = false;
             }
         }
         /// <summary>
@@ -292,11 +312,17 @@ namespace ProgettoPDS_SERVER
                 this.labelStato.ForeColor = Color.LawnGreen;
                 this.labelConnectedClient.Text = client;
             }
+            else if (stato == ApplicationConstants.Stato.IN_ATTESA)
+            {
+                this.labelStato.ForeColor = Color.Black;
+                this.labelConnectedClient.Text = "-";
+            }  
             else
             {
                 this.labelStato.ForeColor = Color.DarkRed;
                 this.labelConnectedClient.Text = "-";
-            }               
+            }
+ 
         }
         /// <summary>
         /// Set della nuova porta di ascolto.
@@ -312,7 +338,7 @@ namespace ProgettoPDS_SERVER
             {
                 this.Sconnection = new SocketConnection(Port);
                 PanelSetPort.Visible = false;
-                this.Height = 150;
+                this.Height = minheight;
                 notifyIcon1.ShowBalloonTip(ToolTipTimeOut, "INFO STATO", "Porta cambiata con successo!", ToolTipIcon.Info);
             }
             else
@@ -334,25 +360,39 @@ namespace ProgettoPDS_SERVER
 
         private void impostaPortaToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.PanelSetPort.Visible = true;
-            this.Height = 250;
+            if(panelChangePassword.Visible)
+            {
+                panelChangePassword.Visible = false;
+            }
+            else
+            {
+                this.Height = maxheight;
+            }
+            this.PanelSetPort.Visible = true;    
         }
 
         private void buttonClosePanelSetPort_Click(object sender, EventArgs e)
         {
             PanelSetPort.Visible = false;
-            this.Height = 150;
+            this.Height = minheight;
         }
         private void cambioPasswordToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.panelChangePassword.Visible = true;
-            this.Height = 250;
+            if (PanelSetPort.Visible)
+            {
+                PanelSetPort.Visible = false;
+            }
+            else
+            {
+                this.Height = maxheight;
+            }
+            panelChangePassword.Visible = true;
         }
 
         private void buttonClosePanelChangePassword_Click(object sender, EventArgs e)
         {
             panelChangePassword.Visible = false;
-            this.Height = 150;
+            this.Height = minheight;
         }
         /// <summary>
         /// metodo per cambiare la password
@@ -393,12 +433,42 @@ namespace ProgettoPDS_SERVER
                         }
                         else
                             MessageBox.Show("Errore, impossibile modificare la password!", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                
                     }
                     else
                         MessageBox.Show("Errore, inserire una password con almeno "+passwordlenght+" caratteri!", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             } 
+        }
+
+        private void infoDatiToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Retrieves the data from the clipboard.
+            IDataObject d = System.Windows.Forms.Clipboard.GetDataObject();
+            if(d != null)
+            {
+                if(Clipboard.ContainsAudio())
+                { }
+                else if(Clipboard.ContainsImage())
+                { }
+                else if(Clipboard.ContainsText())
+                { }
+                else if(Clipboard.ContainsFileDropList())
+                { }
+                else
+                { 
+                    //formato sconosciuto
+                }
+            }
+            else
+            {
+                //clipboard vuota
+            }
+        }
+
+        private void pulisciToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Clipboard.Clear();
+            ClipboardChanghed();
         }
     }
 }

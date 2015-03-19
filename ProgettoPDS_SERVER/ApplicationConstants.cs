@@ -14,9 +14,9 @@ namespace ProgettoPDS_SERVER
         public enum Stato
         {
             CONNESSO = 1,
-            DISCONNESSO = 0
+            DISCONNESSO = 0,
+            IN_ATTESA = 2
         };
-        //enums
         public enum StatoClipBoard
         {
             PIENA = 1,
@@ -74,6 +74,7 @@ namespace ProgettoPDS_SERVER
         const string mousecode = "M";
         const string keyboardcode = "K";
         const string clipboardcode = "C";
+        const string quitcode = "QUIT";
 
         //mouse flags
         const uint mouseeventf_absolute = 0x8000;
@@ -129,6 +130,7 @@ namespace ProgettoPDS_SERVER
         public static string MOUSECODE { get { return mousecode; } }
         public static string KEYBOARDCODE { get { return keyboardcode; } }
         public static string CLIPBOARDCODE { get { return clipboardcode; } }
+        public static string QUITCODE { get { return quitcode; } }
 
         public static uint MOUSEEVENTF_ABSOLUTE { get { return mouseeventf_absolute; } }
         public static uint MOUSEEVENTF_LEFTDOWN { get { return mouseeventf_leftdown; } }

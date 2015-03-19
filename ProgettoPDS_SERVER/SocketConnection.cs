@@ -46,7 +46,7 @@ namespace ProgettoPDS_SERVER
         //attributi
 
         private const int backlog = 1;
-        private Socket sock, passiv;
+        private static Socket sock, passiv;
         private int porta;
         private String myIP;
         private MainForm main;
@@ -54,7 +54,7 @@ namespace ProgettoPDS_SERVER
 
         public Socket Passiv
         {
-            get { return this.passiv; }
+            get { return passiv; }
         }
 
         private ApplicationConstants.Stato stato = ApplicationConstants.Stato.DISCONNESSO;
@@ -65,31 +65,23 @@ namespace ProgettoPDS_SERVER
         public SocketConnection(int porta)
         {
             Stato = ApplicationConstants.Stato.DISCONNESSO;
-            // Create a TCP/IP socket.
             this.porta = porta;
-            sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-
-            /*/ Bind the socket to the local endpoint
-            sock.Bind(new IPEndPoint(IPAddress.Any, porta));*/
         }
 
         #region Socket Methods
         public void StartListening(MainForm main)
         {
             this.main = main;
+            Stato = ApplicationConstants.Stato.IN_ATTESA;
+            
+            Socket sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            sock.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
 
-            if(sock == null)
-                sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             try
             {
-                // Bind the socket to the local endpoint else close it and re-bind
-                if (!sock.IsBound)
-                    sock.Bind(new IPEndPoint(IPAddress.Any, porta));
-                else
-                {
-                    sock.Close();
-                    sock.Bind(new IPEndPoint(IPAddress.Any, porta));
-                }
+                // Bind the socket to the local endpoint
+                sock.Bind(new IPEndPoint(IPAddress.Any, porta));
+
                 sock.Listen(backlog);
                 // Program is suspended while waiting for an incoming connection.
                 sock.BeginAccept(new AsyncCallback(AcceptCallback), sock);
@@ -102,8 +94,8 @@ namespace ProgettoPDS_SERVER
 
         private void AcceptCallback(IAsyncResult ar)
         {
-            passiv = (Socket)ar.AsyncState;
-            passiv = passiv.EndAccept(ar);
+            Socket sock = (Socket)ar.AsyncState;
+            passiv = sock.EndAccept(ar);
 
             main.notifyIcon1.ShowBalloonTip(main.ToolTipTimeOut, "INFO STATO", "Inizio procedura autenticazione client . . ." + passiv.RemoteEndPoint.ToString(), ToolTipIcon.Info);
             if(ClientAutentication())
@@ -121,51 +113,39 @@ namespace ProgettoPDS_SERVER
             }
         }
 
-        public void SockDisconnect(Socket sock)
+        public void SockDisconnect(Socket s)
         {
-            if (this.sock != null)
+            try
             {
-                if (sock.Connected)
+                if (s != null)
                 {
-                    sock.Shutdown(SocketShutdown.Both);
-                    sock.Close();
-                    main.notifyIcon1.ShowBalloonTip(2, "INFO STATO", "Connessione chiusa correttamente.", ToolTipIcon.Info);
+                    if (s.Connected)
+                    {
+                        s.Disconnect(true);
+                        main.notifyIcon1.ShowBalloonTip(main.ToolTipTimeOut, "INFO STATO", "Connessione chiusa correttamente.", ToolTipIcon.Info);
+                    }
+                    else
+                    {
+                        main.notifyIcon1.ShowBalloonTip(main.ToolTipTimeOut, "INFO STATO", "Eri già disconnesso.", ToolTipIcon.Warning);
+                    }
                 }
                 else
                 {
-                    main.notifyIcon1.ShowBalloonTip(2, "INFO STATO", "Eri già disconnesso.", ToolTipIcon.Warning);
+                    main.notifyIcon1.ShowBalloonTip(main.ToolTipTimeOut, "INFO STATO", "Deve ancora essere creata una connessione.", ToolTipIcon.Warning);
                 }
             }
-            else
+            catch (Exception ex)
             {
-                main.notifyIcon1.ShowBalloonTip(2, "INFO STATO", "Deve ancora essere creata una connessione.", ToolTipIcon.Warning);
+                MessageBox.Show(ex.Message, "ECCEZIONE", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            Stato = ApplicationConstants.Stato.DISCONNESSO;
-
         }
 
         public void SockDisconnect()
         {
-            //mettere bolocchi try catch
-            if (this.passiv != null)
-            {
-                if (this.passiv.Connected)
-                {
-                    this.passiv.Shutdown(SocketShutdown.Both);
-                    this.passiv.Close();
-                    main.notifyIcon1.ShowBalloonTip(main.ToolTipTimeOut, "INFO STATO", "Connessione chiusa correttamente.", ToolTipIcon.Info);
-                }
-                else
-                {
-                    main.notifyIcon1.ShowBalloonTip(main.ToolTipTimeOut, "INFO STATO", "Eri già disconnesso.", ToolTipIcon.Warning);
-                }
-            }
-            else
-            {
-                main.notifyIcon1.ShowBalloonTip(main.ToolTipTimeOut, "INFO STATO", "Deve ancora essere creata una connessione.", ToolTipIcon.Warning);
-            }
-            Stato = ApplicationConstants.Stato.DISCONNESSO;
+            SockDisconnect(passiv);
+            SockDisconnect(sock);
 
+            Stato = ApplicationConstants.Stato.DISCONNESSO;
         }
         #endregion
 
