@@ -17,40 +17,16 @@ namespace ProgettoPDS_SERVER
         private System.Windows.Forms.ToolStripControlHost _host;
         public const int border = 15;
 
-        public PopUpWindow(System.Windows.Forms.Control content, string position)
+        public PopUpWindow(System.Windows.Forms.Control content, User u)
         {
             int width = 0;
             int height = 0;
             Point location = new Point(0, 0);
-            Color color = Color.Gray;
+            Color color = Color.Red;
 
-            switch (position)
-            {
-                case "t": 
-                    width = Screen.PrimaryScreen.Bounds.Width;
-                    height = border;
-                    color = Color.Red;
-                    //location(0,0)
-                    break;
-                case "r":
-                    width = border;
-                    height = Screen.PrimaryScreen.Bounds.Height-(2*border);
-                    location = new Point(Screen.PrimaryScreen.Bounds.Width - border, border);
-                    color = Color.Green;
-                    break;
-                case "l":
-                    width = border;
-                    height = Screen.PrimaryScreen.Bounds.Height-(2*border);
-                    location = new Point(0, border);
-                    color = Color.SkyBlue;
-                    break;
-                case "b":
-                    width = Screen.PrimaryScreen.Bounds.Width;
-                    height = border;
-                    location = new Point(0, Screen.PrimaryScreen.Bounds.Height-border);
-                    color = Color.Yellow;
-                    break;
-            }
+            width = Screen.PrimaryScreen.WorkingArea.Width/2-width/2;
+            height = Screen.PrimaryScreen.WorkingArea.Height/2-height/2;
+
             //Basic setup...
             this.AutoSize = false;
             this.DoubleBuffered = true;
@@ -69,6 +45,13 @@ namespace ProgettoPDS_SERVER
 
             //Add the host to the list
             this.Items.Add(this._host);
+        }
+
+        private void InitializeComponent()
+        {
+            this.SuspendLayout();
+            this.ResumeLayout(false);
+
         }
     }
 }

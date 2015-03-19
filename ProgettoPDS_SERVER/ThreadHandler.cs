@@ -14,6 +14,7 @@ namespace ProgettoPDS_SERVER
     {
         private const int PREC = 10000; //fattore per rendere preciso il rapporto tra X e Y 
         private const int T = 1;//tempo di attesa per lo spostamento del mouse
+        private const int t = 5;
         public const int MAXTHREAD = 5;
         private static int threadcounter = 0;
         private static Mutex mut = new Mutex();
@@ -118,7 +119,7 @@ namespace ProgettoPDS_SERVER
                     for (int i = ScrollY; i > 0; i--)
                     {
                         mouse_event(ApplicationConstants.MOUSEEVENTF_MOVE, 0, old.Y + i, 0, UIntPtr.Zero);
-                        if (i % 2 != 0)
+                        if (i % t != 0)
                             Thread.Sleep(T);
                     }
 
@@ -128,7 +129,7 @@ namespace ProgettoPDS_SERVER
                     for (int i = 0; i < ScrollY; i++)
                     {
                         mouse_event(ApplicationConstants.MOUSEEVENTF_MOVE, 0, old.Y + i, 0, UIntPtr.Zero);
-                        if (i % 2 != 0)
+                        if (i % t != 0)
                             Thread.Sleep(T);
                     }
                 }
@@ -142,7 +143,7 @@ namespace ProgettoPDS_SERVER
                     for (int i = ScrollX; i > 0; i--)
                     {
                         mouse_event(ApplicationConstants.MOUSEEVENTF_MOVE, old.X + i, 0, 0, UIntPtr.Zero);
-                        if (i % 2 != 0)
+                        if (i % t != 0)
                             Thread.Sleep(T);
                     }
                 }
@@ -151,7 +152,7 @@ namespace ProgettoPDS_SERVER
                     for (int i = 0; i < ScrollX; i++)
                     {
                         mouse_event(ApplicationConstants.MOUSEEVENTF_MOVE, old.X + i, 0, 0, UIntPtr.Zero);
-                        if (i % 2 != 0)
+                        if (i % t != 0)
                             Thread.Sleep(T);
                     }
                 }
@@ -186,7 +187,7 @@ namespace ProgettoPDS_SERVER
                     {
                         mouse_event(ApplicationConstants.MOUSEEVENTF_MOVE, signx, 0, 0, UIntPtr.Zero);
                         mouse_event(ApplicationConstants.MOUSEEVENTF_MOVE, 0, signy, 0, UIntPtr.Zero);
-                        if (i % 2 != 0)
+                        if (i % t != 0)
                             Thread.Sleep(T);
                     }
                 }
@@ -207,10 +208,10 @@ namespace ProgettoPDS_SERVER
                             {
                                 counter = 0;
                                 mouse_event(ApplicationConstants.MOUSEEVENTF_MOVE, 0, signy, 0, UIntPtr.Zero);
-                                Thread.Sleep(T);
+                                if (i % t != 0) 
+                                    Thread.Sleep(T);
                             }
                             counter++;
-                            //Thread.Sleep(T);
                         }
                     }
                     else//spostamento maggiore sull'asse y
@@ -225,10 +226,10 @@ namespace ProgettoPDS_SERVER
                             {
                                 counter = 0;
                                 mouse_event(ApplicationConstants.MOUSEEVENTF_MOVE, signx, 0, 0, UIntPtr.Zero);
-                                Thread.Sleep(T);
+                                if (i % t != 0) 
+                                    Thread.Sleep(T);
                             }
                             counter++;
-                            //Thread.Sleep(T);
                         }
                     }
                 }

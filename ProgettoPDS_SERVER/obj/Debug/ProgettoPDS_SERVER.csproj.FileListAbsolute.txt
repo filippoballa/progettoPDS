@@ -57,3 +57,4 @@ C:\Users\Dave\Documents\GitHub\progettoPDS\ProgettoPDS_SERVER\obj\Debug\Progetto
 C:\Users\Dave\Documents\GitHub\progettoPDS\ProgettoPDS_SERVER\obj\Debug\ProgettoPDS_SERVER.MainForm.resources
 C:\Users\Dave\Documents\GitHub\progettoPDS\ProgettoPDS_SERVER\obj\Debug\ProgettoPDS_SERVER.Properties.Resources.resources
 C:\Users\Dave\Documents\GitHub\progettoPDS\ProgettoPDS_SERVER\obj\Debug\ProgettoPDS_SERVER.csproj.GenerateResource.Cache
+C:\Users\Filippo\Documents\GitHub\progettoPDS\ProgettoPDS_SERVER\obj\Debug\ProgettoPDS_SERVER.PopUpWindow.resources

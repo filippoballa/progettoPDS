@@ -50,6 +50,7 @@ namespace ProgettoPDS_SERVER
         private int porta;
         private String myIP;
         private MainForm main;
+        private string client = null;
 
         public Socket Passiv
         {
@@ -57,7 +58,7 @@ namespace ProgettoPDS_SERVER
         }
 
         private ApplicationConstants.Stato stato = ApplicationConstants.Stato.DISCONNESSO;
-        public ApplicationConstants.Stato Stato { get { return stato; } set { StatoChanged(value); stato = value; } }
+        public ApplicationConstants.Stato Stato { get { return stato; } set { stato = value; StatoChanged(stato); } }
 
         //costruttore
 
@@ -68,8 +69,8 @@ namespace ProgettoPDS_SERVER
             this.porta = porta;
             sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
-            // Bind the socket to the local endpoint
-            sock.Bind(new IPEndPoint(IPAddress.Any, porta));
+            /*/ Bind the socket to the local endpoint
+            sock.Bind(new IPEndPoint(IPAddress.Any, porta));*/
         }
 
         #region Socket Methods
@@ -81,6 +82,14 @@ namespace ProgettoPDS_SERVER
                 sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             try
             {
+                // Bind the socket to the local endpoint else close it and re-bind
+                if (!sock.IsBound)
+                    sock.Bind(new IPEndPoint(IPAddress.Any, porta));
+                else
+                {
+                    sock.Close();
+                    sock.Bind(new IPEndPoint(IPAddress.Any, porta));
+                }
                 sock.Listen(backlog);
                 // Program is suspended while waiting for an incoming connection.
                 sock.BeginAccept(new AsyncCallback(AcceptCallback), sock);
@@ -96,10 +105,9 @@ namespace ProgettoPDS_SERVER
             passiv = (Socket)ar.AsyncState;
             passiv = passiv.EndAccept(ar);
 
-            main.notifyIcon1.ShowBalloonTip(main.ToolTipTimeOut, "INFO STATO", "Inizio procedura autenticazione client . . .(" + passiv.RemoteEndPoint.ToString() + ")", ToolTipIcon.Info);
+            main.notifyIcon1.ShowBalloonTip(main.ToolTipTimeOut, "INFO STATO", "Inizio procedura autenticazione client . . ." + passiv.RemoteEndPoint.ToString(), ToolTipIcon.Info);
             if(ClientAutentication())
             {
-                main.notifyIcon1.ShowBalloonTip(main.ToolTipTimeOut, "INFO STATO", "Autenticazione Client effettuata con successo! Connessione avviata.",ToolTipIcon.Info);
                 Stato = ApplicationConstants.Stato.CONNESSO;
                 //disegno qualcosa per mostrare il controllo
                 DrawBorders();
@@ -108,7 +116,8 @@ namespace ProgettoPDS_SERVER
             }
             else
             {
-                main.notifyIcon1.ShowBalloonTip(2, "ERRORE", "Autenticazione Client non riuscita. Chiusura connessione.", ToolTipIcon.Warning);
+                Stato = ApplicationConstants.Stato.DISCONNESSO;
+                main.notifyIcon1.ShowBalloonTip(main.ToolTipTimeOut, "ERRORE", "Autenticazione Client non riuscita. Chiusura connessione.", ToolTipIcon.Warning);
             }
         }
 
@@ -179,6 +188,8 @@ namespace ProgettoPDS_SERVER
                 passiv.Receive(data);//ricevo l'USER
                 user = Encoding.ASCII.GetString(data);
                 user = user.Substring(0, user.IndexOf('\0'));
+                //
+                client = user;
 
                 // controllo che l'user sia già registrato
                 if (user != ApplicationConstants.ERR)
@@ -365,13 +376,11 @@ namespace ProgettoPDS_SERVER
         private void StatoChanged(ApplicationConstants.Stato value)
         {
             //
-            if (main != null) 
+            if (main != null)
             {
-                main.notifyIcon1.ShowBalloonTip(main.ToolTipTimeOut, "INFO STATO", "Lo stato dell' applicazione é " + value.ToString(), ToolTipIcon.Info);
-
-                main.labelStato.Invoke((MethodInvoker)(() => main.labelStato.Text = value.ToString()));
+                main.notifyIcon1.ShowBalloonTip(main.ToolTipTimeOut, "INFO STATO", "Lo stato dell' applicazione é : " + value.ToString(), ToolTipIcon.Info);
+                main.Invoke(main.LabelStatoChangedDelegate,new Object[] {stato,client});
             }
-            
         }
     }
 }

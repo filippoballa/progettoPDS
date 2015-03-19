@@ -16,6 +16,12 @@ namespace ProgettoPDS_SERVER
             CONNESSO = 1,
             DISCONNESSO = 0
         };
+        //enums
+        public enum StatoClipBoard
+        {
+            PIENA = 1,
+            VUOTA = 0
+        };
         public enum Modificatore
         {
             A = 0,//Alt
@@ -28,16 +34,6 @@ namespace ProgettoPDS_SERVER
         };
 
         //structs
-        public struct Data
-        {
-            //socket
-            public Socket sock;
-            //data[]
-            public byte[] data;
-            //buffer size
-            public int BufferSize;
-        }
-
         [StructLayout(LayoutKind.Sequential)]
         public struct POINT
         {

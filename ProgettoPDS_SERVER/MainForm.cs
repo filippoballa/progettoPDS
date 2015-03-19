@@ -10,48 +10,65 @@ using System.Windows.Forms;
 using System.Windows;
 using System.Globalization;
 using System.Threading;
+using System.Security.Cryptography;
 
 namespace ProgettoPDS_SERVER
 {
     public partial class MainForm : Form
     {
+        //attributi
+
         static bool work = true;
-        //public delegate void Handler(Cursor c);
-        //public Handler myHandler;
-        //PopUpWindow top = new PopUpWindow(new Panel(),"t");
         private SocketConnection Sconnection = null;
         private static int port = 2000;
         public int Port { get { return port; } set { port = value; } }
-        private const int toolTipTimeOut = 200;
+        private const int toolTipTimeOut = 2;
         public int ToolTipTimeOut { get { return toolTipTimeOut; } }
-        
+        private User u = null;
+        private const int passwordlenght = 8;
 
+        //delegate per le modifiche allo stato nel form da parte di altri thread
+        public delegate void LabelStatoChanged(ApplicationConstants.Stato stato, string client);
+        public LabelStatoChanged LabelStatoChangedDelegate;
+        
         public MainForm(User u)
         {
+            //delegate
+            LabelStatoChangedDelegate = new LabelStatoChanged(LabelStatoChangedMethod);
+
             InitializeComponent();
-
-            //aggancio l'Handler per poter fare una safe invoke
-            //this.myHandler = new Handler(ChangeCursor);
-
+            this.Height = 150;
+            this.u = u;
             //scrivo il nome dell'utente nel form
             this.Text = "SERVER - "+ u.Username;
-            //avvio un message box di benvenuto
-            MessageBox.Show("Bentornato " + u.Name + " " + u.Surname + "!","BENTORNATO!",MessageBoxButtons.OK,MessageBoxIcon.Information);
-        }
+          
+            //stato clipBoard
+            ClipboardChanghed();
 
-        private void MainForm_Load(object sender, EventArgs e)
-        {
             //lancio la notify icon
-            this.notifyIcon1.ShowBalloonTip(ToolTipTimeOut);
+            this.notifyIcon1.ShowBalloonTip(ToolTipTimeOut, "SERVER AVVIATO", "Benvenuto "+u.Name+" "+u.Surname, ToolTipIcon.Info);
             //rendo il form invisibile
             this.ShowInTaskbar = false;
 
             //inizializzo la classe per gestire la connessione
-            if (this.Sconnection==null)
+            if (this.Sconnection == null)
                 this.Sconnection = new SocketConnection(Port);
 
             //aggiungo nel form l'IP corrente
-            this.Text+=" - IP : " + Sconnection.GetMyIp();
+            this.Text += " - IP : " + Sconnection.GetMyIp();
+        }
+
+        private void ClipboardChanghed()
+        {
+            IDataObject d = System.Windows.Forms.Clipboard.GetDataObject();
+            ApplicationConstants.StatoClipBoard s = (d == null) ? ApplicationConstants.StatoClipBoard.VUOTA : ApplicationConstants.StatoClipBoard.PIENA;
+
+            this.labelClipboardState.Text = s.ToString();
+
+            if(s==ApplicationConstants.StatoClipBoard.VUOTA)
+                this.labelClipboardState.ForeColor = Color.DarkRed;
+            else
+                this.labelClipboardState.ForeColor = Color.LawnGreen;
         }
 
         /// <summary>
@@ -71,15 +88,6 @@ namespace ProgettoPDS_SERVER
 
             notifyIcon1.ShowBalloonTip(ToolTipTimeOut, "INFO STATO", "In attesa di connessioni dal Client.", ToolTipIcon.Info);
         }
-
-        /*public void PopUpShow(object sender, EventArgs e)
-        {
-            //this.top.Show(0,0);
-        }
-        public void PopUpHide(object sender, EventArgs e)
-        {
-            //this.top.Hide();
-        }*/
 
         /// <summary>
         /// Click sul pulsante 'Disconnetti' del menu: chiude la connessione.
@@ -105,19 +113,13 @@ namespace ProgettoPDS_SERVER
             this.contextMenuStrip.Hide();
         }
 
-        //non so se serve ??
-        private void ChangeCursor(Cursor c )
-        {
-            this.Cursor = c;
-        }
-
-
         /// <summary>
         /// Click sul pulsante 'Console' del menu: mostra il form che funge da console.
         /// </summary>
         private void MainFormShow(object sender, EventArgs e)
         {
-            this.WindowState = FormWindowState.Normal;          
+            this.WindowState = FormWindowState.Normal;
+            this.ShowInTaskbar = true;
         }
 
         /// <summary>
@@ -130,13 +132,12 @@ namespace ProgettoPDS_SERVER
             if (res == DialogResult.OK)
             {
                 e.Cancel = false;
-
                 notifyIcon1.ShowBalloonTip(ToolTipTimeOut, "INFO STATO", "Applicazione in Back Ground.", ToolTipIcon.Info);
-            }
-               
+            }   
             else
                 e.Cancel = true;
 
+            this.ShowInTaskbar = true;
             this.WindowState = FormWindowState.Minimized;
             this.ShowInTaskbar = false;
         }
@@ -149,111 +150,6 @@ namespace ProgettoPDS_SERVER
             Sconnection.DrawBorders();
         }
 
-        #region async recive [DEPRECATED]
-        private void PacketsHandlerbackgroundWorker_DoWorkAsync(object sender, DoWorkEventArgs e)
-        {
-            byte[] data;
-            work = true;
-
-            while (work)//ricevo i pachetti del client 
-            {
-                try
-                {
-                    data = new byte[128];
-                    ApplicationConstants.Data StructData;
-
-                    StructData.sock = Sconnection.Passiv;
-                    StructData.data = data;
-                    StructData.BufferSize = data.Length;
-
-                    Sconnection.Passiv.BeginReceive(data, 0, data.Length, 0, new AsyncCallback(ReceiveCallaback), StructData);
-                }
-                catch (Exception ex)
-                {
-                    ExceptionManagement(ex);  
-                }
-            }
-        }
-
-        private void ReceiveCallaback(IAsyncResult ar)
-        {
-            String comandi;
-            try
-            {
-                ApplicationConstants.Data StructData = (ApplicationConstants.Data) ar.AsyncState;
-
-                int bytesRead = StructData.sock.EndReceive(ar);
-
-                //ricevo i dati come stream di byte quindi devo ricostruirmi i caratteri ricevuti e poi 'splittarli'
-                comandi = Encoding.ASCII.GetString(StructData.data);
-                comandi = comandi.Substring(0, comandi.IndexOf('\0'));
-                
-                String[] Data = comandi.Split(ApplicationConstants.SEPARATOR);
-
-                //il ciclo for serve a capire se ho ricevuto più comandi in un solo invio
-                for(int i = 0; i<Data.Length; i++)
-                {
-                    Thread t = null;
-                    //controllo il counter dei thread, se ne ho già lanciati MAXTHREAD mi metto in attesa
-                    while (ThreadHandler.ThreadCounter >= ThreadHandler.MAXTHREAD)
-                        ThreadHandler.mrMaxThreads.WaitOne();
-
-                    String s = Data[i];
-                    String[] d;
-
-                    //caso ricezione mouse
-                    if (s == ApplicationConstants.MOUSECODE)
-                    {
-                        d = new String[4];
-                        d[0] = s;
-                        d[1] = Data[i + 1];
-                        d[2] = Data[i + 2];
-                        d[3] = Data[i + 3];
-
-                        i += 3;
-
-                        t = new Thread(ThreadHandler.MouseThreadProc);
-                    }
-                    //caso ricezione keyboard
-                    else if (s == ApplicationConstants.KEYBOARDCODE)
-                    {
-                        d = new String[3];
-                        d[0] = s;
-                        d[1] = Data[i + 1];
-                        d[2] = Data[i + 2];
-
-                        i += 2;
-
-                        t = new Thread(ThreadHandler.KeyBoardThreadProc);
-                    }
-                    //caso ricezione cliboard
-                    else if (s == ApplicationConstants.CLIPBOARDCODE)
-                    { 
-                        //da gestire la costruzione del pacchetto
-                        d = new String[1];
-                        d[0] = s;
-
-                        t = new Thread(ThreadHandler.ClipBoardThreadProc);
-                    }
-
-                    //se è stato creato un thread lo lancio e aggiorno il counter e la condition variable se ho lanciato il 20esimo
-                    if (t != null)
-                    {
-                        t.Start(Data);
-                        ThreadHandler.ThreadCounter++;
-
-                        if (ThreadHandler.ThreadCounter >= ThreadHandler.MAXTHREAD)
-                            ThreadHandler.mrMaxThreads.Reset();
-                    }
-                }
-  
-            }
-            catch (Exception ex)
-            {
-                ExceptionManagement(ex);
-            }
-        }
-#endregion
         #region PacketsHandler backgroundWorker
 
         /// <summary>
@@ -382,10 +278,127 @@ namespace ProgettoPDS_SERVER
             if(PacketsHandlerbackgroundWorker.IsBusy)
                 PacketsHandlerbackgroundWorker.CancelAsync();
         }
-
-        public void ChangeLabelStato(string stato)
+        /// <summary>
+        /// Metodo per cambiare lo 'stato' della connessione
+        /// </summary>
+        /// <param name="stato"></param>
+        /// <param name="client"></param>
+        public void LabelStatoChangedMethod(ApplicationConstants.Stato stato, string client)
         {
-            this.labelStato.Text = stato;
+            this.labelStato.Text = stato.ToString();
+
+            if (stato == ApplicationConstants.Stato.CONNESSO)
+            {
+                this.labelStato.ForeColor = Color.LawnGreen;
+                this.labelConnectedClient.Text = client;
+            }
+            else
+            {
+                this.labelStato.ForeColor = Color.DarkRed;
+                this.labelConnectedClient.Text = "-";
+            }               
+        }
+        /// <summary>
+        /// Set della nuova porta di ascolto.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void buttonSetPort_Click(object sender, EventArgs e)
+        {
+            this.Port = (int)this.numericUpDownPort.Value;
+
+            //inizializzo la classe per gestire la connessione
+            if (this.Sconnection.Stato == ApplicationConstants.Stato.DISCONNESSO)
+            {
+                this.Sconnection = new SocketConnection(Port);
+                PanelSetPort.Visible = false;
+                this.Height = 150;
+                notifyIcon1.ShowBalloonTip(ToolTipTimeOut, "INFO STATO", "Porta cambiata con successo!", ToolTipIcon.Info);
+            }
+            else
+                notifyIcon1.ShowBalloonTip(ToolTipTimeOut, "INFO STATO", "Impossibile cambiare la porta, connessione in corso.", ToolTipIcon.Warning);
+
+        }
+        /// <summary>
+        /// Nasconde il form e non lo mostra nella task bar
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void toolStripTextBoxNascondi_Click(object sender, EventArgs e)
+        {
+            notifyIcon1.ShowBalloonTip(ToolTipTimeOut, "INFO STATO", "Applicazione in Back Ground.", ToolTipIcon.Info);
+            this.ShowInTaskbar = true; 
+            this.WindowState = FormWindowState.Minimized;
+            this.ShowInTaskbar = false; 
+        }
+
+        private void impostaPortaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.PanelSetPort.Visible = true;
+            this.Height = 250;
+        }
+
+        private void buttonClosePanelSetPort_Click(object sender, EventArgs e)
+        {
+            PanelSetPort.Visible = false;
+            this.Height = 150;
+        }
+        private void cambioPasswordToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.panelChangePassword.Visible = true;
+            this.Height = 250;
+        }
+
+        private void buttonClosePanelChangePassword_Click(object sender, EventArgs e)
+        {
+            panelChangePassword.Visible = false;
+            this.Height = 150;
+        }
+        /// <summary>
+        /// metodo per cambiare la password
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void buttonChangePassword_Click(object sender, EventArgs e)
+        {
+            if (textBoxVpassword.Text == "" )
+            {
+                 MessageBox.Show("Errore, inserisci la vecchia password!", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else if(textBoxNpassword.Text == "")
+            {
+                 MessageBox.Show("Errore, inserisci la nuova password!", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else
+            {
+                SHA1 shaM = new SHA1Managed();
+
+                if( shaM.ComputeHash(Encoding.ASCII.GetBytes(textBoxVpassword.Text)) == Encoding.ASCII.GetBytes(u.Password))
+                {
+                    MessageBox.Show("Errore, la vecchia password non corrisponde!", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                {
+                     if(textBoxNpassword.Text.Length > passwordlenght)
+                     {
+                        //imposta nuova password
+                        XmlManager mng = new XmlManager('U');
+
+                        if (mng.ModifyPwdUser(u.Username, textBoxNpassword.Text))
+                        {
+                            u.Password = shaM.ComputeHash(Encoding.ASCII.GetBytes(textBoxNpassword.Text)).ToString();
+                            textBoxNpassword.Text = "";
+                            textBoxVpassword.Text = "";
+                            this.buttonClosePanelSetPort_Click(null, null);
+                        }
+                        else
+                            MessageBox.Show("Errore, impossibile modificare la password!", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                
+                    }
+                    else
+                        MessageBox.Show("Errore, inserire una password con almeno "+passwordlenght+" caratteri!", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            } 
         }
     }
 }
