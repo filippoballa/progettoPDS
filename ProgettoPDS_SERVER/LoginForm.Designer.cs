@@ -33,7 +33,6 @@
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loginPageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.registraUtenteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.cambiaPasswordToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.chiudiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.indirizzoIPToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -62,31 +61,23 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.TitleInfoLabel = new System.Windows.Forms.Label();
-            this.ChangePasswordPanel = new System.Windows.Forms.Panel();
-            this.ChangePwdTextBox = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.ChangeUserTextBox = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.ChangeButton = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.MainPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.RegistraPanel.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.InfoPanel.SuspendLayout();
-            this.ChangePasswordPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
             // 
-            this.menuStrip1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("menuStrip1.BackgroundImage")));
+            this.menuStrip1.BackColor = System.Drawing.Color.Beige;
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.toolStripMenuItem1});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(632, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(634, 25);
             this.menuStrip1.TabIndex = 5;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -95,12 +86,11 @@
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.loginPageToolStripMenuItem,
             this.registraUtenteToolStripMenuItem,
-            this.cambiaPasswordToolStripMenuItem,
             this.chiudiToolStripMenuItem});
-            this.fileToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.fileToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.fileToolStripMenuItem.ForeColor = System.Drawing.Color.Black;
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(38, 20);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(39, 21);
             this.fileToolStripMenuItem.Text = "File";
             // 
             // loginPageToolStripMenuItem
@@ -109,7 +99,7 @@
             this.loginPageToolStripMenuItem.ForeColor = System.Drawing.SystemColors.WindowText;
             this.loginPageToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("loginPageToolStripMenuItem.Image")));
             this.loginPageToolStripMenuItem.Name = "loginPageToolStripMenuItem";
-            this.loginPageToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
+            this.loginPageToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
             this.loginPageToolStripMenuItem.Text = "Login Page";
             this.loginPageToolStripMenuItem.Click += new System.EventHandler(this.loginPageToolStripMenuItem_Click);
             // 
@@ -118,25 +108,16 @@
             this.registraUtenteToolStripMenuItem.BackColor = System.Drawing.SystemColors.Info;
             this.registraUtenteToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("registraUtenteToolStripMenuItem.Image")));
             this.registraUtenteToolStripMenuItem.Name = "registraUtenteToolStripMenuItem";
-            this.registraUtenteToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
+            this.registraUtenteToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
             this.registraUtenteToolStripMenuItem.Text = "Registra Utente";
             this.registraUtenteToolStripMenuItem.Click += new System.EventHandler(this.registraUtenteToolStripMenuItem_Click);
             // 
-            // cambiaPasswordToolStripMenuItem
-            // 
-            this.cambiaPasswordToolStripMenuItem.BackColor = System.Drawing.SystemColors.Info;
-            this.cambiaPasswordToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("cambiaPasswordToolStripMenuItem.Image")));
-            this.cambiaPasswordToolStripMenuItem.Name = "cambiaPasswordToolStripMenuItem";
-            this.cambiaPasswordToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
-            this.cambiaPasswordToolStripMenuItem.Text = "Cambia Password";
-            this.cambiaPasswordToolStripMenuItem.Click += new System.EventHandler(this.cambiaPasswordToolStripMenuItem_Click);
-            // 
             // chiudiToolStripMenuItem
             // 
-            this.chiudiToolStripMenuItem.BackColor = System.Drawing.SystemColors.Info;
+            this.chiudiToolStripMenuItem.BackColor = System.Drawing.Color.Beige;
             this.chiudiToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("chiudiToolStripMenuItem.Image")));
             this.chiudiToolStripMenuItem.Name = "chiudiToolStripMenuItem";
-            this.chiudiToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
+            this.chiudiToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
             this.chiudiToolStripMenuItem.Text = "Chiudi";
             this.chiudiToolStripMenuItem.Click += new System.EventHandler(this.chiudiToolStripMenuItem_Click);
             // 
@@ -145,10 +126,10 @@
             this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.indirizzoIPToolStripMenuItem,
             this.informazioniToolStripMenuItem});
-            this.toolStripMenuItem1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.toolStripMenuItem1.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.toolStripMenuItem1.ForeColor = System.Drawing.Color.Black;
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(24, 20);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(26, 21);
             this.toolStripMenuItem1.Text = "?";
             // 
             // indirizzoIPToolStripMenuItem
@@ -156,7 +137,7 @@
             this.indirizzoIPToolStripMenuItem.BackColor = System.Drawing.SystemColors.Info;
             this.indirizzoIPToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("indirizzoIPToolStripMenuItem.Image")));
             this.indirizzoIPToolStripMenuItem.Name = "indirizzoIPToolStripMenuItem";
-            this.indirizzoIPToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.indirizzoIPToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.indirizzoIPToolStripMenuItem.Text = "Indirizzo IP";
             this.indirizzoIPToolStripMenuItem.Click += new System.EventHandler(this.indirizzoIPToolStripMenuItem_Click);
             // 
@@ -165,12 +146,14 @@
             this.informazioniToolStripMenuItem.BackColor = System.Drawing.SystemColors.Info;
             this.informazioniToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("informazioniToolStripMenuItem.Image")));
             this.informazioniToolStripMenuItem.Name = "informazioniToolStripMenuItem";
-            this.informazioniToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.informazioniToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.informazioniToolStripMenuItem.Text = "Informazioni";
             this.informazioniToolStripMenuItem.Click += new System.EventHandler(this.informazioniToolStripMenuItem_Click);
             // 
             // MainPanel
             // 
+            this.MainPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.MainPanel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("MainPanel.BackgroundImage")));
             this.MainPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.MainPanel.Controls.Add(this.UsernameLabel);
@@ -180,10 +163,9 @@
             this.MainPanel.Controls.Add(this.UsernameTextBox);
             this.MainPanel.Controls.Add(this.PasswordTextBox);
             this.MainPanel.Controls.Add(this.NotaLabel);
-            this.MainPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.MainPanel.Location = new System.Drawing.Point(0, 24);
+            this.MainPanel.Location = new System.Drawing.Point(0, 27);
             this.MainPanel.Name = "MainPanel";
-            this.MainPanel.Size = new System.Drawing.Size(632, 346);
+            this.MainPanel.Size = new System.Drawing.Size(634, 343);
             this.MainPanel.TabIndex = 11;
             // 
             // UsernameLabel
@@ -212,6 +194,8 @@
             // 
             // LoginButton
             // 
+            this.LoginButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.LoginButton.BackColor = System.Drawing.Color.SlateGray;
             this.LoginButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.LoginButton.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
@@ -219,9 +203,9 @@
             this.LoginButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.LoginButton.Font = new System.Drawing.Font("Comic Sans MS", 10F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LoginButton.ForeColor = System.Drawing.Color.White;
-            this.LoginButton.Location = new System.Drawing.Point(152, 178);
+            this.LoginButton.Location = new System.Drawing.Point(265, 180);
             this.LoginButton.Name = "LoginButton";
-            this.LoginButton.Size = new System.Drawing.Size(75, 48);
+            this.LoginButton.Size = new System.Drawing.Size(75, 50);
             this.LoginButton.TabIndex = 3;
             this.LoginButton.Text = "LOGIN";
             this.LoginButton.UseVisualStyleBackColor = false;
@@ -231,9 +215,9 @@
             // 
             this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(454, 30);
+            this.pictureBox1.Location = new System.Drawing.Point(437, 8);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(115, 115);
+            this.pictureBox1.Size = new System.Drawing.Size(170, 170);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 14;
             this.pictureBox1.TabStop = false;
@@ -264,7 +248,7 @@
             this.NotaLabel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.NotaLabel.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.NotaLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.NotaLabel.Location = new System.Drawing.Point(39, 270);
+            this.NotaLabel.Location = new System.Drawing.Point(66, 270);
             this.NotaLabel.Name = "NotaLabel";
             this.NotaLabel.Padding = new System.Windows.Forms.Padding(2);
             this.NotaLabel.Size = new System.Drawing.Size(497, 48);
@@ -279,9 +263,9 @@
             this.RegistraPanel.Controls.Add(this.label2);
             this.RegistraPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.RegistraPanel.Font = new System.Drawing.Font("Comic Sans MS", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.RegistraPanel.Location = new System.Drawing.Point(0, 24);
+            this.RegistraPanel.Location = new System.Drawing.Point(0, 25);
             this.RegistraPanel.Name = "RegistraPanel";
-            this.RegistraPanel.Size = new System.Drawing.Size(632, 346);
+            this.RegistraPanel.Size = new System.Drawing.Size(634, 2);
             this.RegistraPanel.TabIndex = 19;
             this.RegistraPanel.Visible = false;
             // 
@@ -416,13 +400,13 @@
             // InfoPanel
             // 
             this.InfoPanel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("InfoPanel.BackgroundImage")));
-            this.InfoPanel.Controls.Add(this.label4);
             this.InfoPanel.Controls.Add(this.label3);
             this.InfoPanel.Controls.Add(this.TitleInfoLabel);
-            this.InfoPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.InfoPanel.Location = new System.Drawing.Point(0, 24);
+            this.InfoPanel.Controls.Add(this.label4);
+            this.InfoPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.InfoPanel.Location = new System.Drawing.Point(0, 27);
             this.InfoPanel.Name = "InfoPanel";
-            this.InfoPanel.Size = new System.Drawing.Size(632, 346);
+            this.InfoPanel.Size = new System.Drawing.Size(634, 344);
             this.InfoPanel.TabIndex = 20;
             this.InfoPanel.Visible = false;
             // 
@@ -432,7 +416,7 @@
             this.label4.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.label4.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.label4.Location = new System.Drawing.Point(19, 53);
+            this.label4.Location = new System.Drawing.Point(23, 53);
             this.label4.Name = "label4";
             this.label4.Padding = new System.Windows.Forms.Padding(2);
             this.label4.Size = new System.Drawing.Size(588, 245);
@@ -463,97 +447,6 @@
             this.TitleInfoLabel.TabIndex = 1;
             this.TitleInfoLabel.Text = "Informazioni sulla schermata di Login";
             // 
-            // ChangePasswordPanel
-            // 
-            this.ChangePasswordPanel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("ChangePasswordPanel.BackgroundImage")));
-            this.ChangePasswordPanel.Controls.Add(this.ChangePwdTextBox);
-            this.ChangePasswordPanel.Controls.Add(this.label6);
-            this.ChangePasswordPanel.Controls.Add(this.ChangeUserTextBox);
-            this.ChangePasswordPanel.Controls.Add(this.label5);
-            this.ChangePasswordPanel.Controls.Add(this.label1);
-            this.ChangePasswordPanel.Controls.Add(this.ChangeButton);
-            this.ChangePasswordPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ChangePasswordPanel.Location = new System.Drawing.Point(0, 24);
-            this.ChangePasswordPanel.Name = "ChangePasswordPanel";
-            this.ChangePasswordPanel.Size = new System.Drawing.Size(632, 346);
-            this.ChangePasswordPanel.TabIndex = 21;
-            this.ChangePasswordPanel.Visible = false;
-            // 
-            // ChangePwdTextBox
-            // 
-            this.ChangePwdTextBox.BackColor = System.Drawing.Color.DimGray;
-            this.ChangePwdTextBox.Font = new System.Drawing.Font("Comic Sans MS", 10F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ChangePwdTextBox.Location = new System.Drawing.Point(176, 233);
-            this.ChangePwdTextBox.Name = "ChangePwdTextBox";
-            this.ChangePwdTextBox.Size = new System.Drawing.Size(248, 26);
-            this.ChangePwdTextBox.TabIndex = 12;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.BackColor = System.Drawing.Color.Transparent;
-            this.label6.Font = new System.Drawing.Font("Calibri", 11F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.ForeColor = System.Drawing.Color.White;
-            this.label6.Location = new System.Drawing.Point(88, 167);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(439, 36);
-            this.label6.TabIndex = 11;
-            this.label6.Text = "Inserisci nella textbox qui sotto la nuova password che sarà associata \r\nallo use" +
-    "rname inserito sopra.";
-            this.label6.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
-            // ChangeUserTextBox
-            // 
-            this.ChangeUserTextBox.BackColor = System.Drawing.Color.DimGray;
-            this.ChangeUserTextBox.Font = new System.Drawing.Font("Comic Sans MS", 10F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ChangeUserTextBox.Location = new System.Drawing.Point(171, 107);
-            this.ChangeUserTextBox.Name = "ChangeUserTextBox";
-            this.ChangeUserTextBox.Size = new System.Drawing.Size(248, 26);
-            this.ChangeUserTextBox.TabIndex = 10;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.BackColor = System.Drawing.Color.Transparent;
-            this.label5.Font = new System.Drawing.Font("Calibri", 11F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.ForeColor = System.Drawing.Color.White;
-            this.label5.Location = new System.Drawing.Point(88, 51);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(421, 36);
-            this.label5.TabIndex = 9;
-            this.label5.Text = "Inserisci nella textbox qui sotto lo \"username\" usato abitualmente \r\nper accedere" +
-    " all\'applicazione.";
-            this.label5.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.BackColor = System.Drawing.Color.Transparent;
-            this.label1.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.OrangeRed;
-            this.label1.Location = new System.Drawing.Point(172, 14);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(266, 23);
-            this.label1.TabIndex = 8;
-            this.label1.Text = "MODIFICA LA TUA PASSWORD";
-            // 
-            // ChangeButton
-            // 
-            this.ChangeButton.BackColor = System.Drawing.Color.DarkSlateGray;
-            this.ChangeButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.ChangeButton.FlatAppearance.BorderColor = System.Drawing.Color.White;
-            this.ChangeButton.FlatAppearance.BorderSize = 3;
-            this.ChangeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ChangeButton.Font = new System.Drawing.Font("Comic Sans MS", 9F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ChangeButton.ForeColor = System.Drawing.Color.White;
-            this.ChangeButton.Location = new System.Drawing.Point(247, 290);
-            this.ChangeButton.Name = "ChangeButton";
-            this.ChangeButton.Size = new System.Drawing.Size(108, 35);
-            this.ChangeButton.TabIndex = 7;
-            this.ChangeButton.Text = "CHANGE!!";
-            this.ChangeButton.UseVisualStyleBackColor = false;
-            this.ChangeButton.Click += new System.EventHandler(this.ChangeButton_Click);
-            // 
             // LoginForm
             // 
             this.AcceptButton = this.LoginButton;
@@ -562,12 +455,11 @@
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(632, 370);
-            this.Controls.Add(this.InfoPanel);
-            this.Controls.Add(this.ChangePasswordPanel);
-            this.Controls.Add(this.MainPanel);
+            this.ClientSize = new System.Drawing.Size(634, 371);
             this.Controls.Add(this.RegistraPanel);
             this.Controls.Add(this.menuStrip1);
+            this.Controls.Add(this.InfoPanel);
+            this.Controls.Add(this.MainPanel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
@@ -586,8 +478,6 @@
             this.groupBox1.PerformLayout();
             this.InfoPanel.ResumeLayout(false);
             this.InfoPanel.PerformLayout();
-            this.ChangePasswordPanel.ResumeLayout(false);
-            this.ChangePasswordPanel.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -627,14 +517,6 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label TitleInfoLabel;
-        private System.Windows.Forms.ToolStripMenuItem cambiaPasswordToolStripMenuItem;
-        private System.Windows.Forms.Panel ChangePasswordPanel;
-        private System.Windows.Forms.TextBox ChangeUserTextBox;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button ChangeButton;
-        private System.Windows.Forms.TextBox ChangePwdTextBox;
-        private System.Windows.Forms.Label label6;
     }
 }
 

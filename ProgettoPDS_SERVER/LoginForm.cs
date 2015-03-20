@@ -92,7 +92,7 @@ namespace ProgettoPDS_SERVER
         {
             this.SuspendLayout();
             this.InfoPanel.Visible = false;
-            this.ChangePasswordPanel.Visible = false;
+            //this.ChangePasswordPanel.Visible = false;
             this.RegistraPanel.Visible = false;
             this.MainPanel.Visible = true;
             this.ResumeLayout();
@@ -104,7 +104,7 @@ namespace ProgettoPDS_SERVER
             this.SuspendLayout();
             this.InfoPanel.Visible = false;
             this.MainPanel.Visible = false;
-            this.ChangePasswordPanel.Visible = false;
+            //this.ChangePasswordPanel.Visible = false;
             this.RegistraPanel.Visible = true;
             this.ResumeLayout();
             this.NameRegTextBox.Focus();
@@ -190,22 +190,22 @@ namespace ProgettoPDS_SERVER
             this.InfoPanel.Visible = true;
             this.MainPanel.Visible = false;
             this.RegistraPanel.Visible = false;
-            this.ChangePasswordPanel.Visible = false;
+            //this.ChangePasswordPanel.Visible = false;
             this.ResumeLayout();
         }
 
         private void cambiaPasswordToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.SuspendLayout();
-            this.ChangePasswordPanel.Visible = true;
+            //this.ChangePasswordPanel.Visible = true;
             this.MainPanel.Visible = false;
             this.RegistraPanel.Visible = false;
             this.InfoPanel.Visible = false;
             this.ResumeLayout();
-            this.ChangeUserTextBox.Focus();
+            //this.ChangeUserTextBox.Focus();
         }
 
-        private void ChangeButton_Click(object sender, EventArgs e)
+        /*private void ChangeButton_Click(object sender, EventArgs e)
         {
             if (this.ChangePwdTextBox.Text == "" && this.ChangeUserTextBox.Text == "")
             {
@@ -249,7 +249,7 @@ namespace ProgettoPDS_SERVER
 
                 }
             }
-        }
+        }*/
 
        
     }

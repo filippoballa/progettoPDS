@@ -50,6 +50,8 @@
             this.disconnettiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.impostaPortaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.clipboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.infoDatiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pulisciToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cambioPasswordToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemNascondi = new System.Windows.Forms.ToolStripMenuItem();
             this.PanelSetPort = new System.Windows.Forms.Panel();
@@ -64,15 +66,17 @@
             this.label2 = new System.Windows.Forms.Label();
             this.textBoxVpassword = new System.Windows.Forms.TextBox();
             this.groupBoxInfo = new System.Windows.Forms.GroupBox();
-            this.infoDatiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripTextBoxInfoCB = new System.Windows.Forms.ToolStripTextBox();
-            this.pulisciToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.panelInfoCB = new System.Windows.Forms.Panel();
+            this.labelTipoCB = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.buttonClosePanelInfoCB = new System.Windows.Forms.Button();
             this.contextMenuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownPort)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.PanelSetPort.SuspendLayout();
             this.panelChangePassword.SuspendLayout();
             this.groupBoxInfo.SuspendLayout();
+            this.panelInfoCB.SuspendLayout();
             this.SuspendLayout();
             // 
             // notifyIcon1
@@ -96,7 +100,7 @@
             this.toolStripMenuItemCloseForm,
             this.toolStripMenuItemCloseMenu});
             this.contextMenuStrip.Name = "contextMenuStrip";
-            this.contextMenuStrip.Size = new System.Drawing.Size(181, 114);
+            this.contextMenuStrip.Size = new System.Drawing.Size(181, 136);
             // 
             // toolStripMenuItemOpenConsole
             // 
@@ -150,7 +154,7 @@
             this.labelStato.BackColor = System.Drawing.Color.Transparent;
             this.labelStato.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelStato.ForeColor = System.Drawing.Color.DarkRed;
-            this.labelStato.Location = new System.Drawing.Point(107, 31);
+            this.labelStato.Location = new System.Drawing.Point(107, 27);
             this.labelStato.Name = "labelStato";
             this.labelStato.Size = new System.Drawing.Size(85, 15);
             this.labelStato.TabIndex = 1;
@@ -225,7 +229,7 @@
             this.labelConnectedClient.AutoSize = true;
             this.labelConnectedClient.BackColor = System.Drawing.Color.Transparent;
             this.labelConnectedClient.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelConnectedClient.Location = new System.Drawing.Point(107, 52);
+            this.labelConnectedClient.Location = new System.Drawing.Point(107, 48);
             this.labelConnectedClient.Name = "labelConnectedClient";
             this.labelConnectedClient.Size = new System.Drawing.Size(11, 15);
             this.labelConnectedClient.TabIndex = 9;
@@ -288,6 +292,22 @@
             this.clipboardToolStripMenuItem.Size = new System.Drawing.Size(78, 21);
             this.clipboardToolStripMenuItem.Text = "Clipboard";
             // 
+            // infoDatiToolStripMenuItem
+            // 
+            this.infoDatiToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("infoDatiToolStripMenuItem.Image")));
+            this.infoDatiToolStripMenuItem.Name = "infoDatiToolStripMenuItem";
+            this.infoDatiToolStripMenuItem.Size = new System.Drawing.Size(125, 22);
+            this.infoDatiToolStripMenuItem.Text = "Info Dati";
+            this.infoDatiToolStripMenuItem.Click += new System.EventHandler(this.infoDatiToolStripMenuItem_Click);
+            // 
+            // pulisciToolStripMenuItem
+            // 
+            this.pulisciToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("pulisciToolStripMenuItem.Image")));
+            this.pulisciToolStripMenuItem.Name = "pulisciToolStripMenuItem";
+            this.pulisciToolStripMenuItem.Size = new System.Drawing.Size(125, 22);
+            this.pulisciToolStripMenuItem.Text = "Pulisci";
+            this.pulisciToolStripMenuItem.Click += new System.EventHandler(this.pulisciToolStripMenuItem_Click);
+            // 
             // cambioPasswordToolStripMenuItem
             // 
             this.cambioPasswordToolStripMenuItem.Name = "cambioPasswordToolStripMenuItem";
@@ -348,7 +368,7 @@
             this.labelClipboardState.BackColor = System.Drawing.Color.Transparent;
             this.labelClipboardState.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelClipboardState.ForeColor = System.Drawing.Color.DarkRed;
-            this.labelClipboardState.Location = new System.Drawing.Point(107, 72);
+            this.labelClipboardState.Location = new System.Drawing.Point(107, 68);
             this.labelClipboardState.Name = "labelClipboardState";
             this.labelClipboardState.Size = new System.Drawing.Size(45, 15);
             this.labelClipboardState.TabIndex = 13;
@@ -388,7 +408,7 @@
             // 
             this.buttonClosePanelChangePassword.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonClosePanelChangePassword.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("buttonClosePanelChangePassword.BackgroundImage")));
-            this.buttonClosePanelChangePassword.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.buttonClosePanelChangePassword.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.buttonClosePanelChangePassword.Location = new System.Drawing.Point(355, 6);
             this.buttonClosePanelChangePassword.Name = "buttonClosePanelChangePassword";
             this.buttonClosePanelChangePassword.Padding = new System.Windows.Forms.Padding(5);
@@ -400,7 +420,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(7, 35);
+            this.label5.Location = new System.Drawing.Point(17, 35);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(94, 13);
             this.label5.TabIndex = 3;
@@ -408,15 +428,15 @@
             // 
             // textBoxNpassword
             // 
-            this.textBoxNpassword.Location = new System.Drawing.Point(114, 32);
+            this.textBoxNpassword.Location = new System.Drawing.Point(132, 32);
             this.textBoxNpassword.Name = "textBoxNpassword";
-            this.textBoxNpassword.Size = new System.Drawing.Size(100, 20);
+            this.textBoxNpassword.Size = new System.Drawing.Size(120, 20);
             this.textBoxNpassword.TabIndex = 2;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(7, 13);
+            this.label2.Location = new System.Drawing.Point(17, 13);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(101, 13);
             this.label2.TabIndex = 1;
@@ -424,9 +444,9 @@
             // 
             // textBoxVpassword
             // 
-            this.textBoxVpassword.Location = new System.Drawing.Point(114, 8);
+            this.textBoxVpassword.Location = new System.Drawing.Point(132, 8);
             this.textBoxVpassword.Name = "textBoxVpassword";
-            this.textBoxVpassword.Size = new System.Drawing.Size(100, 20);
+            this.textBoxVpassword.Size = new System.Drawing.Size(119, 20);
             this.textBoxVpassword.TabIndex = 0;
             // 
             // groupBoxInfo
@@ -452,26 +472,49 @@
             this.groupBoxInfo.TabStop = false;
             this.groupBoxInfo.Text = "Info";
             // 
-            // infoDatiToolStripMenuItem
+            // panelInfoCB
             // 
-            this.infoDatiToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripTextBoxInfoCB});
-            this.infoDatiToolStripMenuItem.Name = "infoDatiToolStripMenuItem";
-            this.infoDatiToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.infoDatiToolStripMenuItem.Text = "Info Dati";
-            this.infoDatiToolStripMenuItem.Click += new System.EventHandler(this.infoDatiToolStripMenuItem_Click);
+            this.panelInfoCB.BackColor = System.Drawing.Color.Beige;
+            this.panelInfoCB.Controls.Add(this.labelTipoCB);
+            this.panelInfoCB.Controls.Add(this.label6);
+            this.panelInfoCB.Controls.Add(this.buttonClosePanelInfoCB);
+            this.panelInfoCB.Dock = System.Windows.Forms.DockStyle.Right;
+            this.panelInfoCB.Location = new System.Drawing.Point(254, 25);
+            this.panelInfoCB.Name = "panelInfoCB";
+            this.panelInfoCB.Size = new System.Drawing.Size(130, 12);
+            this.panelInfoCB.TabIndex = 20;
+            this.panelInfoCB.Visible = false;
             // 
-            // toolStripTextBoxInfoCB
+            // labelTipoCB
             // 
-            this.toolStripTextBoxInfoCB.Name = "toolStripTextBoxInfoCB";
-            this.toolStripTextBoxInfoCB.Size = new System.Drawing.Size(100, 23);
+            this.labelTipoCB.AutoSize = true;
+            this.labelTipoCB.Location = new System.Drawing.Point(39, 10);
+            this.labelTipoCB.Name = "labelTipoCB";
+            this.labelTipoCB.Size = new System.Drawing.Size(64, 13);
+            this.labelTipoCB.TabIndex = 7;
+            this.labelTipoCB.Text = "labelTipoCB";
             // 
-            // pulisciToolStripMenuItem
+            // label6
             // 
-            this.pulisciToolStripMenuItem.Name = "pulisciToolStripMenuItem";
-            this.pulisciToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.pulisciToolStripMenuItem.Text = "Pulisci";
-            this.pulisciToolStripMenuItem.Click += new System.EventHandler(this.pulisciToolStripMenuItem_Click);
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(3, 10);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(35, 13);
+            this.label6.TabIndex = 6;
+            this.label6.Text = "TIPO:";
+            // 
+            // buttonClosePanelInfoCB
+            // 
+            this.buttonClosePanelInfoCB.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonClosePanelInfoCB.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("buttonClosePanelInfoCB.BackgroundImage")));
+            this.buttonClosePanelInfoCB.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.buttonClosePanelInfoCB.Location = new System.Drawing.Point(103, 3);
+            this.buttonClosePanelInfoCB.Name = "buttonClosePanelInfoCB";
+            this.buttonClosePanelInfoCB.Padding = new System.Windows.Forms.Padding(5);
+            this.buttonClosePanelInfoCB.Size = new System.Drawing.Size(24, 23);
+            this.buttonClosePanelInfoCB.TabIndex = 5;
+            this.buttonClosePanelInfoCB.UseVisualStyleBackColor = true;
+            this.buttonClosePanelInfoCB.Click += new System.EventHandler(this.buttonClosePanelInfoCB_Click);
             // 
             // MainForm
             // 
@@ -481,6 +524,7 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.ClientSize = new System.Drawing.Size(384, 211);
+            this.Controls.Add(this.panelInfoCB);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.groupBoxInfo);
             this.Controls.Add(this.panelChangePassword);
@@ -506,6 +550,8 @@
             this.panelChangePassword.PerformLayout();
             this.groupBoxInfo.ResumeLayout(false);
             this.groupBoxInfo.PerformLayout();
+            this.panelInfoCB.ResumeLayout(false);
+            this.panelInfoCB.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -548,7 +594,10 @@
         private System.Windows.Forms.Button buttonChangePassword;
         private System.Windows.Forms.GroupBox groupBoxInfo;
         private System.Windows.Forms.ToolStripMenuItem infoDatiToolStripMenuItem;
-        private System.Windows.Forms.ToolStripTextBox toolStripTextBoxInfoCB;
         private System.Windows.Forms.ToolStripMenuItem pulisciToolStripMenuItem;
+        private System.Windows.Forms.Panel panelInfoCB;
+        private System.Windows.Forms.Button buttonClosePanelInfoCB;
+        private System.Windows.Forms.Label labelTipoCB;
+        private System.Windows.Forms.Label label6;
     }
 }

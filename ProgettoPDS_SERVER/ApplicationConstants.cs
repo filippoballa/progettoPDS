@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
+using System.ComponentModel;
 
 namespace ProgettoPDS_SERVER
 {
@@ -13,14 +14,27 @@ namespace ProgettoPDS_SERVER
         //enums
         public enum Stato
         {
+            [Description("Connesso")]
             CONNESSO = 1,
+            [Description("Disconnesso")]
             DISCONNESSO = 0,
+            [Description("In Attesa ...")]
             IN_ATTESA = 2
         };
         public enum StatoClipBoard
         {
+            [Description("Piena")]
             PIENA = 1,
-            VUOTA = 0
+            [Description("Vuota")]
+            VUOTA = 0,
+            [Description("File Audio")]
+            AUDIO = 2,
+            [Description("File Immagine")]
+            IMMAGINE = 3,
+            [Description("File Testo")]
+            TEXT = 4,
+            [Description("Link")]
+            FILE_DROP = 5
         };
         public enum Modificatore
         {

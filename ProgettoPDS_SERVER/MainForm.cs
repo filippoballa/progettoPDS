@@ -63,7 +63,7 @@ namespace ProgettoPDS_SERVER
 
         private void ClipboardChanghed()
         {
-             // Retrieves the data from the clipboard.
+             // Controllo stato clipboard
             ApplicationConstants.StatoClipBoard s = ApplicationConstants.StatoClipBoard.VUOTA;
           
             if(Clipboard.ContainsAudio())
@@ -467,28 +467,42 @@ namespace ProgettoPDS_SERVER
             if(d != null)
             {
                 if(Clipboard.ContainsAudio())
-                { }
+                {
+                    labelTipoCB.Text = ApplicationConstants.StatoClipBoard.AUDIO.ToString();
+                }
                 else if(Clipboard.ContainsImage())
-                { }
+                {
+                    labelTipoCB.Text = ApplicationConstants.StatoClipBoard.IMMAGINE.ToString();
+                }
                 else if(Clipboard.ContainsText())
-                { }
+                {
+                    labelTipoCB.Text = ApplicationConstants.StatoClipBoard.TEXT.ToString();
+                }
                 else if(Clipboard.ContainsFileDropList())
-                { }
+                {
+                    labelTipoCB.Text = ApplicationConstants.StatoClipBoard.FILE_DROP.ToString();
+                }
                 else
-                { 
-                    //formato sconosciuto
+                {
+                    labelTipoCB.Text = ApplicationConstants.StatoClipBoard.VUOTA.ToString();
                 }
             }
             else
             {
-                //clipboard vuota
+                //clipboard null
             }
+            panelInfoCB.Visible = true;
         }
 
         private void pulisciToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Clipboard.Clear();
             ClipboardChanghed();
+        }
+
+        private void buttonClosePanelInfoCB_Click(object sender, EventArgs e)
+        {
+            panelInfoCB.Visible = false;
         }
     }
 }
