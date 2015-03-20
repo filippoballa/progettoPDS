@@ -16,6 +16,7 @@ namespace ProgettoPDS_CLIENT
 {
     public partial class MainForm : Form
     {
+
         #region Variables
 
         public delegate void Handler();
@@ -27,8 +28,8 @@ namespace ProgettoPDS_CLIENT
         private static Mutex mut = new Mutex();
         private MouseHook mouseHook = new MouseHook();
         private KeyboardHook keyboardHook = new KeyboardHook();
-        private static ManualResetEvent mreMouse = new ManualResetEvent(false);
-        private static ManualResetEvent mreKeyboard = new ManualResetEvent(false);
+        private Queue<MouseEventArgs> MouseQueue;
+        private Queue<KeyEventArgs> KeyQueue;
         private MouseCord mc;
         private XmlManager mng;
 
@@ -47,6 +48,8 @@ namespace ProgettoPDS_CLIENT
             InitializeComponent();
             this.connessioni = new List<SocketConnection>();
             this.servers = new List<Server>();
+            this.MouseQueue = new Queue<MouseEventArgs>();
+            this.KeyQueue = new Queue<KeyEventArgs>();
             this.mng = new XmlManager();
             this.myHandler = new Handler(RefreshLabel); 
             this.currServ = -1;
@@ -349,6 +352,10 @@ namespace ProgettoPDS_CLIENT
                 mut.WaitOne();
                 this.connessioni[this.currServ].Sock.Send(pdu);
             }
+            catch (Exception e) {
+                MessageBox.Show(e.Message, "ANOMALY", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                this.connessioni[this.currServ].SockClose();
+            }
             finally {
                 mut.ReleaseMutex();
             }
@@ -522,6 +529,7 @@ namespace ProgettoPDS_CLIENT
         private void LoadConfButton_Click(object sender, EventArgs e)
         {
             XmlNodeList xmlnodes = this.mng.documentTwo.GetElementsByTagName("MYSERVER");
+            bool res = false;
 
             for (int i = 0; i < xmlnodes.Count; i++)
             {
@@ -530,10 +538,18 @@ namespace ProgettoPDS_CLIENT
                 aux.IPAddr = xmlnodes[i].ChildNodes.Item(1).InnerText;
                 aux.Porta = Convert.ToInt32(xmlnodes[i].ChildNodes.Item(2).InnerText);
 
-                this.listBox1.Items.Add(aux.ToString());
-                this.servers.Add(aux);
-                this.connessioni.Add(new SocketConnection(aux.IPAddr, aux.Porta, this.user, this));
+                if ( !this.listBox1.Items.Contains(aux.ToString()) ) {
+                    res = true;
+                    this.listBox1.Items.Add(aux.ToString());
+                    this.servers.Add(aux);
+                    this.connessioni.Add(new SocketConnection(aux.IPAddr, aux.Porta, this.user, this));
+                }
             }
+
+            if (!res)
+                MessageBox.Show("Configurazioni della Cache già Caricate in Lista!!", "AVVISO",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+
         }
 
         private void ClearCacheButton_Click(object sender, EventArgs e)
@@ -563,6 +579,9 @@ namespace ProgettoPDS_CLIENT
 
                     if( this.KeyBackgroundWorker.IsBusy )
                         this.KeyBackgroundWorker.CancelAsync();
+
+                    this.KeyQueue.Clear();
+                    this.MouseQueue.Clear();
 
                 }
                 else if ( e.Alt && e.KeyCode == Keys.PageUp ) {
@@ -623,12 +642,10 @@ namespace ProgettoPDS_CLIENT
                 }
                 else {
 
-                    if (this.KeyBackgroundWorker.IsBusy)
-                        mreKeyboard.WaitOne();
+                    this.KeyQueue.Enqueue(e);
 
-                    this.KeyBackgroundWorker.RunWorkerAsync(e);
-
-                    mreKeyboard.Reset();
+                    if (!this.KeyBackgroundWorker.IsBusy)
+                        this.KeyBackgroundWorker.RunWorkerAsync();
 
                 }
             }
@@ -636,39 +653,41 @@ namespace ProgettoPDS_CLIENT
 
         private void KeyBackgroundWorker_DoWork(object sender, DoWorkEventArgs e)
         {
-            KeyEventArgs key = (KeyEventArgs)e.Argument;
+            while (this.KeyQueue.Count != 0)
+            {
+                KeyEventArgs key = this.KeyQueue.Dequeue();
 
-            // Costruzione Pacchetto
-            string aux = "K-";
-            bool mod = true;
+                string aux = "K-";
+                bool mod = true;
 
-            if (key.Control && key.Alt && key.Shift)
-                aux += KeyboardHook.Modificatore.CAS.ToString() + "-";
-            else if (key.Control && key.Alt)
-                aux += KeyboardHook.Modificatore.CA.ToString() + "-";
-            else if (key.Control && key.Shift)
-                aux += KeyboardHook.Modificatore.CS.ToString() + "-";
-            else if (key.Alt && key.Shift )
-                aux += KeyboardHook.Modificatore.AS.ToString() + "-";
-            else if( key.Control )
-                aux += KeyboardHook.Modificatore.C.ToString() + "-";
-            else if( key.Alt )
-                aux += KeyboardHook.Modificatore.A.ToString() + "-";
-            else if (key.Shift)
-                aux += KeyboardHook.Modificatore.S.ToString() + "-";
-            else {            
-                mod = false;
-                aux += "SNGKEY-" + key.KeyValue.ToString("X") + "-";
-            }
+                if (key.Control && key.Alt && key.Shift)
+                    aux += KeyboardHook.Modificatore.CAS.ToString() + "-";
+                else if (key.Control && key.Alt)
+                    aux += KeyboardHook.Modificatore.CA.ToString() + "-";
+                else if (key.Control && key.Shift)
+                    aux += KeyboardHook.Modificatore.CS.ToString() + "-";
+                else if (key.Alt && key.Shift)
+                    aux += KeyboardHook.Modificatore.AS.ToString() + "-";
+                else if (key.Control)
+                    aux += KeyboardHook.Modificatore.C.ToString() + "-";
+                else if (key.Alt)
+                    aux += KeyboardHook.Modificatore.A.ToString() + "-";
+                else if (key.Shift)
+                    aux += KeyboardHook.Modificatore.S.ToString() + "-";
+                else
+                {
+                    mod = false;
+                    aux += "SNGKEY-" + key.KeyValue.ToString("X") + "-";
+                }
 
-            if (mod)
-                aux += key.KeyValue.ToString("X") + "-";
+                if (mod)
+                    aux += key.KeyValue.ToString("X") + "-";
 
-            byte[] pdu = Encoding.ASCII.GetBytes(aux);
+                byte[] pdu = Encoding.ASCII.GetBytes(aux);
 
-            SendPacket(pdu);
+                SendPacket(pdu);
 
-            mreKeyboard.Set();
+            } 
             
         }
 
@@ -695,50 +714,49 @@ namespace ProgettoPDS_CLIENT
         {
             if (this.mouseHook.IsStarted && this.ActionPanel.Visible) {
 
-                if( this.MouseBackgroundWorker.IsBusy)
-                    mreMouse.WaitOne();
+                if ( e.Clicks == 0 ) {
+                    if(mc.aggiornaCord(e.X, e.Y))                
+                        this.MouseQueue.Enqueue(e);
+                }
+                else
+                    this.MouseQueue.Enqueue(e);
 
-                mreMouse.Reset();
-
-                this.MouseBackgroundWorker.RunWorkerAsync(e);
+                if (!this.MouseBackgroundWorker.IsBusy)
+                    this.MouseBackgroundWorker.RunWorkerAsync();
 
             }   
         }
 
         private void MouseBackgroundWorker_DoWork(object sender, DoWorkEventArgs e)
         {
+            while (this.MouseQueue.Count != 0) 
+            {
 
-            MouseEventArgs mouse = (MouseEventArgs)e.Argument;
-           
-            // Costruzione Pacchetto
-            string aux;
+                MouseEventArgs mouse = this.MouseQueue.Dequeue();
 
-            if (mouse.Clicks == 0) {   
-                // Se le coordinate non sono state modificate esco dal BW 
-                if (!mc.aggiornaCord(mouse.X, mouse.Y))
-                    aux = "";
-                else
+                string aux;
+
+                if (mouse.Clicks == 0)                    
                     aux = "M-MOVE";
-            }
-            else if (mouse.Clicks == 1) {
-                if (mouse.Button == MouseButtons.Left)
-                    aux = "M-LCLK";
-                else if (mouse.Button == MouseButtons.Right)
-                    aux = "M-RCLK";
-                else
-                    aux = "M-MCLK";
-            }
-            else {
+                else if (mouse.Clicks == 1) {
 
-                if (mouse.Button == MouseButtons.Left)
-                    aux = "M-LDBCLK";
-                else if (mouse.Button == MouseButtons.Right)
-                    aux = "M-RDBCLK";
-                else
-                    aux = "M-MDBCLK";
-            }
+                    if (mouse.Button == MouseButtons.Left)
+                        aux = "M-LCLK";
+                    else if (mouse.Button == MouseButtons.Right)
+                        aux = "M-RCLK";
+                    else
+                        aux = "M-MCLK";
+                }
+                else {
 
-            if (aux != "") {
+                    if (mouse.Button == MouseButtons.Left)
+                        aux = "M-LDBCLK";
+                    else if (mouse.Button == MouseButtons.Right)
+                        aux = "M-RDBCLK";
+                    else
+                        aux = "M-MDBCLK";
+                }
+
                 int res = (Cursor.Position.X * 1000) / Screen.PrimaryScreen.WorkingArea.Width;
                 aux += "-" + res.ToString();
                 res = (Cursor.Position.Y * 1000) / Screen.PrimaryScreen.WorkingArea.Height;
@@ -746,9 +764,8 @@ namespace ProgettoPDS_CLIENT
                 byte[] pdu = Encoding.ASCII.GetBytes(aux);
 
                 SendPacket(pdu);
-            }
-
-            mreMouse.Set();
+                
+            } 
                                                                            
         }
 

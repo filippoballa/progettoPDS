@@ -61,8 +61,6 @@ namespace ProgettoPDS_CLIENT
                 Socket client = (Socket)ar.AsyncState;
                 client.EndConnect(ar);
                 byte[] comando = new byte[128];
-
-                MessageBox.Show(client.Available.ToString());
                 client.Receive(comando);
                 
                 string aux = Encoding.ASCII.GetString(comando);                
