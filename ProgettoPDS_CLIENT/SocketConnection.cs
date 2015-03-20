@@ -18,8 +18,6 @@ namespace ProgettoPDS_CLIENT
         private IPEndPoint remoteEP, localEP;
         private User utente;
         private int remotePort;
-        private static int localPort = 1999;
-        private bool isDisconect;
         private MainForm m;
 
         #endregion
@@ -30,22 +28,10 @@ namespace ProgettoPDS_CLIENT
         {
             this.utente = utente;
             this.m = m;
-            SocketConnection.localPort++;
             this.GetLocalIP();
             this.remoteEP = new IPEndPoint(IPAddress.Parse(addr), Convert.ToInt32(port) );
             this.remotePort = port;
-            this.isDisconect = false;
-
-            try {
-                this.sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-
-                if (this.sock != null) 
-                    this.sock.Bind(this.localEP);
-            }
-            catch (Exception ecc) {
-                MessageBox.Show(ecc.Message, "ANOMALY", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-
+            this.sock = null;
         }
 
         #endregion
@@ -56,7 +42,12 @@ namespace ProgettoPDS_CLIENT
         public void StartClientConnection() 
         {
             try {
-                this.sock.BeginConnect(this.remoteEP, new AsyncCallback(this.ConnectCallback), sock);                            
+                this.sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+
+                if (this.sock != null)
+                    this.sock.Bind(this.localEP);
+
+                this.sock.BeginConnect(this.remoteEP, new AsyncCallback(this.ConnectCallback), this.sock);                            
             }
             catch (Exception ecc) {
                 MessageBox.Show(ecc.Message, "ANOMALY", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -71,6 +62,7 @@ namespace ProgettoPDS_CLIENT
                 client.EndConnect(ar);
                 byte[] comando = new byte[128];
 
+                MessageBox.Show(client.Available.ToString());
                 client.Receive(comando);
                 
                 string aux = Encoding.ASCII.GetString(comando);                
@@ -188,7 +180,7 @@ namespace ProgettoPDS_CLIENT
             {
                 if (ip.AddressFamily == AddressFamily.InterNetwork)
                 {
-                    localEP = new IPEndPoint(ip, SocketConnection.localPort);
+                    localEP = new IPEndPoint(ip,0);
                     break;
                 }
             }
@@ -198,6 +190,9 @@ namespace ProgettoPDS_CLIENT
         // La funzione ritorna "true" se il socket è connesso
         public bool IsConnected() 
         {
+            if (this.sock == null)
+                return false;
+
             if (this.sock.Connected)
                 return true;
             else
@@ -206,20 +201,15 @@ namespace ProgettoPDS_CLIENT
 
         public void SockClose()
         {
-            this.sock.Shutdown(SocketShutdown.Both);
+            //this.sock.Shutdown(SocketShutdown.Both);
             this.sock.Close();
+            this.sock = null;
         }
 
         public Socket Sock
         {
             get { return this.sock; }
             set { this.sock = value; }
-        }
-
-        public bool IsDisconnect 
-        {
-            get { return this.isDisconect; }
-            set { this.isDisconect = value; }
         }
 
         // La funzione controlla la correttezza di un indirizzo IP e restituisce true se è corretto.

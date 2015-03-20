@@ -272,14 +272,8 @@ namespace ProgettoPDS_CLIENT
 
             this.currServ = this.listBox1.SelectedIndex;
 
-            if (!this.connessioni[this.currServ].IsConnected()) {
-
-                if (this.connessioni[this.currServ].IsDisconnect)
-                    this.connessioni[this.currServ] = new SocketConnection(servers[this.currServ].IPAddr, servers[this.currServ].Porta, this.user, this);
-
+            if (!this.connessioni[this.currServ].IsConnected())
                 this.connessioni[this.currServ].StartClientConnection();
-
-            }
             else
                 MessageBox.Show("La connessione con il server è già attiva!!", "ERRORE!!", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
@@ -302,19 +296,9 @@ namespace ProgettoPDS_CLIENT
                 return;
             }
 
-            byte[] pdu = Encoding.ASCII.GetBytes("QUIT-");
-
-            // Invio Pacchetto Chiusura Connessione
-            try {
-                mut.WaitOne();
-                this.connessioni[this.currServ].Sock.Send(pdu);
-            }
-            finally {
-                mut.ReleaseMutex();
-            }
+            QuitPacket();
 
             this.connessioni[this.currServ].SockClose();
-            this.connessioni[this.currServ].IsDisconnect = true;
             this.CountServerConnected--;
 
             if (this.CountServerConnected == 0)
@@ -358,11 +342,31 @@ namespace ProgettoPDS_CLIENT
 
         #region Other Buttons and Form's Functions
 
+        private void SendPacket(byte[] pdu)
+        {
+            // Invio Pacchetto
+            try {
+                mut.WaitOne();
+                this.connessioni[this.currServ].Sock.Send(pdu);
+            }
+            finally {
+                mut.ReleaseMutex();
+            }
+        }
+
+        private void QuitPacket() 
+        {
+            byte[] pdu = Encoding.ASCII.GetBytes("QUIT-");
+            SendPacket(pdu);
+        }
+
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             for (int i = 0; i < this.connessioni.Count; i++) {
-                if (this.connessioni[i].IsConnected())
+                if (this.connessioni[i].IsConnected()) {
+                    QuitPacket();
                     this.connessioni[i].SockClose();
+                }
             }
 
         }
@@ -600,17 +604,22 @@ namespace ProgettoPDS_CLIENT
                         MessageBox.Show("Al momento sei connesso solo con il server : " + this.servers[this.currServ].HostName,
                             "AVVISO!!", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
-                else if (e.Alt && e.KeyCode == Keys.R ) { 
+                else if (e.Alt && e.KeyCode == Keys.R ) {
 
-                    // Invio Richiesta Clipboard Server
-                    // TODO
+                    if (!this.ClipboardRequestBW.IsBusy)
+                        this.ClipboardRequestBW.RunWorkerAsync();
+                    else
+                        MessageBox.Show("E' in corso il completamento della richiesta precedente.", "AVVISO",
+                            MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 }
-                else if (e.Alt && e.KeyCode == Keys.S) { 
+                else if (e.Alt && e.KeyCode == Keys.S) {
 
-                    // Imposto la Clipboard del server con quella attuale
-                    // TODO
-
+                    if (!this.ClipboardSendBW.IsBusy)
+                        this.ClipboardSendBW.RunWorkerAsync();
+                    else
+                        MessageBox.Show("E' in corso il completamento della richiesta precedente.", "AVVISO",
+                            MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else {
 
@@ -657,14 +666,7 @@ namespace ProgettoPDS_CLIENT
 
             byte[] pdu = Encoding.ASCII.GetBytes(aux);
 
-            // Invio PDU relativa alla tastiera
-            try{
-                mut.WaitOne();
-                this.connessioni[this.currServ].Sock.Send(pdu);
-            }
-            finally {
-                mut.ReleaseMutex();
-            }
+            SendPacket(pdu);
 
             mreKeyboard.Set();
             
@@ -743,18 +745,36 @@ namespace ProgettoPDS_CLIENT
                 aux += "-" + res.ToString() + "-";
                 byte[] pdu = Encoding.ASCII.GetBytes(aux);
 
-                // Invio Pacchetto
-                try {
-                    mut.WaitOne();
-                    this.connessioni[this.currServ].Sock.Send(pdu);
-                }
-                finally{
-                    mut.ReleaseMutex();
-                }
+                SendPacket(pdu);
             }
 
             mreMouse.Set();
                                                                            
+        }
+
+        #endregion
+
+        #region Clipboard Management
+
+        private void ClipboardPacket(string eventType) 
+        {
+            string aux = "C-" + eventType + "-";
+            byte[] pdu = Encoding.ASCII.GetBytes(aux);
+            SendPacket(pdu);           
+        }
+
+        private void ClipboardSendBW_DoWork(object sender, DoWorkEventArgs e)
+        {
+            ClipboardPacket("GET_CLIP");
+            //TODO
+            //Invio dati della clipboard locale all'host remoto
+        }
+
+        private void ClipboardRequestBW_DoWork(object sender, DoWorkEventArgs e)
+        {
+            ClipboardPacket("SET_CLIP");
+            //TODO
+            //Ricezione dati provenienti dalla clipboard dell'host remoto
         }
 
         #endregion
