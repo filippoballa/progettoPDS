@@ -17,9 +17,8 @@ namespace ProgettoPDS_CLIENT
         private Socket sock;
         private IPEndPoint remoteEP, localEP;
         private User utente;
-        public const int localPort = 5000;
         private int remotePort;
-        public static bool isBindLocal = false;
+        private static int localPort = 1999;
         private bool isDisconect;
         private MainForm m;
 
@@ -31,6 +30,7 @@ namespace ProgettoPDS_CLIENT
         {
             this.utente = utente;
             this.m = m;
+            SocketConnection.localPort++;
             this.GetLocalIP();
             this.remoteEP = new IPEndPoint(IPAddress.Parse(addr), Convert.ToInt32(port) );
             this.remotePort = port;
@@ -39,8 +39,8 @@ namespace ProgettoPDS_CLIENT
             try {
                 this.sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
-                if (!SocketConnection.isBindLocal)
-                    this.BindingLocalEP();
+                if (this.sock != null) 
+                    this.sock.Bind(this.localEP);
             }
             catch (Exception ecc) {
                 MessageBox.Show(ecc.Message, "ANOMALY", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -69,9 +69,10 @@ namespace ProgettoPDS_CLIENT
           
                 Socket client = (Socket)ar.AsyncState;
                 client.EndConnect(ar);
-
                 byte[] comando = new byte[128];
+
                 client.Receive(comando);
+                
                 string aux = Encoding.ASCII.GetString(comando);                
                 aux = aux.Substring(0, aux.IndexOf('\0') );
 
@@ -159,16 +160,6 @@ namespace ProgettoPDS_CLIENT
 
         #region Other Methods and Properties
 
-        // Bind dell'endpoint locale
-        private void BindingLocalEP()
-        {
-            if (this.sock != null)
-            {
-                this.sock.Bind(this.localEP);
-                SocketConnection.isBindLocal = true;
-            }
-        }
-
         // La funzione ritorna l'indirizzo IP della macchina
         public static string MyIpInfo()
         {
@@ -197,7 +188,7 @@ namespace ProgettoPDS_CLIENT
             {
                 if (ip.AddressFamily == AddressFamily.InterNetwork)
                 {
-                    localEP = new IPEndPoint(ip, localPort);
+                    localEP = new IPEndPoint(ip, SocketConnection.localPort);
                     break;
                 }
             }
@@ -211,13 +202,6 @@ namespace ProgettoPDS_CLIENT
                 return true;
             else
                 return false;
-        }
-
-        // La funzione rilascia le risorse associate al socket
-        public void SockDisconnect() 
-        {
-            this.sock.Shutdown(SocketShutdown.Both);
-            this.sock.Disconnect(true);
         }
 
         public void SockClose()

@@ -53,7 +53,7 @@ namespace ProgettoPDS_CLIENT
             this.user = aux;
             this.CountServerConnected = 0;
             this.Text += " - USER: \"" + aux.Username + "\" - HOST : " + Dns.GetHostName() + " - IP Address : " + 
-                SocketConnection.MyIpInfo() + " - Port Number: " + SocketConnection.localPort.ToString();
+                SocketConnection.MyIpInfo();
             this.AltezzaForm = this.Height;
             this.BaseForm = this.Width;
             this.Ridimensiona();
@@ -302,9 +302,19 @@ namespace ProgettoPDS_CLIENT
                 return;
             }
 
-            this.connessioni[this.currServ].SockDisconnect();
+            byte[] pdu = Encoding.ASCII.GetBytes("QUIT-");
+
+            // Invio Pacchetto Chiusura Connessione
+            try {
+                mut.WaitOne();
+                this.connessioni[this.currServ].Sock.Send(pdu);
+            }
+            finally {
+                mut.ReleaseMutex();
+            }
+
+            this.connessioni[this.currServ].SockClose();
             this.connessioni[this.currServ].IsDisconnect = true;
-            SocketConnection.isBindLocal = false;
             this.CountServerConnected--;
 
             if (this.CountServerConnected == 0)
