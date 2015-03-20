@@ -58,9 +58,9 @@
             this.NameRegLabel = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.InfoPanel = new System.Windows.Forms.Panel();
-            this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.TitleInfoLabel = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.MainPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -72,6 +72,7 @@
             // menuStrip1
             // 
             this.menuStrip1.BackColor = System.Drawing.Color.Beige;
+            this.menuStrip1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("menuStrip1.BackgroundImage")));
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.toolStripMenuItem1});
@@ -108,7 +109,7 @@
             this.registraUtenteToolStripMenuItem.BackColor = System.Drawing.SystemColors.Info;
             this.registraUtenteToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("registraUtenteToolStripMenuItem.Image")));
             this.registraUtenteToolStripMenuItem.Name = "registraUtenteToolStripMenuItem";
-            this.registraUtenteToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
+            this.registraUtenteToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
             this.registraUtenteToolStripMenuItem.Text = "Registra Utente";
             this.registraUtenteToolStripMenuItem.Click += new System.EventHandler(this.registraUtenteToolStripMenuItem_Click);
             // 
@@ -117,7 +118,7 @@
             this.chiudiToolStripMenuItem.BackColor = System.Drawing.Color.Beige;
             this.chiudiToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("chiudiToolStripMenuItem.Image")));
             this.chiudiToolStripMenuItem.Name = "chiudiToolStripMenuItem";
-            this.chiudiToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
+            this.chiudiToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
             this.chiudiToolStripMenuItem.Text = "Chiudi";
             this.chiudiToolStripMenuItem.Click += new System.EventHandler(this.chiudiToolStripMenuItem_Click);
             // 
@@ -137,7 +138,7 @@
             this.indirizzoIPToolStripMenuItem.BackColor = System.Drawing.SystemColors.Info;
             this.indirizzoIPToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("indirizzoIPToolStripMenuItem.Image")));
             this.indirizzoIPToolStripMenuItem.Name = "indirizzoIPToolStripMenuItem";
-            this.indirizzoIPToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.indirizzoIPToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.indirizzoIPToolStripMenuItem.Text = "Indirizzo IP";
             this.indirizzoIPToolStripMenuItem.Click += new System.EventHandler(this.indirizzoIPToolStripMenuItem_Click);
             // 
@@ -146,7 +147,7 @@
             this.informazioniToolStripMenuItem.BackColor = System.Drawing.SystemColors.Info;
             this.informazioniToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("informazioniToolStripMenuItem.Image")));
             this.informazioniToolStripMenuItem.Name = "informazioniToolStripMenuItem";
-            this.informazioniToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.informazioniToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.informazioniToolStripMenuItem.Text = "Informazioni";
             this.informazioniToolStripMenuItem.Click += new System.EventHandler(this.informazioniToolStripMenuItem_Click);
             // 
@@ -410,19 +411,6 @@
             this.InfoPanel.TabIndex = 20;
             this.InfoPanel.Visible = false;
             // 
-            // label4
-            // 
-            this.label4.BackColor = System.Drawing.Color.Transparent;
-            this.label4.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.label4.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.label4.Location = new System.Drawing.Point(23, 53);
-            this.label4.Name = "label4";
-            this.label4.Padding = new System.Windows.Forms.Padding(2);
-            this.label4.Size = new System.Drawing.Size(588, 245);
-            this.label4.TabIndex = 11;
-            this.label4.Text = resources.GetString("label4.Text");
-            // 
             // label3
             // 
             this.label3.AutoSize = true;
@@ -446,6 +434,19 @@
             this.TitleInfoLabel.Size = new System.Drawing.Size(297, 23);
             this.TitleInfoLabel.TabIndex = 1;
             this.TitleInfoLabel.Text = "Informazioni sulla schermata di Login";
+            // 
+            // label4
+            // 
+            this.label4.BackColor = System.Drawing.Color.Transparent;
+            this.label4.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.label4.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.label4.Location = new System.Drawing.Point(23, 53);
+            this.label4.Name = "label4";
+            this.label4.Padding = new System.Windows.Forms.Padding(2);
+            this.label4.Size = new System.Drawing.Size(588, 245);
+            this.label4.TabIndex = 11;
+            this.label4.Text = resources.GetString("label4.Text");
             // 
             // LoginForm
             // 

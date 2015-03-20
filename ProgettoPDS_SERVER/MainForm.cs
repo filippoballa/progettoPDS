@@ -19,7 +19,7 @@ namespace ProgettoPDS_SERVER
         //attributi
 
         static bool work = true;
-        private const int minheight = 160;
+        private const int minheight = 165;
         private const int maxheight = 250;
         private SocketConnection Sconnection = null;
         private static int port = 2000;

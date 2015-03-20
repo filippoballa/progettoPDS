@@ -23,3 +23,4 @@ C:\Users\filippo\Documents\GitHub\progettoPDS - Copia\ProgettoPDS_SERVER\obj\Rel
 C:\Users\filippo\Documents\GitHub\progettoPDS\ProgettoPDS_SERVER\bin\Release\XMLClients.xml
 C:\Users\filippo\Documents\GitHub\progettoPDS\ProgettoPDS_SERVER\obj\Release\ProgettoPDS_SERVER.csprojResolveAssemblyReference.cache
 C:\Users\filippo\Documents\GitHub\progettoPDS\ProgettoPDS_SERVER\bin\Release\XMLUsers.xml
+C:\Users\Filippo\Documents\GitHub\progettoPDS\ProgettoPDS_SERVER\obj\Release\ProgettoPDS_SERVER.PopUpWindow.resources
