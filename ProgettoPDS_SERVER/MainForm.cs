@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -463,24 +464,54 @@ namespace ProgettoPDS_SERVER
         private void infoDatiToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // Retrieves the data from the clipboard.
+            richTextBoxCB.Visible = false;
+            pictureBoxCB.Visible = false;
+            buttonPlayAudio.Visible = false;
+            buttonStopAudio.Visible = false;
+
             IDataObject d = System.Windows.Forms.Clipboard.GetDataObject();
             if(d != null)
             {
                 if(Clipboard.ContainsAudio())
                 {
+                    buttonPlayAudio.Visible = true;
+                    buttonStopAudio.Visible = true;
                     labelTipoCB.Text = ApplicationConstants.StatoClipBoard.AUDIO.ToString();
+                    System.IO.Stream aus = Clipboard.GetAudioStream();
+
+                    System.Media.SoundPlayer player = new System.Media.SoundPlayer(aus);
+                    player.Play();
                 }
                 else if(Clipboard.ContainsImage())
                 {
+                    pictureBoxCB.Visible = true;
                     labelTipoCB.Text = ApplicationConstants.StatoClipBoard.IMMAGINE.ToString();
+
+                    Image i = Clipboard.GetImage();
+                    //PropertyItem[] p = i.PropertyItems;
+
+                    Image.GetThumbnailImageAbort myCallback = new Image.GetThumbnailImageAbort(ThumbnailCallback);
+
+                    pictureBoxCB.Image = i;//i.GetThumbnailImage(pictureBoxCB.Image.Width, pictureBoxCB.Image.Height, myCallback, IntPtr.Zero);
                 }
                 else if(Clipboard.ContainsText())
                 {
+                    richTextBoxCB.Visible = true;
                     labelTipoCB.Text = ApplicationConstants.StatoClipBoard.TEXT.ToString();
+                    string text = Clipboard.GetText();
+
+                    richTextBoxCB.Text = text;
                 }
                 else if(Clipboard.ContainsFileDropList())
                 {
+                    richTextBoxCB.Visible = true;
                     labelTipoCB.Text = ApplicationConstants.StatoClipBoard.FILE_DROP.ToString();
+
+                    System.Collections.Specialized.StringCollection s = Clipboard.GetFileDropList();
+
+                    richTextBoxCB.Text ="";
+                    for (int i = 0; i < s.Count; i++ )
+                        richTextBoxCB.Text += s[i]+Environment.NewLine;
                 }
                 else
                 {
@@ -489,11 +520,19 @@ namespace ProgettoPDS_SERVER
             }
             else
             {
-                //clipboard null
+                //clipboard data object null
             }
-            panelInfoCB.Visible = true;
-        }
 
+            if (!panelInfoCB.Visible)
+            {
+                groupBoxInfo.Width -= panelInfoCB.Width;
+                panelInfoCB.Visible = true;
+            }
+        }
+        public bool ThumbnailCallback()
+        {
+            return false;
+        }
         private void pulisciToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Clipboard.Clear();
@@ -502,6 +541,7 @@ namespace ProgettoPDS_SERVER
 
         private void buttonClosePanelInfoCB_Click(object sender, EventArgs e)
         {
+            groupBoxInfo.Width += panelInfoCB.Width;
             panelInfoCB.Visible = false;
         }
     }

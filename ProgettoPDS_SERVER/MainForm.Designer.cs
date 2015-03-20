@@ -70,6 +70,10 @@
             this.labelTipoCB = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.buttonClosePanelInfoCB = new System.Windows.Forms.Button();
+            this.richTextBoxCB = new System.Windows.Forms.RichTextBox();
+            this.pictureBoxCB = new System.Windows.Forms.PictureBox();
+            this.buttonPlayAudio = new System.Windows.Forms.Button();
+            this.buttonStopAudio = new System.Windows.Forms.Button();
             this.contextMenuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownPort)).BeginInit();
             this.menuStrip1.SuspendLayout();
@@ -77,6 +81,7 @@
             this.panelChangePassword.SuspendLayout();
             this.groupBoxInfo.SuspendLayout();
             this.panelInfoCB.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxCB)).BeginInit();
             this.SuspendLayout();
             // 
             // notifyIcon1
@@ -300,7 +305,7 @@
             // 
             this.infoDatiToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("infoDatiToolStripMenuItem.Image")));
             this.infoDatiToolStripMenuItem.Name = "infoDatiToolStripMenuItem";
-            this.infoDatiToolStripMenuItem.Size = new System.Drawing.Size(125, 22);
+            this.infoDatiToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.infoDatiToolStripMenuItem.Text = "Info Dati";
             this.infoDatiToolStripMenuItem.Click += new System.EventHandler(this.infoDatiToolStripMenuItem_Click);
             // 
@@ -308,7 +313,7 @@
             // 
             this.pulisciToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("pulisciToolStripMenuItem.Image")));
             this.pulisciToolStripMenuItem.Name = "pulisciToolStripMenuItem";
-            this.pulisciToolStripMenuItem.Size = new System.Drawing.Size(125, 22);
+            this.pulisciToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.pulisciToolStripMenuItem.Text = "Pulisci";
             this.pulisciToolStripMenuItem.Click += new System.EventHandler(this.pulisciToolStripMenuItem_Click);
             // 
@@ -482,13 +487,17 @@
             // panelInfoCB
             // 
             this.panelInfoCB.BackColor = System.Drawing.Color.Beige;
+            this.panelInfoCB.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panelInfoCB.Controls.Add(this.buttonStopAudio);
+            this.panelInfoCB.Controls.Add(this.buttonPlayAudio);
+            this.panelInfoCB.Controls.Add(this.pictureBoxCB);
+            this.panelInfoCB.Controls.Add(this.richTextBoxCB);
             this.panelInfoCB.Controls.Add(this.labelTipoCB);
             this.panelInfoCB.Controls.Add(this.label6);
             this.panelInfoCB.Controls.Add(this.buttonClosePanelInfoCB);
-            this.panelInfoCB.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panelInfoCB.Location = new System.Drawing.Point(254, 25);
+            this.panelInfoCB.Location = new System.Drawing.Point(251, 25);
             this.panelInfoCB.Name = "panelInfoCB";
-            this.panelInfoCB.Size = new System.Drawing.Size(130, 12);
+            this.panelInfoCB.Size = new System.Drawing.Size(130, 96);
             this.panelInfoCB.TabIndex = 20;
             this.panelInfoCB.Visible = false;
             // 
@@ -515,13 +524,58 @@
             this.buttonClosePanelInfoCB.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonClosePanelInfoCB.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("buttonClosePanelInfoCB.BackgroundImage")));
             this.buttonClosePanelInfoCB.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.buttonClosePanelInfoCB.Location = new System.Drawing.Point(103, 3);
+            this.buttonClosePanelInfoCB.Location = new System.Drawing.Point(101, 3);
             this.buttonClosePanelInfoCB.Name = "buttonClosePanelInfoCB";
             this.buttonClosePanelInfoCB.Padding = new System.Windows.Forms.Padding(5);
             this.buttonClosePanelInfoCB.Size = new System.Drawing.Size(24, 23);
             this.buttonClosePanelInfoCB.TabIndex = 5;
             this.buttonClosePanelInfoCB.UseVisualStyleBackColor = true;
             this.buttonClosePanelInfoCB.Click += new System.EventHandler(this.buttonClosePanelInfoCB_Click);
+            // 
+            // richTextBoxCB
+            // 
+            this.richTextBoxCB.Location = new System.Drawing.Point(-1, 32);
+            this.richTextBoxCB.Name = "richTextBoxCB";
+            this.richTextBoxCB.ReadOnly = true;
+            this.richTextBoxCB.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
+            this.richTextBoxCB.Size = new System.Drawing.Size(130, 62);
+            this.richTextBoxCB.TabIndex = 8;
+            this.richTextBoxCB.Text = "";
+            this.richTextBoxCB.Visible = false;
+            // 
+            // pictureBoxCB
+            // 
+            this.pictureBoxCB.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.pictureBoxCB.Image = ((System.Drawing.Image)(resources.GetObject("pictureBoxCB.Image")));
+            this.pictureBoxCB.Location = new System.Drawing.Point(-1, 32);
+            this.pictureBoxCB.Name = "pictureBoxCB";
+            this.pictureBoxCB.Size = new System.Drawing.Size(130, 63);
+            this.pictureBoxCB.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBoxCB.TabIndex = 9;
+            this.pictureBoxCB.TabStop = false;
+            this.pictureBoxCB.Visible = false;
+            // 
+            // buttonPlayAudio
+            // 
+            this.buttonPlayAudio.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("buttonPlayAudio.BackgroundImage")));
+            this.buttonPlayAudio.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.buttonPlayAudio.Location = new System.Drawing.Point(73, 46);
+            this.buttonPlayAudio.Name = "buttonPlayAudio";
+            this.buttonPlayAudio.Size = new System.Drawing.Size(30, 30);
+            this.buttonPlayAudio.TabIndex = 10;
+            this.buttonPlayAudio.UseVisualStyleBackColor = true;
+            this.buttonPlayAudio.Visible = false;
+            // 
+            // buttonStopAudio
+            // 
+            this.buttonStopAudio.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("buttonStopAudio.BackgroundImage")));
+            this.buttonStopAudio.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.buttonStopAudio.Location = new System.Drawing.Point(28, 46);
+            this.buttonStopAudio.Name = "buttonStopAudio";
+            this.buttonStopAudio.Size = new System.Drawing.Size(30, 30);
+            this.buttonStopAudio.TabIndex = 11;
+            this.buttonStopAudio.UseVisualStyleBackColor = true;
+            this.buttonStopAudio.Visible = false;
             // 
             // MainForm
             // 
@@ -532,9 +586,9 @@
             this.ClientSize = new System.Drawing.Size(384, 211);
             this.Controls.Add(this.panelInfoCB);
             this.Controls.Add(this.menuStrip1);
+            this.Controls.Add(this.groupBoxInfo);
             this.Controls.Add(this.panelChangePassword);
             this.Controls.Add(this.PanelSetPort);
-            this.Controls.Add(this.groupBoxInfo);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
@@ -558,6 +612,7 @@
             this.groupBoxInfo.PerformLayout();
             this.panelInfoCB.ResumeLayout(false);
             this.panelInfoCB.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxCB)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -605,5 +660,9 @@
         private System.Windows.Forms.Button buttonClosePanelInfoCB;
         private System.Windows.Forms.Label labelTipoCB;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.RichTextBox richTextBoxCB;
+        private System.Windows.Forms.PictureBox pictureBoxCB;
+        private System.Windows.Forms.Button buttonStopAudio;
+        private System.Windows.Forms.Button buttonPlayAudio;
     }
 }
