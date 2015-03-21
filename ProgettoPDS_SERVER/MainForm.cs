@@ -12,6 +12,7 @@ using System.Windows;
 using System.Globalization;
 using System.Threading;
 using System.Security.Cryptography;
+using System.IO;
 
 namespace ProgettoPDS_SERVER
 {
@@ -29,6 +30,7 @@ namespace ProgettoPDS_SERVER
         public int ToolTipTimeOut { get { return toolTipTimeOut; } }
         private User u = null;
         private const int passwordlenght = 8;
+        static System.Media.SoundPlayer player;
 
         //delegate per le modifiche allo stato nel form da parte di altri thread
         public delegate void LabelStatoChanged(ApplicationConstants.Stato stato, string client);
@@ -477,10 +479,6 @@ namespace ProgettoPDS_SERVER
                     buttonPlayAudio.Visible = true;
                     buttonStopAudio.Visible = true;
                     labelTipoCB.Text = ApplicationConstants.StatoClipBoard.AUDIO.ToString();
-                    System.IO.Stream aus = Clipboard.GetAudioStream();
-
-                    System.Media.SoundPlayer player = new System.Media.SoundPlayer(aus);
-                    player.Play();
                 }
                 else if(Clipboard.ContainsImage())
                 {
@@ -510,8 +508,15 @@ namespace ProgettoPDS_SERVER
                     System.Collections.Specialized.StringCollection s = Clipboard.GetFileDropList();
 
                     richTextBoxCB.Text ="";
-                    for (int i = 0; i < s.Count; i++ )
-                        richTextBoxCB.Text += s[i]+Environment.NewLine;
+                    for (int i = 0; i < s.Count; i++)
+                    {
+                        richTextBoxCB.Text += s[i] + Environment.NewLine;
+                        if(s[i]==@"C:\Users\Filippo\Desktop\prova.wma")
+                        {
+                            byte[] f = File.ReadAllBytes(s[i]);       
+                            Clipboard.SetAudio(f);
+                        }
+                    }
                 }
                 else
                 {
@@ -543,6 +548,33 @@ namespace ProgettoPDS_SERVER
         {
             groupBoxInfo.Width += panelInfoCB.Width;
             panelInfoCB.Visible = false;
+        }
+
+        private void buttonPlayAudio_Click(object sender, EventArgs e)
+        {
+             System.IO.Stream aus = Clipboard.GetAudioStream();
+
+                    player = new System.Media.SoundPlayer(aus);
+                    try
+                    {
+                           player.Play();
+                    }
+                    catch(Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+        }
+
+        private void buttonStopAudio_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                player.Stop();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }

@@ -202,5 +202,29 @@ namespace ProgettoPDS_SERVER
             return false;
         }
 
+        public void RemoveUsers(User u) 
+        {
+            XmlDocument documentOne = new XmlDocument();
+            documentOne.Load(this.FileName);
+            XmlNodeList xmlnodes = documentOne.GetElementsByTagName("MYUSER");
+            bool res1, res2;
+
+            for (int i = 0; i < xmlnodes.Count; i++) {
+                res1 = (xmlnodes[i].ChildNodes.Item(0).InnerText == u.Username);
+                res2 = (xmlnodes[i].ChildNodes.Item(1).InnerText == u.Password);
+
+                if ( res1 && res2 ) {
+                    
+                    XmlNode a1 = xmlnodes[i].ParentNode;
+                    xmlnodes[i].RemoveAll();
+                    a1.RemoveChild(xmlnodes[i]);
+                    documentOne.Save(this.FileName);
+                    documentOne.Save("..\\..\\" + this.FileName);
+                    break;
+                }
+            } 
+
+        }
+
     }
 }

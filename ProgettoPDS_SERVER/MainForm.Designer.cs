@@ -67,13 +67,13 @@
             this.textBoxVpassword = new System.Windows.Forms.TextBox();
             this.groupBoxInfo = new System.Windows.Forms.GroupBox();
             this.panelInfoCB = new System.Windows.Forms.Panel();
+            this.buttonStopAudio = new System.Windows.Forms.Button();
+            this.buttonPlayAudio = new System.Windows.Forms.Button();
+            this.pictureBoxCB = new System.Windows.Forms.PictureBox();
+            this.richTextBoxCB = new System.Windows.Forms.RichTextBox();
             this.labelTipoCB = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.buttonClosePanelInfoCB = new System.Windows.Forms.Button();
-            this.richTextBoxCB = new System.Windows.Forms.RichTextBox();
-            this.pictureBoxCB = new System.Windows.Forms.PictureBox();
-            this.buttonPlayAudio = new System.Windows.Forms.Button();
-            this.buttonStopAudio = new System.Windows.Forms.Button();
             this.contextMenuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownPort)).BeginInit();
             this.menuStrip1.SuspendLayout();
@@ -98,6 +98,7 @@
             // contextMenuStrip
             // 
             this.contextMenuStrip.BackColor = System.Drawing.SystemColors.Control;
+            this.contextMenuStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.contextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItemOpenConsole,
             this.toolStripMenuItemConnetti,
@@ -105,13 +106,13 @@
             this.toolStripMenuItemCloseForm,
             this.toolStripMenuItemCloseMenu});
             this.contextMenuStrip.Name = "contextMenuStrip";
-            this.contextMenuStrip.Size = new System.Drawing.Size(181, 114);
+            this.contextMenuStrip.Size = new System.Drawing.Size(185, 134);
             // 
             // toolStripMenuItemOpenConsole
             // 
             this.toolStripMenuItemOpenConsole.Image = ((System.Drawing.Image)(resources.GetObject("toolStripMenuItemOpenConsole.Image")));
             this.toolStripMenuItemOpenConsole.Name = "toolStripMenuItemOpenConsole";
-            this.toolStripMenuItemOpenConsole.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItemOpenConsole.Size = new System.Drawing.Size(184, 26);
             this.toolStripMenuItemOpenConsole.Text = "Console";
             this.toolStripMenuItemOpenConsole.Click += new System.EventHandler(this.MainFormShow);
             // 
@@ -119,7 +120,7 @@
             // 
             this.toolStripMenuItemConnetti.Image = ((System.Drawing.Image)(resources.GetObject("toolStripMenuItemConnetti.Image")));
             this.toolStripMenuItemConnetti.Name = "toolStripMenuItemConnetti";
-            this.toolStripMenuItemConnetti.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItemConnetti.Size = new System.Drawing.Size(184, 26);
             this.toolStripMenuItemConnetti.Text = "Connetti";
             this.toolStripMenuItemConnetti.Click += new System.EventHandler(this.button_connect_Click);
             // 
@@ -127,7 +128,7 @@
             // 
             this.toolStripMenuItemDisconnetti.Image = ((System.Drawing.Image)(resources.GetObject("toolStripMenuItemDisconnetti.Image")));
             this.toolStripMenuItemDisconnetti.Name = "toolStripMenuItemDisconnetti";
-            this.toolStripMenuItemDisconnetti.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItemDisconnetti.Size = new System.Drawing.Size(184, 26);
             this.toolStripMenuItemDisconnetti.Text = "Disconnetti";
             this.toolStripMenuItemDisconnetti.Click += new System.EventHandler(this.buttonDisconnect_Click);
             // 
@@ -135,7 +136,7 @@
             // 
             this.toolStripMenuItemCloseForm.Image = ((System.Drawing.Image)(resources.GetObject("toolStripMenuItemCloseForm.Image")));
             this.toolStripMenuItemCloseForm.Name = "toolStripMenuItemCloseForm";
-            this.toolStripMenuItemCloseForm.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItemCloseForm.Size = new System.Drawing.Size(184, 26);
             this.toolStripMenuItemCloseForm.Text = "Chiudi Menù";
             this.toolStripMenuItemCloseForm.Click += new System.EventHandler(this.MenuClose);
             // 
@@ -143,7 +144,7 @@
             // 
             this.toolStripMenuItemCloseMenu.Image = ((System.Drawing.Image)(resources.GetObject("toolStripMenuItemCloseMenu.Image")));
             this.toolStripMenuItemCloseMenu.Name = "toolStripMenuItemCloseMenu";
-            this.toolStripMenuItemCloseMenu.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItemCloseMenu.Size = new System.Drawing.Size(184, 26);
             this.toolStripMenuItemCloseMenu.Text = "Chiudi Applicazione";
             this.toolStripMenuItemCloseMenu.Click += new System.EventHandler(this.MainFormClose);
             // 
@@ -248,6 +249,7 @@
             this.menuStrip1.BackColor = System.Drawing.SystemColors.Control;
             this.menuStrip1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("menuStrip1.BackgroundImage")));
             this.menuStrip1.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItemConnessione,
             this.clipboardToolStripMenuItem,
@@ -271,24 +273,28 @@
             // 
             // connettiToolStripMenuItem
             // 
+            this.connettiToolStripMenuItem.BackColor = System.Drawing.Color.Beige;
             this.connettiToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("connettiToolStripMenuItem.Image")));
             this.connettiToolStripMenuItem.Name = "connettiToolStripMenuItem";
-            this.connettiToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
+            this.connettiToolStripMenuItem.Size = new System.Drawing.Size(162, 26);
             this.connettiToolStripMenuItem.Text = "Connetti";
             this.connettiToolStripMenuItem.Click += new System.EventHandler(this.button_connect_Click);
             // 
             // disconnettiToolStripMenuItem
             // 
+            this.disconnettiToolStripMenuItem.BackColor = System.Drawing.Color.Beige;
             this.disconnettiToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("disconnettiToolStripMenuItem.Image")));
             this.disconnettiToolStripMenuItem.Name = "disconnettiToolStripMenuItem";
-            this.disconnettiToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
+            this.disconnettiToolStripMenuItem.Size = new System.Drawing.Size(162, 26);
             this.disconnettiToolStripMenuItem.Text = "Disconnetti";
             this.disconnettiToolStripMenuItem.Click += new System.EventHandler(this.buttonDisconnect_Click);
             // 
             // impostaPortaToolStripMenuItem
             // 
+            this.impostaPortaToolStripMenuItem.BackColor = System.Drawing.Color.Beige;
+            this.impostaPortaToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("impostaPortaToolStripMenuItem.Image")));
             this.impostaPortaToolStripMenuItem.Name = "impostaPortaToolStripMenuItem";
-            this.impostaPortaToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
+            this.impostaPortaToolStripMenuItem.Size = new System.Drawing.Size(162, 26);
             this.impostaPortaToolStripMenuItem.Text = "Imposta Porta";
             this.impostaPortaToolStripMenuItem.Click += new System.EventHandler(this.impostaPortaToolStripMenuItem_Click);
             // 
@@ -303,17 +309,19 @@
             // 
             // infoDatiToolStripMenuItem
             // 
+            this.infoDatiToolStripMenuItem.BackColor = System.Drawing.Color.Beige;
             this.infoDatiToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("infoDatiToolStripMenuItem.Image")));
             this.infoDatiToolStripMenuItem.Name = "infoDatiToolStripMenuItem";
-            this.infoDatiToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.infoDatiToolStripMenuItem.Size = new System.Drawing.Size(156, 26);
             this.infoDatiToolStripMenuItem.Text = "Info Dati";
             this.infoDatiToolStripMenuItem.Click += new System.EventHandler(this.infoDatiToolStripMenuItem_Click);
             // 
             // pulisciToolStripMenuItem
             // 
+            this.pulisciToolStripMenuItem.BackColor = System.Drawing.Color.Beige;
             this.pulisciToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("pulisciToolStripMenuItem.Image")));
             this.pulisciToolStripMenuItem.Name = "pulisciToolStripMenuItem";
-            this.pulisciToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.pulisciToolStripMenuItem.Size = new System.Drawing.Size(156, 26);
             this.pulisciToolStripMenuItem.Text = "Pulisci";
             this.pulisciToolStripMenuItem.Click += new System.EventHandler(this.pulisciToolStripMenuItem_Click);
             // 
@@ -501,6 +509,55 @@
             this.panelInfoCB.TabIndex = 20;
             this.panelInfoCB.Visible = false;
             // 
+            // buttonStopAudio
+            // 
+            this.buttonStopAudio.BackColor = System.Drawing.Color.Transparent;
+            this.buttonStopAudio.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("buttonStopAudio.BackgroundImage")));
+            this.buttonStopAudio.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.buttonStopAudio.Location = new System.Drawing.Point(28, 46);
+            this.buttonStopAudio.Name = "buttonStopAudio";
+            this.buttonStopAudio.Size = new System.Drawing.Size(30, 30);
+            this.buttonStopAudio.TabIndex = 11;
+            this.buttonStopAudio.UseVisualStyleBackColor = false;
+            this.buttonStopAudio.Visible = false;
+            this.buttonStopAudio.Click += new System.EventHandler(this.buttonStopAudio_Click);
+            // 
+            // buttonPlayAudio
+            // 
+            this.buttonPlayAudio.BackColor = System.Drawing.Color.Transparent;
+            this.buttonPlayAudio.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("buttonPlayAudio.BackgroundImage")));
+            this.buttonPlayAudio.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.buttonPlayAudio.Location = new System.Drawing.Point(73, 46);
+            this.buttonPlayAudio.Name = "buttonPlayAudio";
+            this.buttonPlayAudio.Size = new System.Drawing.Size(30, 30);
+            this.buttonPlayAudio.TabIndex = 10;
+            this.buttonPlayAudio.UseVisualStyleBackColor = false;
+            this.buttonPlayAudio.Visible = false;
+            this.buttonPlayAudio.Click += new System.EventHandler(this.buttonPlayAudio_Click);
+            // 
+            // pictureBoxCB
+            // 
+            this.pictureBoxCB.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.pictureBoxCB.Image = ((System.Drawing.Image)(resources.GetObject("pictureBoxCB.Image")));
+            this.pictureBoxCB.Location = new System.Drawing.Point(-1, 32);
+            this.pictureBoxCB.Name = "pictureBoxCB";
+            this.pictureBoxCB.Size = new System.Drawing.Size(130, 63);
+            this.pictureBoxCB.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBoxCB.TabIndex = 9;
+            this.pictureBoxCB.TabStop = false;
+            this.pictureBoxCB.Visible = false;
+            // 
+            // richTextBoxCB
+            // 
+            this.richTextBoxCB.Location = new System.Drawing.Point(-1, 32);
+            this.richTextBoxCB.Name = "richTextBoxCB";
+            this.richTextBoxCB.ReadOnly = true;
+            this.richTextBoxCB.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
+            this.richTextBoxCB.Size = new System.Drawing.Size(130, 62);
+            this.richTextBoxCB.TabIndex = 8;
+            this.richTextBoxCB.Text = "";
+            this.richTextBoxCB.Visible = false;
+            // 
             // labelTipoCB
             // 
             this.labelTipoCB.AutoSize = true;
@@ -531,51 +588,6 @@
             this.buttonClosePanelInfoCB.TabIndex = 5;
             this.buttonClosePanelInfoCB.UseVisualStyleBackColor = true;
             this.buttonClosePanelInfoCB.Click += new System.EventHandler(this.buttonClosePanelInfoCB_Click);
-            // 
-            // richTextBoxCB
-            // 
-            this.richTextBoxCB.Location = new System.Drawing.Point(-1, 32);
-            this.richTextBoxCB.Name = "richTextBoxCB";
-            this.richTextBoxCB.ReadOnly = true;
-            this.richTextBoxCB.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this.richTextBoxCB.Size = new System.Drawing.Size(130, 62);
-            this.richTextBoxCB.TabIndex = 8;
-            this.richTextBoxCB.Text = "";
-            this.richTextBoxCB.Visible = false;
-            // 
-            // pictureBoxCB
-            // 
-            this.pictureBoxCB.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pictureBoxCB.Image = ((System.Drawing.Image)(resources.GetObject("pictureBoxCB.Image")));
-            this.pictureBoxCB.Location = new System.Drawing.Point(-1, 32);
-            this.pictureBoxCB.Name = "pictureBoxCB";
-            this.pictureBoxCB.Size = new System.Drawing.Size(130, 63);
-            this.pictureBoxCB.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBoxCB.TabIndex = 9;
-            this.pictureBoxCB.TabStop = false;
-            this.pictureBoxCB.Visible = false;
-            // 
-            // buttonPlayAudio
-            // 
-            this.buttonPlayAudio.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("buttonPlayAudio.BackgroundImage")));
-            this.buttonPlayAudio.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.buttonPlayAudio.Location = new System.Drawing.Point(73, 46);
-            this.buttonPlayAudio.Name = "buttonPlayAudio";
-            this.buttonPlayAudio.Size = new System.Drawing.Size(30, 30);
-            this.buttonPlayAudio.TabIndex = 10;
-            this.buttonPlayAudio.UseVisualStyleBackColor = true;
-            this.buttonPlayAudio.Visible = false;
-            // 
-            // buttonStopAudio
-            // 
-            this.buttonStopAudio.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("buttonStopAudio.BackgroundImage")));
-            this.buttonStopAudio.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.buttonStopAudio.Location = new System.Drawing.Point(28, 46);
-            this.buttonStopAudio.Name = "buttonStopAudio";
-            this.buttonStopAudio.Size = new System.Drawing.Size(30, 30);
-            this.buttonStopAudio.TabIndex = 11;
-            this.buttonStopAudio.UseVisualStyleBackColor = true;
-            this.buttonStopAudio.Visible = false;
             // 
             // MainForm
             // 

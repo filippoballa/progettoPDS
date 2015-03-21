@@ -54,6 +54,7 @@
             this.loginPageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.registraToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cambiaPasswordToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.rimuoviAccountToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.chiudiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.indirizzoIPToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -74,7 +75,6 @@
             this.ChangeOldPwdTextBox = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.rimuoviAccountToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.RemovePanel = new System.Windows.Forms.Panel();
             this.RemovePwdTextBox = new System.Windows.Forms.TextBox();
             this.RemoveUserTextBox = new System.Windows.Forms.TextBox();
@@ -103,9 +103,9 @@
             this.RegistraPanel.Controls.Add(this.label2);
             this.RegistraPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.RegistraPanel.Font = new System.Drawing.Font("Comic Sans MS", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.RegistraPanel.Location = new System.Drawing.Point(0, 24);
+            this.RegistraPanel.Location = new System.Drawing.Point(0, 0);
             this.RegistraPanel.Name = "RegistraPanel";
-            this.RegistraPanel.Size = new System.Drawing.Size(622, 315);
+            this.RegistraPanel.Size = new System.Drawing.Size(622, 339);
             this.RegistraPanel.TabIndex = 8;
             this.RegistraPanel.Visible = false;
             // 
@@ -249,9 +249,9 @@
             this.MainPanel.Controls.Add(this.NotaLabel);
             this.MainPanel.Controls.Add(this.pictureBox1);
             this.MainPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.MainPanel.Location = new System.Drawing.Point(0, 24);
+            this.MainPanel.Location = new System.Drawing.Point(0, 0);
             this.MainPanel.Name = "MainPanel";
-            this.MainPanel.Size = new System.Drawing.Size(622, 315);
+            this.MainPanel.Size = new System.Drawing.Size(622, 339);
             this.MainPanel.TabIndex = 2;
             // 
             // UsernameLabel
@@ -401,6 +401,16 @@
             this.cambiaPasswordToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.cambiaPasswordToolStripMenuItem.Text = "Cambia Password";
             this.cambiaPasswordToolStripMenuItem.Click += new System.EventHandler(this.cambiaPasswordToolStripMenuItem_Click);
+            // 
+            // rimuoviAccountToolStripMenuItem
+            // 
+            this.rimuoviAccountToolStripMenuItem.BackColor = System.Drawing.SystemColors.WindowFrame;
+            this.rimuoviAccountToolStripMenuItem.ForeColor = System.Drawing.Color.White;
+            this.rimuoviAccountToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("rimuoviAccountToolStripMenuItem.Image")));
+            this.rimuoviAccountToolStripMenuItem.Name = "rimuoviAccountToolStripMenuItem";
+            this.rimuoviAccountToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
+            this.rimuoviAccountToolStripMenuItem.Text = "Rimuovi Account";
+            this.rimuoviAccountToolStripMenuItem.Click += new System.EventHandler(this.rimuoviAccountToolStripMenuItem_Click);
             // 
             // chiudiToolStripMenuItem
             // 
@@ -656,16 +666,6 @@
             this.label1.TabIndex = 1;
             this.label1.Text = "MODIFICA LA TUA PASSWORD";
             // 
-            // rimuoviAccountToolStripMenuItem
-            // 
-            this.rimuoviAccountToolStripMenuItem.BackColor = System.Drawing.SystemColors.WindowFrame;
-            this.rimuoviAccountToolStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.rimuoviAccountToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("rimuoviAccountToolStripMenuItem.Image")));
-            this.rimuoviAccountToolStripMenuItem.Name = "rimuoviAccountToolStripMenuItem";
-            this.rimuoviAccountToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
-            this.rimuoviAccountToolStripMenuItem.Text = "Rimuovi Account";
-            this.rimuoviAccountToolStripMenuItem.Click += new System.EventHandler(this.rimuoviAccountToolStripMenuItem_Click);
-            // 
             // RemovePanel
             // 
             this.RemovePanel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("RemovePanel.BackgroundImage")));
@@ -677,9 +677,9 @@
             this.RemovePanel.Controls.Add(this.RemoveTitleLabel);
             this.RemovePanel.Controls.Add(this.RemoveButton);
             this.RemovePanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.RemovePanel.Location = new System.Drawing.Point(0, 24);
+            this.RemovePanel.Location = new System.Drawing.Point(0, 0);
             this.RemovePanel.Name = "RemovePanel";
-            this.RemovePanel.Size = new System.Drawing.Size(622, 315);
+            this.RemovePanel.Size = new System.Drawing.Size(622, 339);
             this.RemovePanel.TabIndex = 19;
             this.RemovePanel.Visible = false;
             // 
@@ -776,12 +776,12 @@
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(622, 339);
-            this.Controls.Add(this.MainPanel);
-            this.Controls.Add(this.RemovePanel);
-            this.Controls.Add(this.RegistraPanel);
             this.Controls.Add(this.ChangePasswordPanel);
             this.Controls.Add(this.InfoPanel);
             this.Controls.Add(this.menuStrip1);
+            this.Controls.Add(this.MainPanel);
+            this.Controls.Add(this.RemovePanel);
+            this.Controls.Add(this.RegistraPanel);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));

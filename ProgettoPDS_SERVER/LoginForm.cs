@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.Security.Cryptography;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading;
 
 namespace ProgettoPDS_SERVER
 {   
@@ -92,11 +93,12 @@ namespace ProgettoPDS_SERVER
         {
             this.SuspendLayout();
             this.InfoPanel.Visible = false;
-            //this.ChangePasswordPanel.Visible = false;
+            this.RemovePanel.Visible = false;
             this.RegistraPanel.Visible = false;
             this.MainPanel.Visible = true;
             this.ResumeLayout();
             this.UsernameTextBox.Focus();
+            this.NotaLabel.Visible = true;
         }
 
         private void registraUtenteToolStripMenuItem_Click(object sender, EventArgs e)
@@ -104,7 +106,7 @@ namespace ProgettoPDS_SERVER
             this.SuspendLayout();
             this.InfoPanel.Visible = false;
             this.MainPanel.Visible = false;
-            //this.ChangePasswordPanel.Visible = false;
+            this.RemovePanel.Visible = false;
             this.RegistraPanel.Visible = true;
             this.ResumeLayout();
             this.NameRegTextBox.Focus();
@@ -205,51 +207,81 @@ namespace ProgettoPDS_SERVER
             //this.ChangeUserTextBox.Focus();
         }
 
-        /*private void ChangeButton_Click(object sender, EventArgs e)
+        private void RemoveButton_Click(object sender, EventArgs e)
         {
-            if (this.ChangePwdTextBox.Text == "" && this.ChangeUserTextBox.Text == "")
+            if (this.RemoveUserTextBox.Text == "" && this.RemovePwdTextBox.Text == "")
             {
-                MessageBox.Show("Completa tutti i campi del form prima di cliccare\nsul bottone \"CHANGE!!\"",
+                MessageBox.Show("Completa tutti i campi del form prima di cliccare\nsul bottone \"Remove!!\"",
                     "AVVISO", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                this.ChangeUserTextBox.Focus();
+                this.RemoveUserTextBox.Focus();
             }
-            else if (this.ChangeUserTextBox.Text == "")
+            else if (this.RemoveUserTextBox.Text == "")
             {
-                MessageBox.Show("Username assente!! Specificalo prima di procedere oltre...",
+                MessageBox.Show("Specificare lo username dell'account che desideri\neliminare prima di procedere oltre...",
                     "AVVISO", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                this.ChangeUserTextBox.Focus();
+                this.RemoveUserTextBox.Focus();
             }
-            else if (this.ChangePwdTextBox.Text == "")
+            else if (this.RemovePwdTextBox.Text == "")
             {
-                MessageBox.Show("Nuova Password Assente!! Specificala prima di procedere oltre...",
+                MessageBox.Show("Specificare la password dell'account che desideri\neliminare prima di procedere oltre...",
                     "AVVISO", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                this.ChangePwdTextBox.Focus();
+                //this.ChangeOldPwdTextBox.Focus();
             }
             else
             {
 
-                if (this.mng.SearchUser(this.ChangeUserTextBox.Text) == null)
+                User u = this.mng.SearchUser(this.RemoveUserTextBox.Text);
+                SHA1 shaM = new SHA1Managed();
+
+                if (u == null)
                 {
-                    MessageBox.Show("Lo user \"" + this.ChangeUserTextBox.Text + "\" non è mai stato registrato nell'applicazione!!",
-                    "ERRORE", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    this.ChangeUserTextBox.Clear();
-                    this.ChangePwdTextBox.Clear();
-                    this.ChangeUserTextBox.Focus();
+                    MessageBox.Show("Lo user \"" + this.RemoveUserTextBox.Text + "\" non è mai stato registrato nell'applicazione!!",
+                        "ERRORE", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    this.RemoveUserTextBox.Clear();
+                    this.RemovePwdTextBox.Clear();
+                    this.RemoveUserTextBox.Focus();
                 }
                 else
                 {
-                    DialogResult res = MessageBox.Show("Desideri procedere con la modifica della password??", "AVVISO", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
-                    if (res == DialogResult.Yes)
-                        this.mng.ModifyPwdUser(this.ChangeUserTextBox.Text, this.ChangePwdTextBox.Text);
+                    byte[] pwd = Encoding.ASCII.GetBytes(this.RemovePwdTextBox.Text);
 
-                    this.ChangeUserTextBox.Clear();
-                    this.ChangePwdTextBox.Clear();
-                    this.ChangeUserTextBox.Focus();
+                    if (u.Password == Encoding.ASCII.GetString(shaM.ComputeHash(pwd)))
+                    {
+                        DialogResult res = MessageBox.Show("Desideri procedere alla rimozione di questo account??", "AVVISO", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                        if (res == DialogResult.Yes)
+                        {
+                            this.mng.RemoveUsers(u);
+                            MessageBox.Show("Account rimosso correttamente!!", "AVVISO", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+
+                    }
+                    else
+                        MessageBox.Show("La password digitata non è quella associata all'account specificato!!",
+                            "ERRORE!!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                    this.RemoveUserTextBox.Clear();
+                    this.RemovePwdTextBox.Clear();
+                    this.RemoveUserTextBox.Focus();
 
                 }
+
             }
-        }*/
+        }
+
+        private void eliminaUtenteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.SuspendLayout();
+            this.RemovePanel.Visible = true;
+            Thread.Sleep(5);
+            this.NotaLabel.Visible = false;
+            this.MainPanel.Visible = false;
+            this.RegistraPanel.Visible = false;
+            this.InfoPanel.Visible = false;
+            this.ResumeLayout();
+            this.RemoveUserTextBox.Focus();
+        }
 
        
     }
