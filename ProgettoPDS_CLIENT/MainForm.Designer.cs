@@ -65,6 +65,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.pictureBox6 = new System.Windows.Forms.PictureBox();
             this.pictureBox5 = new System.Windows.Forms.PictureBox();
+            this.ClipboardSendBW = new System.ComponentModel.BackgroundWorker();
+            this.ClipboardRequestBW = new System.ComponentModel.BackgroundWorker();
             this.MainPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -233,7 +235,7 @@
             this.ConfigLabel.ForeColor = System.Drawing.Color.DarkOrange;
             this.ConfigLabel.Location = new System.Drawing.Point(32, 45);
             this.ConfigLabel.Name = "ConfigLabel";
-            this.ConfigLabel.Size = new System.Drawing.Size(289, 21);
+            this.ConfigLabel.Size = new System.Drawing.Size(289, 22);
             this.ConfigLabel.TabIndex = 5;
             this.ConfigLabel.Text = "Inserisci i Parametri di Configurazione";
             // 
@@ -544,6 +546,18 @@
             this.pictureBox5.TabIndex = 0;
             this.pictureBox5.TabStop = false;
             // 
+            // ClipboardSendBW
+            // 
+            this.ClipboardSendBW.WorkerReportsProgress = true;
+            this.ClipboardSendBW.WorkerSupportsCancellation = true;
+            this.ClipboardSendBW.DoWork += new System.ComponentModel.DoWorkEventHandler(this.ClipboardSendBW_DoWork);
+            // 
+            // ClipboardRequestBW
+            // 
+            this.ClipboardRequestBW.WorkerReportsProgress = true;
+            this.ClipboardRequestBW.WorkerSupportsCancellation = true;
+            this.ClipboardRequestBW.DoWork += new System.ComponentModel.DoWorkEventHandler(this.ClipboardRequestBW_DoWork);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -621,5 +635,7 @@
         private System.Windows.Forms.Button ClearCacheButton;
         private System.Windows.Forms.Button LoadConfButton;
         private System.Windows.Forms.Button SaveServButton;
+        private System.ComponentModel.BackgroundWorker ClipboardSendBW;
+        private System.ComponentModel.BackgroundWorker ClipboardRequestBW;
     }
 }
