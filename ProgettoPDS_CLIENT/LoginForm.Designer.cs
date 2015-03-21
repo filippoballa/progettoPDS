@@ -463,9 +463,9 @@
             this.InfoPanel.Controls.Add(this.label3);
             this.InfoPanel.Controls.Add(this.TitleInfoLabel);
             this.InfoPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.InfoPanel.Location = new System.Drawing.Point(0, 24);
+            this.InfoPanel.Location = new System.Drawing.Point(0, 0);
             this.InfoPanel.Name = "InfoPanel";
-            this.InfoPanel.Size = new System.Drawing.Size(622, 315);
+            this.InfoPanel.Size = new System.Drawing.Size(622, 339);
             this.InfoPanel.TabIndex = 16;
             this.InfoPanel.Visible = false;
             // 
@@ -521,9 +521,9 @@
             this.ChangePasswordPanel.Controls.Add(this.label5);
             this.ChangePasswordPanel.Controls.Add(this.label1);
             this.ChangePasswordPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ChangePasswordPanel.Location = new System.Drawing.Point(0, 24);
+            this.ChangePasswordPanel.Location = new System.Drawing.Point(0, 0);
             this.ChangePasswordPanel.Name = "ChangePasswordPanel";
-            this.ChangePasswordPanel.Size = new System.Drawing.Size(622, 315);
+            this.ChangePasswordPanel.Size = new System.Drawing.Size(622, 339);
             this.ChangePasswordPanel.TabIndex = 18;
             this.ChangePasswordPanel.Visible = false;
             // 
@@ -776,12 +776,12 @@
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(622, 339);
-            this.Controls.Add(this.ChangePasswordPanel);
-            this.Controls.Add(this.InfoPanel);
             this.Controls.Add(this.menuStrip1);
-            this.Controls.Add(this.MainPanel);
             this.Controls.Add(this.RemovePanel);
             this.Controls.Add(this.RegistraPanel);
+            this.Controls.Add(this.ChangePasswordPanel);
+            this.Controls.Add(this.InfoPanel);
+            this.Controls.Add(this.MainPanel);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
