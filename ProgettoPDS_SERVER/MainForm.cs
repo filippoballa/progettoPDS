@@ -218,7 +218,7 @@ namespace ProgettoPDS_SERVER
                             ThreadHandler.mrMaxThreads.WaitOne();
 
                         String s = Data[i];
-                        String[] d = null;
+                        object[] d = null;
 
                         //caso ricezione mouse
                         if (s == ApplicationConstants.MOUSECODE)
@@ -232,7 +232,7 @@ namespace ProgettoPDS_SERVER
 
                             i += 3;
 
-                            ThreadHandler.MouseQueue.Enqueue(d);
+                            ThreadHandler.MouseQueue.Enqueue((String[])d);
 
                             //se il pacchetto è l'unico in coda creao il thread
                             if (ThreadHandler.MouseQueue.Count == 1)
@@ -251,9 +251,9 @@ namespace ProgettoPDS_SERVER
 
                             i += 2;
 
-                            ThreadHandler.KeyBoardQueue.Enqueue(d);
+                            ThreadHandler.KeyBoardQueue.Enqueue((String[])d);
 
-                            //se il pacchetto è l'unico in coda creao il thread
+                            //se il pacchetto è l'unico in coda creo il thread
                             if (ThreadHandler.KeyBoardQueue.Count == 1)
                             {
                                 t = new Thread(ThreadHandler.KeyBoardThreadProc);
@@ -264,9 +264,10 @@ namespace ProgettoPDS_SERVER
                         else if (s == ApplicationConstants.CLIPBOARDCODE)
                         {
                             //[C]-[EVENTKEY]
-                            d = new String[2];
+                            d = new object[3];
                             d[0] = s;
-                            d[1] = d[1] = Data[i + 1]; ;
+                            d[1] = d[1] = Data[i + 1];
+                            d[2] = 0;//campi aggiuntivi per passare dati diversi da string al thread della clipboard 
 
                             i += 1;
 

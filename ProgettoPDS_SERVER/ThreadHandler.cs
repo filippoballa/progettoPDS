@@ -370,6 +370,8 @@ namespace ProgettoPDS_SERVER
             if(CBData[1]==ApplicationConstants.CLIPBOARDEVENTGET)
             {
                 //gestione invio clipboard
+
+                //creo file da inviare
             }
             else if(CBData[1]==ApplicationConstants.CLIPBOARDEVENTSET)
             {

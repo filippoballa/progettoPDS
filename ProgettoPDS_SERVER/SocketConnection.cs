@@ -46,7 +46,7 @@ namespace ProgettoPDS_SERVER
         //attributi
 
         private const int backlog = 1;
-        private static Socket sock, passiv;
+        private Socket sock, passiv;
         private int porta;
         private String myIP;
         private MainForm main;
@@ -74,7 +74,7 @@ namespace ProgettoPDS_SERVER
             this.main = main;
             Stato = ApplicationConstants.Stato.IN_ATTESA;
             
-            Socket sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             sock.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
 
             try
@@ -94,7 +94,7 @@ namespace ProgettoPDS_SERVER
 
         private void AcceptCallback(IAsyncResult ar)
         {
-            Socket sock = (Socket)ar.AsyncState;
+            sock = (Socket)ar.AsyncState;
             passiv = sock.EndAccept(ar);
 
             main.notifyIcon1.ShowBalloonTip(main.ToolTipTimeOut, "INFO STATO", "Inizio procedura autenticazione client . . ." + passiv.RemoteEndPoint.ToString(), ToolTipIcon.Info);
@@ -150,7 +150,7 @@ namespace ProgettoPDS_SERVER
         #endregion
 
         #region Client Authentication
-        //protocollo di autenticazione/regisrazione
+        //protocollo di autenticazione/registrazione
         private bool ClientAutentication()
         {
             string comando, user, pwd;

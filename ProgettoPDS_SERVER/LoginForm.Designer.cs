@@ -33,6 +33,7 @@
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loginPageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.registraUtenteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.eliminaUtenteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.chiudiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.indirizzoIPToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -46,6 +47,14 @@
             this.PasswordTextBox = new System.Windows.Forms.TextBox();
             this.NotaLabel = new System.Windows.Forms.Label();
             this.RegistraPanel = new System.Windows.Forms.Panel();
+            this.RemovePanel = new System.Windows.Forms.Panel();
+            this.RemovePwdTextBox = new System.Windows.Forms.TextBox();
+            this.RemoveUserTextBox = new System.Windows.Forms.TextBox();
+            this.RemovePwdLabel = new System.Windows.Forms.Label();
+            this.RemoveUserLabel = new System.Windows.Forms.Label();
+            this.RemoveInfoLabel = new System.Windows.Forms.Label();
+            this.RemoveTitleLabel = new System.Windows.Forms.Label();
+            this.RemoveButton = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.RegistraButton = new System.Windows.Forms.Button();
             this.PwdRegTextBox = new System.Windows.Forms.TextBox();
@@ -61,22 +70,13 @@
             this.label3 = new System.Windows.Forms.Label();
             this.TitleInfoLabel = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.eliminaUtenteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.RemovePanel = new System.Windows.Forms.Panel();
-            this.RemovePwdTextBox = new System.Windows.Forms.TextBox();
-            this.RemoveUserTextBox = new System.Windows.Forms.TextBox();
-            this.RemovePwdLabel = new System.Windows.Forms.Label();
-            this.RemoveUserLabel = new System.Windows.Forms.Label();
-            this.RemoveInfoLabel = new System.Windows.Forms.Label();
-            this.RemoveTitleLabel = new System.Windows.Forms.Label();
-            this.RemoveButton = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.MainPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.RegistraPanel.SuspendLayout();
+            this.RemovePanel.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.InfoPanel.SuspendLayout();
-            this.RemovePanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -123,6 +123,15 @@
             this.registraUtenteToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
             this.registraUtenteToolStripMenuItem.Text = "Registra Utente";
             this.registraUtenteToolStripMenuItem.Click += new System.EventHandler(this.registraUtenteToolStripMenuItem_Click);
+            // 
+            // eliminaUtenteToolStripMenuItem
+            // 
+            this.eliminaUtenteToolStripMenuItem.BackColor = System.Drawing.Color.Beige;
+            this.eliminaUtenteToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("eliminaUtenteToolStripMenuItem.Image")));
+            this.eliminaUtenteToolStripMenuItem.Name = "eliminaUtenteToolStripMenuItem";
+            this.eliminaUtenteToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
+            this.eliminaUtenteToolStripMenuItem.Text = "Elimina Utente";
+            this.eliminaUtenteToolStripMenuItem.Click += new System.EventHandler(this.eliminaUtenteToolStripMenuItem_Click);
             // 
             // chiudiToolStripMenuItem
             // 
@@ -225,6 +234,7 @@
             // 
             // pictureBox1
             // 
+            this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
             this.pictureBox1.Location = new System.Drawing.Point(437, 8);
@@ -255,6 +265,8 @@
             // 
             // NotaLabel
             // 
+            this.NotaLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.NotaLabel.AutoSize = true;
             this.NotaLabel.BackColor = System.Drawing.Color.Transparent;
             this.NotaLabel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
@@ -271,7 +283,6 @@
             // 
             this.RegistraPanel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("RegistraPanel.BackgroundImage")));
             this.RegistraPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.RegistraPanel.Controls.Add(this.RemovePanel);
             this.RegistraPanel.Controls.Add(this.groupBox1);
             this.RegistraPanel.Controls.Add(this.label2);
             this.RegistraPanel.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -281,6 +292,109 @@
             this.RegistraPanel.Size = new System.Drawing.Size(634, 2);
             this.RegistraPanel.TabIndex = 19;
             this.RegistraPanel.Visible = false;
+            // 
+            // RemovePanel
+            // 
+            this.RemovePanel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("RemovePanel.BackgroundImage")));
+            this.RemovePanel.Controls.Add(this.RemovePwdTextBox);
+            this.RemovePanel.Controls.Add(this.RemoveUserTextBox);
+            this.RemovePanel.Controls.Add(this.RemovePwdLabel);
+            this.RemovePanel.Controls.Add(this.RemoveUserLabel);
+            this.RemovePanel.Controls.Add(this.RemoveInfoLabel);
+            this.RemovePanel.Controls.Add(this.RemoveTitleLabel);
+            this.RemovePanel.Controls.Add(this.RemoveButton);
+            this.RemovePanel.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.RemovePanel.Location = new System.Drawing.Point(0, -319);
+            this.RemovePanel.Name = "RemovePanel";
+            this.RemovePanel.Size = new System.Drawing.Size(634, 346);
+            this.RemovePanel.TabIndex = 21;
+            this.RemovePanel.Visible = false;
+            // 
+            // RemovePwdTextBox
+            // 
+            this.RemovePwdTextBox.BackColor = System.Drawing.Color.DimGray;
+            this.RemovePwdTextBox.Font = new System.Drawing.Font("Comic Sans MS", 10F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.RemovePwdTextBox.Location = new System.Drawing.Point(141, 202);
+            this.RemovePwdTextBox.Name = "RemovePwdTextBox";
+            this.RemovePwdTextBox.PasswordChar = '*';
+            this.RemovePwdTextBox.Size = new System.Drawing.Size(248, 26);
+            this.RemovePwdTextBox.TabIndex = 9;
+            this.RemovePwdTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // RemoveUserTextBox
+            // 
+            this.RemoveUserTextBox.BackColor = System.Drawing.Color.DimGray;
+            this.RemoveUserTextBox.Font = new System.Drawing.Font("Comic Sans MS", 10F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.RemoveUserTextBox.Location = new System.Drawing.Point(141, 134);
+            this.RemoveUserTextBox.Name = "RemoveUserTextBox";
+            this.RemoveUserTextBox.Size = new System.Drawing.Size(248, 26);
+            this.RemoveUserTextBox.TabIndex = 8;
+            this.RemoveUserTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // RemovePwdLabel
+            // 
+            this.RemovePwdLabel.AutoSize = true;
+            this.RemovePwdLabel.BackColor = System.Drawing.Color.Transparent;
+            this.RemovePwdLabel.Font = new System.Drawing.Font("Comic Sans MS", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.RemovePwdLabel.ForeColor = System.Drawing.Color.White;
+            this.RemovePwdLabel.Location = new System.Drawing.Point(18, 205);
+            this.RemovePwdLabel.Name = "RemovePwdLabel";
+            this.RemovePwdLabel.Size = new System.Drawing.Size(103, 19);
+            this.RemovePwdLabel.TabIndex = 5;
+            this.RemovePwdLabel.Text = "PASSWORD :";
+            // 
+            // RemoveUserLabel
+            // 
+            this.RemoveUserLabel.AutoSize = true;
+            this.RemoveUserLabel.BackColor = System.Drawing.Color.Transparent;
+            this.RemoveUserLabel.Font = new System.Drawing.Font("Comic Sans MS", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.RemoveUserLabel.ForeColor = System.Drawing.Color.White;
+            this.RemoveUserLabel.Location = new System.Drawing.Point(18, 137);
+            this.RemoveUserLabel.Name = "RemoveUserLabel";
+            this.RemoveUserLabel.Size = new System.Drawing.Size(101, 19);
+            this.RemoveUserLabel.TabIndex = 4;
+            this.RemoveUserLabel.Text = "USERNAME :";
+            // 
+            // RemoveInfoLabel
+            // 
+            this.RemoveInfoLabel.AutoSize = true;
+            this.RemoveInfoLabel.BackColor = System.Drawing.Color.Transparent;
+            this.RemoveInfoLabel.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.RemoveInfoLabel.ForeColor = System.Drawing.Color.White;
+            this.RemoveInfoLabel.Location = new System.Drawing.Point(47, 61);
+            this.RemoveInfoLabel.Name = "RemoveInfoLabel";
+            this.RemoveInfoLabel.Size = new System.Drawing.Size(476, 23);
+            this.RemoveInfoLabel.TabIndex = 3;
+            this.RemoveInfoLabel.Text = "Inserisci le credenziali dell\'account che desideri rimuovere :";
+            // 
+            // RemoveTitleLabel
+            // 
+            this.RemoveTitleLabel.AutoSize = true;
+            this.RemoveTitleLabel.BackColor = System.Drawing.Color.Transparent;
+            this.RemoveTitleLabel.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.RemoveTitleLabel.ForeColor = System.Drawing.Color.OrangeRed;
+            this.RemoveTitleLabel.Location = new System.Drawing.Point(175, 20);
+            this.RemoveTitleLabel.Name = "RemoveTitleLabel";
+            this.RemoveTitleLabel.Size = new System.Drawing.Size(239, 23);
+            this.RemoveTitleLabel.TabIndex = 2;
+            this.RemoveTitleLabel.Text = "RIMUOVI IL TUO ACCOUNT";
+            // 
+            // RemoveButton
+            // 
+            this.RemoveButton.BackColor = System.Drawing.Color.Maroon;
+            this.RemoveButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.RemoveButton.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.RemoveButton.FlatAppearance.BorderSize = 3;
+            this.RemoveButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.RemoveButton.Font = new System.Drawing.Font("Comic Sans MS", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.RemoveButton.ForeColor = System.Drawing.Color.White;
+            this.RemoveButton.Location = new System.Drawing.Point(510, 252);
+            this.RemoveButton.Name = "RemoveButton";
+            this.RemoveButton.Size = new System.Drawing.Size(97, 41);
+            this.RemoveButton.TabIndex = 0;
+            this.RemoveButton.Text = "Remove!!";
+            this.RemoveButton.UseVisualStyleBackColor = false;
+            this.RemoveButton.Click += new System.EventHandler(this.RemoveButton_Click);
             // 
             // groupBox1
             // 
@@ -460,117 +574,6 @@
             this.label4.TabIndex = 11;
             this.label4.Text = resources.GetString("label4.Text");
             // 
-            // eliminaUtenteToolStripMenuItem
-            // 
-            this.eliminaUtenteToolStripMenuItem.BackColor = System.Drawing.Color.Beige;
-            this.eliminaUtenteToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("eliminaUtenteToolStripMenuItem.Image")));
-            this.eliminaUtenteToolStripMenuItem.Name = "eliminaUtenteToolStripMenuItem";
-            this.eliminaUtenteToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
-            this.eliminaUtenteToolStripMenuItem.Text = "Elimina Utente";
-            this.eliminaUtenteToolStripMenuItem.Click += new System.EventHandler(this.eliminaUtenteToolStripMenuItem_Click);
-            // 
-            // RemovePanel
-            // 
-            this.RemovePanel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("RemovePanel.BackgroundImage")));
-            this.RemovePanel.Controls.Add(this.RemovePwdTextBox);
-            this.RemovePanel.Controls.Add(this.RemoveUserTextBox);
-            this.RemovePanel.Controls.Add(this.RemovePwdLabel);
-            this.RemovePanel.Controls.Add(this.RemoveUserLabel);
-            this.RemovePanel.Controls.Add(this.RemoveInfoLabel);
-            this.RemovePanel.Controls.Add(this.RemoveTitleLabel);
-            this.RemovePanel.Controls.Add(this.RemoveButton);
-            this.RemovePanel.Location = new System.Drawing.Point(0, 0);
-            this.RemovePanel.Name = "RemovePanel";
-            this.RemovePanel.Size = new System.Drawing.Size(634, 346);
-            this.RemovePanel.TabIndex = 21;
-            this.RemovePanel.Visible = false;
-            // 
-            // RemovePwdTextBox
-            // 
-            this.RemovePwdTextBox.BackColor = System.Drawing.Color.DimGray;
-            this.RemovePwdTextBox.Font = new System.Drawing.Font("Comic Sans MS", 10F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.RemovePwdTextBox.Location = new System.Drawing.Point(141, 202);
-            this.RemovePwdTextBox.Name = "RemovePwdTextBox";
-            this.RemovePwdTextBox.PasswordChar = '*';
-            this.RemovePwdTextBox.Size = new System.Drawing.Size(248, 26);
-            this.RemovePwdTextBox.TabIndex = 9;
-            this.RemovePwdTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // RemoveUserTextBox
-            // 
-            this.RemoveUserTextBox.BackColor = System.Drawing.Color.DimGray;
-            this.RemoveUserTextBox.Font = new System.Drawing.Font("Comic Sans MS", 10F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.RemoveUserTextBox.Location = new System.Drawing.Point(141, 134);
-            this.RemoveUserTextBox.Name = "RemoveUserTextBox";
-            this.RemoveUserTextBox.Size = new System.Drawing.Size(248, 26);
-            this.RemoveUserTextBox.TabIndex = 8;
-            this.RemoveUserTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // RemovePwdLabel
-            // 
-            this.RemovePwdLabel.AutoSize = true;
-            this.RemovePwdLabel.BackColor = System.Drawing.Color.Transparent;
-            this.RemovePwdLabel.Font = new System.Drawing.Font("Comic Sans MS", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.RemovePwdLabel.ForeColor = System.Drawing.Color.White;
-            this.RemovePwdLabel.Location = new System.Drawing.Point(18, 205);
-            this.RemovePwdLabel.Name = "RemovePwdLabel";
-            this.RemovePwdLabel.Size = new System.Drawing.Size(103, 19);
-            this.RemovePwdLabel.TabIndex = 5;
-            this.RemovePwdLabel.Text = "PASSWORD :";
-            // 
-            // RemoveUserLabel
-            // 
-            this.RemoveUserLabel.AutoSize = true;
-            this.RemoveUserLabel.BackColor = System.Drawing.Color.Transparent;
-            this.RemoveUserLabel.Font = new System.Drawing.Font("Comic Sans MS", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.RemoveUserLabel.ForeColor = System.Drawing.Color.White;
-            this.RemoveUserLabel.Location = new System.Drawing.Point(18, 137);
-            this.RemoveUserLabel.Name = "RemoveUserLabel";
-            this.RemoveUserLabel.Size = new System.Drawing.Size(101, 19);
-            this.RemoveUserLabel.TabIndex = 4;
-            this.RemoveUserLabel.Text = "USERNAME :";
-            // 
-            // RemoveInfoLabel
-            // 
-            this.RemoveInfoLabel.AutoSize = true;
-            this.RemoveInfoLabel.BackColor = System.Drawing.Color.Transparent;
-            this.RemoveInfoLabel.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.RemoveInfoLabel.ForeColor = System.Drawing.Color.White;
-            this.RemoveInfoLabel.Location = new System.Drawing.Point(47, 61);
-            this.RemoveInfoLabel.Name = "RemoveInfoLabel";
-            this.RemoveInfoLabel.Size = new System.Drawing.Size(476, 23);
-            this.RemoveInfoLabel.TabIndex = 3;
-            this.RemoveInfoLabel.Text = "Inserisci le credenziali dell\'account che desideri rimuovere :";
-            // 
-            // RemoveTitleLabel
-            // 
-            this.RemoveTitleLabel.AutoSize = true;
-            this.RemoveTitleLabel.BackColor = System.Drawing.Color.Transparent;
-            this.RemoveTitleLabel.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.RemoveTitleLabel.ForeColor = System.Drawing.Color.OrangeRed;
-            this.RemoveTitleLabel.Location = new System.Drawing.Point(175, 20);
-            this.RemoveTitleLabel.Name = "RemoveTitleLabel";
-            this.RemoveTitleLabel.Size = new System.Drawing.Size(239, 23);
-            this.RemoveTitleLabel.TabIndex = 2;
-            this.RemoveTitleLabel.Text = "RIMUOVI IL TUO ACCOUNT";
-            // 
-            // RemoveButton
-            // 
-            this.RemoveButton.BackColor = System.Drawing.Color.Maroon;
-            this.RemoveButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.RemoveButton.FlatAppearance.BorderColor = System.Drawing.Color.White;
-            this.RemoveButton.FlatAppearance.BorderSize = 3;
-            this.RemoveButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.RemoveButton.Font = new System.Drawing.Font("Comic Sans MS", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.RemoveButton.ForeColor = System.Drawing.Color.White;
-            this.RemoveButton.Location = new System.Drawing.Point(510, 252);
-            this.RemoveButton.Name = "RemoveButton";
-            this.RemoveButton.Size = new System.Drawing.Size(97, 41);
-            this.RemoveButton.TabIndex = 0;
-            this.RemoveButton.Text = "Remove!!";
-            this.RemoveButton.UseVisualStyleBackColor = false;
-            this.RemoveButton.Click += new System.EventHandler(this.RemoveButton_Click);
-            // 
             // LoginForm
             // 
             this.AcceptButton = this.LoginButton;
@@ -580,6 +583,7 @@
             this.BackColor = System.Drawing.SystemColors.Control;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(634, 371);
+            this.Controls.Add(this.RemovePanel);
             this.Controls.Add(this.RegistraPanel);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.MainPanel);
@@ -598,12 +602,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.RegistraPanel.ResumeLayout(false);
             this.RegistraPanel.PerformLayout();
+            this.RemovePanel.ResumeLayout(false);
+            this.RemovePanel.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.InfoPanel.ResumeLayout(false);
             this.InfoPanel.PerformLayout();
-            this.RemovePanel.ResumeLayout(false);
-            this.RemovePanel.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
