@@ -103,9 +103,9 @@
             this.RegistraPanel.Controls.Add(this.label2);
             this.RegistraPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.RegistraPanel.Font = new System.Drawing.Font("Comic Sans MS", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.RegistraPanel.Location = new System.Drawing.Point(0, 0);
+            this.RegistraPanel.Location = new System.Drawing.Point(0, 24);
             this.RegistraPanel.Name = "RegistraPanel";
-            this.RegistraPanel.Size = new System.Drawing.Size(622, 339);
+            this.RegistraPanel.Size = new System.Drawing.Size(622, 315);
             this.RegistraPanel.TabIndex = 8;
             this.RegistraPanel.Visible = false;
             // 
@@ -194,7 +194,7 @@
             this.PwdRegLabel.AutoSize = true;
             this.PwdRegLabel.Location = new System.Drawing.Point(23, 146);
             this.PwdRegLabel.Name = "PwdRegLabel";
-            this.PwdRegLabel.Size = new System.Drawing.Size(86, 17);
+            this.PwdRegLabel.Size = new System.Drawing.Size(84, 17);
             this.PwdRegLabel.TabIndex = 3;
             this.PwdRegLabel.Text = "PASSWORD :";
             // 
@@ -203,7 +203,7 @@
             this.UserRegLabel.AutoSize = true;
             this.UserRegLabel.Location = new System.Drawing.Point(23, 111);
             this.UserRegLabel.Name = "UserRegLabel";
-            this.UserRegLabel.Size = new System.Drawing.Size(87, 17);
+            this.UserRegLabel.Size = new System.Drawing.Size(84, 17);
             this.UserRegLabel.TabIndex = 2;
             this.UserRegLabel.Text = "USERNAME :";
             // 
@@ -212,7 +212,7 @@
             this.CognomeRegLabel.AutoSize = true;
             this.CognomeRegLabel.Location = new System.Drawing.Point(23, 73);
             this.CognomeRegLabel.Name = "CognomeRegLabel";
-            this.CognomeRegLabel.Size = new System.Drawing.Size(80, 17);
+            this.CognomeRegLabel.Size = new System.Drawing.Size(79, 17);
             this.CognomeRegLabel.TabIndex = 1;
             this.CognomeRegLabel.Text = "COGNOME :";
             // 
@@ -221,7 +221,7 @@
             this.NameRegLabel.AutoSize = true;
             this.NameRegLabel.Location = new System.Drawing.Point(23, 37);
             this.NameRegLabel.Name = "NameRegLabel";
-            this.NameRegLabel.Size = new System.Drawing.Size(55, 17);
+            this.NameRegLabel.Size = new System.Drawing.Size(54, 17);
             this.NameRegLabel.TabIndex = 0;
             this.NameRegLabel.Text = "NOME :";
             // 
@@ -249,9 +249,9 @@
             this.MainPanel.Controls.Add(this.NotaLabel);
             this.MainPanel.Controls.Add(this.pictureBox1);
             this.MainPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.MainPanel.Location = new System.Drawing.Point(0, 0);
+            this.MainPanel.Location = new System.Drawing.Point(0, 24);
             this.MainPanel.Name = "MainPanel";
-            this.MainPanel.Size = new System.Drawing.Size(622, 339);
+            this.MainPanel.Size = new System.Drawing.Size(622, 315);
             this.MainPanel.TabIndex = 2;
             // 
             // UsernameLabel
@@ -463,9 +463,9 @@
             this.InfoPanel.Controls.Add(this.label3);
             this.InfoPanel.Controls.Add(this.TitleInfoLabel);
             this.InfoPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.InfoPanel.Location = new System.Drawing.Point(0, 0);
+            this.InfoPanel.Location = new System.Drawing.Point(0, 24);
             this.InfoPanel.Name = "InfoPanel";
-            this.InfoPanel.Size = new System.Drawing.Size(622, 339);
+            this.InfoPanel.Size = new System.Drawing.Size(622, 315);
             this.InfoPanel.TabIndex = 16;
             this.InfoPanel.Visible = false;
             // 
@@ -521,9 +521,9 @@
             this.ChangePasswordPanel.Controls.Add(this.label5);
             this.ChangePasswordPanel.Controls.Add(this.label1);
             this.ChangePasswordPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ChangePasswordPanel.Location = new System.Drawing.Point(0, 0);
+            this.ChangePasswordPanel.Location = new System.Drawing.Point(0, 24);
             this.ChangePasswordPanel.Name = "ChangePasswordPanel";
-            this.ChangePasswordPanel.Size = new System.Drawing.Size(622, 339);
+            this.ChangePasswordPanel.Size = new System.Drawing.Size(622, 315);
             this.ChangePasswordPanel.TabIndex = 18;
             this.ChangePasswordPanel.Visible = false;
             // 
@@ -677,9 +677,9 @@
             this.RemovePanel.Controls.Add(this.RemoveTitleLabel);
             this.RemovePanel.Controls.Add(this.RemoveButton);
             this.RemovePanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.RemovePanel.Location = new System.Drawing.Point(0, 0);
+            this.RemovePanel.Location = new System.Drawing.Point(0, 24);
             this.RemovePanel.Name = "RemovePanel";
-            this.RemovePanel.Size = new System.Drawing.Size(622, 339);
+            this.RemovePanel.Size = new System.Drawing.Size(622, 315);
             this.RemovePanel.TabIndex = 19;
             this.RemovePanel.Visible = false;
             // 
@@ -776,12 +776,12 @@
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(622, 339);
-            this.Controls.Add(this.menuStrip1);
-            this.Controls.Add(this.RemovePanel);
-            this.Controls.Add(this.RegistraPanel);
-            this.Controls.Add(this.ChangePasswordPanel);
             this.Controls.Add(this.InfoPanel);
+            this.Controls.Add(this.ChangePasswordPanel);
+            this.Controls.Add(this.RegistraPanel);
+            this.Controls.Add(this.RemovePanel);
             this.Controls.Add(this.MainPanel);
+            this.Controls.Add(this.menuStrip1);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));

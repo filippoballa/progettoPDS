@@ -8,6 +8,8 @@ namespace ProgettoPDS_CLIENT
 {
     static class Program
     {
+        public static DialogResult res = DialogResult.No;
+
         /// <summary>
         /// Punto di ingresso principale dell'applicazione.
         /// </summary>
@@ -18,10 +20,19 @@ namespace ProgettoPDS_CLIENT
             Application.SetCompatibleTextRenderingDefault(false);
             User user = new User();
 
-            Application.Run(new LoginForm(user) );
+            do {
 
-            if (user.Login )
-                Application.Run(new MainForm(user));
+                res = DialogResult.No;
+
+                Application.Run(new LoginForm(user));
+
+                if (user.Login)
+                    Application.Run(new MainForm(user));
+
+                user.Login = false;
+
+            } while (res != DialogResult.No );
+
         }
     }
 }

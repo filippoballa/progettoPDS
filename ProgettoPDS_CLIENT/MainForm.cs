@@ -11,6 +11,8 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Xml;
+using System.IO;
+using System.Collections.Specialized;
 
 namespace ProgettoPDS_CLIENT
 {
@@ -26,6 +28,7 @@ namespace ProgettoPDS_CLIENT
         private List<Server> servers;
         private int AltezzaForm, BaseForm, currServ, CountServerConnected;
         private static Mutex mut = new Mutex();
+        private static Mutex ClipboardMut = new Mutex();
         private MouseHook mouseHook = new MouseHook();
         private KeyboardHook keyboardHook = new KeyboardHook();
         private Queue<MouseEventArgs> MouseQueue;
@@ -37,7 +40,7 @@ namespace ProgettoPDS_CLIENT
 
         #region Constructor
 
-        public MainForm( User aux)
+        public MainForm(User aux )
         {
             SetStyle(ControlStyles.UserPaint, true);
             SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
@@ -355,6 +358,8 @@ namespace ProgettoPDS_CLIENT
             catch (Exception e) {
                 MessageBox.Show(e.Message, "ANOMALY", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 this.connessioni[this.currServ].SockClose();
+                this.connessioni[this.currServ].CloseClipSock();
+                this.connessioni[this.currServ].Stato = SocketConnection.STATO.DISCONESSO;
             }
             finally {
                 mut.ReleaseMutex();
@@ -375,6 +380,9 @@ namespace ProgettoPDS_CLIENT
                     this.connessioni[i].SockClose();
                 }
             }
+
+            Program.res = MessageBox.Show("Desideri tornare alla schermata di Login? ",
+                   "AVVISO", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
         }
 
@@ -782,16 +790,80 @@ namespace ProgettoPDS_CLIENT
 
         private void ClipboardSendBW_DoWork(object sender, DoWorkEventArgs e)
         {
-            ClipboardPacket("GET_CLIP");
-            //TODO
-            //Invio dati della clipboard locale all'host remoto
+            ClipboardPacket("SET_CLIP");
+            string aux;
+
+            if( Clipboard.ContainsAudio() ) {
+                aux = "AUDIO";
+                byte[] pdu = Encoding.ASCII.GetBytes(aux);
+                SendClipboardData(pdu);
+                byte[] resp = ReceiveClipboardData();
+                Stream st = Clipboard.GetAudioStream();
+                pdu = new byte[st.Length];
+                st.Read(pdu, 0, (int)st.Length);
+                SendClipboardData(pdu);
+            }
+            else if( Clipboard.ContainsFileDropList() ) {
+                aux = "FILE_DROP-";
+                StringCollection strc = Clipboard.GetFileDropList();
+
+                for (int i = 0; i < strc.Count; i++) { 
+                    int num = strc.Count - i;
+                    aux += strc[0] + "-" + num.ToString();
+                }
+
+            }
+            else if( Clipboard.ContainsImage() ) {
+
+                aux = "IMMAGINE";
+                Image img = Clipboard.GetImage();
+                byte[] pdu = Encoding.ASCII.GetBytes(aux);
+                SendClipboardData(pdu);
+                byte[] resp = ReceiveClipboardData();
+
+                MemoryStream mStream = new MemoryStream();
+                img.Save(mStream, img.RawFormat);
+                pdu = mStream.ToArray();
+                SendClipboardData(pdu);
+
+            }
+            else if (Clipboard.ContainsText()) {
+                aux = "TEXT-";
+                string text = Clipboard.GetText();
+                byte[] pdu = Encoding.ASCII.GetBytes(aux);
+                SendClipboardData(pdu);
+                byte[] resp = ReceiveClipboardData();
+                pdu = Encoding.ASCII.GetBytes(text);
+                SendClipboardData(pdu);
+            }
         }
 
         private void ClipboardRequestBW_DoWork(object sender, DoWorkEventArgs e)
         {
-            ClipboardPacket("SET_CLIP");
+            ClipboardPacket("GET_CLIP");
             //TODO
             //Ricezione dati provenienti dalla clipboard dell'host remoto
+        }
+
+        private void SendClipboardData(byte[] pdu)
+        {
+            try {
+                ClipboardMut.WaitOne();
+                this.connessioni[this.currServ].ClipSock.Send(pdu);
+            }
+            catch {
+                // TODO
+            }
+            finally {
+                ClipboardMut.ReleaseMutex();
+            }
+        }
+
+        private byte[] ReceiveClipboardData()
+        {
+            // TODO
+            byte[] pdu = new byte[128];
+            return pdu;            
         }
 
         #endregion

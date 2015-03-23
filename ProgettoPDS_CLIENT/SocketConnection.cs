@@ -12,13 +12,20 @@ namespace ProgettoPDS_CLIENT
 {
     class SocketConnection
     {
+        public enum STATO
+        {
+            CONNESSO = 0,
+            DISCONESSO = 1
+        };
+
         #region Variables
 
-        private Socket sock;
+        private Socket sock, clipSock;
         private IPEndPoint remoteEP, localEP;
         private User utente;
         private int remotePort;
         private MainForm m;
+        private STATO stato;
 
         #endregion
 
@@ -32,6 +39,8 @@ namespace ProgettoPDS_CLIENT
             this.remoteEP = new IPEndPoint(IPAddress.Parse(addr), Convert.ToInt32(port) );
             this.remotePort = port;
             this.sock = null;
+            this.clipSock = null;
+            this.stato = STATO.DISCONESSO;
         }
 
         #endregion
@@ -117,16 +126,20 @@ namespace ProgettoPDS_CLIENT
                     aux = Encoding.ASCII.GetString(comando);
                     aux = aux.Substring(0, aux.IndexOf('\0'));
 
-                    if (aux == "+OK")
-                        MessageBox.Show("Connesso con " + this.sock.RemoteEndPoint.ToString() + "!!", 
+                    if (aux == "+OK") {
+
+                        this.clipSock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                        this.clipSock.Bind(new IPEndPoint(this.localEP.Address, 0));
+                        this.clipSock.Connect(new IPEndPoint(this.remoteEP.Address, 4000));
+                        this.stato = STATO.CONNESSO;
+                        this.m.Invoke(this.m.myHandler);
+
+                        MessageBox.Show("Connesso con " + this.sock.RemoteEndPoint.ToString() + "!!",
                             "CONNECTION SUCCESS!!", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    else if( aux == "-ERR") {
-                        MessageBox.Show("Connessione con il server fallita!!",
-                            "CONNECTION FAILURE!!", MessageBoxButtons.OK, MessageBoxIcon.Error );
                     }
-
-                    this.m.Invoke(this.m.myHandler);
-
+                    else if (aux == "-ERR")
+                        MessageBox.Show("Connessione con il server fallita!!",
+                            "CONNECTION FAILURE!!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 else 
                     ErrorProtocol();
@@ -134,6 +147,15 @@ namespace ProgettoPDS_CLIENT
             }
             catch (Exception ecc) {
                 MessageBox.Show(ecc.Message, "ANOMALY", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                if (this.sock != null) 
+                    this.SockClose();
+
+                if (this.clipSock != null)
+                    this.CloseClipSock();
+
+                this.stato = STATO.DISCONESSO;
+               
             }
         }
 
@@ -156,10 +178,9 @@ namespace ProgettoPDS_CLIENT
             IPHostEntry host = Dns.GetHostEntry(Dns.GetHostName());
             string AddrInformation = null;
 
-            foreach (IPAddress ip in host.AddressList)
-            {
-                if (ip.AddressFamily == AddressFamily.InterNetwork)
-                {
+            foreach (IPAddress ip in host.AddressList) {
+
+                if (ip.AddressFamily == AddressFamily.InterNetwork) {
                     AddrInformation = ip.ToString();
                     return AddrInformation;
                 }
@@ -199,15 +220,38 @@ namespace ProgettoPDS_CLIENT
 
         public void SockClose()
         {
-            //this.sock.Shutdown(SocketShutdown.Both);
-            this.sock.Close();
-            this.sock = null;
+            if (this.sock != null) {
+                this.sock.Shutdown(SocketShutdown.Both);
+                this.sock.Close();
+                this.sock = null;
+            }
+        }
+
+        public void CloseClipSock()
+        {
+            if (this.clipSock != null) {
+                this.clipSock.Shutdown(SocketShutdown.Both);
+                this.clipSock.Close();
+                this.clipSock = null;
+            }
         }
 
         public Socket Sock
         {
             get { return this.sock; }
             set { this.sock = value; }
+        }
+
+        public Socket ClipSock
+        {
+            get { return this.clipSock; }
+            set { this.clipSock = value; }
+        }
+
+        public STATO Stato 
+        { 
+            get { return this.stato; }
+            set { this.stato = value; }
         }
 
         // La funzione controlla la correttezza di un indirizzo IP e restituisce true se è corretto.
