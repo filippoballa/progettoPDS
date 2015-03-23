@@ -143,6 +143,7 @@ namespace ProgettoPDS_CLIENT
 
             // Riposizionamento Bottone Disconnetti
             aux = (this.DisconnectButton.Font.Size * this.Height) / this.AltezzaForm;
+            this.DisconnectButton.Font = new System.Drawing.Font("Comic Sans MS", aux-1, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.DisconnectButton.Height = (this.DisconnectButton.Height * this.Height) / this.AltezzaForm;
             this.DisconnectButton.Width = (this.DisconnectButton.Width * this.Width) / this.BaseForm;
             X = (this.DisconnectButton.Location.X * this.Width) / this.BaseForm;
@@ -155,6 +156,13 @@ namespace ProgettoPDS_CLIENT
             X = (this.InfoButton.Location.X * this.Width) / this.BaseForm;
             Y = (this.InfoButton.Location.Y * this.Height) / this.AltezzaForm;
             this.InfoButton.Location = new Point(X, Y);
+
+            // Riposizionamento Bottone "LogOut"
+            this.LogOutButton.Height = (this.LogOutButton.Height * this.Height) / this.AltezzaForm;
+            this.LogOutButton.Width = (this.LogOutButton.Width * this.Width) / this.BaseForm;
+            X = (this.LogOutButton.Location.X * this.Width) / this.BaseForm;
+            Y = (this.LogOutButton.Location.Y * this.Height) / this.AltezzaForm;
+            this.LogOutButton.Location = new Point(X, Y);
 
             // Resize elementi dentro il groupbox di configurazione
             // Resise ConfigLabel
@@ -346,7 +354,27 @@ namespace ProgettoPDS_CLIENT
 
         #endregion
 
-        #region Other Buttons and Form's Functions
+        #region Methods Packets
+
+        private void ResetConnection()
+        {
+            this.connessioni[this.currServ].SockClose();
+            this.connessioni[this.currServ].CloseClipSock();
+            this.connessioni[this.currServ].Stato = SocketConnection.STATO.DISCONESSO;
+
+            if (this.ActionPanel.Visible)
+            {
+                this.ActionPanel.Visible = false;
+                this.MainPanel.Visible = false;
+
+                if (this.keyboardHook.IsStarted)
+                    this.keyboardHook.Unistall();
+
+                if (this.mouseHook.IsStarted)
+                    this.mouseHook.Unistall();
+
+            }
+        }
 
         private void SendPacket(byte[] pdu)
         {
@@ -357,9 +385,7 @@ namespace ProgettoPDS_CLIENT
             }
             catch (Exception e) {
                 MessageBox.Show(e.Message, "ANOMALY", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                this.connessioni[this.currServ].SockClose();
-                this.connessioni[this.currServ].CloseClipSock();
-                this.connessioni[this.currServ].Stato = SocketConnection.STATO.DISCONESSO;
+                ResetConnection();
             }
             finally {
                 mut.ReleaseMutex();
@@ -372,18 +398,28 @@ namespace ProgettoPDS_CLIENT
             SendPacket(pdu);
         }
 
+        #endregion
+
+        #region Other Buttons and Form's Functions
+
+        private void LogOutButton_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             for (int i = 0; i < this.connessioni.Count; i++) {
+
                 if (this.connessioni[i].IsConnected()) {
                     QuitPacket();
                     this.connessioni[i].SockClose();
+                    this.connessioni[i].CloseClipSock();
                 }
             }
 
             Program.res = MessageBox.Show("Desideri tornare alla schermata di Login? ",
                    "AVVISO", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
         }
 
         private void RefreshLabel()
@@ -414,7 +450,8 @@ namespace ProgettoPDS_CLIENT
         private void StartButton_Click(object sender, EventArgs e)
         {
             if (this.listBox1.SelectedIndex == -1) {
-                MessageBox.Show("Seleziona un server prima di cliccare sul bottone \"Start&Use\"!!", "ERRORE!!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Seleziona un server prima di cliccare sul bottone \"Start&Use\"!!", 
+                    "ERRORE!!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
@@ -539,6 +576,12 @@ namespace ProgettoPDS_CLIENT
             XmlNodeList xmlnodes = this.mng.documentTwo.GetElementsByTagName("MYSERVER");
             bool res = false;
 
+            if (xmlnodes.Count == 0) {
+                MessageBox.Show("La cache delle configurazioni è vuota!! Aggiungi un server\nalla lista e poi clicca sul bottone\"Save...\" per inserirlo in cache", 
+                    "AVVISO", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
             for (int i = 0; i < xmlnodes.Count; i++)
             {
                 Server aux = new Server();
@@ -563,6 +606,7 @@ namespace ProgettoPDS_CLIENT
         private void ClearCacheButton_Click(object sender, EventArgs e)
         {
             this.mng.RemoveServers();
+            MessageBox.Show("La cache è stata svuotata con successo!!", "AVVISO", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         #endregion
@@ -797,11 +841,16 @@ namespace ProgettoPDS_CLIENT
                 aux = "AUDIO";
                 byte[] pdu = Encoding.ASCII.GetBytes(aux);
                 SendClipboardData(pdu);
-                byte[] resp = ReceiveClipboardData();
-                Stream st = Clipboard.GetAudioStream();
-                pdu = new byte[st.Length];
-                st.Read(pdu, 0, (int)st.Length);
-                SendClipboardData(pdu);
+                pdu = ReceiveClipboardData();
+                string resp = Encoding.ASCII.GetString(pdu);
+                resp = resp.Substring(0, resp.IndexOf('\0'));
+
+                if (resp == "+OK") {
+                    Stream st = Clipboard.GetAudioStream();
+                    pdu = new byte[st.Length];
+                    st.Read(pdu, 0, (int)st.Length);
+                    SendClipboardData(pdu);
+                }
             }
             else if( Clipboard.ContainsFileDropList() ) {
                 aux = "FILE_DROP-";
@@ -809,7 +858,13 @@ namespace ProgettoPDS_CLIENT
 
                 for (int i = 0; i < strc.Count; i++) { 
                     int num = strc.Count - i;
-                    aux += strc[0] + "-" + num.ToString();
+                    FileInfo info = new FileInfo(strc[i]);
+                    aux += strc[0] + "-" + info.Length.ToString() + "-" +num.ToString();
+                    
+                    BinaryReader lettore = new BinaryReader(File.Open(strc[i], FileMode.Open));
+                    // TODO
+                    // leggere file, invio blocchi del file
+                    lettore.Close();
                 }
 
             }
@@ -819,30 +874,80 @@ namespace ProgettoPDS_CLIENT
                 Image img = Clipboard.GetImage();
                 byte[] pdu = Encoding.ASCII.GetBytes(aux);
                 SendClipboardData(pdu);
-                byte[] resp = ReceiveClipboardData();
+                pdu = ReceiveClipboardData();
+                string resp = Encoding.ASCII.GetString(pdu);
+                resp = resp.Substring(0, resp.IndexOf('\0'));
 
-                MemoryStream mStream = new MemoryStream();
-                img.Save(mStream, img.RawFormat);
-                pdu = mStream.ToArray();
-                SendClipboardData(pdu);
+                if (resp == "+OK") {
+                    MemoryStream mStream = new MemoryStream();
+                    img.Save(mStream, img.RawFormat);
+                    pdu = mStream.ToArray();
+                    SendClipboardData(pdu);
+                }
 
             }
-            else if (Clipboard.ContainsText()) {
-                aux = "TEXT-";
+            else if ( Clipboard.ContainsText() ) {
+                aux = "TEXT";
                 string text = Clipboard.GetText();
                 byte[] pdu = Encoding.ASCII.GetBytes(aux);
                 SendClipboardData(pdu);
-                byte[] resp = ReceiveClipboardData();
-                pdu = Encoding.ASCII.GetBytes(text);
-                SendClipboardData(pdu);
+                pdu = ReceiveClipboardData();
+                string resp = Encoding.ASCII.GetString(pdu);
+                resp = resp.Substring(0, resp.IndexOf('\0'));
+
+                if (resp == "+OK") {
+                    pdu = Encoding.ASCII.GetBytes(text);
+                    SendClipboardData(pdu);
+                }
             }
         }
 
         private void ClipboardRequestBW_DoWork(object sender, DoWorkEventArgs e)
         {
             ClipboardPacket("GET_CLIP");
-            //TODO
-            //Ricezione dati provenienti dalla clipboard dell'host remoto
+            byte[] pdu = ReceiveClipboardData();
+            string resp = Encoding.ASCII.GetString(pdu);
+            resp = resp.Substring(0, resp.IndexOf('\0'));
+            string aux;
+
+            switch (resp) { 
+                case "AUDIO":
+                    aux = "+OK";
+                    pdu = Encoding.ASCII.GetBytes(aux);
+                    SendClipboardData(pdu);
+                    pdu = ReceiveClipboardData();
+                    Stream stream = new MemoryStream(pdu);
+                    Clipboard.SetAudio(stream);
+                    break;
+                case "IMMAGINE":
+                    aux = "+OK";
+                    pdu = Encoding.ASCII.GetBytes(aux);
+                    SendClipboardData(pdu);
+                    pdu = ReceiveClipboardData();
+                    ImageConverter ic = new ImageConverter();
+                    Image img = (Image)ic.ConvertFrom(pdu);
+                    Clipboard.SetImage(img);
+                    break;
+                case "FILE_DROP":
+                    aux = "+OK";
+                    pdu = Encoding.ASCII.GetBytes(aux);
+                    SendClipboardData(pdu);
+                    // TODO
+                    break;
+                case "TEXT":
+                    aux = "+OK";
+                    pdu = Encoding.ASCII.GetBytes(aux);
+                    SendClipboardData(pdu);
+                    pdu = ReceiveClipboardData();
+                    aux = Encoding.ASCII.GetString(pdu);
+                    Clipboard.SetText(aux);
+                    break;
+                default:
+                    aux = "-ERR";
+                    pdu = Encoding.ASCII.GetBytes(aux);
+                    SendClipboardData(pdu);
+                    break;
+            }
         }
 
         private void SendClipboardData(byte[] pdu)
@@ -851,8 +956,9 @@ namespace ProgettoPDS_CLIENT
                 ClipboardMut.WaitOne();
                 this.connessioni[this.currServ].ClipSock.Send(pdu);
             }
-            catch {
-                // TODO
+            catch( Exception e) {
+                MessageBox.Show(e.Message, "ANOMALY", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ResetConnection();
             }
             finally {
                 ClipboardMut.ReleaseMutex();
@@ -861,9 +967,22 @@ namespace ProgettoPDS_CLIENT
 
         private byte[] ReceiveClipboardData()
         {
-            // TODO
+
             byte[] pdu = new byte[128];
-            return pdu;            
+
+            try {
+                ClipboardMut.WaitOne();
+                this.connessioni[this.currServ].ClipSock.Receive(pdu);
+            }
+            catch (Exception e) {
+                MessageBox.Show(e.Message, "ANOMALY", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ResetConnection();
+            }
+            finally {
+                ClipboardMut.ReleaseMutex();
+            }
+
+            return pdu;
         }
 
         #endregion

@@ -1,13 +1,3 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <SERVERS>
-  <MYSERVER>
-    <HOSTNAME>Pippo</HOSTNAME>
-    <IP_ADDRESS>169.254.202.73</IP_ADDRESS>
-    <PORT>2000</PORT>
-  </MYSERVER>
-  <MYSERVER>
-    <HOSTNAME>DaveNotebook</HOSTNAME>
-    <IP_ADDRESS>192.168.1.21</IP_ADDRESS>
-    <PORT>2000</PORT>
-  </MYSERVER>
 </SERVERS>

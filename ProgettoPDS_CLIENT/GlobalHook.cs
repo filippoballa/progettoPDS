@@ -134,7 +134,6 @@ namespace ProgettoPDS_CLIENT
 
         #endregion
 
-
         #region Methods
 
         public void Install() 
@@ -168,7 +167,6 @@ namespace ProgettoPDS_CLIENT
         }
 
         #endregion
-
 
     }
 }

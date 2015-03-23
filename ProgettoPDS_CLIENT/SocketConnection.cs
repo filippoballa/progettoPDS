@@ -137,9 +137,12 @@ namespace ProgettoPDS_CLIENT
                         MessageBox.Show("Connesso con " + this.sock.RemoteEndPoint.ToString() + "!!",
                             "CONNECTION SUCCESS!!", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
-                    else if (aux == "-ERR")
+                    else if (aux == "-ERR") {
                         MessageBox.Show("Connessione con il server fallita!!",
                             "CONNECTION FAILURE!!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        this.SockClose();
+                    }
+
                 }
                 else 
                     ErrorProtocol();
@@ -195,10 +198,9 @@ namespace ProgettoPDS_CLIENT
         {
             IPHostEntry host = Dns.GetHostEntry(Dns.GetHostName());
 
-            foreach (IPAddress ip in host.AddressList)
-            {
-                if (ip.AddressFamily == AddressFamily.InterNetwork)
-                {
+            foreach (IPAddress ip in host.AddressList) {
+
+                if (ip.AddressFamily == AddressFamily.InterNetwork) {
                     localEP = new IPEndPoint(ip,0);
                     break;
                 }
@@ -206,13 +208,10 @@ namespace ProgettoPDS_CLIENT
 
         }
 
-        // La funzione ritorna "true" se il socket è connesso
+        // La funzione ritorna "true" se i socket sono attivi/connessi
         public bool IsConnected() 
         {
-            if (this.sock == null)
-                return false;
-
-            if (this.sock.Connected)
+            if (this.stato == STATO.CONNESSO)
                 return true;
             else
                 return false;
@@ -294,5 +293,4 @@ namespace ProgettoPDS_CLIENT
         #endregion
 
     }
-
 }

@@ -67,6 +67,7 @@
             this.pictureBox5 = new System.Windows.Forms.PictureBox();
             this.ClipboardSendBW = new System.ComponentModel.BackgroundWorker();
             this.ClipboardRequestBW = new System.ComponentModel.BackgroundWorker();
+            this.LogOutButton = new System.Windows.Forms.Button();
             this.MainPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -88,6 +89,7 @@
             // 
             // MainPanel
             // 
+            this.MainPanel.Controls.Add(this.LogOutButton);
             this.MainPanel.Controls.Add(this.ClearCacheButton);
             this.MainPanel.Controls.Add(this.LoadConfButton);
             this.MainPanel.Controls.Add(this.SaveServButton);
@@ -201,7 +203,7 @@
             this.groupBox1.Controls.Add(this.IPAddressLabel);
             this.groupBox1.Font = new System.Drawing.Font("Calibri", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox1.ForeColor = System.Drawing.Color.White;
-            this.groupBox1.Location = new System.Drawing.Point(586, 12);
+            this.groupBox1.Location = new System.Drawing.Point(586, 17);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(367, 343);
             this.groupBox1.TabIndex = 23;
@@ -300,7 +302,7 @@
             this.groupBox2.BackColor = System.Drawing.Color.Sienna;
             this.groupBox2.Controls.Add(this.label5);
             this.groupBox2.ForeColor = System.Drawing.Color.White;
-            this.groupBox2.Location = new System.Drawing.Point(586, 402);
+            this.groupBox2.Location = new System.Drawing.Point(586, 398);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(367, 100);
             this.groupBox2.TabIndex = 22;
@@ -366,7 +368,7 @@
             this.InfoButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.InfoButton.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.InfoButton.Image = ((System.Drawing.Image)(resources.GetObject("InfoButton.Image")));
-            this.InfoButton.Location = new System.Drawing.Point(811, 535);
+            this.InfoButton.Location = new System.Drawing.Point(767, 535);
             this.InfoButton.Name = "InfoButton";
             this.InfoButton.Size = new System.Drawing.Size(66, 58);
             this.InfoButton.TabIndex = 17;
@@ -410,7 +412,7 @@
             this.StartButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.StartButton.Font = new System.Drawing.Font("Comic Sans MS", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.StartButton.ForeColor = System.Drawing.Color.White;
-            this.StartButton.Location = new System.Drawing.Point(637, 537);
+            this.StartButton.Location = new System.Drawing.Point(609, 537);
             this.StartButton.Name = "StartButton";
             this.StartButton.Size = new System.Drawing.Size(103, 56);
             this.StartButton.TabIndex = 14;
@@ -558,6 +560,23 @@
             this.ClipboardRequestBW.WorkerSupportsCancellation = true;
             this.ClipboardRequestBW.DoWork += new System.ComponentModel.DoWorkEventHandler(this.ClipboardRequestBW_DoWork);
             // 
+            // LogOutButton
+            // 
+            this.LogOutButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("LogOutButton.BackgroundImage")));
+            this.LogOutButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.LogOutButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.LogOutButton.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.LogOutButton.FlatAppearance.BorderSize = 4;
+            this.LogOutButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.LogOutButton.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LogOutButton.Location = new System.Drawing.Point(865, 535);
+            this.LogOutButton.Name = "LogOutButton";
+            this.LogOutButton.Size = new System.Drawing.Size(66, 58);
+            this.LogOutButton.TabIndex = 29;
+            this.LogOutButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.LogOutButton.UseVisualStyleBackColor = true;
+            this.LogOutButton.Click += new System.EventHandler(this.LogOutButton_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -637,5 +656,6 @@
         private System.Windows.Forms.Button SaveServButton;
         private System.ComponentModel.BackgroundWorker ClipboardSendBW;
         private System.ComponentModel.BackgroundWorker ClipboardRequestBW;
+        private System.Windows.Forms.Button LogOutButton;
     }
 }
