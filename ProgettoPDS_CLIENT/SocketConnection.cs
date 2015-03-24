@@ -26,6 +26,8 @@ namespace ProgettoPDS_CLIENT
         private int remotePort;
         private MainForm m;
         private STATO stato;
+        public const int RBufSizeClipSock = Int32.MaxValue;
+        public const int SBufSizeClipSock = Int32.MaxValue;
 
         #endregion
 
@@ -131,6 +133,8 @@ namespace ProgettoPDS_CLIENT
                         this.clipSock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                         this.clipSock.Bind(new IPEndPoint(this.localEP.Address, 0));
                         this.clipSock.Connect(new IPEndPoint(this.remoteEP.Address, 4000));
+                        this.clipSock.SendBufferSize = SocketConnection.SBufSizeClipSock;
+                        this.clipSock.ReceiveBufferSize = SocketConnection.RBufSizeClipSock;
                         this.stato = STATO.CONNESSO;
                         this.m.Invoke(this.m.myHandler);
 

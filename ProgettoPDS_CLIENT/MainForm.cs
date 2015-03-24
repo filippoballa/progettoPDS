@@ -13,6 +13,7 @@ using System.Threading;
 using System.Xml;
 using System.IO;
 using System.Collections.Specialized;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace ProgettoPDS_CLIENT
 {
@@ -313,6 +314,7 @@ namespace ProgettoPDS_CLIENT
             QuitPacket();
 
             this.connessioni[this.currServ].SockClose();
+            this.connessioni[this.currServ].CloseClipSock();
             this.CountServerConnected--;
 
             if (this.CountServerConnected == 0)
@@ -853,18 +855,18 @@ namespace ProgettoPDS_CLIENT
                 }
             }
             else if( Clipboard.ContainsFileDropList() ) {
-                aux = "FILE_DROP-";
-                StringCollection strc = Clipboard.GetFileDropList();
+                aux = "FILE_DROP";
+                byte[] pdu = Encoding.ASCII.GetBytes(aux);
+                SendClipboardData(pdu);
+                pdu = ReceiveClipboardData();
+                string resp = Encoding.ASCII.GetString(pdu);
+                resp = resp.Substring(0, resp.IndexOf('\0'));
 
-                for (int i = 0; i < strc.Count; i++) { 
-                    int num = strc.Count - i;
-                    FileInfo info = new FileInfo(strc[i]);
-                    aux += strc[0] + "-" + info.Length.ToString() + "-" +num.ToString();
-                    
-                    BinaryReader lettore = new BinaryReader(File.Open(strc[i], FileMode.Open));
+                if (resp == "+OK") {
+
+                    StringCollection strc = Clipboard.GetFileDropList();
                     // TODO
-                    // leggere file, invio blocchi del file
-                    lettore.Close();
+                    // Da Gestire!!
                 }
 
             }
@@ -932,7 +934,10 @@ namespace ProgettoPDS_CLIENT
                     aux = "+OK";
                     pdu = Encoding.ASCII.GetBytes(aux);
                     SendClipboardData(pdu);
+                    
                     // TODO
+                    // Da Gestire!!
+
                     break;
                 case "TEXT":
                     aux = "+OK";
