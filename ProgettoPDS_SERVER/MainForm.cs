@@ -121,13 +121,7 @@ namespace ProgettoPDS_SERVER
                 work = false;
             else
             {
-                if (Sconnection.Stato == ApplicationConstants.Stato.DISCONNESSO)
-                    notifyIcon1.ShowBalloonTip(ToolTipTimeOut, "INFO STATO", "Deve ancora essere creata una connessione.", ToolTipIcon.Warning);
-                else
-                    notifyIcon1.ShowBalloonTip(ToolTipTimeOut, "INFO STATO", "Eri ancora in attesa di connessioni.", ToolTipIcon.Warning);
-
-                Thread.Sleep(1000);
-                Sconnection.Stato = ApplicationConstants.Stato.DISCONNESSO;
+                Sconnection.SockDisconnect();
             } 
         }
 
@@ -264,10 +258,12 @@ namespace ProgettoPDS_SERVER
                         else if (s == ApplicationConstants.CLIPBOARDCODE)
                         {
                             //[C]-[EVENTKEY]
-                            d = new object[3];
+                            d = new object[4];
                             d[0] = s;
                             d[1] = d[1] = Data[i + 1];
-                            d[2] = 0;//campi aggiuntivi per passare dati diversi da string al thread della clipboard 
+                            //campi aggiuntivi per passare dati diversi da string al thread della clipboard 
+                            d[2] = Sconnection;
+                            d[3] = this.labelClipboardState.Text ;
 
                             i += 1;
 

@@ -131,8 +131,8 @@ namespace ProgettoPDS_SERVER
         const string keyboardeventsinglekey = "SNGKEY";
 
         //clipboard events
-        const string clipboardeventGet = "GET";
-        const string clipboardeventSet = "SET";
+        const string clipboardeventGet = "GET_CLIP";
+        const string clipboardeventSet = "SET_CLIP";
 
         //readonly methods
         public static string AUTH_USER { get { return auth_user; } }

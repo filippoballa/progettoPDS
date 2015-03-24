@@ -46,15 +46,20 @@ namespace ProgettoPDS_SERVER
         //attributi
 
         private const int backlog = 1;
-        private Socket sock, passiv;
+        private Socket sock = null, passiv = null, sockTransfer = null, passivTransfer = null;
         private int porta;
         private String myIP;
         private MainForm main;
         private string client = null;
+        public static const int trasfport = 4000;
 
         public Socket Passiv
         {
             get { return passiv; }
+        }
+        public Socket PassivTransfer
+        {
+            get { return passivTransfer; }
         }
 
         private ApplicationConstants.Stato stato = ApplicationConstants.Stato.DISCONNESSO;
@@ -74,13 +79,15 @@ namespace ProgettoPDS_SERVER
             this.main = main;
             Stato = ApplicationConstants.Stato.IN_ATTESA;
             
-            sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            sock.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+            if(sock == null)
+                sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                //sock.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
 
             try
             {
                 // Bind the socket to the local endpoint
-                sock.Bind(new IPEndPoint(IPAddress.Any, porta));
+                if(!sock.IsBound)
+                    sock.Bind(new IPEndPoint(IPAddress.Any, porta));
 
                 sock.Listen(backlog);
                 // Program is suspended while waiting for an incoming connection.
@@ -98,19 +105,51 @@ namespace ProgettoPDS_SERVER
             passiv = sock.EndAccept(ar);
 
             main.notifyIcon1.ShowBalloonTip(main.ToolTipTimeOut, "INFO STATO", "Inizio procedura autenticazione client . . ." + passiv.RemoteEndPoint.ToString(), ToolTipIcon.Info);
-            if(ClientAutentication())
+            
+            //sock.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+
+            try
             {
-                Stato = ApplicationConstants.Stato.CONNESSO;
-                //disegno qualcosa per mostrare il controllo
-                DrawBorders();
-                //lancio il backGround worker per il controllo dei pacchetti
-                main.PacketsHandlerbackgroundWorker.RunWorkerAsync();
+                if (ClientAutentication())
+                {
+                    Stato = ApplicationConstants.Stato.CONNESSO;
+                    //disegno qualcosa per mostrare il controllo
+                    DrawBorders();
+                    //lancio il backGround worker per il controllo dei pacchetti
+                    main.PacketsHandlerbackgroundWorker.RunWorkerAsync();
+
+                    if (sockTransfer == null)
+                        sockTransfer = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+
+                    // Bind the socket to the local endpoint
+                    if (!sockTransfer.IsBound)
+                        sockTransfer.Bind(new IPEndPoint(IPAddress.Any, trasfport));
+
+                    sockTransfer.Listen(backlog);
+                    // Program is suspended while waiting for an incoming connection.
+                    passivTransfer = sockTransfer.Accept();
+
+                    IPEndPoint passivIP = passiv.RemoteEndPoint as IPEndPoint;
+                    IPEndPoint passivIPTS = passivTransfer.RemoteEndPoint as IPEndPoint;
+
+                    if (passivIP.Address != passivIPTS.Address)
+                    {
+                        SockDisconnectTS();
+                        SockDisconnect();
+                    }
+
+                }
+                else
+                {
+                    Stato = ApplicationConstants.Stato.DISCONNESSO;
+                    main.notifyIcon1.ShowBalloonTip(main.ToolTipTimeOut, "ERRORE", "Autenticazione Client non riuscita. Chiusura connessione.", ToolTipIcon.Warning);
+                }
             }
-            else
+            catch(Exception e)
             {
-                Stato = ApplicationConstants.Stato.DISCONNESSO;
-                main.notifyIcon1.ShowBalloonTip(main.ToolTipTimeOut, "ERRORE", "Autenticazione Client non riuscita. Chiusura connessione.", ToolTipIcon.Warning);
+                MessageBox.Show(e.Message);
             }
+           
         }
 
         public void SockDisconnect(Socket s)
@@ -121,12 +160,10 @@ namespace ProgettoPDS_SERVER
                 {
                     if (s.Connected)
                     {
-                        s.Disconnect(true);
+                        s.Shutdown(SocketShutdown.Both);
+                        s.Close();
+                        s = null;
                         main.notifyIcon1.ShowBalloonTip(main.ToolTipTimeOut, "INFO STATO", "Connessione chiusa correttamente.", ToolTipIcon.Info);
-                    }
-                    else
-                    {
-                        main.notifyIcon1.ShowBalloonTip(main.ToolTipTimeOut, "INFO STATO", "Eri già disconnesso.", ToolTipIcon.Warning);
                     }
                 }
                 else
@@ -146,6 +183,50 @@ namespace ProgettoPDS_SERVER
             SockDisconnect(sock);
 
             Stato = ApplicationConstants.Stato.DISCONNESSO;
+        }
+        #endregion
+
+        #region Transfer Socket Methods
+        public void StartListeningTS()
+        {
+            if (sockTransfer == null)
+                sockTransfer = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            //sock.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+
+            try
+            {
+                // Bind the socket to the local endpoint
+                if (!sockTransfer.IsBound)
+                    sockTransfer.Bind(new IPEndPoint(IPAddress.Any, trasfport));
+
+                sockTransfer.Listen(backlog);
+                // Program is suspended while waiting for an incoming connection.
+                sockTransfer.BeginAccept(new AsyncCallback(AcceptCallbackTS), sock);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+        }
+        private void AcceptCallbackTS(IAsyncResult ar)
+        {
+            sockTransfer = (Socket)ar.AsyncState;
+            passivTransfer = sockTransfer.EndAccept(ar);
+
+            IPEndPoint passivIP = passiv.RemoteEndPoint as IPEndPoint;
+            IPEndPoint passivIPTS = passivTransfer.RemoteEndPoint as IPEndPoint;
+
+            if(passivIP.Address != passivIPTS.Address)
+            {
+                SockDisconnectTS();
+            }
+
+
+        }
+        public void SockDisconnectTS()
+        {
+            SockDisconnect(passivTransfer);
+            SockDisconnect(sockTransfer);
         }
         #endregion
 

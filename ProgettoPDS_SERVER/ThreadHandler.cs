@@ -7,6 +7,9 @@ using System.Threading;
 using System.Globalization;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
+using System.IO;
+using System.Drawing;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace ProgettoPDS_SERVER
 {
@@ -16,6 +19,7 @@ namespace ProgettoPDS_SERVER
         private const int T = 1;//tempo di attesa per lo spostamento del mouse
         private const int t = 5;
         public const int MAXTHREAD = 5;
+        private const int SBuff = Int32.MaxValue;
         private static int threadcounter = 0;
         private static Mutex mut = new Mutex();
         public static ManualResetEvent mrMaxThreads = new ManualResetEvent(false);
@@ -363,19 +367,122 @@ namespace ProgettoPDS_SERVER
 
         #endregion
         #region CLIPBOARD
-        public static void ClipBoardThreadProc(object data)
+        public static void ClipBoardThreadProc(object threaddata)
         {
-            String[] CBData = data as String[];
+            //getting information arguments
+            String[] CBData = threaddata as String[];
+            object[] objdata = threaddata as object[];
+
+            SocketConnection Sconnection = objdata[3] as SocketConnection;
+            string statoCB = objdata[4] as string;
 
             if(CBData[1]==ApplicationConstants.CLIPBOARDEVENTGET)
             {
                 //gestione invio clipboard
 
-                //creo file da inviare
+                byte[] dataToSend = null;
+
+                //creazione dei byte da inviare
+                if(statoCB==ApplicationConstants.StatoClipBoard.AUDIO.ToString())
+                {
+                    Stream s = Clipboard.GetAudioStream();
+                    MemoryStream ms = new MemoryStream();
+                    s.CopyTo(ms);
+                    //dataToSend = new byte[ms.ToArray().Length];
+                    dataToSend = ms.ToArray();
+                    
+                }
+                else if (statoCB == ApplicationConstants.StatoClipBoard.IMMAGINE.ToString())
+                {
+                    Image i = Clipboard.GetImage();
+                    MemoryStream ms = new MemoryStream();
+                    i.Save(ms,System.Drawing.Imaging.ImageFormat.Gif);
+                    //dataToSend = new byte[ms.ToArray().Length];
+                    dataToSend = ms.ToArray();
+                }
+                else if (statoCB == ApplicationConstants.StatoClipBoard.TEXT.ToString())
+                {
+                    dataToSend = Encoding.ASCII.GetBytes(Clipboard.GetText());
+                }
+                else if (statoCB == ApplicationConstants.StatoClipBoard.FILE_DROP.ToString())
+                {
+                    System.Collections.Specialized.StringCollection filenames = Clipboard.GetFileDropList();
+                    object[] arr = new object[3];
+
+                    if (filenames.Count < 2)//solo un file
+                    {
+                        byte[] file= File.ReadAllBytes(filenames[0]);
+
+                        arr[0] = 1;
+                        arr[1] = filenames[0];
+                        arr[2] = file;
+                        
+                    }
+                    else//più di un file
+                    {
+                        List<byte[]> files = new List<byte[]>();
+
+                        for (int i = 0; i < filenames.Count; i++)
+                        {
+                            byte[] f = File.ReadAllBytes(filenames[i]);
+
+                            files.Add(f);
+                        }
+                        arr[0] = files.Count;
+                        arr[1] = filenames;
+                        arr[2] = files;
+                    }
+
+                    BinaryFormatter bf = new BinaryFormatter();
+                    MemoryStream ms = new MemoryStream();
+                    bf.Serialize(ms, arr);
+                    dataToSend = ms.ToArray();
+                }
+                else//VUOTA o valore strano(impossibile)
+                {
+
+                }
+
+                if (dataToSend != null)
+                {
+                    //inizio comunicazione 
+                    byte[] data = new byte[64]; 
+                    data = Encoding.ASCII.GetBytes(statoCB);
+                    Sconnection.PassivTransfer.Send(data);//invio tipo di dati
+
+                    Sconnection.PassivTransfer.Receive(data);//ricevo risp
+
+                    if(Encoding.ASCII.GetString(data)==ApplicationConstants.OK)//inizio trasferimento file
+                    {
+                        Sconnection.PassivTransfer.SendBufferSize = SBuff;
+
+                        int dataSended = 0;
+                        while(dataSended < dataToSend.Length)
+                        {
+                            byte[] d = new byte[SBuff];
+
+                            for (int i = dataSended; i < SBuff && i < dataToSend.Length; i++)
+                                d[i] = dataToSend[i];
+
+                            Sconnection.PassivTransfer.Send(d);
+
+                            dataSended += d.Length;
+                        }
+                    }
+                    else
+                    {
+                        //non ho ricevuto l'ok
+                    }
+                }
+                    
             }
             else if(CBData[1]==ApplicationConstants.CLIPBOARDEVENTSET)
             {
                 //gestione ricezione clipboard
+
+                byte[] data;
+                data = new byte[64];
+                Sconnection.Passiv.Receive(data);
             }
 
             ThreadCounter--;
