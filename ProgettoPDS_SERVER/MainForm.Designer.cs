@@ -74,6 +74,7 @@
             this.labelTipoCB = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.buttonClosePanelInfoCB = new System.Windows.Forms.Button();
+            this.progressBarClipboard = new System.Windows.Forms.ProgressBar();
             this.contextMenuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownPort)).BeginInit();
             this.menuStrip1.SuspendLayout();
@@ -312,7 +313,7 @@
             this.infoDatiToolStripMenuItem.BackColor = System.Drawing.Color.Beige;
             this.infoDatiToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("infoDatiToolStripMenuItem.Image")));
             this.infoDatiToolStripMenuItem.Name = "infoDatiToolStripMenuItem";
-            this.infoDatiToolStripMenuItem.Size = new System.Drawing.Size(156, 26);
+            this.infoDatiToolStripMenuItem.Size = new System.Drawing.Size(129, 26);
             this.infoDatiToolStripMenuItem.Text = "Info Dati";
             this.infoDatiToolStripMenuItem.Click += new System.EventHandler(this.infoDatiToolStripMenuItem_Click);
             // 
@@ -321,7 +322,7 @@
             this.pulisciToolStripMenuItem.BackColor = System.Drawing.Color.Beige;
             this.pulisciToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("pulisciToolStripMenuItem.Image")));
             this.pulisciToolStripMenuItem.Name = "pulisciToolStripMenuItem";
-            this.pulisciToolStripMenuItem.Size = new System.Drawing.Size(156, 26);
+            this.pulisciToolStripMenuItem.Size = new System.Drawing.Size(129, 26);
             this.pulisciToolStripMenuItem.Text = "Pulisci";
             this.pulisciToolStripMenuItem.Click += new System.EventHandler(this.pulisciToolStripMenuItem_Click);
             // 
@@ -343,11 +344,12 @@
             // 
             this.PanelSetPort.BackColor = System.Drawing.Color.Beige;
             this.PanelSetPort.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("PanelSetPort.BackgroundImage")));
+            this.PanelSetPort.Controls.Add(this.progressBarClipboard);
             this.PanelSetPort.Controls.Add(this.buttonClosePanelSetPort);
             this.PanelSetPort.Controls.Add(this.numericUpDownPort);
             this.PanelSetPort.Controls.Add(this.buttonSetPort);
             this.PanelSetPort.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.PanelSetPort.Location = new System.Drawing.Point(0, 124);
+            this.PanelSetPort.Location = new System.Drawing.Point(0, 149);
             this.PanelSetPort.Name = "PanelSetPort";
             this.PanelSetPort.Padding = new System.Windows.Forms.Padding(5);
             this.PanelSetPort.Size = new System.Drawing.Size(384, 87);
@@ -404,7 +406,7 @@
             this.panelChangePassword.Controls.Add(this.label2);
             this.panelChangePassword.Controls.Add(this.textBoxVpassword);
             this.panelChangePassword.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panelChangePassword.Location = new System.Drawing.Point(0, 37);
+            this.panelChangePassword.Location = new System.Drawing.Point(0, 62);
             this.panelChangePassword.Name = "panelChangePassword";
             this.panelChangePassword.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.panelChangePassword.Size = new System.Drawing.Size(384, 87);
@@ -589,13 +591,22 @@
             this.buttonClosePanelInfoCB.UseVisualStyleBackColor = true;
             this.buttonClosePanelInfoCB.Click += new System.EventHandler(this.buttonClosePanelInfoCB_Click);
             // 
+            // progressBarClipboard
+            // 
+            this.progressBarClipboard.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.progressBarClipboard.Location = new System.Drawing.Point(5, 57);
+            this.progressBarClipboard.Name = "progressBarClipboard";
+            this.progressBarClipboard.Size = new System.Drawing.Size(374, 25);
+            this.progressBarClipboard.TabIndex = 5;
+            this.progressBarClipboard.Visible = false;
+            // 
             // MainForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.AutoSize = true;
             this.BackColor = System.Drawing.Color.Beige;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.ClientSize = new System.Drawing.Size(384, 211);
+            this.ClientSize = new System.Drawing.Size(384, 236);
             this.Controls.Add(this.panelInfoCB);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.groupBoxInfo);
@@ -657,7 +668,7 @@
         private System.Windows.Forms.ToolStripMenuItem clipboardToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cambioPasswordToolStripMenuItem;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label labelClipboardState;
+        protected internal System.Windows.Forms.Label labelClipboardState;
         private System.Windows.Forms.Panel panelChangePassword;
         private System.Windows.Forms.Button buttonClosePanelChangePassword;
         private System.Windows.Forms.Label label5;
@@ -676,5 +687,6 @@
         private System.Windows.Forms.PictureBox pictureBoxCB;
         private System.Windows.Forms.Button buttonStopAudio;
         private System.Windows.Forms.Button buttonPlayAudio;
+        protected internal System.Windows.Forms.ProgressBar progressBarClipboard;
     }
 }

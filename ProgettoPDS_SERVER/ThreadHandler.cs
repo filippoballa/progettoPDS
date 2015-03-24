@@ -374,8 +374,9 @@ namespace ProgettoPDS_SERVER
             String[] CBData = threaddata as String[];
             object[] objdata = threaddata as object[];
 
-            SocketConnection Sconnection = objdata[3] as SocketConnection;
-            string statoCB = objdata[4] as string;
+            MainForm main = objdata[3] as MainForm;
+            SocketConnection Sconnection = objdata[4] as SocketConnection;
+            string statoCB = main.labelClipboardState.Text;
 
             if(CBData[1]==ApplicationConstants.CLIPBOARDEVENTGET)
             {
@@ -453,9 +454,12 @@ namespace ProgettoPDS_SERVER
 
                     Sconnection.PassivTransfer.Receive(data);//ricevo risp
 
+                    
                     if(Encoding.ASCII.GetString(data)==ApplicationConstants.OK)//inizio trasferimento file
                     {
                         Sconnection.PassivTransfer.SendBufferSize = SBuffSize;
+
+                        main.startProgressBar(dataToSend.Length);
 
                         int dataSended = 0;
                         while(dataSended < dataToSend.Length)
@@ -463,12 +467,17 @@ namespace ProgettoPDS_SERVER
                             byte[] d = new byte[SBuffSize];
 
                             for (int i = dataSended; i < SBuffSize && i < dataToSend.Length; i++)
-                                d[i-dataSended] = dataToSend[i];
+                            {
+                                d[i - dataSended] = dataToSend[i];
+                                main.doStepProgressBar();
+                            } 
 
                             Sconnection.PassivTransfer.Send(d);
 
                             dataSended += d.Length;
                         }
+
+                        main.closeProgressBar();
                     }
                     else
                     {
@@ -497,17 +506,24 @@ namespace ProgettoPDS_SERVER
                 Sconnection.PassivTransfer.ReceiveBufferSize = RBuffSize;
 
                 int dataReceived = 0;
+
+                main.startProgressBar(dim);
+
                 while (dataReceived < dim)
                 {
                     data = new byte[RBuffSize];
                     Sconnection.PassivTransfer.Receive(data);
 
                     for (int i = dataReceived; i < RBuffSize && i < dim; i++)
-                        dataToReceive[i] = data[i-dataReceived];
+                    {
+                        dataToReceive[i] = data[i - dataReceived];
+                        main.doStepProgressBar();
+                    }
 
                     dataReceived += data.Length;
                 }
 
+                //casi a seconda del tipo di dato
                 if (statoCB == ApplicationConstants.StatoClipBoard.AUDIO.ToString())
                 {
                     MemoryStream ms = new MemoryStream(dataToReceive);
@@ -555,15 +571,14 @@ namespace ProgettoPDS_SERVER
                                 string filename = filenames[i] as string;
                                 File.WriteAllBytes(path, files[i]);
                             }
-                        }
-                        
-                        
+                        }  
                     }
                 }
                 else
                 {
-                    //suca!
+                    //non dovrebbe verificarsi
                 }
+                main.closeProgressBar();
             }
 
             ThreadCounter--;

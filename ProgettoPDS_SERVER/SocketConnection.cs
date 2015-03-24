@@ -51,7 +51,7 @@ namespace ProgettoPDS_SERVER
         private String myIP;
         private MainForm main;
         private string client = null;
-        public static const int trasfport = 4000;
+        public const int trasfport = 4000;
 
         public Socket Passiv
         {

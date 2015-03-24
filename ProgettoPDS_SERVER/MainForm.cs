@@ -24,13 +24,14 @@ namespace ProgettoPDS_SERVER
         private const int minheight = 165;
         private const int maxheight = 250;
         private SocketConnection Sconnection = null;
+
         private static int port = 2000;
         public int Port { get { return port; } set { port = value; } }
         private const int toolTipTimeOut = 2;
         public int ToolTipTimeOut { get { return toolTipTimeOut; } }
         private User u = null;
         private const int passwordlenght = 8;
-        static System.Media.SoundPlayer player;
+        private static System.Media.SoundPlayer player;
 
         //delegate per le modifiche allo stato nel form da parte di altri thread
         public delegate void LabelStatoChanged(ApplicationConstants.Stato stato, string client);
@@ -47,7 +48,7 @@ namespace ProgettoPDS_SERVER
             this.u = u;
             //scrivo il nome dell'utente nel form
             this.Text = "SERVER - "+ u.Username;
-          
+
             //stato clipBoard
             ClipboardChanghed();
 
@@ -57,8 +58,8 @@ namespace ProgettoPDS_SERVER
             this.ShowInTaskbar = false;
 
             //inizializzo la classe per gestire la connessione
-            if (this.Sconnection == null)
-                this.Sconnection = new SocketConnection(Port);
+            if (Sconnection == null)
+                Sconnection = new SocketConnection(Port);
 
             //aggiungo nel form l'IP corrente
             this.Text += " - IP : " + Sconnection.GetMyIp();
@@ -262,8 +263,8 @@ namespace ProgettoPDS_SERVER
                             d[0] = s;
                             d[1] = d[1] = Data[i + 1];
                             //campi aggiuntivi per passare dati diversi da string al thread della clipboard 
-                            d[2] = Sconnection;
-                            d[3] = this.labelClipboardState.Text ;
+                            d[2] = this;
+                            d[3] = this.Sconnection;
 
                             i += 1;
 
@@ -351,18 +352,26 @@ namespace ProgettoPDS_SERVER
         /// <param name="e"></param>
         private void buttonSetPort_Click(object sender, EventArgs e)
         {
-            this.Port = (int)this.numericUpDownPort.Value;
-
-            //inizializzo la classe per gestire la connessione
-            if (this.Sconnection.Stato == ApplicationConstants.Stato.DISCONNESSO)
+            if ((int)this.numericUpDownPort.Value != SocketConnection.trasfport)
             {
-                this.Sconnection = new SocketConnection(Port);
-                PanelSetPort.Visible = false;
-                this.Height = minheight;
-                notifyIcon1.ShowBalloonTip(ToolTipTimeOut, "INFO STATO", "Porta cambiata con successo!", ToolTipIcon.Info);
+                this.Port = (int)this.numericUpDownPort.Value;
+
+                //inizializzo la classe per gestire la connessione
+                if (Sconnection.Stato == ApplicationConstants.Stato.DISCONNESSO)
+                {
+                    Sconnection = new SocketConnection(Port);
+                    PanelSetPort.Visible = false;
+                    this.Height = minheight;
+                    notifyIcon1.ShowBalloonTip(ToolTipTimeOut, "INFO STATO", "Porta cambiata con successo!", ToolTipIcon.Info);
+                }
+                else
+                    notifyIcon1.ShowBalloonTip(ToolTipTimeOut, "INFO STATO", "Impossibile cambiare la porta, connessione in corso.", ToolTipIcon.Warning);
             }
             else
-                notifyIcon1.ShowBalloonTip(ToolTipTimeOut, "INFO STATO", "Impossibile cambiare la porta, connessione in corso.", ToolTipIcon.Warning);
+            {
+                MessageBox.Show("Impossibile usare la porta " + SocketConnection.trasfport + ", è dedicata alle operazioni sulla Clipboard!");
+            }
+           
 
         }
         /// <summary>
@@ -380,6 +389,10 @@ namespace ProgettoPDS_SERVER
 
         private void impostaPortaToolStripMenuItem_Click(object sender, EventArgs e)
         {
+
+            //port
+            numericUpDownPort.Value = port;
+
             if(panelChangePassword.Visible)
             {
                 panelChangePassword.Visible = false;
@@ -572,6 +585,35 @@ namespace ProgettoPDS_SERVER
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+        public void startProgressBar(int max)
+        {
+            panelChangePassword.Visible = false;
+            PanelSetPort.Visible = false;
+            this.Height = minheight + progressBarClipboard.Height;
+           
+            this.progressBarClipboard.Visible = true;
+
+            progressBarClipboard.Maximum = max;
+            progressBarClipboard.Minimum = 1;
+            progressBarClipboard.Value = 1;
+            progressBarClipboard.Step = 1;
+        }
+        public void doStepProgressBar()
+        {
+            progressBarClipboard.PerformStep();
+        }
+        public void closeProgressBar()
+        {
+            if(progressBarClipboard.Maximum>progressBarClipboard.Value)
+            {
+                for (int i = progressBarClipboard.Value; i <= progressBarClipboard.Maximum; i++)
+                    progressBarClipboard.PerformStep();
+            }
+
+            this.Height = minheight;
+
+            this.progressBarClipboard.Visible = false;
         }
     }
 }
