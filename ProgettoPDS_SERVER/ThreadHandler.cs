@@ -19,7 +19,8 @@ namespace ProgettoPDS_SERVER
         private const int T = 1;//tempo di attesa per lo spostamento del mouse
         private const int t = 5;
         public const int MAXTHREAD = 5;
-        private const int SBuff = Int32.MaxValue;
+        private const int SBuffSize = Int32.MaxValue;
+        private const int RBuffSize = Int32.MaxValue;
         private static int threadcounter = 0;
         private static Mutex mut = new Mutex();
         public static ManualResetEvent mrMaxThreads = new ManualResetEvent(false);
@@ -429,7 +430,7 @@ namespace ProgettoPDS_SERVER
                             files.Add(f);
                         }
                         arr[0] = files.Count;
-                        arr[1] = filenames;
+                        arr[1] = filenames;//eventualmente mandare solo il nome senza il percorso
                         arr[2] = files;
                     }
 
@@ -454,15 +455,15 @@ namespace ProgettoPDS_SERVER
 
                     if(Encoding.ASCII.GetString(data)==ApplicationConstants.OK)//inizio trasferimento file
                     {
-                        Sconnection.PassivTransfer.SendBufferSize = SBuff;
+                        Sconnection.PassivTransfer.SendBufferSize = SBuffSize;
 
                         int dataSended = 0;
                         while(dataSended < dataToSend.Length)
                         {
-                            byte[] d = new byte[SBuff];
+                            byte[] d = new byte[SBuffSize];
 
-                            for (int i = dataSended; i < SBuff && i < dataToSend.Length; i++)
-                                d[i] = dataToSend[i];
+                            for (int i = dataSended; i < SBuffSize && i < dataToSend.Length; i++)
+                                d[i-dataSended] = dataToSend[i];
 
                             Sconnection.PassivTransfer.Send(d);
 
@@ -479,10 +480,90 @@ namespace ProgettoPDS_SERVER
             else if(CBData[1]==ApplicationConstants.CLIPBOARDEVENTSET)
             {
                 //gestione ricezione clipboard
-
+                byte[] dataToReceive;
+                int dim;
                 byte[] data;
                 data = new byte[64];
                 Sconnection.Passiv.Receive(data);
+                statoCB = Encoding.ASCII.GetString(data);//ricezione tipo di dati && dim
+
+                dim = 100;
+                dataToReceive = new byte[dim];
+
+                data = Encoding.ASCII.GetBytes(ApplicationConstants.OK);
+                Sconnection.PassivTransfer.Send(data);//invio +OK
+
+                //ricezione dei/del file
+                Sconnection.PassivTransfer.ReceiveBufferSize = RBuffSize;
+
+                int dataReceived = 0;
+                while (dataReceived < dim)
+                {
+                    data = new byte[RBuffSize];
+                    Sconnection.PassivTransfer.Receive(data);
+
+                    for (int i = dataReceived; i < RBuffSize && i < dim; i++)
+                        dataToReceive[i] = data[i-dataReceived];
+
+                    dataReceived += data.Length;
+                }
+
+                if (statoCB == ApplicationConstants.StatoClipBoard.AUDIO.ToString())
+                {
+                    MemoryStream ms = new MemoryStream(dataToReceive);
+                    Stream aus = Clipboard.GetAudioStream();
+                    ms.WriteTo(aus);
+                    Clipboard.SetAudio(aus);
+                }
+                else if(statoCB == ApplicationConstants.StatoClipBoard.IMMAGINE.ToString())
+                {
+                    MemoryStream ms = new MemoryStream(dataToReceive);
+                    Image i = Image.FromStream(ms);
+                    Clipboard.SetImage(i);
+                }
+                else if (statoCB == ApplicationConstants.StatoClipBoard.TEXT.ToString())
+                {
+                    Clipboard.SetText(Encoding.ASCII.GetString(dataToReceive));
+                }
+                else if (statoCB == ApplicationConstants.StatoClipBoard.FILE_DROP.ToString())
+                {
+                    //da gestire caso singolo e multiplo
+                    using (var ms = new MemoryStream(dataToReceive))
+                    {
+                        BinaryFormatter bf = new BinaryFormatter();
+                        object o = bf.Deserialize(ms);
+
+                        object[] arr = new object[3];
+                        arr = o as object[];
+
+                        int Nfiles = (int)arr[0];
+
+                        if(Nfiles<2)//solo un file
+                        {
+                            string path = "percorso di destinazione file";
+                            string filename = arr[1] as string;
+                            File.WriteAllBytes(path, arr[3] as byte[]);
+                        }
+                        else 
+                        {
+                            System.Collections.Specialized.StringCollection filenames = arr[1] as System.Collections.Specialized.StringCollection;
+                            List<byte[]> files = arr[3] as List<byte[]>;
+
+                            for (int i = 0; i < Nfiles; i++)
+                            {
+                                string path = "percorso di destinazione file";
+                                string filename = filenames[i] as string;
+                                File.WriteAllBytes(path, files[i]);
+                            }
+                        }
+                        
+                        
+                    }
+                }
+                else
+                {
+                    //suca!
+                }
             }
 
             ThreadCounter--;
