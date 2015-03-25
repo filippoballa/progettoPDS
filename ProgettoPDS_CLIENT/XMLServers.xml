@@ -1,3 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <SERVERS>
+  <MYSERVER>
+    <HOSTNAME>PippoPC</HOSTNAME>
+    <IP_ADDRESS>169.254.202.73</IP_ADDRESS>
+    <PORT>2000</PORT>
+  </MYSERVER>
 </SERVERS>

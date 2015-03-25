@@ -910,9 +910,12 @@ namespace ProgettoPDS_CLIENT
             byte[] pdu = ReceiveClipboardData();
             string resp = Encoding.ASCII.GetString(pdu);
             resp = resp.Substring(0, resp.IndexOf('\0'));
+
+            string[] vett = resp.Split('-');
+
             string aux;
 
-            switch (resp) { 
+            switch (vett[0]) { 
                 case "AUDIO":
                     aux = "+OK";
                     pdu = Encoding.ASCII.GetBytes(aux);
