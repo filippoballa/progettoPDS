@@ -48,7 +48,5 @@ namespace ProgettoPDS_CLIENT
         {
             return this.host + " -  IP: " + this.indirizzoIP + " , PORTA: " + this.porta.ToString();
         }
-    }
-
-    
+    }  
 }

@@ -53,6 +53,8 @@ namespace ProgettoPDS_CLIENT
         public void StartClientConnection() 
         {
             try {
+
+                this.stato = STATO.DISCONESSO;
                 this.sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
                 if (this.sock != null)

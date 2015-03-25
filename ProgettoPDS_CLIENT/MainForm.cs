@@ -23,19 +23,24 @@ namespace ProgettoPDS_CLIENT
         #region Variables
 
         public delegate void Handler();
+        public delegate object[] GetClipboardDataDelegate();
+        public delegate void SetClipboardDataDelegate(object[] d);
         public Handler myHandler;
+        private GetClipboardDataDelegate getClip;
+        private SetClipboardDataDelegate setClip;
+
         private User user;
         private List<SocketConnection> connessioni;
         private List<Server> servers;
         private int AltezzaForm, BaseForm, currServ, CountServerConnected;
         private static Mutex mut = new Mutex();
-        private static Mutex ClipboardMut = new Mutex();
         private MouseHook mouseHook = new MouseHook();
         private KeyboardHook keyboardHook = new KeyboardHook();
         private Queue<MouseEventArgs> MouseQueue;
         private Queue<KeyEventArgs> KeyQueue;
         private MouseCord mc;
         private XmlManager mng;
+        private bool isDialog;
 
         #endregion
 
@@ -50,12 +55,15 @@ namespace ProgettoPDS_CLIENT
             SetStyle(ControlStyles.AllPaintingInWmPaint, true);
             SetStyle(ControlStyles.DoubleBuffer, true);
             InitializeComponent();
+            this.isDialog = true;
             this.connessioni = new List<SocketConnection>();
             this.servers = new List<Server>();
             this.MouseQueue = new Queue<MouseEventArgs>();
             this.KeyQueue = new Queue<KeyEventArgs>();
             this.mng = new XmlManager();
-            this.myHandler = new Handler(RefreshLabel); 
+            this.myHandler = new Handler(RefreshLabel);
+            this.getClip = new GetClipboardDataDelegate(GetClipboardData);
+            this.setClip = new SetClipboardDataDelegate(SetCliboardData);
             this.currServ = -1;
             this.user = aux;
             this.CountServerConnected = 0;
@@ -315,6 +323,7 @@ namespace ProgettoPDS_CLIENT
 
             this.connessioni[this.currServ].SockClose();
             this.connessioni[this.currServ].CloseClipSock();
+            this.connessioni[this.currServ].Stato = SocketConnection.STATO.DISCONESSO;
             this.CountServerConnected--;
 
             if (this.CountServerConnected == 0)
@@ -364,12 +373,11 @@ namespace ProgettoPDS_CLIENT
             this.connessioni[this.currServ].CloseClipSock();
             this.connessioni[this.currServ].Stato = SocketConnection.STATO.DISCONESSO;
 
-            if (this.ActionPanel.Visible)
-            {
+            if ( this.ActionPanel.Visible ) {
                 this.ActionPanel.Visible = false;
-                this.MainPanel.Visible = false;
+                this.MainPanel.Visible = true;
 
-                if (this.keyboardHook.IsStarted)
+                if ( this.keyboardHook.IsStarted )
                     this.keyboardHook.Unistall();
 
                 if (this.mouseHook.IsStarted)
@@ -406,6 +414,8 @@ namespace ProgettoPDS_CLIENT
 
         private void LogOutButton_Click(object sender, EventArgs e)
         {
+            Program.res = DialogResult.Yes;
+            this.isDialog = false;
             this.Close();
         }
 
@@ -420,8 +430,9 @@ namespace ProgettoPDS_CLIENT
                 }
             }
 
-            Program.res = MessageBox.Show("Desideri tornare alla schermata di Login? ",
-                   "AVVISO", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if( this.isDialog )
+                Program.res = MessageBox.Show("Desideri tornare alla schermata di Login? ",
+                    "AVVISO", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
         }
 
         private void RefreshLabel()
@@ -679,19 +690,19 @@ namespace ProgettoPDS_CLIENT
                 }
                 else if (e.Alt && e.KeyCode == Keys.R ) {
 
-                    if (!this.ClipboardRequestBW.IsBusy)
+                    if (!this.ClipboardRequestBW.IsBusy && !this.ClipboardSendBW.IsBusy )
                         this.ClipboardRequestBW.RunWorkerAsync();
                     else
-                        MessageBox.Show("E' in corso il completamento della richiesta precedente.", "AVVISO",
+                        MessageBox.Show("E' in corso il completamento della richiesta precedente relativa alla Clipboard.", "AVVISO",
                             MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 }
                 else if (e.Alt && e.KeyCode == Keys.S) {
 
-                    if (!this.ClipboardSendBW.IsBusy)
+                    if (!this.ClipboardSendBW.IsBusy && !this.ClipboardRequestBW.IsBusy )
                         this.ClipboardSendBW.RunWorkerAsync();
                     else
-                        MessageBox.Show("E' in corso il completamento della richiesta precedente.", "AVVISO",
+                        MessageBox.Show("E' in corso il completamento della richiesta precedente relativa alla Clipboard.", "AVVISO",
                             MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else {
@@ -837,163 +848,298 @@ namespace ProgettoPDS_CLIENT
         private void ClipboardSendBW_DoWork(object sender, DoWorkEventArgs e)
         {
             ClipboardPacket("SET_CLIP");
-            string aux;
 
-            if( Clipboard.ContainsAudio() ) {
-                aux = "AUDIO";
-                byte[] pdu = Encoding.ASCII.GetBytes(aux);
-                SendClipboardData(pdu);
-                pdu = ReceiveClipboardData();
-                string resp = Encoding.ASCII.GetString(pdu);
-                resp = resp.Substring(0, resp.IndexOf('\0'));
+            object[] data = (object[])this.Invoke(this.getClip);;
+            string aux, resp;
+            byte[] pdu, buff;
 
-                if (resp == "+OK") {
-                    Stream st = Clipboard.GetAudioStream();
-                    pdu = new byte[st.Length];
-                    st.Read(pdu, 0, (int)st.Length);
-                    SendClipboardData(pdu);
-                }
-            }
-            else if( Clipboard.ContainsFileDropList() ) {
-                aux = "FILE_DROP";
-                byte[] pdu = Encoding.ASCII.GetBytes(aux);
-                SendClipboardData(pdu);
-                pdu = ReceiveClipboardData();
-                string resp = Encoding.ASCII.GetString(pdu);
-                resp = resp.Substring(0, resp.IndexOf('\0'));
+            switch (data[0].ToString()) { 
+            
+                case "AUDIO":
+                    aux = "AUDIO-";
+                    Stream stream = (Stream)data[1];
+                    buff = new byte[stream.Length];
+                    stream.Read(buff, 0, (int)stream.Length);
+                    aux += buff.Length.ToString(); 
+                    pdu = Encoding.ASCII.GetBytes(aux);
+                    SendClipboardInfo(pdu);
+                    pdu = ReceiveClipboardInfo();
+                    resp = Encoding.ASCII.GetString(pdu);
+                    resp = resp.Substring(0, resp.IndexOf('\0'));
 
-                if (resp == "+OK") {
+                    if (resp == "+OK") 
+                        SendClipboardData(buff, buff.Length);
 
-                    StringCollection strc = Clipboard.GetFileDropList();
-                    // TODO
-                    // Da Gestire!!
-                }
+                    break;
 
-            }
-            else if( Clipboard.ContainsImage() ) {
+                case "FILE_DROP":
+                    aux = "FILE_DROP-";
+                    StringCollection filenames = (StringCollection)data[1];
+                    object[] arr = new object[4];
+                    List<byte[]> filesData = new List<byte[]>();
 
-                aux = "IMMAGINE";
-                Image img = Clipboard.GetImage();
-                byte[] pdu = Encoding.ASCII.GetBytes(aux);
-                SendClipboardData(pdu);
-                pdu = ReceiveClipboardData();
-                string resp = Encoding.ASCII.GetString(pdu);
-                resp = resp.Substring(0, resp.IndexOf('\0'));
+                    for (int i = 0; i < filenames.Count; i++) {
+                        byte[] f = File.ReadAllBytes(filenames[i]);
+                        filesData.Add(f);
+                        filenames[i] = Path.GetFileName(filenames[i]);
+                    }
 
-                if (resp == "+OK") {
+                    arr[0] = filenames.Count;
+                    arr[1] = filenames;
+                    arr[2] = filesData;
+
+                    BinaryFormatter bf = new BinaryFormatter();
+                    MemoryStream ms = new MemoryStream();
+                    bf.Serialize(ms, arr);
+                    buff = ms.ToArray();
+
+                    aux += buff.Length.ToString();
+
+                    pdu = Encoding.ASCII.GetBytes(aux);
+                    SendClipboardInfo(pdu);
+                    pdu = ReceiveClipboardInfo();
+                    resp = Encoding.ASCII.GetString(pdu);
+                    resp = resp.Substring(0, resp.IndexOf('\0'));
+
+                    if (resp == "+OK") 
+                        SendClipboardData(buff, buff.Length);
+
+                    break;
+
+                case "IMMAGINE":
+                    aux = "IMMAGINE-";
+                    Image img = (Image)data[1];
                     MemoryStream mStream = new MemoryStream();
                     img.Save(mStream, img.RawFormat);
-                    pdu = mStream.ToArray();
-                    SendClipboardData(pdu);
-                }
+                    buff = mStream.ToArray();
+                    aux += buff.Length.ToString();
 
-            }
-            else if ( Clipboard.ContainsText() ) {
-                aux = "TEXT";
-                string text = Clipboard.GetText();
-                byte[] pdu = Encoding.ASCII.GetBytes(aux);
-                SendClipboardData(pdu);
-                pdu = ReceiveClipboardData();
-                string resp = Encoding.ASCII.GetString(pdu);
-                resp = resp.Substring(0, resp.IndexOf('\0'));
+                    pdu = Encoding.ASCII.GetBytes(aux);
+                    SendClipboardInfo(pdu);
+                    pdu = ReceiveClipboardInfo();
+                    resp = Encoding.ASCII.GetString(pdu);
+                    resp = resp.Substring(0, resp.IndexOf('\0'));
 
-                if (resp == "+OK") {
-                    pdu = Encoding.ASCII.GetBytes(text);
-                    SendClipboardData(pdu);
-                }
-            }
+                    if (resp == "+OK") 
+                        SendClipboardData(buff, buff.Length);
+
+                    break;
+
+                case "TEXT":
+                    aux = "TEXT-";
+                    string text = (string)data[1];
+                    buff = Encoding.ASCII.GetBytes(text);
+                    aux += buff.Length.ToString();
+                    pdu = Encoding.ASCII.GetBytes(aux);
+                    SendClipboardInfo(pdu);
+                    pdu = ReceiveClipboardInfo();
+                    resp = Encoding.ASCII.GetString(pdu);
+                    resp = resp.Substring(0, resp.IndexOf('\0'));
+
+                    if (resp == "+OK") 
+                        SendClipboardData(buff, buff.Length);
+                    
+                    break;
+ 
+            } 
+
         }
 
         private void ClipboardRequestBW_DoWork(object sender, DoWorkEventArgs e)
         {
             ClipboardPacket("GET_CLIP");
-            byte[] pdu = ReceiveClipboardData();
-            string resp = Encoding.ASCII.GetString(pdu);
+            byte[] pdu = ReceiveClipboardInfo();
+            string resp = Encoding.ASCII.GetString(pdu), aux;
             resp = resp.Substring(0, resp.IndexOf('\0'));
+            object[] data = new object[2];
 
-            string[] vett = resp.Split('-');
+            string[] parametersInfo = resp.Split('-');
 
-            string aux;
+            aux = "+OK";
+            pdu = Encoding.ASCII.GetBytes(aux);
+            SendClipboardInfo(pdu);
+            pdu = ReceiveClipboardData(Convert.ToInt32(parametersInfo[1]));
 
-            switch (vett[0]) { 
-                case "AUDIO":
-                    aux = "+OK";
-                    pdu = Encoding.ASCII.GetBytes(aux);
-                    SendClipboardData(pdu);
-                    pdu = ReceiveClipboardData();
+            switch ( parametersInfo[0] ) { 
+
+                case "AUDIO":                                       
                     Stream stream = new MemoryStream(pdu);
-                    Clipboard.SetAudio(stream);
+                    data[0] = "AUDIO";
+                    data[1] = stream;
                     break;
+
                 case "IMMAGINE":
-                    aux = "+OK";
-                    pdu = Encoding.ASCII.GetBytes(aux);
-                    SendClipboardData(pdu);
-                    pdu = ReceiveClipboardData();
                     ImageConverter ic = new ImageConverter();
                     Image img = (Image)ic.ConvertFrom(pdu);
-                    Clipboard.SetImage(img);
+                    data[0] = "IMMAGINE";
+                    data[1] = img;
                     break;
+
                 case "FILE_DROP":
-                    aux = "+OK";
-                    pdu = Encoding.ASCII.GetBytes(aux);
-                    SendClipboardData(pdu);
-                    
-                    // TODO
-                    // Da Gestire!!
+                    MemoryStream ms = new MemoryStream(pdu);                    
+                    BinaryFormatter bf = new BinaryFormatter();
+                    object o = bf.Deserialize(ms);
+                    object[] arr = new object[3];
+
+                    arr = (object[]) o;
+
+                    int NFiles = (int)arr[0];
+                    string[] filenames = (string[]) arr[1];
+                    List<byte[]> files = (List<byte[]>) arr[3];
+                    StringCollection strColl = new StringCollection();
+
+                    for (int i = 0; i < NFiles; i++) {
+                        string path = "../Temp/" + filenames[i];
+                        File.WriteAllBytes(path, files[i]);
+                        strColl[i] = path;
+                    }
+
+                    data[0] = "FILE_DROP";
+                    data[1] = strColl;
 
                     break;
+
                 case "TEXT":
-                    aux = "+OK";
-                    pdu = Encoding.ASCII.GetBytes(aux);
-                    SendClipboardData(pdu);
-                    pdu = ReceiveClipboardData();
                     aux = Encoding.ASCII.GetString(pdu);
-                    Clipboard.SetText(aux);
+                    data[0] = "TEXT";
+                    data[1] = aux;
                     break;
+
                 default:
                     aux = "-ERR";
                     pdu = Encoding.ASCII.GetBytes(aux);
-                    SendClipboardData(pdu);
+                    SendClipboardInfo(pdu);
                     break;
             }
+
+            this.Invoke(this.setClip, data);
+
         }
 
-        private void SendClipboardData(byte[] pdu)
+        private void SendClipboardInfo(byte[] pdu)
         {
             try {
-                ClipboardMut.WaitOne();
                 this.connessioni[this.currServ].ClipSock.Send(pdu);
             }
             catch( Exception e) {
                 MessageBox.Show(e.Message, "ANOMALY", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 ResetConnection();
             }
-            finally {
-                ClipboardMut.ReleaseMutex();
-            }
         }
 
-        private byte[] ReceiveClipboardData()
+        private byte[] ReceiveClipboardInfo()
         {
 
-            byte[] pdu = new byte[128];
+            byte[] pdu = new byte[60];
 
             try {
-                ClipboardMut.WaitOne();
                 this.connessioni[this.currServ].ClipSock.Receive(pdu);
             }
             catch (Exception e) {
                 MessageBox.Show(e.Message, "ANOMALY", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 ResetConnection();
             }
-            finally {
-                ClipboardMut.ReleaseMutex();
-            }
 
             return pdu;
+        }
+
+        // OTTENGO IL CONTENUTO DELLA CLIPBOARD
+        private object[] GetClipboardData()
+        {
+            object[] data = new object[2];
+
+            if( Clipboard.ContainsAudio() ) {
+                data[0] = "AUDIO";
+                data[1] = Clipboard.GetAudioStream();
+            }
+            else if( Clipboard.ContainsImage() ) {
+                data[0] = "IMMAGINE";
+                data[1] = Clipboard.GetImage();
+            }
+            else if ( Clipboard.ContainsText() )  {
+                data[0] = "TEXT";
+                data[1] = Clipboard.GetText();
+            }
+            else if ( Clipboard.ContainsFileDropList() ) {
+                data[0] = "FILE_DROP";
+                data[1] = Clipboard.GetFileDropList();
+            }
+
+            return data;                
+        }
+
+        // IMPOSTO IL CONTENUTO DELLA CLIPBOARD
+        private void SetCliboardData(object[] data) 
+        {
+            switch (data[0].ToString()) {
+ 
+                case "AUDIO":
+                    Clipboard.SetAudio( (Stream)data[1] );
+                    break;
+                case "IMMAGINE":
+                    Clipboard.SetImage( (Image)data[1] );
+                    break;
+                case "TEXT":
+                    Clipboard.SetText((string)data[1]);
+                    break;
+                case "FILE_DROP":
+                    Clipboard.SetFileDropList((StringCollection)data[1]);
+                    break;
+            }
+        }
+
+        private void SendClipboardData( byte[] buff, int dim)
+        {
+            int dataSended = 0;
+
+            while (dataSended < dim) {
+
+                byte[] d = new byte[SocketConnection.SBufSizeClipSock];
+
+                for ( int i = dataSended; i < SocketConnection.SBufSizeClipSock && i < dim; i++)
+                    d[i] = buff[i];
+
+                try {
+                    this.connessioni[this.currServ].ClipSock.Send(d);
+                }
+                catch (Exception e) {
+                    MessageBox.Show(e.Message, "ANOMALY", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    ResetConnection();
+                }
+
+                dataSended += d.Length;
+
+            }    
+        }
+
+        private byte[] ReceiveClipboardData( int dim )
+        {
+            int dataReceived = 0;
+            byte[] rbuff = new byte[dim], data;
+
+            while (dataReceived < dim) {
+
+                data = new byte[SocketConnection.RBufSizeClipSock];
+
+                try {
+                    this.connessioni[this.currServ].ClipSock.Receive(data);
+                }
+                catch (Exception e) {
+                    MessageBox.Show( e.Message, "ANOMALY", MessageBoxButtons.OK, MessageBoxIcon.Information );
+                    ResetConnection();
+                }
+
+                for (int i = dataReceived; i < SocketConnection.RBufSizeClipSock && i < dim; i++)
+                    rbuff[i] = data[i - dataReceived];
+
+                dataReceived += data.Length;
+            }
+
+            return rbuff;
         }
 
         #endregion
 
     }
+
 }

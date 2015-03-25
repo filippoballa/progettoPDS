@@ -15,6 +15,8 @@ namespace ProgettoPDS_CLIENT
         internal XmlDocument documentOne, documentTwo;
         private string FileUsers, FileServers;
 
+        #region Constructor
+
         public XmlManager() 
         {
             this.documentOne = new XmlDocument();
@@ -24,6 +26,10 @@ namespace ProgettoPDS_CLIENT
             this.documentOne.Load(this.FileUsers);
             this.documentTwo.Load(this.FileServers);
         }
+
+        #endregion
+
+        #region Methods related to Users
 
         public User SearchUser(string user) 
         {
@@ -96,6 +102,10 @@ namespace ProgettoPDS_CLIENT
 
         }
 
+        #endregion
+
+        #region Methods related to Servers
+
         public void AddNewServer(Server s)
         {
             XmlNode root = this.documentTwo.DocumentElement;
@@ -147,8 +157,10 @@ namespace ProgettoPDS_CLIENT
                     this.documentOne.Save("..\\..\\" + this.FileUsers);
                     break;
                 }
-            } 
+            }
 
         }
+
+        #endregion
     }
 }

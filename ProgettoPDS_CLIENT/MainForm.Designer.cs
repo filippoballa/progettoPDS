@@ -31,6 +31,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.MouseBackgroundWorker = new System.ComponentModel.BackgroundWorker();
             this.MainPanel = new System.Windows.Forms.Panel();
+            this.LogOutButton = new System.Windows.Forms.Button();
             this.ClearCacheButton = new System.Windows.Forms.Button();
             this.LoadConfButton = new System.Windows.Forms.Button();
             this.SaveServButton = new System.Windows.Forms.Button();
@@ -67,7 +68,6 @@
             this.pictureBox5 = new System.Windows.Forms.PictureBox();
             this.ClipboardSendBW = new System.ComponentModel.BackgroundWorker();
             this.ClipboardRequestBW = new System.ComponentModel.BackgroundWorker();
-            this.LogOutButton = new System.Windows.Forms.Button();
             this.MainPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -110,6 +110,23 @@
             this.MainPanel.Size = new System.Drawing.Size(1071, 608);
             this.MainPanel.TabIndex = 14;
             this.MainPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.MainPanel_Paint);
+            // 
+            // LogOutButton
+            // 
+            this.LogOutButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("LogOutButton.BackgroundImage")));
+            this.LogOutButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.LogOutButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.LogOutButton.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.LogOutButton.FlatAppearance.BorderSize = 4;
+            this.LogOutButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.LogOutButton.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LogOutButton.Location = new System.Drawing.Point(865, 535);
+            this.LogOutButton.Name = "LogOutButton";
+            this.LogOutButton.Size = new System.Drawing.Size(66, 58);
+            this.LogOutButton.TabIndex = 29;
+            this.LogOutButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.LogOutButton.UseVisualStyleBackColor = true;
+            this.LogOutButton.Click += new System.EventHandler(this.LogOutButton_Click);
             // 
             // ClearCacheButton
             // 
@@ -559,23 +576,6 @@
             this.ClipboardRequestBW.WorkerReportsProgress = true;
             this.ClipboardRequestBW.WorkerSupportsCancellation = true;
             this.ClipboardRequestBW.DoWork += new System.ComponentModel.DoWorkEventHandler(this.ClipboardRequestBW_DoWork);
-            // 
-            // LogOutButton
-            // 
-            this.LogOutButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("LogOutButton.BackgroundImage")));
-            this.LogOutButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.LogOutButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.LogOutButton.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.LogOutButton.FlatAppearance.BorderSize = 4;
-            this.LogOutButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.LogOutButton.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LogOutButton.Location = new System.Drawing.Point(865, 535);
-            this.LogOutButton.Name = "LogOutButton";
-            this.LogOutButton.Size = new System.Drawing.Size(66, 58);
-            this.LogOutButton.TabIndex = 29;
-            this.LogOutButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.LogOutButton.UseVisualStyleBackColor = true;
-            this.LogOutButton.Click += new System.EventHandler(this.LogOutButton_Click);
             // 
             // MainForm
             // 
