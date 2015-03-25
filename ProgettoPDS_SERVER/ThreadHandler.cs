@@ -371,12 +371,14 @@ namespace ProgettoPDS_SERVER
         public static void ClipBoardThreadProc(object threaddata)
         {
             //getting information arguments
-            String[] CBData = threaddata as String[];
+            String[] CBData = new String[2];
             object[] objdata = threaddata as object[];
 
-            MainForm main = objdata[3] as MainForm;
-            SocketConnection Sconnection = objdata[4] as SocketConnection;
-            string statoCB = main.labelClipboardState.Text;
+            CBData[0] = objdata[0] as String;
+            CBData[1] = objdata[1] as String;
+            MainForm main = objdata[2] as MainForm;
+            SocketConnection Sconnection = objdata[3] as SocketConnection;
+            string statoCB = main.labelTipoCB.Text;
 
             if(CBData[1]==ApplicationConstants.CLIPBOARDEVENTGET)
             {
@@ -387,28 +389,28 @@ namespace ProgettoPDS_SERVER
                 //creazione dei byte da inviare
                 if(statoCB==ApplicationConstants.StatoClipBoard.AUDIO.ToString())
                 {
-                    Stream s = Clipboard.GetAudioStream();
+                    Stream s = objdata[4] as Stream;
                     MemoryStream ms = new MemoryStream();
                     s.CopyTo(ms);
-                    //dataToSend = new byte[ms.ToArray().Length];
-                    dataToSend = ms.ToArray();
-                    
+                    dataToSend = new byte[ms.ToArray().Length];
+                    dataToSend = ms.ToArray();  
                 }
                 else if (statoCB == ApplicationConstants.StatoClipBoard.IMMAGINE.ToString())
                 {
-                    Image i = Clipboard.GetImage();
+                    Image i = objdata[4] as Image;
                     MemoryStream ms = new MemoryStream();
-                    i.Save(ms,System.Drawing.Imaging.ImageFormat.Gif);
-                    //dataToSend = new byte[ms.ToArray().Length];
+                    i.Save(ms,i.RawFormat);
+                    dataToSend = new byte[ms.ToArray().Length];
                     dataToSend = ms.ToArray();
                 }
                 else if (statoCB == ApplicationConstants.StatoClipBoard.TEXT.ToString())
                 {
-                    dataToSend = Encoding.ASCII.GetBytes(Clipboard.GetText());
+                    //dataToSend = new byte[objdata[4].Length];
+                    dataToSend = Encoding.ASCII.GetBytes(objdata[4] as String);
                 }
                 else if (statoCB == ApplicationConstants.StatoClipBoard.FILE_DROP.ToString())
                 {
-                    System.Collections.Specialized.StringCollection filenames = Clipboard.GetFileDropList();
+                    System.Collections.Specialized.StringCollection filenames = objdata[4] as System.Collections.Specialized.StringCollection;
                     object[] arr = new object[3];
 
                     if (filenames.Count < 2)//solo un file
@@ -416,7 +418,7 @@ namespace ProgettoPDS_SERVER
                         byte[] file= File.ReadAllBytes(filenames[0]);
 
                         arr[0] = 1;
-                        arr[1] = filenames[0];
+                        arr[1] = Path.GetFileName(filenames[0]);
                         arr[2] = file;
                         
                     }
@@ -427,6 +429,7 @@ namespace ProgettoPDS_SERVER
                         for (int i = 0; i < filenames.Count; i++)
                         {
                             byte[] f = File.ReadAllBytes(filenames[i]);
+                            filenames[i] = Path.GetFileName(filenames[i]);
 
                             files.Add(f);
                         }
@@ -444,12 +447,11 @@ namespace ProgettoPDS_SERVER
                 {
 
                 }
-
                 if (dataToSend != null)
                 {
                     //inizio comunicazione 
                     byte[] data = new byte[64]; 
-                    data = Encoding.ASCII.GetBytes(statoCB);
+                    data = Encoding.ASCII.GetBytes(statoCB+"-"+dataToSend.Length);//[TIPO]-[DIM]
                     Sconnection.PassivTransfer.Send(data);//invio tipo di dati
 
                     Sconnection.PassivTransfer.Receive(data);//ricevo risp
@@ -459,7 +461,7 @@ namespace ProgettoPDS_SERVER
                     {
                         Sconnection.PassivTransfer.SendBufferSize = SBuffSize;
 
-                        main.startProgressBar(dataToSend.Length);
+                        main.Invoke(main.startProgressBarDelegate,new Object[]{dataToSend.Length});
 
                         int dataSended = 0;
                         while(dataSended < dataToSend.Length)
@@ -469,7 +471,7 @@ namespace ProgettoPDS_SERVER
                             for (int i = dataSended; i < SBuffSize && i < dataToSend.Length; i++)
                             {
                                 d[i - dataSended] = dataToSend[i];
-                                main.doStepProgressBar();
+                                main.Invoke(main.doStepProgressBarDelegate);
                             } 
 
                             Sconnection.PassivTransfer.Send(d);
@@ -477,7 +479,7 @@ namespace ProgettoPDS_SERVER
                             dataSended += d.Length;
                         }
 
-                        main.closeProgressBar();
+                        main.Invoke(main.closeProgressBarDelegate);
                     }
                     else
                     {
@@ -493,92 +495,102 @@ namespace ProgettoPDS_SERVER
                 int dim;
                 byte[] data;
                 data = new byte[64];
-                Sconnection.Passiv.Receive(data);
-                statoCB = Encoding.ASCII.GetString(data);//ricezione tipo di dati && dim
+                Sconnection.PassivTransfer.Receive(data);
+                string datagram = Encoding.ASCII.GetString(data);//ricezione [TIPO]-[DIM]
+                string[] dati = datagram.Split(ApplicationConstants.SEPARATOR);
 
-                dim = 100;
-                dataToReceive = new byte[dim];
-
-                data = Encoding.ASCII.GetBytes(ApplicationConstants.OK);
-                Sconnection.PassivTransfer.Send(data);//invio +OK
-
-                //ricezione dei/del file
-                Sconnection.PassivTransfer.ReceiveBufferSize = RBuffSize;
-
-                int dataReceived = 0;
-
-                main.startProgressBar(dim);
-
-                while (dataReceived < dim)
+                if (dati.Length == 2)
                 {
-                    data = new byte[RBuffSize];
-                    Sconnection.PassivTransfer.Receive(data);
+                    statoCB = dati[0];
+                    dim = Convert.ToInt32(dati[1]);
+                    dataToReceive = new byte[dim];
 
-                    for (int i = dataReceived; i < RBuffSize && i < dim; i++)
+                    data = Encoding.ASCII.GetBytes(ApplicationConstants.OK);
+                    Sconnection.PassivTransfer.Send(data);//invio +OK
+
+                    //ricezione dei/del file
+                    Sconnection.PassivTransfer.ReceiveBufferSize = RBuffSize;
+
+                    int dataReceived = 0;
+
+                    main.Invoke(main.startProgressBarDelegate, new Object[] { dim });
+
+                    while (dataReceived < dim)
                     {
-                        dataToReceive[i] = data[i - dataReceived];
-                        main.doStepProgressBar();
+                        data = new byte[RBuffSize];
+                        Sconnection.PassivTransfer.Receive(data);
+
+                        for (int i = dataReceived; i < RBuffSize && i < dim; i++)
+                        {
+                            dataToReceive[i] = data[i - dataReceived];
+                            main.Invoke(main.doStepProgressBarDelegate);
+                        }
+
+                        dataReceived += data.Length;
                     }
 
-                    dataReceived += data.Length;
-                }
-
-                //casi a seconda del tipo di dato
-                if (statoCB == ApplicationConstants.StatoClipBoard.AUDIO.ToString())
-                {
-                    MemoryStream ms = new MemoryStream(dataToReceive);
-                    Stream aus = Clipboard.GetAudioStream();
-                    ms.WriteTo(aus);
-                    Clipboard.SetAudio(aus);
-                }
-                else if(statoCB == ApplicationConstants.StatoClipBoard.IMMAGINE.ToString())
-                {
-                    MemoryStream ms = new MemoryStream(dataToReceive);
-                    Image i = Image.FromStream(ms);
-                    Clipboard.SetImage(i);
-                }
-                else if (statoCB == ApplicationConstants.StatoClipBoard.TEXT.ToString())
-                {
-                    Clipboard.SetText(Encoding.ASCII.GetString(dataToReceive));
-                }
-                else if (statoCB == ApplicationConstants.StatoClipBoard.FILE_DROP.ToString())
-                {
-                    //da gestire caso singolo e multiplo
-                    using (var ms = new MemoryStream(dataToReceive))
+                    //casi a seconda del tipo di dato
+                    if (statoCB == ApplicationConstants.StatoClipBoard.AUDIO.ToString())
                     {
-                        BinaryFormatter bf = new BinaryFormatter();
-                        object o = bf.Deserialize(ms);
-
-                        object[] arr = new object[3];
-                        arr = o as object[];
-
-                        int Nfiles = (int)arr[0];
-
-                        if(Nfiles<2)//solo un file
+                        MemoryStream ms = new MemoryStream(dataToReceive);
+                        Stream aus = Clipboard.GetAudioStream();
+                        ms.WriteTo(aus);
+                        Clipboard.SetAudio(aus);
+                    }
+                    else if (statoCB == ApplicationConstants.StatoClipBoard.IMMAGINE.ToString())
+                    {
+                        MemoryStream ms = new MemoryStream(dataToReceive);
+                        Image i = Image.FromStream(ms);
+                        Clipboard.SetImage(i);
+                    }
+                    else if (statoCB == ApplicationConstants.StatoClipBoard.TEXT.ToString())
+                    {
+                        Clipboard.SetText(Encoding.ASCII.GetString(dataToReceive));
+                    }
+                    else if (statoCB == ApplicationConstants.StatoClipBoard.FILE_DROP.ToString())
+                    {
+                        //da gestire caso singolo e multiplo
+                        using (var ms = new MemoryStream(dataToReceive))
                         {
-                            string path = "percorso di destinazione file";
-                            string filename = arr[1] as string;
-                            File.WriteAllBytes(path, arr[3] as byte[]);
-                        }
-                        else 
-                        {
-                            System.Collections.Specialized.StringCollection filenames = arr[1] as System.Collections.Specialized.StringCollection;
-                            List<byte[]> files = arr[3] as List<byte[]>;
+                            BinaryFormatter bf = new BinaryFormatter();
+                            object o = bf.Deserialize(ms);
 
-                            for (int i = 0; i < Nfiles; i++)
+                            object[] arr = new object[3];
+                            arr = o as object[];
+
+                            int Nfiles = (int)arr[0];
+
+                            if (Nfiles < 2)//solo un file
                             {
                                 string path = "percorso di destinazione file";
-                                string filename = filenames[i] as string;
-                                File.WriteAllBytes(path, files[i]);
+                                string filename = arr[1] as string;
+                                File.WriteAllBytes(path, arr[3] as byte[]);
                             }
-                        }  
+                            else
+                            {
+                                System.Collections.Specialized.StringCollection filenames = arr[1] as System.Collections.Specialized.StringCollection;
+                                List<byte[]> files = arr[3] as List<byte[]>;
+
+                                for (int i = 0; i < Nfiles; i++)
+                                {
+                                    string path = "percorso di destinazione file";
+                                    string filename = filenames[i] as string;
+                                    File.WriteAllBytes(path, files[i]);
+                                }
+                            }
+                        }
                     }
+                    else
+                    {
+                        //non dovrebbe verificarsi
+                    }
+                    main.Invoke(main.closeProgressBarDelegate);
                 }
-                else
+                else//ricezione comando sbagliato
                 {
-                    //non dovrebbe verificarsi
+                    data = Encoding.ASCII.GetBytes(ApplicationConstants.ERR);
+                    Sconnection.PassivTransfer.Send(data);//invio -ERR
                 }
-                main.closeProgressBar();
             }
 
             ThreadCounter--;

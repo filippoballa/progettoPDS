@@ -132,7 +132,7 @@ namespace ProgettoPDS_SERVER
                     IPEndPoint passivIP = passiv.RemoteEndPoint as IPEndPoint;
                     IPEndPoint passivIPTS = passivTransfer.RemoteEndPoint as IPEndPoint;
 
-                    if (passivIP.Address != passivIPTS.Address)
+                    if (passivIP.Address.ToString() != passivIPTS.Address.ToString())
                     {
                         SockDisconnectTS();
                         SockDisconnect();

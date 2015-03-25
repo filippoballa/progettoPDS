@@ -33,14 +33,24 @@ namespace ProgettoPDS_SERVER
         private const int passwordlenght = 8;
         private static System.Media.SoundPlayer player;
 
-        //delegate per le modifiche allo stato nel form da parte di altri thread
+        //delegate per le modifiche del form da parte di altri thread
         public delegate void LabelStatoChanged(ApplicationConstants.Stato stato, string client);
         public LabelStatoChanged LabelStatoChangedDelegate;
+
+        public delegate void closeProgressBar();
+        public closeProgressBar closeProgressBarDelegate;
+        public delegate void startProgressBar(int max);
+        public startProgressBar startProgressBarDelegate;
+        public delegate void doStepProgressBar();
+        public doStepProgressBar doStepProgressBarDelegate;
         
         public MainForm(User u)
         {
             //delegate
             LabelStatoChangedDelegate = new LabelStatoChanged(LabelStatoChangedMethod);
+            closeProgressBarDelegate = new closeProgressBar(closeProgressBarMethod);
+            startProgressBarDelegate = new startProgressBar(startProgressBarMethod);
+            doStepProgressBarDelegate = new doStepProgressBar(doStepProgressBarMethod);
 
             InitializeComponent();
 
@@ -259,12 +269,34 @@ namespace ProgettoPDS_SERVER
                         else if (s == ApplicationConstants.CLIPBOARDCODE)
                         {
                             //[C]-[EVENTKEY]
-                            d = new object[4];
+                            d = new object[5];
                             d[0] = s;
                             d[1] = d[1] = Data[i + 1];
                             //campi aggiuntivi per passare dati diversi da string al thread della clipboard 
                             d[2] = this;
                             d[3] = this.Sconnection;
+
+                             //aggiunta dati clipboard
+                            if(labelTipoCB.Text==ApplicationConstants.StatoClipBoard.AUDIO.ToString())
+                            {
+                                d[4] = Clipboard.GetAudioStream();
+                            }
+                            else if (labelTipoCB.Text == ApplicationConstants.StatoClipBoard.IMMAGINE.ToString())
+                            {
+                                d[4] = Clipboard.GetImage();
+                            }
+                            else if (labelTipoCB.Text == ApplicationConstants.StatoClipBoard.TEXT.ToString())
+                            {
+                                d[4] = Clipboard.GetText();
+                            }
+                            else if (labelTipoCB.Text == ApplicationConstants.StatoClipBoard.FILE_DROP.ToString())
+                            {
+                                d[4] = Clipboard.GetFileDropList();
+                            }
+                            else//VUOTA o valore strano(impossibile)
+                            {
+                                d[4] = 0;
+                            }
 
                             i += 1;
 
@@ -586,7 +618,7 @@ namespace ProgettoPDS_SERVER
                 MessageBox.Show(ex.Message);
             }
         }
-        public void startProgressBar(int max)
+        public void startProgressBarMethod(int max)
         {
             panelChangePassword.Visible = false;
             PanelSetPort.Visible = false;
@@ -599,11 +631,11 @@ namespace ProgettoPDS_SERVER
             progressBarClipboard.Value = 1;
             progressBarClipboard.Step = 1;
         }
-        public void doStepProgressBar()
+        public void doStepProgressBarMethod()
         {
             progressBarClipboard.PerformStep();
         }
-        public void closeProgressBar()
+        public void closeProgressBarMethod()
         {
             if(progressBarClipboard.Maximum>progressBarClipboard.Value)
             {

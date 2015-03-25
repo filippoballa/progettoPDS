@@ -681,7 +681,7 @@
         private System.Windows.Forms.ToolStripMenuItem pulisciToolStripMenuItem;
         private System.Windows.Forms.Panel panelInfoCB;
         private System.Windows.Forms.Button buttonClosePanelInfoCB;
-        private System.Windows.Forms.Label labelTipoCB;
+        protected internal System.Windows.Forms.Label labelTipoCB;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.RichTextBox richTextBoxCB;
         private System.Windows.Forms.PictureBox pictureBoxCB;
