@@ -55,6 +55,7 @@
             this.cambioPasswordToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemNascondi = new System.Windows.Forms.ToolStripMenuItem();
             this.PanelSetPort = new System.Windows.Forms.Panel();
+            this.progressBarClipboard = new System.Windows.Forms.ProgressBar();
             this.buttonClosePanelSetPort = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.labelClipboardState = new System.Windows.Forms.Label();
@@ -74,7 +75,7 @@
             this.labelTipoCB = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.buttonClosePanelInfoCB = new System.Windows.Forms.Button();
-            this.progressBarClipboard = new System.Windows.Forms.ProgressBar();
+            this.pictureBoxLoader = new System.Windows.Forms.PictureBox();
             this.contextMenuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownPort)).BeginInit();
             this.menuStrip1.SuspendLayout();
@@ -83,6 +84,7 @@
             this.groupBoxInfo.SuspendLayout();
             this.panelInfoCB.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxCB)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLoader)).BeginInit();
             this.SuspendLayout();
             // 
             // notifyIcon1
@@ -356,6 +358,15 @@
             this.PanelSetPort.TabIndex = 11;
             this.PanelSetPort.Visible = false;
             // 
+            // progressBarClipboard
+            // 
+            this.progressBarClipboard.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.progressBarClipboard.Location = new System.Drawing.Point(5, 57);
+            this.progressBarClipboard.Name = "progressBarClipboard";
+            this.progressBarClipboard.Size = new System.Drawing.Size(374, 25);
+            this.progressBarClipboard.TabIndex = 5;
+            this.progressBarClipboard.Visible = false;
+            // 
             // buttonClosePanelSetPort
             // 
             this.buttonClosePanelSetPort.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -476,6 +487,7 @@
             // groupBoxInfo
             // 
             this.groupBoxInfo.BackColor = System.Drawing.Color.Transparent;
+            this.groupBoxInfo.Controls.Add(this.pictureBoxLoader);
             this.groupBoxInfo.Controls.Add(this.labelStato);
             this.groupBoxInfo.Controls.Add(this.label1);
             this.groupBoxInfo.Controls.Add(this.label3);
@@ -591,14 +603,16 @@
             this.buttonClosePanelInfoCB.UseVisualStyleBackColor = true;
             this.buttonClosePanelInfoCB.Click += new System.EventHandler(this.buttonClosePanelInfoCB_Click);
             // 
-            // progressBarClipboard
+            // pictureBoxLoader
             // 
-            this.progressBarClipboard.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.progressBarClipboard.Location = new System.Drawing.Point(5, 57);
-            this.progressBarClipboard.Name = "progressBarClipboard";
-            this.progressBarClipboard.Size = new System.Drawing.Size(374, 25);
-            this.progressBarClipboard.TabIndex = 5;
-            this.progressBarClipboard.Visible = false;
+            this.pictureBoxLoader.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.pictureBoxLoader.Image = ((System.Drawing.Image)(resources.GetObject("pictureBoxLoader.Image")));
+            this.pictureBoxLoader.Location = new System.Drawing.Point(175, 31);
+            this.pictureBoxLoader.Name = "pictureBoxLoader";
+            this.pictureBoxLoader.Size = new System.Drawing.Size(15, 15);
+            this.pictureBoxLoader.TabIndex = 19;
+            this.pictureBoxLoader.TabStop = false;
+            this.pictureBoxLoader.Visible = false;
             // 
             // MainForm
             // 
@@ -636,6 +650,7 @@
             this.panelInfoCB.ResumeLayout(false);
             this.panelInfoCB.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxCB)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLoader)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -688,5 +703,6 @@
         private System.Windows.Forms.Button buttonStopAudio;
         private System.Windows.Forms.Button buttonPlayAudio;
         protected internal System.Windows.Forms.ProgressBar progressBarClipboard;
+        private System.Windows.Forms.PictureBox pictureBoxLoader;
     }
 }

@@ -358,6 +358,7 @@ namespace ProgettoPDS_SERVER
         /// <param name="client"></param>
         public void LabelStatoChangedMethod(ApplicationConstants.Stato stato, string client)
         {
+            pictureBoxLoader.Visible = false;
             this.labelStato.Text = stato.ToString();
 
             if (stato == ApplicationConstants.Stato.CONNESSO)
@@ -367,8 +368,9 @@ namespace ProgettoPDS_SERVER
             }
             else if (stato == ApplicationConstants.Stato.IN_ATTESA)
             {
-                this.labelStato.ForeColor = Color.Black;
+                this.labelStato.ForeColor = Color.MediumTurquoise;
                 this.labelConnectedClient.Text = "-";
+                pictureBoxLoader.Visible = true;
             }  
             else
             {
@@ -530,7 +532,7 @@ namespace ProgettoPDS_SERVER
                     Image i = Clipboard.GetImage();
                     //PropertyItem[] p = i.PropertyItems;
 
-                    Image.GetThumbnailImageAbort myCallback = new Image.GetThumbnailImageAbort(ThumbnailCallback);
+                    //Image.GetThumbnailImageAbort myCallback = new Image.GetThumbnailImageAbort(ThumbnailCallback);
 
                     pictureBoxCB.Image = i;//i.GetThumbnailImage(pictureBoxCB.Image.Width, pictureBoxCB.Image.Height, myCallback, IntPtr.Zero);
                 }
