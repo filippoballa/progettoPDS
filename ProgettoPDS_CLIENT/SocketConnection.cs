@@ -26,8 +26,8 @@ namespace ProgettoPDS_CLIENT
         private int remotePort;
         private MainForm m;
         private STATO stato;
-        public const int RBufSizeClipSock = Int32.MaxValue;
-        public const int SBufSizeClipSock = Int32.MaxValue;
+        public const int RBufSizeClipSock = Int16.MaxValue * 2;
+        public const int SBufSizeClipSock = Int16.MaxValue * 2;
 
         #endregion
 

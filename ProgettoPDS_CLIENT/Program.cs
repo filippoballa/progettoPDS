@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 namespace ProgettoPDS_CLIENT
 {
     static class Program
     {
-        public static DialogResult res = DialogResult.No;
+        internal static DialogResult res = DialogResult.No;
+        internal const string tempPath = "..\\Temp\\";
 
         /// <summary>
         /// Punto di ingresso principale dell'applicazione.
@@ -19,6 +21,9 @@ namespace ProgettoPDS_CLIENT
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             User user = new User();
+
+            if (!Directory.Exists(Program.tempPath))
+                Directory.CreateDirectory(Program.tempPath);
 
             do {
 
@@ -32,6 +37,8 @@ namespace ProgettoPDS_CLIENT
                 user.Login = false;
 
             } while (res != DialogResult.No );
+
+            Directory.Delete(Program.tempPath, true);
 
         }
     }

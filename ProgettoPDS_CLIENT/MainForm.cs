@@ -908,10 +908,11 @@ namespace ProgettoPDS_CLIENT
 
                 case "IMMAGINE":
                     aux = "IMMAGINE-";
-                    Image img = (Image)data[1];
-                    MemoryStream mStream = new MemoryStream();
-                    img.Save(mStream, img.RawFormat);
-                    buff = mStream.ToArray();
+                    Image img = (Image)data[1];                    
+                    ImageConverter converter = new ImageConverter();
+                    buff = (byte[])converter.ConvertTo(img, typeof(byte[]));
+                    
+
                     aux += buff.Length.ToString();
 
                     pdu = Encoding.ASCII.GetBytes(aux);
@@ -955,6 +956,7 @@ namespace ProgettoPDS_CLIENT
 
             string[] parametersInfo = resp.Split('-');
 
+            Array.Clear(pdu, 0, pdu.Length);
             aux = "+OK";
             pdu = Encoding.ASCII.GetBytes(aux);
             SendClipboardInfo(pdu);
@@ -989,7 +991,7 @@ namespace ProgettoPDS_CLIENT
                     StringCollection strColl = new StringCollection();
 
                     for (int i = 0; i < NFiles; i++) {
-                        string path = "../Temp/" + filenames[i];
+                        string path = Program.tempPath + filenames[i];
                         File.WriteAllBytes(path, files[i]);
                         strColl[i] = path;
                     }
@@ -1012,7 +1014,7 @@ namespace ProgettoPDS_CLIENT
                     break;
             }
 
-            this.Invoke(this.setClip, data);
+            this.Invoke(this.setClip, new object[]{data});
 
         }
 
@@ -1096,8 +1098,8 @@ namespace ProgettoPDS_CLIENT
 
                 byte[] d = new byte[SocketConnection.SBufSizeClipSock];
 
-                for ( int i = dataSended; i < SocketConnection.SBufSizeClipSock && i < dim; i++)
-                    d[i] = buff[i];
+                for ( int i = dataSended; (i < SocketConnection.SBufSizeClipSock + dataSended ) && i < dim; i++)
+                    d[i - dataSended] = buff[i];
 
                 try {
                     this.connessioni[this.currServ].ClipSock.Send(d);
@@ -1129,7 +1131,7 @@ namespace ProgettoPDS_CLIENT
                     ResetConnection();
                 }
 
-                for (int i = dataReceived; i < SocketConnection.RBufSizeClipSock && i < dim; i++)
+                for (int i = dataReceived; i < SocketConnection.RBufSizeClipSock + dataReceived && i < dim; i++)
                     rbuff[i] = data[i - dataReceived];
 
                 dataReceived += data.Length;
