@@ -67,6 +67,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.textBoxVpassword = new System.Windows.Forms.TextBox();
             this.groupBoxInfo = new System.Windows.Forms.GroupBox();
+            this.pictureBoxLoader = new System.Windows.Forms.PictureBox();
             this.panelInfoCB = new System.Windows.Forms.Panel();
             this.buttonStopAudio = new System.Windows.Forms.Button();
             this.buttonPlayAudio = new System.Windows.Forms.Button();
@@ -75,16 +76,15 @@
             this.labelTipoCB = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.buttonClosePanelInfoCB = new System.Windows.Forms.Button();
-            this.pictureBoxLoader = new System.Windows.Forms.PictureBox();
             this.contextMenuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownPort)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.PanelSetPort.SuspendLayout();
             this.panelChangePassword.SuspendLayout();
             this.groupBoxInfo.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLoader)).BeginInit();
             this.panelInfoCB.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxCB)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLoader)).BeginInit();
             this.SuspendLayout();
             // 
             // notifyIcon1
@@ -346,12 +346,11 @@
             // 
             this.PanelSetPort.BackColor = System.Drawing.Color.Beige;
             this.PanelSetPort.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("PanelSetPort.BackgroundImage")));
-            this.PanelSetPort.Controls.Add(this.progressBarClipboard);
             this.PanelSetPort.Controls.Add(this.buttonClosePanelSetPort);
             this.PanelSetPort.Controls.Add(this.numericUpDownPort);
             this.PanelSetPort.Controls.Add(this.buttonSetPort);
             this.PanelSetPort.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.PanelSetPort.Location = new System.Drawing.Point(0, 149);
+            this.PanelSetPort.Location = new System.Drawing.Point(0, 124);
             this.PanelSetPort.Name = "PanelSetPort";
             this.PanelSetPort.Padding = new System.Windows.Forms.Padding(5);
             this.PanelSetPort.Size = new System.Drawing.Size(384, 87);
@@ -360,10 +359,11 @@
             // 
             // progressBarClipboard
             // 
+            this.progressBarClipboard.BackColor = System.Drawing.Color.Gold;
             this.progressBarClipboard.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.progressBarClipboard.Location = new System.Drawing.Point(5, 57);
+            this.progressBarClipboard.Location = new System.Drawing.Point(0, 211);
             this.progressBarClipboard.Name = "progressBarClipboard";
-            this.progressBarClipboard.Size = new System.Drawing.Size(374, 25);
+            this.progressBarClipboard.Size = new System.Drawing.Size(384, 25);
             this.progressBarClipboard.TabIndex = 5;
             this.progressBarClipboard.Visible = false;
             // 
@@ -417,7 +417,7 @@
             this.panelChangePassword.Controls.Add(this.label2);
             this.panelChangePassword.Controls.Add(this.textBoxVpassword);
             this.panelChangePassword.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panelChangePassword.Location = new System.Drawing.Point(0, 62);
+            this.panelChangePassword.Location = new System.Drawing.Point(0, 37);
             this.panelChangePassword.Name = "panelChangePassword";
             this.panelChangePassword.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.panelChangePassword.Size = new System.Drawing.Size(384, 87);
@@ -505,6 +505,17 @@
             this.groupBoxInfo.TabIndex = 15;
             this.groupBoxInfo.TabStop = false;
             this.groupBoxInfo.Text = "Info";
+            // 
+            // pictureBoxLoader
+            // 
+            this.pictureBoxLoader.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.pictureBoxLoader.Image = ((System.Drawing.Image)(resources.GetObject("pictureBoxLoader.Image")));
+            this.pictureBoxLoader.Location = new System.Drawing.Point(175, 31);
+            this.pictureBoxLoader.Name = "pictureBoxLoader";
+            this.pictureBoxLoader.Size = new System.Drawing.Size(15, 15);
+            this.pictureBoxLoader.TabIndex = 19;
+            this.pictureBoxLoader.TabStop = false;
+            this.pictureBoxLoader.Visible = false;
             // 
             // panelInfoCB
             // 
@@ -603,17 +614,6 @@
             this.buttonClosePanelInfoCB.UseVisualStyleBackColor = true;
             this.buttonClosePanelInfoCB.Click += new System.EventHandler(this.buttonClosePanelInfoCB_Click);
             // 
-            // pictureBoxLoader
-            // 
-            this.pictureBoxLoader.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pictureBoxLoader.Image = ((System.Drawing.Image)(resources.GetObject("pictureBoxLoader.Image")));
-            this.pictureBoxLoader.Location = new System.Drawing.Point(175, 31);
-            this.pictureBoxLoader.Name = "pictureBoxLoader";
-            this.pictureBoxLoader.Size = new System.Drawing.Size(15, 15);
-            this.pictureBoxLoader.TabIndex = 19;
-            this.pictureBoxLoader.TabStop = false;
-            this.pictureBoxLoader.Visible = false;
-            // 
             // MainForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -623,9 +623,10 @@
             this.ClientSize = new System.Drawing.Size(384, 236);
             this.Controls.Add(this.panelInfoCB);
             this.Controls.Add(this.menuStrip1);
-            this.Controls.Add(this.groupBoxInfo);
             this.Controls.Add(this.panelChangePassword);
             this.Controls.Add(this.PanelSetPort);
+            this.Controls.Add(this.groupBoxInfo);
+            this.Controls.Add(this.progressBarClipboard);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
@@ -647,10 +648,10 @@
             this.panelChangePassword.PerformLayout();
             this.groupBoxInfo.ResumeLayout(false);
             this.groupBoxInfo.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLoader)).EndInit();
             this.panelInfoCB.ResumeLayout(false);
             this.panelInfoCB.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxCB)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLoader)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

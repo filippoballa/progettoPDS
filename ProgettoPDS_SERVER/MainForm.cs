@@ -43,6 +43,10 @@ namespace ProgettoPDS_SERVER
         public startProgressBar startProgressBarDelegate;
         public delegate void doStepProgressBar();
         public doStepProgressBar doStepProgressBarDelegate;
+        public delegate void SetCliboardData(string statoCB, object data);
+        public SetCliboardData SetCliboardDataDelegate;
+        public delegate object GetCliboardData();
+        public GetCliboardData GetCliboardDataDelegate;
         
         public MainForm(User u)
         {
@@ -51,6 +55,9 @@ namespace ProgettoPDS_SERVER
             closeProgressBarDelegate = new closeProgressBar(closeProgressBarMethod);
             startProgressBarDelegate = new startProgressBar(startProgressBarMethod);
             doStepProgressBarDelegate = new doStepProgressBar(doStepProgressBarMethod);
+            SetCliboardDataDelegate = new SetCliboardData(SetCliboardDataMethod);
+            GetCliboardDataDelegate = new GetCliboardData(GetClipboardDataMethod);
+            
 
             InitializeComponent();
 
@@ -83,18 +90,22 @@ namespace ProgettoPDS_SERVER
             if(Clipboard.ContainsAudio())
             {
                 s = ApplicationConstants.StatoClipBoard.PIENA;
+                labelTipoCB.Text = ApplicationConstants.StatoClipBoard.AUDIO.ToString();
             }
             else if(Clipboard.ContainsImage())
             {
                 s = ApplicationConstants.StatoClipBoard.PIENA;
+                labelTipoCB.Text = ApplicationConstants.StatoClipBoard.IMMAGINE.ToString();
             }
             else if(Clipboard.ContainsText())
             {
                 s = ApplicationConstants.StatoClipBoard.PIENA;
+                labelTipoCB.Text = ApplicationConstants.StatoClipBoard.TEXT.ToString();
             }
             else if(Clipboard.ContainsFileDropList())
             {
                 s = ApplicationConstants.StatoClipBoard.PIENA;
+                labelTipoCB.Text = ApplicationConstants.StatoClipBoard.FILE_DROP.ToString();
             }
                 
             this.labelClipboardState.Text = s.ToString();
@@ -276,7 +287,7 @@ namespace ProgettoPDS_SERVER
                             d[2] = this;
                             d[3] = this.Sconnection;
 
-                             //aggiunta dati clipboard
+                             /*/aggiunta dati clipboard
                             if(labelTipoCB.Text==ApplicationConstants.StatoClipBoard.AUDIO.ToString())
                             {
                                 d[4] = Clipboard.GetAudioStream();
@@ -296,7 +307,7 @@ namespace ProgettoPDS_SERVER
                             else//VUOTA o valore strano(impossibile)
                             {
                                 d[4] = 0;
-                            }
+                            }*/
 
                             i += 1;
 
@@ -636,6 +647,9 @@ namespace ProgettoPDS_SERVER
         public void doStepProgressBarMethod()
         {
             progressBarClipboard.PerformStep();
+            int percent = (int)(((double)progressBarClipboard.Value / (double)progressBarClipboard.Maximum) * 100);
+            progressBarClipboard.CreateGraphics().DrawString(percent.ToString() + "%", new Font("Arial", (float)8.25, FontStyle.Regular), Brushes.Black, new PointF(progressBarClipboard.Width / 2 - 10, progressBarClipboard.Height / 2 - 7));
+            
         }
         public void closeProgressBarMethod()
         {
@@ -648,6 +662,58 @@ namespace ProgettoPDS_SERVER
             this.Height = minheight;
 
             this.progressBarClipboard.Visible = false;
+            //this.progressBarClipboardPerc.Visible = false;
         }
+        #region Clipboard
+        // OTTENGO IL CONTENUTO DELLA CLIPBOARD
+        private object GetClipboardDataMethod()
+        {
+            //object[] data = new object[2];
+
+            if (Clipboard.ContainsAudio())
+            {
+                //data[0] = "AUDIO";
+                return Clipboard.GetAudioStream();
+            }
+            else if (Clipboard.ContainsImage())
+            {
+                //data[0] = "IMMAGINE";
+                return Clipboard.GetImage();
+            }
+            else if (Clipboard.ContainsText())
+            {
+                //data[0] = "TEXT";
+                return Clipboard.GetText();
+            }
+            else if (Clipboard.ContainsFileDropList())
+            {
+                //data[0] = "FILE_DROP";
+                return Clipboard.GetFileDropList();
+            }
+
+            return null;
+        }
+
+        // IMPOSTO IL CONTENUTO DELLA CLIPBOARD
+        private void SetCliboardDataMethod(string statoCB, object data)
+        {
+            switch (statoCB)
+            {
+
+                case "AUDIO":
+                    Clipboard.SetAudio((Stream)data);
+                    break;
+                case "IMMAGINE":
+                    Clipboard.SetImage((Image)data);
+                    break;
+                case "TEXT":
+                    Clipboard.SetText((string)data);
+                    break;
+                case "FILE_DROP":
+                    Clipboard.SetFileDropList((System.Collections.Specialized.StringCollection)data);
+                    break;
+            }
+        }
+        #endregion
     }
 }

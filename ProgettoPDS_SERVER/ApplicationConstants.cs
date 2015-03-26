@@ -46,6 +46,8 @@ namespace ProgettoPDS_SERVER
             AS = 5,//Alt+Shift
             CAS = 6//Ctrl+Alt+Shift
         };
+        //paths
+        private const string tempPath = @"..\Temp\";
 
         //structs
         [StructLayout(LayoutKind.Sequential)]
@@ -135,6 +137,8 @@ namespace ProgettoPDS_SERVER
         const string clipboardeventSet = "SET_CLIP";
 
         //readonly methods
+        public static string TempPath { get { return tempPath; } }
+
         public static string AUTH_USER { get { return auth_user; } }
         public static string AUTH_PWD { get { return auth_pwd; } }
         public static string REG_USER { get { return reg_user; } }
