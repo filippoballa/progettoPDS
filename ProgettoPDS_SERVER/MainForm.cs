@@ -19,7 +19,7 @@ namespace ProgettoPDS_SERVER
 {
     public partial class MainForm : Form
     {
-        //attributi
+        #region Attributes
 
         static bool work = true;
         private const int minheight = 165;
@@ -33,8 +33,9 @@ namespace ProgettoPDS_SERVER
         private User u = null;
         private const int passwordlenght = 8;
         private static System.Media.SoundPlayer player;
+        #endregion
 
-        //delegates per le modifiche del form da parte di altri thread
+        #region Delegates per le modifiche del form da parte di altri thread
         public delegate void LabelStatoChanged(ApplicationConstants.Stato stato, string client);
         public LabelStatoChanged LabelStatoChangedDelegate;
         public delegate void closeProgressBar();
@@ -49,7 +50,9 @@ namespace ProgettoPDS_SERVER
         public GetCliboardData GetCliboardDataDelegate;
         public delegate void DrawBorders();
         public DrawBorders DrawBordersDelegate;
-        
+        #endregion
+
+        #region Constructor
         public MainForm(User u)
         {
             //delegate
@@ -85,6 +88,9 @@ namespace ProgettoPDS_SERVER
             this.Text += " - IP : " + Sconnection.GetMyIp();
         }
 
+        #endregion
+
+        //controllo stato clipboard
         private void ClipboardChanghed()
         {
              // Controllo stato clipboard
