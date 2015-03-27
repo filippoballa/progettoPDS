@@ -10,7 +10,7 @@ namespace ProgettoPDS_CLIENT
     static class Program
     {
         internal static DialogResult res = DialogResult.No;
-        internal const string tempPath = "..\\Temp\\";
+        internal static string tempPath = Path.GetFullPath("..\\Temp\\");
 
         /// <summary>
         /// Punto di ingresso principale dell'applicazione.
@@ -38,7 +38,12 @@ namespace ProgettoPDS_CLIENT
 
             } while (res != DialogResult.No );
 
-            Directory.Delete(Program.tempPath, true);
+
+            foreach (string data in Directory.EnumerateFiles(Program.tempPath))
+                File.Delete(data);
+
+            foreach( string data in Directory.EnumerateDirectories(Program.tempPath) )
+                Directory.Delete(Program.tempPath, true);
 
         }
     }

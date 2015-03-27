@@ -875,7 +875,7 @@ namespace ProgettoPDS_CLIENT
                 case "FILE_DROP":
                     aux = "FILE_DROP-";
                     StringCollection filenames = (StringCollection)data[1];
-                    object[] arr = new object[4];
+                    object[] arr = new object[3];
                     List<byte[]> filesData = new List<byte[]>();
 
                     for (int i = 0; i < filenames.Count; i++) {
@@ -986,14 +986,12 @@ namespace ProgettoPDS_CLIENT
                     arr = (object[]) o;
 
                     int NFiles = (int)arr[0];
-                    string[] filenames = (string[]) arr[1];
-                    List<byte[]> files = (List<byte[]>) arr[3];
-                    StringCollection strColl = new StringCollection();
+                    List<byte[]> files = (List<byte[]>) arr[2];
+                    StringCollection strColl = (StringCollection) arr[1];
 
                     for (int i = 0; i < NFiles; i++) {
-                        string path = Program.tempPath + filenames[i];
-                        File.WriteAllBytes(path, files[i]);
-                        strColl[i] = path;
+                        strColl[i] = Program.tempPath + strColl[i];
+                        File.WriteAllBytes(strColl[i], files[i]);
                     }
 
                     data[0] = "FILE_DROP";
