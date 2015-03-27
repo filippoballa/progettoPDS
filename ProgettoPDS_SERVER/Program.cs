@@ -40,7 +40,10 @@ namespace ProgettoPDS_SERVER
             {
                 File.Delete(filename);
             }
-            //Directory.Delete(ApplicationConstants.TempPath, true);
+            foreach (string dir in Directory.EnumerateDirectories(ApplicationConstants.TempPath))
+            {
+                Directory.Delete(dir);
+            }
         }
     }
 }

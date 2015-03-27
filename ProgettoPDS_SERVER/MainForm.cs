@@ -226,7 +226,7 @@ namespace ProgettoPDS_SERVER
             {
                 try
                 {
-                    DrawBordersMethod();
+                    //DrawBordersMethod();
 
                     data = new byte[128];
                     Sconnection.Passiv.Receive(data);

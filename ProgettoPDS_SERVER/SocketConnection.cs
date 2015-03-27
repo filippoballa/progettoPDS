@@ -116,11 +116,7 @@ namespace ProgettoPDS_SERVER
             {
                 if (ClientAutentication())
                 {
-                    Stato = ApplicationConstants.Stato.CONNESSO;
-                    //disegno qualcosa per mostrare il controllo
-                    main.DrawBordersMethod();
-                    //lancio il backGround worker per il controllo dei pacchetti
-                    main.PacketsHandlerbackgroundWorker.RunWorkerAsync();
+                    bool auth = true;
 
                     if (sockTransfer == null)
                         sockTransfer = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
@@ -140,8 +136,18 @@ namespace ProgettoPDS_SERVER
                     {
                         SockDisconnectTS();
                         SockDisconnect();
+                        auth = false;
                     }
 
+                    if(auth)
+                    {
+                        Stato = ApplicationConstants.Stato.CONNESSO;
+                        //disegno qualcosa per mostrare il controllo
+                        main.DrawBordersMethod();
+                        //lancio il backGround worker per il controllo dei pacchetti
+                        main.PacketsHandlerbackgroundWorker.RunWorkerAsync();
+                    }
+                 
                 }
                 else
                 {
@@ -298,6 +304,12 @@ namespace ProgettoPDS_SERVER
 
                                         SockDisconnect();//e chiudo
                                         return false;
+                                    }
+                                    else
+                                    {
+                                        comando = ApplicationConstants.OK;
+                                        data = Encoding.ASCII.GetBytes(comando);
+                                        passiv.Send(data);//OK
                                     }
                                 }
                                 else// se non ricevo YES, ovvero l'user non vuole reistrarsi

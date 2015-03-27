@@ -559,19 +559,19 @@ namespace ProgettoPDS_SERVER
                         arr = o as object[];
 
                         int Nfiles = (int)arr[0];
-                        String[] filenames = arr[1] as String[];
-                        System.Collections.Specialized.StringCollection NewStringCollection = new System.Collections.Specialized.StringCollection();
-                        List<byte[]> files = arr[3] as List<byte[]>;
+                        System.Collections.Specialized.StringCollection filenames = arr[1] as System.Collections.Specialized.StringCollection;
+                        List<byte[]> files = arr[2] as List<byte[]>;
 
                         for (int i = 0; i < Nfiles; i++)
                         {
-                            string path = ApplicationConstants.TempPath + filenames[i];
-                            NewStringCollection[i] = path;
-                            File.WriteAllBytes(path, files[i]);
+                            
+                            filenames[i] = ApplicationConstants.TempPath + filenames[i];
+                            File.WriteAllBytes(filenames[i], files[i]);
+                            filenames[i] = Path.GetFullPath(filenames[i]);
                         }
 
                         //set clipboard file drop
-                        data = NewStringCollection;
+                        data = filenames;
                     }
                 }
             }
