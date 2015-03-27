@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.ComponentModel;
+using System.Windows.Forms;
 
 namespace ProgettoPDS_SERVER
 {
@@ -136,6 +137,9 @@ namespace ProgettoPDS_SERVER
         const string clipboardeventGet = "GET_CLIP";
         const string clipboardeventSet = "SET_CLIP";
 
+        //others attributes 
+        private static DialogResult res = DialogResult.No;
+
         //readonly methods
         public static string TempPath { get { return tempPath; } }
 
@@ -191,5 +195,7 @@ namespace ProgettoPDS_SERVER
 
         public static string CLIPBOARDEVENTGET { get { return clipboardeventGet; } }
         public static string CLIPBOARDEVENTSET { get { return clipboardeventSet; } }
+
+        public static DialogResult RES { get { return res; } set { res = value; } }
     }
 }

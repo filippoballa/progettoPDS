@@ -13,6 +13,7 @@ using System.Globalization;
 using System.Threading;
 using System.Security.Cryptography;
 using System.IO;
+using System.Runtime.InteropServices;
 
 namespace ProgettoPDS_SERVER
 {
@@ -33,10 +34,9 @@ namespace ProgettoPDS_SERVER
         private const int passwordlenght = 8;
         private static System.Media.SoundPlayer player;
 
-        //delegate per le modifiche del form da parte di altri thread
+        //delegates per le modifiche del form da parte di altri thread
         public delegate void LabelStatoChanged(ApplicationConstants.Stato stato, string client);
         public LabelStatoChanged LabelStatoChangedDelegate;
-
         public delegate void closeProgressBar();
         public closeProgressBar closeProgressBarDelegate;
         public delegate void startProgressBar(int max);
@@ -47,6 +47,8 @@ namespace ProgettoPDS_SERVER
         public SetCliboardData SetCliboardDataDelegate;
         public delegate object GetCliboardData();
         public GetCliboardData GetCliboardDataDelegate;
+        public delegate void DrawBorders();
+        public DrawBorders DrawBordersDelegate;
         
         public MainForm(User u)
         {
@@ -57,6 +59,7 @@ namespace ProgettoPDS_SERVER
             doStepProgressBarDelegate = new doStepProgressBar(doStepProgressBarMethod);
             SetCliboardDataDelegate = new SetCliboardData(SetCliboardDataMethod);
             GetCliboardDataDelegate = new GetCliboardData(GetClipboardDataMethod);
+            DrawBordersDelegate = new DrawBorders(DrawBordersMethod);
             
 
             InitializeComponent();
@@ -177,27 +180,30 @@ namespace ProgettoPDS_SERVER
         /// </summary>
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            DialogResult res = MessageBox.Show("Vuoi chiudere l'applicazione?", "CHIUSURA IN CORSO", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation);
-
-            if (res == DialogResult.OK)
+            if(ApplicationConstants.RES != DialogResult.Yes)
             {
-                e.Cancel = false;
-                notifyIcon1.ShowBalloonTip(ToolTipTimeOut, "INFO STATO", "Applicazione in Back Ground.", ToolTipIcon.Info);
-            }   
-            else
-                e.Cancel = true;
+                DialogResult res = MessageBox.Show("Vuoi chiudere l'applicazione?", "CHIUSURA IN CORSO", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation);
 
-            this.ShowInTaskbar = true;
-            this.WindowState = FormWindowState.Minimized;
-            this.ShowInTaskbar = false;
+                if (res == DialogResult.OK)
+                {
+                    e.Cancel = false;
+                    notifyIcon1.ShowBalloonTip(ToolTipTimeOut, "INFO STATO", "Applicazione in Back Ground.", ToolTipIcon.Info);
+                }
+                else
+                    e.Cancel = true;
+
+                this.ShowInTaskbar = true;
+                this.WindowState = FormWindowState.Minimized;
+                this.ShowInTaskbar = false;
+            }
         }
 
         /// <summary>
         /// Click sul pulsante 'disegna' del menu: disegna un bordo.
         /// </summary>
-        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        private void toolStripMenuDisegna_Click(object sender, EventArgs e)
         {
-            Sconnection.DrawBorders();
+            DrawBordersMethod();
         }
 
         #region PacketsHandler backgroundWorker
@@ -214,6 +220,8 @@ namespace ProgettoPDS_SERVER
             {
                 try
                 {
+                    DrawBordersMethod();
+
                     data = new byte[128];
                     Sconnection.Passiv.Receive(data);
 
@@ -250,7 +258,7 @@ namespace ProgettoPDS_SERVER
 
                             ThreadHandler.MouseQueue.Enqueue((String[])d);
 
-                            //se il pacchetto è l'unico in coda creao il thread
+                            //se il pacchetto è l'unico in coda creo il thread
                             if (ThreadHandler.MouseQueue.Count == 1)
                             {
                                 t = new Thread(ThreadHandler.MouseThreadProc);
@@ -280,35 +288,13 @@ namespace ProgettoPDS_SERVER
                         else if (s == ApplicationConstants.CLIPBOARDCODE)
                         {
                             //[C]-[EVENTKEY]
-                            d = new object[5];
+                            d = new object[4];
                             d[0] = s;
                             d[1] = d[1] = Data[i + 1];
                             //campi aggiuntivi per passare dati diversi da string al thread della clipboard 
                             d[2] = this;
                             d[3] = this.Sconnection;
-
-                             /*/aggiunta dati clipboard
-                            if(labelTipoCB.Text==ApplicationConstants.StatoClipBoard.AUDIO.ToString())
-                            {
-                                d[4] = Clipboard.GetAudioStream();
-                            }
-                            else if (labelTipoCB.Text == ApplicationConstants.StatoClipBoard.IMMAGINE.ToString())
-                            {
-                                d[4] = Clipboard.GetImage();
-                            }
-                            else if (labelTipoCB.Text == ApplicationConstants.StatoClipBoard.TEXT.ToString())
-                            {
-                                d[4] = Clipboard.GetText();
-                            }
-                            else if (labelTipoCB.Text == ApplicationConstants.StatoClipBoard.FILE_DROP.ToString())
-                            {
-                                d[4] = Clipboard.GetFileDropList();
-                            }
-                            else//VUOTA o valore strano(impossibile)
-                            {
-                                d[4] = 0;
-                            }*/
-
+                            
                             i += 1;
 
                             t = new Thread(ThreadHandler.ClipBoardThreadProc);
@@ -448,12 +434,12 @@ namespace ProgettoPDS_SERVER
             }
             this.PanelSetPort.Visible = true;    
         }
-
-        private void buttonClosePanelSetPort_Click(object sender, EventArgs e)
+        private void logOutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            PanelSetPort.Visible = false;
-            this.Height = minheight;
+            ApplicationConstants.RES = DialogResult.Yes;
+            this.Close();
         }
+
         private void cambioPasswordToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (PanelSetPort.Visible)
@@ -464,7 +450,13 @@ namespace ProgettoPDS_SERVER
             {
                 this.Height = maxheight;
             }
-            panelChangePassword.Visible = true;
+            this.panelChangePassword.Visible = true;    
+        }
+
+        private void buttonClosePanelSetPort_Click(object sender, EventArgs e)
+        {
+            PanelSetPort.Visible = false;
+            this.Height = minheight;
         }
 
         private void buttonClosePanelChangePassword_Click(object sender, EventArgs e)
@@ -541,11 +533,8 @@ namespace ProgettoPDS_SERVER
                     labelTipoCB.Text = ApplicationConstants.StatoClipBoard.IMMAGINE.ToString();
 
                     Image i = Clipboard.GetImage();
-                    //PropertyItem[] p = i.PropertyItems;
 
-                    //Image.GetThumbnailImageAbort myCallback = new Image.GetThumbnailImageAbort(ThumbnailCallback);
-
-                    pictureBoxCB.Image = i;//i.GetThumbnailImage(pictureBoxCB.Image.Width, pictureBoxCB.Image.Height, myCallback, IntPtr.Zero);
+                    pictureBoxCB.Image = i;
                 }
                 else if(Clipboard.ContainsText())
                 {
@@ -566,11 +555,11 @@ namespace ProgettoPDS_SERVER
                     for (int i = 0; i < s.Count; i++)
                     {
                         richTextBoxCB.Text += s[i] + Environment.NewLine;
-                        if(s[i]==@"C:\Users\Filippo\Desktop\prova.wma")
+                        /*if(s[i]==@"C:\Users\Filippo\Desktop\prova.wma")
                         {
                             byte[] f = File.ReadAllBytes(s[i]);       
                             Clipboard.SetAudio(f);
-                        }
+                        }*/
                     }
                 }
                 else
@@ -585,7 +574,7 @@ namespace ProgettoPDS_SERVER
 
             if (!panelInfoCB.Visible)
             {
-                groupBoxInfo.Width -= panelInfoCB.Width;
+                groupBoxInfo.Width -= panelInfoCB.Width+groupBoxInfo.Margin.Left;
                 panelInfoCB.Visible = true;
             }
         }
@@ -601,7 +590,7 @@ namespace ProgettoPDS_SERVER
 
         private void buttonClosePanelInfoCB_Click(object sender, EventArgs e)
         {
-            groupBoxInfo.Width += panelInfoCB.Width;
+            groupBoxInfo.Width += panelInfoCB.Width+groupBoxInfo.Margin.Left;
             panelInfoCB.Visible = false;
         }
 
@@ -715,5 +704,31 @@ namespace ProgettoPDS_SERVER
             }
         }
         #endregion
+        #region Graphics
+        public void DrawBordersMethod()
+        {
+            IntPtr desktop = GetDC(IntPtr.Zero);
+            using (Graphics g = Graphics.FromHdc(desktop))
+            {
+                int border = 10;
+                //top
+                g.FillRectangle(Brushes.Red, 0, 0, Screen.PrimaryScreen.Bounds.Width, border);
+                //right
+                g.FillRectangle(Brushes.Red, Screen.PrimaryScreen.Bounds.Width - border, border, border, Screen.PrimaryScreen.Bounds.Height - (2 * border));
+                //bottom
+                g.FillRectangle(Brushes.Red, 0, Screen.PrimaryScreen.Bounds.Height - border, Screen.PrimaryScreen.Bounds.Width, border);
+                //left
+                g.FillRectangle(Brushes.Red, 0, border, border, Screen.PrimaryScreen.Bounds.Height - (2 * border));
+            }
+            ReleaseDC(IntPtr.Zero, desktop);
+        }
+        [DllImport("User32.dll")]
+        static extern IntPtr GetDC(IntPtr hwnd);
+
+        [DllImport("User32.dll", EntryPoint = "ReleaseDC", SetLastError = true)]
+        static extern int ReleaseDC(IntPtr hwnd, IntPtr dc);
+        #endregion
+
     }
+    
 }

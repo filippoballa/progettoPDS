@@ -378,76 +378,40 @@ namespace ProgettoPDS_SERVER
             MainForm main = objdata[2] as MainForm;
             SocketConnection Sconnection = objdata[3] as SocketConnection;
             string statoCB = main.labelTipoCB.Text;
-            //objdata = null;
 
-            if(CBDataInfo==ApplicationConstants.CLIPBOARDEVENTGET)
+            //destroy the unused objects
+            objdata = null;
+            threaddata = null;
+
+            #region GET CLIPBOARD
+            if (CBDataInfo==ApplicationConstants.CLIPBOARDEVENTGET)
             {
                 //gestione invio clipboard
 
-                byte[] dataToSend = null;
+                //creazione dati da inviare
+                byte[] dataToSend = CreateDataToSend(statoCB, main);
 
-                //creazione dei byte da inviare
-                if(statoCB==ApplicationConstants.StatoClipBoard.AUDIO.ToString())
-                {
-                    Stream s = main.Invoke(main.GetCliboardDataDelegate) as Stream;
-                    MemoryStream ms = new MemoryStream();
-                    s.CopyTo(ms);
-                    dataToSend = new byte[ms.ToArray().Length];
-                    dataToSend = ms.ToArray();  
-                }
-                else if (statoCB == ApplicationConstants.StatoClipBoard.IMMAGINE.ToString())
-                {
-                    Image i = main.Invoke(main.GetCliboardDataDelegate) as Image;
-                    
-                    ImageConverter ic = new ImageConverter();
-                    dataToSend = (byte[])ic.ConvertTo(i,typeof(byte[]));   
-                }
-                else if (statoCB == ApplicationConstants.StatoClipBoard.TEXT.ToString())
-                {
-                    dataToSend = Encoding.ASCII.GetBytes(main.Invoke(main.GetCliboardDataDelegate) as String);
-                }
-                else if (statoCB == ApplicationConstants.StatoClipBoard.FILE_DROP.ToString())
-                {
-                    System.Collections.Specialized.StringCollection filenames = main.Invoke(main.GetCliboardDataDelegate) as System.Collections.Specialized.StringCollection;
-                    object[] arr = new object[3];
-
-                    List<byte[]> files = new List<byte[]>();
-
-                    for (int i = 0; i < filenames.Count; i++)
-                    {
-                        byte[] f = File.ReadAllBytes(filenames[i]);
-                        filenames[i] = Path.GetFileName(filenames[i]);
-
-                        files.Add(f);
-                    }
-                    arr[0] = files.Count;
-                    arr[1] = filenames;//eventualmente mandare solo il nome senza il percorso
-                    arr[2] = files;
-
-
-                    BinaryFormatter bf = new BinaryFormatter();
-                    MemoryStream ms = new MemoryStream();
-                    bf.Serialize(ms, arr);
-                    dataToSend = ms.ToArray();
-                }
-                else//VUOTA o valore strano(impossibile)
-                {
-
-                }
                 if (dataToSend != null)
                 {
                     //inizio comunicazione 
-                    byte[] datagram = new byte[64]; 
-                    datagram = Encoding.ASCII.GetBytes(statoCB+"-"+dataToSend.Length);//[TIPO]-[DIM]
-                    Sconnection.PassivTransfer.Send(datagram);//invio tipo di dati
 
-                    Array.Clear(datagram,0,datagram.Length);
-                    Sconnection.PassivTransfer.Receive(datagram);//ricevo risp
+                    //invio tipo di dati e dimensione [TIPO]-[DIM]
+                    byte[] datagram = new byte[64];
+                    datagram = Encoding.ASCII.GetBytes(statoCB+"-"+dataToSend.Length);
+                    Sconnection.PassivTransfer.Send(datagram);
+                    
+                    //ricevo risp
+                    datagram = new byte[64]; ;
+                    Sconnection.PassivTransfer.Receive(datagram);
 
                     string datgramString = Encoding.ASCII.GetString(datagram);
                     datgramString = datgramString.Substring(0,datgramString.IndexOf("\0"));
-                    if(datgramString==ApplicationConstants.OK)//inizio trasferimento file
+
+                    if(datgramString==ApplicationConstants.OK)
                     {
+                        //inizio trasferimento file
+
+                        //set Buffer Trasmettitore
                         Sconnection.PassivTransfer.SendBufferSize = SBuffSize;
 
                         main.Invoke(main.startProgressBarDelegate,new Object[]{dataToSend.Length});
@@ -475,27 +439,32 @@ namespace ProgettoPDS_SERVER
                         //non ho ricevuto l'ok
                     }
                 }
-                    
+
             }
+            #endregion
+            #region SET CLIPBOARD
             else if(CBDataInfo==ApplicationConstants.CLIPBOARDEVENTSET)
             {
                 //gestione ricezione clipboard
                 byte[] dataToReceive;
                 int dim;
-                byte[] datagram;
-                datagram = new byte[64];
+
+                //ricezione tipo di dati e dimensione [TIPO]-[DIM]
+                byte[] datagram = new byte[64];
                 Sconnection.PassivTransfer.Receive(datagram);
-                string datagramString = Encoding.ASCII.GetString(datagram);//ricezione [TIPO]-[DIM]
+                string datagramString = Encoding.ASCII.GetString(datagram);
                 string[] dati = datagramString.Split(ApplicationConstants.SEPARATOR);
 
+                //ricezione corretta
                 if (dati.Length == 2)
                 {
                     statoCB = dati[0];
                     dim = Convert.ToInt32(dati[1]);
                     dataToReceive = new byte[dim];
 
+                    //invio risp +OK
                     datagram = Encoding.ASCII.GetBytes(ApplicationConstants.OK);
-                    Sconnection.PassivTransfer.Send(datagram);//invio +OK
+                    Sconnection.PassivTransfer.Send(datagram);
 
                     //ricezione dei/del file
                     Sconnection.PassivTransfer.ReceiveBufferSize = RBuffSize;
@@ -516,77 +485,131 @@ namespace ProgettoPDS_SERVER
                         }
 
                         dataReceived += datagram.Length;
-                        //dataReceived++;
                     }
 
-                    //casi a seconda del tipo di dato
-                    object data = null;
-                    if (statoCB == ApplicationConstants.StatoClipBoard.AUDIO.ToString())
-                    {
-                        MemoryStream ms = new MemoryStream(dataToReceive);
-                        Stream aus = Clipboard.GetAudioStream();
-                        ms.WriteTo(aus);
-                        data = aus;
-                    }
-                    else if (statoCB == ApplicationConstants.StatoClipBoard.IMMAGINE.ToString())
-                    {
-                        //MemoryStream ms = new MemoryStream(dataToReceive);
-                        //Image i = Image.FromStream(ms);
-                        ImageConverter ic = new ImageConverter();
-                        Image i = (Image)ic.ConvertFrom(dataToReceive);
-                       
-                        data = i;
-                    }
-                    else if (statoCB == ApplicationConstants.StatoClipBoard.TEXT.ToString())
-                    {
-                        data = Encoding.ASCII.GetString(dataToReceive);
-                    }
-                    else if (statoCB == ApplicationConstants.StatoClipBoard.FILE_DROP.ToString())
-                    {
-                        //da gestire caso singolo e multiplo
-                        using (var ms = new MemoryStream(dataToReceive))
-                        {
-                            BinaryFormatter bf = new BinaryFormatter();
-                            object o = bf.Deserialize(ms);
+                    //creazione dei dati da mettere in clipboard
+                    object data = CreateDataToSet(statoCB, dataToReceive);
 
-                            object[] arr = new object[3];
-                            arr = o as object[];
-
-                            int Nfiles = (int)arr[0];
-                            String[] filenames = arr[1] as String[];
-                            System.Collections.Specialized.StringCollection NewStringCollection = new System.Collections.Specialized.StringCollection();
-                            List<byte[]> files = arr[3] as List<byte[]>;
-
-                            for (int i = 0; i < Nfiles; i++)
-                            {
-                                    string path = ApplicationConstants.TempPath + filenames[i];
-                                    NewStringCollection[i] = path;
-                                    File.WriteAllBytes(path, files[i]);
-                            }
-
-                            //set clipboard file drop
-                            data = NewStringCollection;
-                        }
-                    }
-                    else
-                    {
-                        //non dovrebbe verificarsi
-                    }
                     if(data!=null)
                     {
                         main.Invoke(main.SetCliboardDataDelegate, new Object[] { statoCB, data });
                     }
                     main.Invoke(main.closeProgressBarDelegate);
                 }
+            
+
                 else//ricezione comando sbagliato
                 {
                     datagram = Encoding.ASCII.GetBytes(ApplicationConstants.ERR);
                     Sconnection.PassivTransfer.Send(datagram);//invio -ERR
                 }
             }
+            #endregion
 
             ThreadCounter--;
             mrMaxThreads.Set();
+        }
+
+        private static object CreateDataToSet(string statoCB, byte[] dataToReceive)
+        {
+            object data = null;
+
+            if (statoCB == ApplicationConstants.StatoClipBoard.AUDIO.ToString())
+            {
+                MemoryStream ms = new MemoryStream(dataToReceive);
+                Stream aus = Clipboard.GetAudioStream();
+                ms.WriteTo(aus);
+                data = aus;
+            }
+            else if (statoCB == ApplicationConstants.StatoClipBoard.IMMAGINE.ToString())
+            {
+                ImageConverter ic = new ImageConverter();
+                Image i = (Image)ic.ConvertFrom(dataToReceive);
+
+                data = i;
+            }
+            else if (statoCB == ApplicationConstants.StatoClipBoard.TEXT.ToString())
+            {
+                data = Encoding.ASCII.GetString(dataToReceive);
+            }
+            else if (statoCB == ApplicationConstants.StatoClipBoard.FILE_DROP.ToString())
+            {
+                using (var ms = new MemoryStream(dataToReceive))
+                {
+                    BinaryFormatter bf = new BinaryFormatter();
+                    object o = bf.Deserialize(ms);
+
+                    object[] arr = new object[3];
+                    arr = o as object[];
+
+                    int Nfiles = (int)arr[0];
+                    String[] filenames = arr[1] as String[];
+                    System.Collections.Specialized.StringCollection NewStringCollection = new System.Collections.Specialized.StringCollection();
+                    List<byte[]> files = arr[3] as List<byte[]>;
+
+                    for (int i = 0; i < Nfiles; i++)
+                    {
+                        string path = ApplicationConstants.TempPath + filenames[i];
+                        NewStringCollection[i] = path;
+                        File.WriteAllBytes(path, files[i]);
+                    }
+
+                    //set clipboard file drop
+                    data = NewStringCollection;
+                }
+            }
+            return data;
+        }
+
+        private static byte[] CreateDataToSend(string statoCB, MainForm main)
+        {
+            byte[] dataToSend = null;
+            //creazione dei byte da inviare
+            if (statoCB == ApplicationConstants.StatoClipBoard.AUDIO.ToString())
+            {
+                Stream s = main.Invoke(main.GetCliboardDataDelegate) as Stream;
+                MemoryStream ms = new MemoryStream();
+                s.CopyTo(ms);
+                dataToSend = new byte[ms.ToArray().Length];
+                dataToSend = ms.ToArray();
+            }
+            else if (statoCB == ApplicationConstants.StatoClipBoard.IMMAGINE.ToString())
+            {
+                Image i = main.Invoke(main.GetCliboardDataDelegate) as Image;
+
+                ImageConverter ic = new ImageConverter();
+                dataToSend = (byte[])ic.ConvertTo(i, typeof(byte[]));
+            }
+            else if (statoCB == ApplicationConstants.StatoClipBoard.TEXT.ToString())
+            {
+                dataToSend = Encoding.ASCII.GetBytes(main.Invoke(main.GetCliboardDataDelegate) as String);
+            }
+            else if (statoCB == ApplicationConstants.StatoClipBoard.FILE_DROP.ToString())
+            {
+                System.Collections.Specialized.StringCollection filenames = main.Invoke(main.GetCliboardDataDelegate) as System.Collections.Specialized.StringCollection;
+                object[] arr = new object[3];
+
+                List<byte[]> files = new List<byte[]>();
+
+                for (int i = 0; i < filenames.Count; i++)
+                {
+                    byte[] f = File.ReadAllBytes(filenames[i]);
+                    filenames[i] = Path.GetFileName(filenames[i]);
+
+                    files.Add(f);
+                }
+                arr[0] = files.Count;
+                arr[1] = filenames;//eventualmente mandare solo il nome senza il percorso
+                arr[2] = files;
+
+
+                BinaryFormatter bf = new BinaryFormatter();
+                MemoryStream ms = new MemoryStream();
+                bf.Serialize(ms, arr);
+                dataToSend = ms.ToArray();
+            }
+
+            return dataToSend;
         }
         #endregion
         #region Dll imports

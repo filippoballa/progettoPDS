@@ -17,16 +17,30 @@ namespace ProgettoPDS_SERVER
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             User user = new User();
+            
 
             if (!Directory.Exists(ApplicationConstants.TempPath))
                 Directory.CreateDirectory(ApplicationConstants.TempPath);
 
-            Application.Run(new LoginForm(user));
+            do
+            {
 
-            if (user.Login)
-                Application.Run(new MainForm(user));
+                ApplicationConstants.RES = DialogResult.No;
 
-            Directory.Delete(ApplicationConstants.TempPath, true);
+                Application.Run(new LoginForm(user));
+
+                if (user.Login)
+                    Application.Run(new MainForm(user));
+
+                user.Login = false;
+
+            } while (ApplicationConstants.RES != DialogResult.No);
+
+            foreach( string filename in Directory.EnumerateFiles(ApplicationConstants.TempPath))
+            {
+                File.Delete(filename);
+            }
+            //Directory.Delete(ApplicationConstants.TempPath, true);
         }
     }
 }

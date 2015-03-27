@@ -114,7 +114,7 @@ namespace ProgettoPDS_SERVER
                 {
                     Stato = ApplicationConstants.Stato.CONNESSO;
                     //disegno qualcosa per mostrare il controllo
-                    DrawBorders();
+                    main.DrawBordersMethod();
                     //lancio il backGround worker per il controllo dei pacchetti
                     main.PacketsHandlerbackgroundWorker.RunWorkerAsync();
 
@@ -391,32 +391,6 @@ namespace ProgettoPDS_SERVER
 
             return pwd;
         }
-        #endregion
-        
-        #region Graphics
-        public void DrawBorders()
-        {
-            IntPtr desktop = GetDC(IntPtr.Zero);
-            using (Graphics g = Graphics.FromHdc(desktop))
-            {
-                int border = 10;
-                //top
-                g.FillRectangle(Brushes.Red, 0, 0, Screen.PrimaryScreen.Bounds.Width, border);
-                //right
-                //g.FillRectangle(Brushes.Red, Screen.PrimaryScreen.Bounds.Width - border, border, border, Screen.PrimaryScreen.Bounds.Height - (2 * border));
-                //bottom
-                //g.FillRectangle(Brushes.Red, 0, Screen.PrimaryScreen.Bounds.Height - border, Screen.PrimaryScreen.Bounds.Width, border);
-                //left
-                //g.FillRectangle(Brushes.Red, 0, border, border, Screen.PrimaryScreen.Bounds.Height - (2 * border));
-            }
-            ReleaseDC(IntPtr.Zero, desktop);
-        }
-
-        [DllImport("User32.dll")]
-        static extern IntPtr GetDC(IntPtr hwnd);
-
-        [DllImport("User32.dll", EntryPoint = "ReleaseDC", SetLastError = true)]
-        static extern int ReleaseDC(IntPtr hwnd, IntPtr dc);
         #endregion
 
         public String GetMyIp()

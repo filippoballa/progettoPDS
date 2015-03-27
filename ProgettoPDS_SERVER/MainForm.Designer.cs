@@ -37,6 +37,7 @@
             this.toolStripMenuItemDisconnetti = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemCloseForm = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemCloseMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.disegnaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.PacketsHandlerbackgroundWorker = new System.ComponentModel.BackgroundWorker();
             this.labelStato = new System.Windows.Forms.Label();
             this.numericUpDownPort = new System.Windows.Forms.NumericUpDown();
@@ -53,10 +54,12 @@
             this.infoDatiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pulisciToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cambioPasswordToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cambioPasswordToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.logOutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemNascondi = new System.Windows.Forms.ToolStripMenuItem();
             this.PanelSetPort = new System.Windows.Forms.Panel();
-            this.progressBarClipboard = new System.Windows.Forms.ProgressBar();
             this.buttonClosePanelSetPort = new System.Windows.Forms.Button();
+            this.progressBarClipboard = new System.Windows.Forms.ProgressBar();
             this.label4 = new System.Windows.Forms.Label();
             this.labelClipboardState = new System.Windows.Forms.Label();
             this.panelChangePassword = new System.Windows.Forms.Panel();
@@ -107,9 +110,10 @@
             this.toolStripMenuItemConnetti,
             this.toolStripMenuItemDisconnetti,
             this.toolStripMenuItemCloseForm,
-            this.toolStripMenuItemCloseMenu});
+            this.toolStripMenuItemCloseMenu,
+            this.disegnaToolStripMenuItem});
             this.contextMenuStrip.Name = "contextMenuStrip";
-            this.contextMenuStrip.Size = new System.Drawing.Size(185, 134);
+            this.contextMenuStrip.Size = new System.Drawing.Size(185, 160);
             // 
             // toolStripMenuItemOpenConsole
             // 
@@ -150,6 +154,13 @@
             this.toolStripMenuItemCloseMenu.Size = new System.Drawing.Size(184, 26);
             this.toolStripMenuItemCloseMenu.Text = "Chiudi Applicazione";
             this.toolStripMenuItemCloseMenu.Click += new System.EventHandler(this.MainFormClose);
+            // 
+            // disegnaToolStripMenuItem
+            // 
+            this.disegnaToolStripMenuItem.Name = "disegnaToolStripMenuItem";
+            this.disegnaToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
+            this.disegnaToolStripMenuItem.Text = "disegna";
+            this.disegnaToolStripMenuItem.Click += new System.EventHandler(this.toolStripMenuDisegna_Click);
             // 
             // PacketsHandlerbackgroundWorker
             // 
@@ -315,7 +326,7 @@
             this.infoDatiToolStripMenuItem.BackColor = System.Drawing.Color.Beige;
             this.infoDatiToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("infoDatiToolStripMenuItem.Image")));
             this.infoDatiToolStripMenuItem.Name = "infoDatiToolStripMenuItem";
-            this.infoDatiToolStripMenuItem.Size = new System.Drawing.Size(129, 26);
+            this.infoDatiToolStripMenuItem.Size = new System.Drawing.Size(156, 26);
             this.infoDatiToolStripMenuItem.Text = "Info Dati";
             this.infoDatiToolStripMenuItem.Click += new System.EventHandler(this.infoDatiToolStripMenuItem_Click);
             // 
@@ -324,16 +335,37 @@
             this.pulisciToolStripMenuItem.BackColor = System.Drawing.Color.Beige;
             this.pulisciToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("pulisciToolStripMenuItem.Image")));
             this.pulisciToolStripMenuItem.Name = "pulisciToolStripMenuItem";
-            this.pulisciToolStripMenuItem.Size = new System.Drawing.Size(129, 26);
+            this.pulisciToolStripMenuItem.Size = new System.Drawing.Size(156, 26);
             this.pulisciToolStripMenuItem.Text = "Pulisci";
             this.pulisciToolStripMenuItem.Click += new System.EventHandler(this.pulisciToolStripMenuItem_Click);
             // 
             // cambioPasswordToolStripMenuItem
             // 
+            this.cambioPasswordToolStripMenuItem.BackColor = System.Drawing.Color.Transparent;
+            this.cambioPasswordToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cambioPasswordToolStripMenuItem1,
+            this.logOutToolStripMenuItem});
             this.cambioPasswordToolStripMenuItem.Name = "cambioPasswordToolStripMenuItem";
-            this.cambioPasswordToolStripMenuItem.Size = new System.Drawing.Size(125, 21);
-            this.cambioPasswordToolStripMenuItem.Text = "Cambio Password";
-            this.cambioPasswordToolStripMenuItem.Click += new System.EventHandler(this.cambioPasswordToolStripMenuItem_Click);
+            this.cambioPasswordToolStripMenuItem.Size = new System.Drawing.Size(75, 21);
+            this.cambioPasswordToolStripMenuItem.Text = "Strumenti";
+            // 
+            // cambioPasswordToolStripMenuItem1
+            // 
+            this.cambioPasswordToolStripMenuItem1.BackColor = System.Drawing.Color.Beige;
+            this.cambioPasswordToolStripMenuItem1.Image = ((System.Drawing.Image)(resources.GetObject("cambioPasswordToolStripMenuItem1.Image")));
+            this.cambioPasswordToolStripMenuItem1.Name = "cambioPasswordToolStripMenuItem1";
+            this.cambioPasswordToolStripMenuItem1.Size = new System.Drawing.Size(185, 26);
+            this.cambioPasswordToolStripMenuItem1.Text = "Cambio Password";
+            this.cambioPasswordToolStripMenuItem1.Click += new System.EventHandler(this.cambioPasswordToolStripMenuItem_Click);
+            // 
+            // logOutToolStripMenuItem
+            // 
+            this.logOutToolStripMenuItem.BackColor = System.Drawing.Color.Beige;
+            this.logOutToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("logOutToolStripMenuItem.Image")));
+            this.logOutToolStripMenuItem.Name = "logOutToolStripMenuItem";
+            this.logOutToolStripMenuItem.Size = new System.Drawing.Size(185, 26);
+            this.logOutToolStripMenuItem.Text = "Log Out";
+            this.logOutToolStripMenuItem.Click += new System.EventHandler(this.logOutToolStripMenuItem_Click);
             // 
             // toolStripMenuItemNascondi
             // 
@@ -357,16 +389,6 @@
             this.PanelSetPort.TabIndex = 11;
             this.PanelSetPort.Visible = false;
             // 
-            // progressBarClipboard
-            // 
-            this.progressBarClipboard.BackColor = System.Drawing.Color.Gold;
-            this.progressBarClipboard.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.progressBarClipboard.Location = new System.Drawing.Point(0, 211);
-            this.progressBarClipboard.Name = "progressBarClipboard";
-            this.progressBarClipboard.Size = new System.Drawing.Size(384, 25);
-            this.progressBarClipboard.TabIndex = 5;
-            this.progressBarClipboard.Visible = false;
-            // 
             // buttonClosePanelSetPort
             // 
             this.buttonClosePanelSetPort.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -379,6 +401,16 @@
             this.buttonClosePanelSetPort.TabIndex = 4;
             this.buttonClosePanelSetPort.UseVisualStyleBackColor = true;
             this.buttonClosePanelSetPort.Click += new System.EventHandler(this.buttonClosePanelSetPort_Click);
+            // 
+            // progressBarClipboard
+            // 
+            this.progressBarClipboard.BackColor = System.Drawing.Color.Gold;
+            this.progressBarClipboard.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.progressBarClipboard.Location = new System.Drawing.Point(0, 211);
+            this.progressBarClipboard.Name = "progressBarClipboard";
+            this.progressBarClipboard.Size = new System.Drawing.Size(384, 25);
+            this.progressBarClipboard.TabIndex = 5;
+            this.progressBarClipboard.Visible = false;
             // 
             // label4
             // 
@@ -520,7 +552,6 @@
             // panelInfoCB
             // 
             this.panelInfoCB.BackColor = System.Drawing.Color.Beige;
-            this.panelInfoCB.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panelInfoCB.Controls.Add(this.buttonStopAudio);
             this.panelInfoCB.Controls.Add(this.buttonPlayAudio);
             this.panelInfoCB.Controls.Add(this.pictureBoxCB);
@@ -606,7 +637,7 @@
             this.buttonClosePanelInfoCB.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonClosePanelInfoCB.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("buttonClosePanelInfoCB.BackgroundImage")));
             this.buttonClosePanelInfoCB.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.buttonClosePanelInfoCB.Location = new System.Drawing.Point(101, 3);
+            this.buttonClosePanelInfoCB.Location = new System.Drawing.Point(103, 3);
             this.buttonClosePanelInfoCB.Name = "buttonClosePanelInfoCB";
             this.buttonClosePanelInfoCB.Padding = new System.Windows.Forms.Padding(5);
             this.buttonClosePanelInfoCB.Size = new System.Drawing.Size(24, 23);
@@ -705,5 +736,8 @@
         private System.Windows.Forms.Button buttonPlayAudio;
         protected internal System.Windows.Forms.ProgressBar progressBarClipboard;
         private System.Windows.Forms.PictureBox pictureBoxLoader;
+        private System.Windows.Forms.ToolStripMenuItem disegnaToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem cambioPasswordToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem logOutToolStripMenuItem;
     }
 }
