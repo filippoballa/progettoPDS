@@ -9,8 +9,7 @@ using System.Windows.Forms;
 using System.Security.Cryptography;
 
 
-/*
- * XML STRUCTURE
+/*XML STRUCTURE
  *
  * <USERS>
   
@@ -76,7 +75,6 @@ namespace ProgettoPDS_SERVER
             get { return this.errorLoad; }
             set { this.errorLoad = value; }
         }
-
 
         // Aggiunta di un nuovo Utente al file "XMLUsers.xml" .
         // La password inserita nel documento sarà cifrata.

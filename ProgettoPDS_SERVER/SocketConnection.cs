@@ -43,7 +43,7 @@ namespace ProgettoPDS_SERVER
      */
     class SocketConnection
     {
-        //attributi
+        #region Attributi
 
         private const int backlog = 1;
         private Socket sock = null, passiv = null, sockTransfer = null, passivTransfer = null;
@@ -65,13 +65,17 @@ namespace ProgettoPDS_SERVER
         private ApplicationConstants.Stato stato = ApplicationConstants.Stato.DISCONNESSO;
         public ApplicationConstants.Stato Stato { get { return stato; } set { stato = value; StatoChanged(stato); } }
 
-        //costruttore
+#endregion
+
+        #region Costruttore
 
         public SocketConnection(int porta)
         {
             Stato = ApplicationConstants.Stato.DISCONNESSO;
             this.porta = porta;
         }
+
+        #endregion
 
         #region Socket Methods
         public void StartListening(MainForm main)
@@ -184,50 +188,13 @@ namespace ProgettoPDS_SERVER
 
             Stato = ApplicationConstants.Stato.DISCONNESSO;
         }
-        #endregion
 
-        #region Transfer Socket Methods
-        public void StartListeningTS()
-        {
-            if (sockTransfer == null)
-                sockTransfer = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            //sock.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
-
-            try
-            {
-                // Bind the socket to the local endpoint
-                if (!sockTransfer.IsBound)
-                    sockTransfer.Bind(new IPEndPoint(IPAddress.Any, trasfport));
-
-                sockTransfer.Listen(backlog);
-                // Program is suspended while waiting for an incoming connection.
-                sockTransfer.BeginAccept(new AsyncCallback(AcceptCallbackTS), sock);
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message);
-            }
-        }
-        private void AcceptCallbackTS(IAsyncResult ar)
-        {
-            sockTransfer = (Socket)ar.AsyncState;
-            passivTransfer = sockTransfer.EndAccept(ar);
-
-            IPEndPoint passivIP = passiv.RemoteEndPoint as IPEndPoint;
-            IPEndPoint passivIPTS = passivTransfer.RemoteEndPoint as IPEndPoint;
-
-            if(passivIP.Address != passivIPTS.Address)
-            {
-                SockDisconnectTS();
-            }
-
-
-        }
         public void SockDisconnectTS()
         {
             SockDisconnect(passivTransfer);
             SockDisconnect(sockTransfer);
         }
+
         #endregion
 
         #region Client Authentication
@@ -393,6 +360,7 @@ namespace ProgettoPDS_SERVER
         }
         #endregion
 
+        #region Other Methods
         public String GetMyIp()
         {
             IPHostEntry host;
@@ -417,6 +385,7 @@ namespace ProgettoPDS_SERVER
                 main.Invoke(main.LabelStatoChangedDelegate,new Object[] {stato,client});
             }
         }
+        #endregion
     }
 }
 
