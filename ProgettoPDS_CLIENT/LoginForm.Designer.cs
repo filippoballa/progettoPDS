@@ -478,7 +478,7 @@
             this.label4.Location = new System.Drawing.Point(18, 54);
             this.label4.Name = "label4";
             this.label4.Padding = new System.Windows.Forms.Padding(8, 8, 2, 2);
-            this.label4.Size = new System.Drawing.Size(589, 223);
+            this.label4.Size = new System.Drawing.Size(589, 228);
             this.label4.TabIndex = 10;
             this.label4.Text = resources.GetString("label4.Text");
             // 
@@ -776,11 +776,11 @@
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(622, 339);
+            this.Controls.Add(this.MainPanel);
             this.Controls.Add(this.InfoPanel);
             this.Controls.Add(this.ChangePasswordPanel);
             this.Controls.Add(this.RegistraPanel);
             this.Controls.Add(this.RemovePanel);
-            this.Controls.Add(this.MainPanel);
             this.Controls.Add(this.menuStrip1);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;

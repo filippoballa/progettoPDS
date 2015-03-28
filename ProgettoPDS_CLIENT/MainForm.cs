@@ -20,14 +20,20 @@ namespace ProgettoPDS_CLIENT
     public partial class MainForm : Form
     {
 
-        #region Variables
+        #region Variables And Delegate
 
         public delegate void Handler();
         public delegate object[] GetClipboardDataDelegate();
-        public delegate void SetClipboardDataDelegate(object[] d);
+        public delegate void SetClipboardDataDelegate(object[] d);   
+        public delegate void startProgressBarDelegate(int dim);        
+        public delegate void doStepProgressBarDelegate();
+        public delegate void closeProgressBarDelegate();        
         public Handler myHandler;
         private GetClipboardDataDelegate getClip;
         private SetClipboardDataDelegate setClip;
+        public startProgressBarDelegate startProgressBar;
+        public doStepProgressBarDelegate doStepProgressBar;
+        public closeProgressBarDelegate closeProgressBar;
 
         private User user;
         private List<SocketConnection> connessioni;
@@ -77,6 +83,10 @@ namespace ProgettoPDS_CLIENT
             this.keyboardHook.KeyUp += new KeyEventHandler(keyboardHook_KeyUp);
             this.mouseHook.Click += new MouseEventHandler(mouseHook_DoubleClick);
             this.mouseHook.DoubleClick += new MouseEventHandler(mouseHook_DoubleClick);
+            ModifyProgressBarColor.SetState(this.ClipboardProgressBar, 2);
+            this.startProgressBar = new startProgressBarDelegate(startProgressBarMethod);
+            this.doStepProgressBar = new doStepProgressBarDelegate(doStepProgressBarMethod);
+            this.closeProgressBar = new closeProgressBarDelegate(closeProgressBarMethod);
         }
 
         #endregion
@@ -272,14 +282,19 @@ namespace ProgettoPDS_CLIENT
             this.label1.Location = new Point(X, Y);
         }
 
-        
-
         private void MainPanel_Paint(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
             Rectangle r = new Rectangle(this.listBox1.Location.X, this.listBox1.Location.Y, this.listBox1.Width, this.listBox1.Height);
             Pen p = new Pen(Color.White, 6);
             g.DrawRectangle(p, r);
+        }
+
+        private void ComandiGroupBox_Paint(object sender, PaintEventArgs e)
+        {
+            GroupBox box = (GroupBox)sender;
+            e.Graphics.Clear(SystemColors.Control);
+            e.Graphics.DrawString(box.Text, box.Font, Brushes.DarkRed, box.Location);
         }
 
         #endregion
@@ -648,6 +663,20 @@ namespace ProgettoPDS_CLIENT
                     this.KeyQueue.Clear();
                     this.MouseQueue.Clear();
 
+                    bool trovato = false;
+
+                    if ( this.ClipboardSendBW.IsBusy ) {
+                        this.ClipboardSendBW.CancelAsync();
+                        trovato = true;
+                    }
+
+                    if (this.ClipboardSendBW.IsBusy) {
+                        this.ClipboardSendBW.CancelAsync();
+                        trovato = true;
+                    }
+
+                    if (trovato)
+                        this.ProgressBarPanel.Visible = false;
                 }
                 else if ( e.Alt && e.KeyCode == Keys.PageUp ) {
                     int index = this.currServ;
@@ -688,9 +717,19 @@ namespace ProgettoPDS_CLIENT
                         MessageBox.Show("Al momento sei connesso solo con il server : " + this.servers[this.currServ].HostName,
                             "AVVISO!!", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
-                else if (e.Alt && e.KeyCode == Keys.R ) {
+                else if (e.Alt && e.KeyCode == Keys.C ) {
 
-                    if (!this.ClipboardRequestBW.IsBusy && !this.ClipboardSendBW.IsBusy )
+                    if (this.ClipboardRequestBW.IsBusy)
+                        this.ClipboardRequestBW.CancelAsync();
+
+                    if (this.ClipboardSendBW.IsBusy)
+                        this.ClipboardSendBW.CancelAsync();
+
+                    this.ProgressBarPanel.Visible = false;
+
+                }
+                else if (e.Alt && e.KeyCode == Keys.R) {
+                    if (!this.ClipboardRequestBW.IsBusy && !this.ClipboardSendBW.IsBusy)
                         this.ClipboardRequestBW.RunWorkerAsync();
                     else
                         MessageBox.Show("E' in corso il completamento della richiesta precedente relativa alla Clipboard.", "AVVISO",
@@ -699,7 +738,7 @@ namespace ProgettoPDS_CLIENT
                 }
                 else if (e.Alt && e.KeyCode == Keys.S) {
 
-                    if (!this.ClipboardSendBW.IsBusy && !this.ClipboardRequestBW.IsBusy )
+                    if (!this.ClipboardSendBW.IsBusy && !this.ClipboardRequestBW.IsBusy)
                         this.ClipboardSendBW.RunWorkerAsync();
                     else
                         MessageBox.Show("E' in corso il completamento della richiesta precedente relativa alla Clipboard.", "AVVISO",
@@ -1090,6 +1129,7 @@ namespace ProgettoPDS_CLIENT
 
         private void SendClipboardData( byte[] buff, int dim)
         {
+            this.Invoke(this.startProgressBar, dim);   
             int dataSended = 0;
 
             while (dataSended < dim) {
@@ -1108,12 +1148,16 @@ namespace ProgettoPDS_CLIENT
                 }
 
                 dataSended += d.Length;
+                this.Invoke(this.doStepProgressBar); 
+            }
 
-            }    
+            this.Invoke(this.closeProgressBar);
         }
 
         private byte[] ReceiveClipboardData( int dim )
         {
+            this.Invoke(this.startProgressBar, dim);
+
             int dataReceived = 0;
             byte[] rbuff = new byte[dim], data;
 
@@ -1133,13 +1177,41 @@ namespace ProgettoPDS_CLIENT
                     rbuff[i] = data[i - dataReceived];
 
                 dataReceived += data.Length;
+                this.Invoke(this.startProgressBar, dim); 
             }
+
+            this.Invoke(this.closeProgressBar);
 
             return rbuff;
         }
 
         #endregion
 
-    }
+        #region ProgressBar Methods
 
+        public void startProgressBarMethod(int dim)
+        {
+            if (!this.ProgressBarPanel.Visible)
+                this.ProgressBarPanel.Visible = true;
+
+            this.ClipboardProgressBar.Maximum = 100;
+            this.ClipboardProgressBar.Minimum = 0;
+            this.ClipboardProgressBar.Value = 0;
+            this.ClipboardProgressBar.Step = ( 100 * SocketConnection.SBufSizeClipSock ) / dim;
+        }
+
+        public void doStepProgressBarMethod()
+        {
+            this.ClipboardProgressBar.PerformStep();
+            this.PercentageLabel.Text = this.ClipboardProgressBar.Value.ToString() + " %";
+        }
+
+        private void closeProgressBarMethod()
+        {
+            this.ProgressBarPanel.Visible = false;
+        }
+
+        #endregion
+
+    }
 }

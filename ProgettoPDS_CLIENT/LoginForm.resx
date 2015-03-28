@@ -2809,55 +2809,7 @@
   <metadata name="label2.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
-  <metadata name="RegistraButton.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="PwdRegTextBox.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="UserRegTextBox.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="CognomeRegTextBox.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="NameRegTextBox.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="PwdRegLabel.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="UserRegLabel.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="CognomeRegLabel.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="NameRegLabel.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
   <metadata name="MainPanel.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="UsernameLabel.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="PasswordLabel.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="UsernameTextBox.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="PasswordTextBox.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="LoginButton.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="NotaLabel.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="pictureBox1.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
   <data name="MainPanel.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
@@ -8534,7 +8486,7 @@
         XTesb3QPLh88M+QwdP6m681Lt7xuXbu94vbgcOjwnZHokdE77DtTd1PuvriXeW/h/sYH6AdFD6UeVjxS
         fNTws+7PbaOWo6fHXMf6Hwc/vj/OGn/2S8Yv7ycKnpCfVEyqTDZPmU2dmnafvvF05dOJZ+nPFmYKf5X+
         tfa5zvMffnP8rX82YnbiBf/Fp99LXsq/PPRq2aueuYC5R69TXy/MF72Rf3P4LeNt37vwd5MLWe+x7ys/
-        6H7o/ujz8cGn1E+f/gUDmPP8usTo0wAAAAlwSFlzAAALEgAACxIB0t1+/AAA7g5JREFUeF7snQe4HMWV
+        6H7o/ujz8cGn1E+f/gUDmPP8usTo0wAAAAlwSFlzAAALEQAACxEBf2RfkQAA7g5JREFUeF7snQe4HMWV
         tkdZIILIOeecc845SGQkEZVzFhJCEiCJKIkcBAKRc85J5GhjjA3GCRsHnNb27nrX+2/y1l9fTX99z9Q9
         PdMzd640995Tz/M+oL4z01Wn65zzVXV1dcE5ZxiGYRhGB0M9aBiGYRhG+0Y9aBiGYRhG+0Y9aBiGYRhG
         +0Y9aBiGYRhG+0Y9aBiGYRhG+0Y9aBiGYRhG+0Y9aBiGYRhG+0Y9aBiGYRhG+0Y9aBiGYRhG+0Y9aBiG
@@ -9701,7 +9653,7 @@
   <data name="indirizzoIPToolStripMenuItem.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        vgAADr4B6kKxwAAAAahJREFUOE9joBqITq8KrO9d+sAnofE4VIg0kFo+7UFe67r/pr7l/+X1PDJBYmtz
+        vQAADr0BR/uQrQAAAahJREFUOE9joBqITq8KrO9d+sAnofE4VIg0kFo+7UFe67r/pr7l/+X1PDJBYmtz
         8x+sTM+G4owHi2ITr7S5uE0Ba0AHOg7Jy3QdU/5LqVq9llI2kQWJHYhL/L9SReP/JCm5/9Ok5f+v1TP6
         v9PH//8MHYPXCYJSYDVwYO2bYWHjnZWpCLUdBHb5Bf5vkZD+78TNd9yYk7shUUjkymwZ+f9zZRT+xwsI
         LYMqg4D4vNZlvfP3/3eInfAfKgQ2oA1ogAcPL1zxLAXlz7OBBsQJCj+ACkGAT2zVsrjypf+1bONRDGgH
@@ -9830,12 +9782,6 @@
 </value>
   </data>
   <metadata name="InfoPanel.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="label3.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="TitleInfoLabel.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
   <data name="InfoPanel.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
@@ -12506,8 +12452,9 @@
          usate all'atto della registrazione, dopodichè dovrà cliccare sul bottone "LOGIN"!!
 
 Inoltre seguendo il percorso " ?  &gt;&gt; Indirizzo IP " è possibile sapere l'indirizzo di rete tramite il quale la 
-macchina utente è connessa alla rete Internet. Se in caso l'utente avesse dimenticato la sua password 
-tramite il percorso "File  &gt;&gt; Cambia Password" sarà in grado di reinpostarne una nuova.</value>
+macchina utente è connessa alla rete Internet. Se in caso l'utente volesse cambiare la sua password 
+tramite il percorso "File  &gt;&gt; Cambia Password" sarà in grado di reinpostarne una nuova, invece per 
+rimuovere l'account seguire il precorso "File &gt;&gt; Rimuovi Account".</value>
   </data>
   <metadata name="label3.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -12516,36 +12463,6 @@ tramite il percorso "File  &gt;&gt; Cambia Password" sarà in grado di reinposta
     <value>True</value>
   </metadata>
   <metadata name="ChangePasswordPanel.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="pictureBox4.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="pictureBox3.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="pictureBox2.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="label7.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="ChangeUserTextBox.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="ChangeButton.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="ChangePwdTextBox.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="label6.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="ChangeOldPwdTextBox.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="label5.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
   <data name="ChangePasswordPanel.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
@@ -15209,7 +15126,7 @@ tramite il percorso "File  &gt;&gt; Cambia Password" sarà in grado di reinposta
   <data name="pictureBox4.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAADUAAAAoCAYAAABerrI1AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        wAAADsABataJCQAAABp0RVh0U29mdHdhcmUAUGFpbnQuTkVUIHYzLjUuMTAw9HKhAAAKoElEQVRoQ82a
+        vwAADr8BOAVTJAAAABp0RVh0U29mdHdhcmUAUGFpbnQuTkVUIHYzLjUuMTAw9HKhAAAKoElEQVRoQ82a
         S6ieVxWGc85/7rckJ831pK02HdikVbRpcjpQmlIH1YlYhSgORKEkTZHSgqPiRBGEIl4GamvU4kAQUQcR
         wQsVCiIksUbQqAWppQOxIE1Ta4pofJ/lfr7s/DmdKXhgZe1vX9Za77rsvb/vz6Z77rlrIrTQ+Oym/HV8
         ofGVxhdDNS80GZprfCk0MTs7865Me3xiYuKJ8F+HLqd9uecdMf7EaDR6PPzerF8M73XNIzOEDvhy46Ur
@@ -15264,7 +15181,7 @@ tramite il percorso "File  &gt;&gt; Cambia Password" sarà in grado di reinposta
   <data name="pictureBox3.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAADUAAAAoCAYAAABerrI1AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        wAAADsABataJCQAAABp0RVh0U29mdHdhcmUAUGFpbnQuTkVUIHYzLjUuMTAw9HKhAAAKoElEQVRoQ82a
+        vwAADr8BOAVTJAAAABp0RVh0U29mdHdhcmUAUGFpbnQuTkVUIHYzLjUuMTAw9HKhAAAKoElEQVRoQ82a
         S6ieVxWGc85/7rckJ831pK02HdikVbRpcjpQmlIH1YlYhSgORKEkTZHSgqPiRBGEIl4GamvU4kAQUQcR
         wQsVCiIksUbQqAWppQOxIE1Ta4pofJ/lfr7s/DmdKXhgZe1vX9Za77rsvb/vz6Z77rlrIrTQ+Oym/HV8
         ofGVxhdDNS80GZprfCk0MTs7865Me3xiYuKJ8F+HLqd9uecdMf7EaDR6PPzerF8M73XNIzOEDvhy46Ur
@@ -15319,7 +15236,7 @@ tramite il percorso "File  &gt;&gt; Cambia Password" sarà in grado di reinposta
   <data name="pictureBox2.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAADUAAAAoCAYAAABerrI1AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        wQAADsEBuJFr7QAAABp0RVh0U29mdHdhcmUAUGFpbnQuTkVUIHYzLjUuMTAw9HKhAAAKoElEQVRoQ82a
+        wAAADsABataJCQAAABp0RVh0U29mdHdhcmUAUGFpbnQuTkVUIHYzLjUuMTAw9HKhAAAKoElEQVRoQ82a
         S6ieVxWGc85/7rckJ831pK02HdikVbRpcjpQmlIH1YlYhSgORKEkTZHSgqPiRBGEIl4GamvU4kAQUQcR
         wQsVCiIksUbQqAWppQOxIE1Ta4pofJ/lfr7s/DmdKXhgZe1vX9Za77rsvb/vz6Z77rlrIrTQ+Oym/HV8
         ofGVxhdDNS80GZprfCk0MTs7865Me3xiYuKJ8F+HLqd9uecdMf7EaDR6PPzerF8M73XNIzOEDvhy46Ur

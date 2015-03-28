@@ -68,6 +68,12 @@
             this.pictureBox5 = new System.Windows.Forms.PictureBox();
             this.ClipboardSendBW = new System.ComponentModel.BackgroundWorker();
             this.ClipboardRequestBW = new System.ComponentModel.BackgroundWorker();
+            this.ComandiGroupBox = new System.Windows.Forms.GroupBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.ProgressBarPanel = new System.Windows.Forms.Panel();
+            this.AvanzClipLabel = new System.Windows.Forms.Label();
+            this.ClipboardProgressBar = new System.Windows.Forms.ProgressBar();
+            this.PercentageLabel = new System.Windows.Forms.Label();
             this.MainPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -79,6 +85,8 @@
             this.InfoPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
+            this.ComandiGroupBox.SuspendLayout();
+            this.ProgressBarPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // MouseBackgroundWorker
@@ -440,6 +448,8 @@
             // ActionPanel
             // 
             this.ActionPanel.BackColor = System.Drawing.Color.Snow;
+            this.ActionPanel.Controls.Add(this.ProgressBarPanel);
+            this.ActionPanel.Controls.Add(this.ComandiGroupBox);
             this.ActionPanel.Controls.Add(this.EscapeLabel);
             this.ActionPanel.Controls.Add(this.pictureBox4);
             this.ActionPanel.Controls.Add(this.pictureBox3);
@@ -459,7 +469,7 @@
             this.EscapeLabel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.EscapeLabel.Font = new System.Drawing.Font("Calibri", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.EscapeLabel.ForeColor = System.Drawing.Color.DarkRed;
-            this.EscapeLabel.Location = new System.Drawing.Point(280, 561);
+            this.EscapeLabel.Location = new System.Drawing.Point(254, 561);
             this.EscapeLabel.Name = "EscapeLabel";
             this.EscapeLabel.Size = new System.Drawing.Size(546, 20);
             this.EscapeLabel.TabIndex = 3;
@@ -577,14 +587,81 @@
             this.ClipboardRequestBW.WorkerSupportsCancellation = true;
             this.ClipboardRequestBW.DoWork += new System.ComponentModel.DoWorkEventHandler(this.ClipboardRequestBW_DoWork);
             // 
+            // ComandiGroupBox
+            // 
+            this.ComandiGroupBox.Controls.Add(this.label2);
+            this.ComandiGroupBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ComandiGroupBox.Font = new System.Drawing.Font("Comic Sans MS", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ComandiGroupBox.ForeColor = System.Drawing.Color.DarkRed;
+            this.ComandiGroupBox.Location = new System.Drawing.Point(117, 135);
+            this.ComandiGroupBox.Name = "ComandiGroupBox";
+            this.ComandiGroupBox.Size = new System.Drawing.Size(374, 281);
+            this.ComandiGroupBox.TabIndex = 4;
+            this.ComandiGroupBox.TabStop = false;
+            this.ComandiGroupBox.Text = "Legenda dei Comandi";
+            this.ComandiGroupBox.Paint += new System.Windows.Forms.PaintEventHandler(this.ComandiGroupBox_Paint);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Calibri", 10F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(34, 65);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(283, 170);
+            this.label2.TabIndex = 0;
+            this.label2.Text = resources.GetString("label2.Text");
+            // 
+            // ProgressBarPanel
+            // 
+            this.ProgressBarPanel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("ProgressBarPanel.BackgroundImage")));
+            this.ProgressBarPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ProgressBarPanel.Controls.Add(this.PercentageLabel);
+            this.ProgressBarPanel.Controls.Add(this.ClipboardProgressBar);
+            this.ProgressBarPanel.Controls.Add(this.AvanzClipLabel);
+            this.ProgressBarPanel.Location = new System.Drawing.Point(550, 193);
+            this.ProgressBarPanel.Name = "ProgressBarPanel";
+            this.ProgressBarPanel.Size = new System.Drawing.Size(380, 161);
+            this.ProgressBarPanel.TabIndex = 5;
+            this.ProgressBarPanel.Visible = false;
+            // 
+            // AvanzClipLabel
+            // 
+            this.AvanzClipLabel.AutoSize = true;
+            this.AvanzClipLabel.BackColor = System.Drawing.Color.Transparent;
+            this.AvanzClipLabel.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AvanzClipLabel.Location = new System.Drawing.Point(39, 27);
+            this.AvanzClipLabel.Name = "AvanzClipLabel";
+            this.AvanzClipLabel.Size = new System.Drawing.Size(276, 40);
+            this.AvanzClipLabel.TabIndex = 1;
+            this.AvanzClipLabel.Text = "Avanzamento dell\'operazione richiesta\r\nsulla Clipboard!!";
+            this.AvanzClipLabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // ClipboardProgressBar
+            // 
+            this.ClipboardProgressBar.Location = new System.Drawing.Point(58, 101);
+            this.ClipboardProgressBar.Name = "ClipboardProgressBar";
+            this.ClipboardProgressBar.Size = new System.Drawing.Size(205, 23);
+            this.ClipboardProgressBar.TabIndex = 6;
+            // 
+            // PercentageLabel
+            // 
+            this.PercentageLabel.AutoSize = true;
+            this.PercentageLabel.BackColor = System.Drawing.Color.Transparent;
+            this.PercentageLabel.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.PercentageLabel.Location = new System.Drawing.Point(277, 104);
+            this.PercentageLabel.Name = "PercentageLabel";
+            this.PercentageLabel.Size = new System.Drawing.Size(29, 18);
+            this.PercentageLabel.TabIndex = 7;
+            this.PercentageLabel.Text = "0 %";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Sienna;
             this.ClientSize = new System.Drawing.Size(1071, 608);
-            this.Controls.Add(this.MainPanel);
             this.Controls.Add(this.ActionPanel);
+            this.Controls.Add(this.MainPanel);
             this.Controls.Add(this.InfoPanel);
             this.Cursor = System.Windows.Forms.Cursors.Default;
             this.DoubleBuffered = true;
@@ -612,6 +689,10 @@
             this.InfoPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).EndInit();
+            this.ComandiGroupBox.ResumeLayout(false);
+            this.ComandiGroupBox.PerformLayout();
+            this.ProgressBarPanel.ResumeLayout(false);
+            this.ProgressBarPanel.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -657,5 +738,11 @@
         private System.ComponentModel.BackgroundWorker ClipboardSendBW;
         private System.ComponentModel.BackgroundWorker ClipboardRequestBW;
         private System.Windows.Forms.Button LogOutButton;
+        private System.Windows.Forms.GroupBox ComandiGroupBox;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Panel ProgressBarPanel;
+        private System.Windows.Forms.Label AvanzClipLabel;
+        private System.Windows.Forms.Label PercentageLabel;
+        private System.Windows.Forms.ProgressBar ClipboardProgressBar;
     }
 }
