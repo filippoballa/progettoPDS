@@ -109,8 +109,7 @@ namespace ProgettoPDS_SERVER
             passiv = sock.EndAccept(ar);
 
             main.notifyIcon1.ShowBalloonTip(main.ToolTipTimeOut, "INFO STATO", "Inizio procedura autenticazione client . . ." + passiv.RemoteEndPoint.ToString(), ToolTipIcon.Info);
-            
-            //sock.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+
 
             try
             {
@@ -134,7 +133,6 @@ namespace ProgettoPDS_SERVER
 
                     if (passivIP.Address.ToString() != passivIPTS.Address.ToString())
                     {
-                        SockDisconnectTS();
                         SockDisconnect();
                         auth = false;
                     }
@@ -142,8 +140,7 @@ namespace ProgettoPDS_SERVER
                     if(auth)
                     {
                         Stato = ApplicationConstants.Stato.CONNESSO;
-                        //disegno qualcosa per mostrare il controllo
-                        main.DrawBordersMethod();
+
                         //lancio il backGround worker per il controllo dei pacchetti
                         main.PacketsHandlerbackgroundWorker.RunWorkerAsync();
                     }
@@ -162,7 +159,7 @@ namespace ProgettoPDS_SERVER
            
         }
 
-        public void SockDisconnect(Socket s)
+        private void SockDisconnect(Socket s)
         {
             try
             {
@@ -173,12 +170,7 @@ namespace ProgettoPDS_SERVER
                         s.Shutdown(SocketShutdown.Both);
                         s.Close();
                         s = null;
-                        main.notifyIcon1.ShowBalloonTip(main.ToolTipTimeOut, "INFO STATO", "Connessione chiusa correttamente.", ToolTipIcon.Info);
                     }
-                }
-                else
-                {
-                    main.notifyIcon1.ShowBalloonTip(main.ToolTipTimeOut, "INFO STATO", "Deve ancora essere creata una connessione.", ToolTipIcon.Warning);
                 }
             }
             catch (Exception ex)
@@ -191,11 +183,12 @@ namespace ProgettoPDS_SERVER
         {
             SockDisconnect(passiv);
             SockDisconnect(sock);
+            SockDisconnectTS();
 
             Stato = ApplicationConstants.Stato.DISCONNESSO;
         }
 
-        public void SockDisconnectTS()
+        private void SockDisconnectTS()
         {
             SockDisconnect(passivTransfer);
             SockDisconnect(sockTransfer);

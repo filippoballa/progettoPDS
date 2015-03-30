@@ -514,7 +514,9 @@ namespace ProgettoPDS_SERVER
             }
             catch(Exception e)
             {
-                MessageBox.Show("Errore nella gestione della ClipBoard", e.Message);
+                MessageBox.Show( e.Message,"Errore nella gestione della ClipBoard");
+                if(main!=null)
+                    main.Invoke(main.closeProgressBarDelegate);
             }
             finally
             {
@@ -533,9 +535,8 @@ namespace ProgettoPDS_SERVER
                 if (statoCB == ApplicationConstants.StatoClipBoard.AUDIO.ToString())
                 {
                     MemoryStream ms = new MemoryStream(dataToReceive);
-                    Stream aus = Clipboard.GetAudioStream();
-                    ms.WriteTo(aus);
-                    data = aus;
+                    
+                    data = ms;
                 }
                 else if (statoCB == ApplicationConstants.StatoClipBoard.IMMAGINE.ToString())
                 {
@@ -577,7 +578,7 @@ namespace ProgettoPDS_SERVER
             }
             catch(Exception e)
             {
-                MessageBox.Show("Errore nella creazione dei dati", e.Message);
+                MessageBox.Show(e.Message,"Errore nella creazione dei dati");
                 data = null;
 
                 return data;
@@ -639,7 +640,7 @@ namespace ProgettoPDS_SERVER
             }
             catch(Exception e)
             {
-                MessageBox.Show("Errore nella creazione dei dati da inviare", e.Message);
+                MessageBox.Show(e.Message,"Errore nella creazione dei dati da inviare");
                 dataToSend = null;
 
                 return dataToSend;

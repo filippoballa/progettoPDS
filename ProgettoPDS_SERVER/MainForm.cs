@@ -28,7 +28,7 @@ namespace ProgettoPDS_SERVER
 
         private static int port = 2000;
         public int Port { get { return port; } set { port = value; } }
-        private const int toolTipTimeOut = 2;
+        private const int toolTipTimeOut = 1;
         public int ToolTipTimeOut { get { return toolTipTimeOut; } }
         private User u = null;
         private const int passwordlenght = 8;
@@ -48,7 +48,7 @@ namespace ProgettoPDS_SERVER
         public SetCliboardData SetCliboardDataDelegate;
         public delegate object GetCliboardData();
         public GetCliboardData GetCliboardDataDelegate;
-        public delegate void DrawBorders();
+        public delegate void DrawBorders(Brush color);
         public DrawBorders DrawBordersDelegate;
         #endregion
 
@@ -202,6 +202,13 @@ namespace ProgettoPDS_SERVER
                 this.WindowState = FormWindowState.Minimized;
                 this.ShowInTaskbar = false;
             }
+            else
+            {
+                if (work)
+                    work = false;
+                else
+                    Sconnection.SockDisconnect();
+            }
         }
 
         /// <summary>
@@ -209,7 +216,7 @@ namespace ProgettoPDS_SERVER
         /// </summary>
         private void toolStripMenuDisegna_Click(object sender, EventArgs e)
         {
-            DrawBordersMethod();
+            DrawBordersMethod(Brushes.Red);
         }
 
         #region PacketsHandler backgroundWorker
@@ -226,7 +233,7 @@ namespace ProgettoPDS_SERVER
             {
                 try
                 {
-                    //DrawBordersMethod();
+                    DrawBordersMethod(Brushes.LawnGreen);
 
                     data = new byte[128];
                     Sconnection.Passiv.Receive(data);
@@ -366,17 +373,20 @@ namespace ProgettoPDS_SERVER
 
             if (stato == ApplicationConstants.Stato.CONNESSO)
             {
+                DrawBordersMethod(Brushes.LawnGreen);
                 this.labelStato.ForeColor = Color.LawnGreen;
                 this.labelConnectedClient.Text = client;
             }
             else if (stato == ApplicationConstants.Stato.IN_ATTESA)
             {
+                DrawBordersMethod(Brushes.MediumTurquoise);
                 this.labelStato.ForeColor = Color.MediumTurquoise;
                 this.labelConnectedClient.Text = "-";
                 pictureBoxLoader.Visible = true;
             }  
             else
             {
+                DrawBordersMethod(Brushes.Red);
                 this.labelStato.ForeColor = Color.DarkRed;
                 this.labelConnectedClient.Text = "-";
             }
@@ -440,6 +450,7 @@ namespace ProgettoPDS_SERVER
             }
             this.PanelSetPort.Visible = true;    
         }
+
         private void logOutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ApplicationConstants.RES = DialogResult.Yes;
@@ -561,11 +572,6 @@ namespace ProgettoPDS_SERVER
                     for (int i = 0; i < s.Count; i++)
                     {
                         richTextBoxCB.Text += s[i] + Environment.NewLine;
-                        /*if(s[i]==@"C:\Users\Filippo\Desktop\prova.wma")
-                        {
-                            byte[] f = File.ReadAllBytes(s[i]);       
-                            Clipboard.SetAudio(f);
-                        }*/
                     }
                 }
                 else
@@ -711,20 +717,22 @@ namespace ProgettoPDS_SERVER
         }
         #endregion
         #region Graphics
-        public void DrawBordersMethod()
+        public void DrawBordersMethod(Brush color)
         {
             IntPtr desktop = GetDC(IntPtr.Zero);
             using (Graphics g = Graphics.FromHdc(desktop))
             {
-                int border = 10;
-                //top
-                g.FillRectangle(Brushes.Red, 0, 0, Screen.PrimaryScreen.Bounds.Width, border);
+                int border = 20;
+                g.FillRectangle(Brushes.Black, (Screen.PrimaryScreen.Bounds.Width / 2) - border -1, border - 1, border + 2, border + 2);
+                g.FillRectangle(color, (Screen.PrimaryScreen.Bounds.Width/2) - border, border, border, border);
+                /*/top
+                g.FillRectangle(color, 0, 0, Screen.PrimaryScreen.Bounds.Width, border);
                 //right
-                g.FillRectangle(Brushes.Red, Screen.PrimaryScreen.Bounds.Width - border, border, border, Screen.PrimaryScreen.Bounds.Height - (2 * border));
+                g.FillRectangle(color, Screen.PrimaryScreen.Bounds.Width - border, border, border, Screen.PrimaryScreen.Bounds.Height - (2 * border));
                 //bottom
-                g.FillRectangle(Brushes.Red, 0, Screen.PrimaryScreen.Bounds.Height - border, Screen.PrimaryScreen.Bounds.Width, border);
+                g.FillRectangle(color, 0, Screen.PrimaryScreen.Bounds.Height - border, Screen.PrimaryScreen.Bounds.Width, border);
                 //left
-                g.FillRectangle(Brushes.Red, 0, border, border, Screen.PrimaryScreen.Bounds.Height - (2 * border));
+                g.FillRectangle(color, 0, border, border, Screen.PrimaryScreen.Bounds.Height - (2 * border));*/
             }
             ReleaseDC(IntPtr.Zero, desktop);
         }
