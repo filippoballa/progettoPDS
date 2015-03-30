@@ -97,7 +97,7 @@ namespace ProgettoPDS_CLIENT
 
         #region Ridimensiona
 
-        private void Ridimensiona() 
+        private void Ridimensiona()
         {
             this.Height = Screen.PrimaryScreen.WorkingArea.Height;
             this.Width = Screen.PrimaryScreen.WorkingArea.Width;
@@ -111,17 +111,40 @@ namespace ProgettoPDS_CLIENT
             this.ElencoLabel.Height = (this.ElencoLabel.Height * this.Height) / this.AltezzaForm;
             this.ElencoLabel.Width = (this.ElencoLabel.Width * this.Width) / this.BaseForm;
 
+            // Resize "ComandLabel"
+            aux = (this.ComandLabel.Font.Size * this.Height) / this.AltezzaForm;
+            this.ComandLabel.Font = new System.Drawing.Font("Comic Sans MS", aux, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ComandLabel.Height = (this.ComandLabel.Height * this.Height) / this.AltezzaForm;
+            this.ComandLabel.Width = (this.ComandLabel.Width * this.Width) / this.BaseForm;
+
             // Resize "GroupBox Conf."
             aux = (this.groupBox1.Font.Size * this.Height) / this.AltezzaForm;
             this.groupBox1.Font = new System.Drawing.Font("Comic Sans MS", aux, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox1.Height = (this.groupBox1.Height * this.Height) / this.AltezzaForm;
             this.groupBox1.Width = (this.groupBox1.Width * this.Width) / this.BaseForm;
 
+            // Resize "ProgressBarPanel"
+            X = (this.ProgressBarPanel.Location.X * this.Width) / this.BaseForm;
+            Y = (this.ProgressBarPanel.Location.Y * this.Height) / this.AltezzaForm;  
+            this.ProgressBarPanel.Location = new Point(X,Y);
+            this.ProgressBarPanel.Height = (this.ProgressBarPanel.Height * this.Height) / this.AltezzaForm;
+            this.ProgressBarPanel.Width = (this.ProgressBarPanel.Width * this.Width ) / this.BaseForm;
+
+            // Resize Clipboard progress Bar
+            X = (this.ClipboardProgressBar.Location.X * this.Width) / this.BaseForm;
+            Y = (this.ClipboardProgressBar.Location.Y * this.Height) / this.AltezzaForm;
+            this.ClipboardProgressBar.Location = new Point(X, Y);
+            this.ClipboardProgressBar.Height = (this.ClipboardProgressBar.Height * this.Height) / this.AltezzaForm;
+            this.ClipboardProgressBar.Width = (this.ClipboardProgressBar.Width * this.Width) / this.BaseForm;
+
             // Resize "GroupBox Comandi"
             aux = (this.ComandiGroupBox.Font.Size * this.Height) / this.AltezzaForm;
             this.ComandiGroupBox.Font = new System.Drawing.Font("Comic Sans MS", aux, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ComandiGroupBox.Height = (this.ComandiGroupBox.Height * this.Height) / this.AltezzaForm;
             this.ComandiGroupBox.Width = (this.ComandiGroupBox.Width * this.Width) / this.BaseForm;
+            X = (this.ComandiGroupBox.Location.X * this.Width) / this.BaseForm;
+            Y = (this.ComandiGroupBox.Location.Y * this.Height) / this.AltezzaForm;
+            this.ComandiGroupBox.Location = new Point(X, Y);
 
             // Resize "GroupBox STATO"
             aux = (this.groupBox2.Font.Size * this.Height) / this.AltezzaForm;
@@ -172,7 +195,7 @@ namespace ProgettoPDS_CLIENT
 
             // Riposizionamento Bottone Disconnetti
             aux = (this.DisconnectButton.Font.Size * this.Height) / this.AltezzaForm;
-            this.DisconnectButton.Font = new System.Drawing.Font("Comic Sans MS", aux-1, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DisconnectButton.Font = new System.Drawing.Font("Comic Sans MS", aux - 1, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.DisconnectButton.Height = (this.DisconnectButton.Height * this.Height) / this.AltezzaForm;
             this.DisconnectButton.Width = (this.DisconnectButton.Width * this.Width) / this.BaseForm;
             X = (this.DisconnectButton.Location.X * this.Width) / this.BaseForm;
@@ -192,6 +215,20 @@ namespace ProgettoPDS_CLIENT
             X = (this.LogOutButton.Location.X * this.Width) / this.BaseForm;
             Y = (this.LogOutButton.Location.Y * this.Height) / this.AltezzaForm;
             this.LogOutButton.Location = new Point(X, Y);
+
+            // Resize " AvanzClipLabel "
+            aux = (this.AvanzClipLabel.Font.Size * this.Height) / this.AltezzaForm;
+            this.AvanzClipLabel.Font = new System.Drawing.Font("Comic Sans MS", aux, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            X = (this.AvanzClipLabel.Location.X * this.Width) / this.BaseForm;
+            Y = (this.AvanzClipLabel.Location.Y * this.Height) / this.AltezzaForm;
+            this.AvanzClipLabel.Location = new Point(X, Y);
+
+            // Resize " Percentage Label "
+            aux = ( this.PercentageLabel.Font.Size * this.Height ) / this.AltezzaForm;
+            this.PercentageLabel.Font = new System.Drawing.Font("Calibri", aux, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            X = (this.PercentageLabel.Location.X * this.Width) / this.BaseForm;
+            Y = (this.PercentageLabel.Location.Y * this.Height) / this.AltezzaForm;
+            this.PercentageLabel.Location = new Point(X, Y);
 
             // Resize elementi dentro il groupbox di configurazione
             // Resise ConfigLabel
@@ -304,15 +341,13 @@ namespace ProgettoPDS_CLIENT
         {
             
             GroupBox box = (GroupBox)sender;
-            /*e.Graphics.Clear(SystemColors.Control);
-            e.Graphics.DrawString(box.Text, box.Font, Brushes.DarkRed, box.Location);*/
             Graphics gfx = e.Graphics;
             Pen p = new Pen(Color.DarkRed, 2);
-            gfx.DrawLine(p, 0, 5, 0, box.Height + 2);
-            //gfx.DrawLine(p, 0, 5, 10, 5);
-            //gfx.DrawLine(p, 62, 5, e.ClipRectangle.Width - 2, 5);
-            //gfx.DrawLine(p, box.Width - 2, 5, box.Width - 2, box.Height - 2);
-            //gfx.DrawLine(p, box.Width - 2, box.Height - 2, 0, box.Height - 2);  
+            gfx.DrawLine(p, 0, 16, 0, box.Height);
+            gfx.DrawLine(p, 0, 16, 10, 16);
+            gfx.DrawLine(p, 250, 16, box.Width, 16);
+            gfx.DrawLine(p, box.Width, 16, box.Width, box.Height);
+            gfx.DrawLine(p, 0, box.Height, box.Width, box.Height);  
         }
 
         #endregion
@@ -429,10 +464,11 @@ namespace ProgettoPDS_CLIENT
 
         private void SendPacket(byte[] pdu)
         {
-            // Invio Pacchetto
             try {
                 mut.WaitOne();
-                this.connessioni[this.currServ].Sock.Send(pdu);
+
+                if( this.connessioni[this.currServ].IsConnected() )
+                    this.connessioni[this.currServ].Sock.Send(pdu);
             }
             catch (Exception e) {
                 MessageBox.Show(e.Message, "ANOMALY", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -470,6 +506,12 @@ namespace ProgettoPDS_CLIENT
                     this.connessioni[i].CloseClipSock();
                 }
             }
+
+            if (this.keyboardHook.IsStarted )
+                this.keyboardHook.Unistall();
+
+            if (this.mouseHook.IsStarted)
+                this.mouseHook.Unistall();
 
             if( this.isDialog )
                 Program.res = MessageBox.Show("Desideri tornare alla schermata di Login? ",
@@ -513,6 +555,16 @@ namespace ProgettoPDS_CLIENT
 
             if (!this.connessioni[this.currServ].IsConnected()) {
                 MessageBox.Show("Il server non è connesso!!", "ERRORE!!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if ( !SocketConnection.SocketConnected(this.connessioni[this.currServ].Sock) ) {
+                MessageBox.Show("La connesione con l'host remota è caduta a causa di un evento\nimprevisto!! Occorre riconnettersi al Server!",
+                    "ERRORE!!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ResetDisconnectLabel();
+                this.connessioni[this.currServ].SockClose();
+                this.connessioni[this.currServ].CloseClipSock();
+                this.connessioni[this.currServ].Stato = SocketConnection.STATO.DISCONESSO;
                 return;
             }
 
@@ -618,10 +670,9 @@ namespace ProgettoPDS_CLIENT
                 return;
             }
 
-            this.mng.AddNewServer(this.servers[this.listBox1.SelectedIndex]);
-
-            MessageBox.Show("Configurazione Salvata con Successo!!", "AVVISO",
-                MessageBoxButtons.OK, MessageBoxIcon.Information);
+            if( this.mng.AddNewServer(this.servers[this.listBox1.SelectedIndex]) )
+                MessageBox.Show("Configurazione Salvata con Successo!!", "AVVISO",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void LoadConfButton_Click(object sender, EventArgs e)
@@ -744,13 +795,13 @@ namespace ProgettoPDS_CLIENT
                 }
                 else if (e.Alt && e.KeyCode == Keys.C ) {
 
-                    if (this.ClipboardRequestBW.IsBusy)
+                    if ( this.ClipboardRequestBW.IsBusy )
                         this.ClipboardRequestBW.CancelAsync();
 
-                    if (this.ClipboardSendBW.IsBusy)
+                    if ( this.ClipboardSendBW.IsBusy )
                         this.ClipboardSendBW.CancelAsync();
 
-                    this.ProgressBarPanel.Visible = false;
+                    //this.ProgressBarPanel.Visible = false;
 
                 }
                 else if (e.Alt && e.KeyCode == Keys.R) {
@@ -1026,68 +1077,77 @@ namespace ProgettoPDS_CLIENT
             SendClipboardInfo(pdu);
             pdu = ReceiveClipboardData(Convert.ToInt32(parametersInfo[1]));
 
-            switch ( parametersInfo[0] ) { 
+            if (pdu == null)
+                return;
+            else {
 
-                case "AUDIO":                                       
-                    Stream stream = new MemoryStream(pdu);
-                    data[0] = "AUDIO";
-                    data[1] = stream;
-                    break;
+                switch (parametersInfo[0]) {
 
-                case "IMMAGINE":
-                    ImageConverter ic = new ImageConverter();
-                    Image img = (Image)ic.ConvertFrom(pdu);
-                    data[0] = "IMMAGINE";
-                    data[1] = img;
-                    break;
+                    case "AUDIO":
+                        Stream stream = new MemoryStream(pdu);
+                        data[0] = "AUDIO";
+                        data[1] = stream;
+                        break;
 
-                case "FILE_DROP":
-                    MemoryStream ms = new MemoryStream(pdu);                    
-                    BinaryFormatter bf = new BinaryFormatter();
-                    object o = bf.Deserialize(ms);
-                    object[] arr = new object[3];
+                    case "IMMAGINE":
+                        ImageConverter ic = new ImageConverter();
+                        Image img = (Image)ic.ConvertFrom(pdu);
+                        data[0] = "IMMAGINE";
+                        data[1] = img;
+                        break;
 
-                    arr = (object[]) o;
+                    case "FILE_DROP":
+                        MemoryStream ms = new MemoryStream(pdu);
+                        BinaryFormatter bf = new BinaryFormatter();
+                        object o = bf.Deserialize(ms);
+                        object[] arr = new object[3];
 
-                    int NFiles = (int)arr[0];
-                    List<byte[]> files = (List<byte[]>) arr[2];
-                    StringCollection strColl = (StringCollection) arr[1];
+                        arr = (object[])o;
 
-                    for (int i = 0; i < NFiles; i++) {
-                        strColl[i] = Program.tempPath + strColl[i];
-                        File.WriteAllBytes(strColl[i], files[i]);
-                    }
+                        int NFiles = (int)arr[0];
+                        List<byte[]> files = (List<byte[]>)arr[2];
+                        StringCollection strColl = (StringCollection)arr[1];
 
-                    data[0] = "FILE_DROP";
-                    data[1] = strColl;
+                        for (int i = 0; i < NFiles; i++) {
+                            strColl[i] = Program.tempPath + strColl[i];
+                            File.WriteAllBytes(strColl[i], files[i]);
+                        }
 
-                    break;
+                        data[0] = "FILE_DROP";
+                        data[1] = strColl;
 
-                case "TEXT":
-                    aux = Encoding.ASCII.GetString(pdu);
-                    data[0] = "TEXT";
-                    data[1] = aux;
-                    break;
+                        break;
 
-                default:
-                    aux = "-ERR";
-                    pdu = Encoding.ASCII.GetBytes(aux);
-                    SendClipboardInfo(pdu);
-                    break;
+                    case "TEXT":
+                        aux = Encoding.ASCII.GetString(pdu);
+                        data[0] = "TEXT";
+                        data[1] = aux;
+                        break;
+
+                    default:
+                        aux = "-ERR";
+                        pdu = Encoding.ASCII.GetBytes(aux);
+                        SendClipboardInfo(pdu);
+                        break;
+
+                }
+
+                this.Invoke(this.setClip, new object[] { data });
+
             }
-
-            this.Invoke(this.setClip, new object[]{data});
 
         }
 
         private void SendClipboardInfo(byte[] pdu)
         {
             try {
-                this.connessioni[this.currServ].ClipSock.Send(pdu);
+
+                if( this.connessioni[this.currServ].IsConnected() )
+                    this.connessioni[this.currServ].ClipSock.Send(pdu);
             }
             catch( Exception e) {
                 MessageBox.Show(e.Message, "ANOMALY", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                ResetConnection();
+                this.Invoke(this.resetCallback);
             }
         }
 
@@ -1097,11 +1157,13 @@ namespace ProgettoPDS_CLIENT
             byte[] pdu = new byte[60];
 
             try {
-                this.connessioni[this.currServ].ClipSock.Receive(pdu);
+
+                if (this.connessioni[this.currServ].IsConnected())
+                    this.connessioni[this.currServ].ClipSock.Receive(pdu);
             }
             catch (Exception e) {
                 MessageBox.Show(e.Message, "ANOMALY", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                ResetConnection();
+                this.Invoke(this.resetCallback);
             }
 
             return pdu;
@@ -1159,13 +1221,18 @@ namespace ProgettoPDS_CLIENT
 
             while (dataSended < dim) {
 
+                if (this.ClipboardSendBW.CancellationPending)
+                    break;
+
                 byte[] d = new byte[SocketConnection.SBufSizeClipSock];
 
                 for ( int i = dataSended; (i < SocketConnection.SBufSizeClipSock + dataSended ) && i < dim; i++)
                     d[i - dataSended] = buff[i];
 
                 try {
-                    this.connessioni[this.currServ].ClipSock.Send(d);
+
+                    if (this.connessioni[this.currServ].IsConnected())
+                        this.connessioni[this.currServ].ClipSock.Send(d);
                 }
                 catch (Exception e) {
                     MessageBox.Show(e.Message, "ANOMALY", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -1188,10 +1255,18 @@ namespace ProgettoPDS_CLIENT
 
             while (dataReceived < dim) {
 
+                if (this.ClipboardRequestBW.CancellationPending) {
+                    Array.Clear(rbuff, 0, rbuff.Length);
+                    rbuff = null;
+                    break;
+                }
+
                 data = new byte[SocketConnection.RBufSizeClipSock];
 
                 try {
-                    this.connessioni[this.currServ].ClipSock.Receive(data);
+
+                    if (this.connessioni[this.currServ].IsConnected())
+                        this.connessioni[this.currServ].ClipSock.Receive(data);
                 }
                 catch (Exception e) {
                     MessageBox.Show( e.Message, "ANOMALY", MessageBoxButtons.OK, MessageBoxIcon.Information );
@@ -1202,7 +1277,7 @@ namespace ProgettoPDS_CLIENT
                     rbuff[i] = data[i - dataReceived];
 
                 dataReceived += data.Length;
-                this.Invoke(this.startProgressBar, dim); 
+                this.Invoke(this.doStepProgressBar); 
             }
 
             this.Invoke(this.closeProgressBar);
@@ -1234,6 +1309,12 @@ namespace ProgettoPDS_CLIENT
 
         private void closeProgressBarMethod()
         {
+            while (this.ClipboardProgressBar.Maximum > this.ClipboardProgressBar.Value) {
+                doStepProgressBarMethod();
+                Thread.Sleep(10);
+
+            }
+
             this.ProgressBarPanel.Visible = false;
         }
 

@@ -262,7 +262,7 @@
             this.ConfigLabel.ForeColor = System.Drawing.Color.DarkOrange;
             this.ConfigLabel.Location = new System.Drawing.Point(32, 45);
             this.ConfigLabel.Name = "ConfigLabel";
-            this.ConfigLabel.Size = new System.Drawing.Size(289, 21);
+            this.ConfigLabel.Size = new System.Drawing.Size(289, 22);
             this.ConfigLabel.TabIndex = 5;
             this.ConfigLabel.Text = "Inserisci i Parametri di Configurazione";
             // 
@@ -469,7 +469,7 @@
             this.ProgressBarPanel.Controls.Add(this.PercentageLabel);
             this.ProgressBarPanel.Controls.Add(this.ClipboardProgressBar);
             this.ProgressBarPanel.Controls.Add(this.AvanzClipLabel);
-            this.ProgressBarPanel.Location = new System.Drawing.Point(550, 193);
+            this.ProgressBarPanel.Location = new System.Drawing.Point(527, 145);
             this.ProgressBarPanel.Name = "ProgressBarPanel";
             this.ProgressBarPanel.Size = new System.Drawing.Size(380, 161);
             this.ProgressBarPanel.TabIndex = 5;
@@ -480,7 +480,7 @@
             this.PercentageLabel.AutoSize = true;
             this.PercentageLabel.BackColor = System.Drawing.Color.Transparent;
             this.PercentageLabel.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.PercentageLabel.Location = new System.Drawing.Point(277, 104);
+            this.PercentageLabel.Location = new System.Drawing.Point(277, 102);
             this.PercentageLabel.Name = "PercentageLabel";
             this.PercentageLabel.Size = new System.Drawing.Size(29, 18);
             this.PercentageLabel.TabIndex = 7;
@@ -507,15 +507,13 @@
             // 
             // ComandiGroupBox
             // 
-            this.ComandiGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
             this.ComandiGroupBox.Controls.Add(this.ComandLabel);
             this.ComandiGroupBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ComandiGroupBox.Font = new System.Drawing.Font("Comic Sans MS", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ComandiGroupBox.ForeColor = System.Drawing.Color.DarkRed;
             this.ComandiGroupBox.Location = new System.Drawing.Point(117, 135);
             this.ComandiGroupBox.Name = "ComandiGroupBox";
-            this.ComandiGroupBox.Size = new System.Drawing.Size(374, 281);
+            this.ComandiGroupBox.Size = new System.Drawing.Size(374, 334);
             this.ComandiGroupBox.TabIndex = 4;
             this.ComandiGroupBox.TabStop = false;
             this.ComandiGroupBox.Text = "Legenda dei Comandi";
@@ -523,6 +521,8 @@
             // 
             // ComandLabel
             // 
+            this.ComandLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.ComandLabel.AutoSize = true;
             this.ComandLabel.Font = new System.Drawing.Font("Calibri", 10F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ComandLabel.Location = new System.Drawing.Point(34, 65);

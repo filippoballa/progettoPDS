@@ -106,8 +106,14 @@ namespace ProgettoPDS_CLIENT
 
         #region Methods related to Servers
 
-        public void AddNewServer(Server s)
+        public bool AddNewServer(Server s)
         {
+            if (FindServer(s)) {
+                MessageBox.Show("Questa Configurazione è stata già salvata in precedenza!!", "AVVISO",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return false;
+            }
+
             XmlNode root = this.documentTwo.DocumentElement;
 
             //Create a new node.
@@ -127,7 +133,24 @@ namespace ProgettoPDS_CLIENT
 
             this.documentTwo.Save(this.FileServers);
             this.documentTwo.Save("..\\..\\" + this.FileServers);
+
+            return true;
             
+        }
+
+        public bool FindServer(Server s) 
+        {
+            XmlNodeList xmlnodes = this.documentTwo.GetElementsByTagName("MYSERVER");
+
+            for (int i = 0; i < xmlnodes.Count; i++) {
+
+                if (xmlnodes[i].ChildNodes.Item(0).InnerText == s.HostName &&
+                    xmlnodes[i].ChildNodes.Item(1).InnerText == s.IPAddr &&
+                     xmlnodes[i].ChildNodes.Item(2).InnerText == s.Porta.ToString())
+                    return true;               
+            }
+
+            return false;
         }
 
         public void RemoveServers()
