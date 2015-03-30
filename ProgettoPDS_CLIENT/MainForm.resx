@@ -127,7 +127,7 @@
   <data name="LogOutButton.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAgAAAAIACAYAAAD0eNT6AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
-        EQAACxEBf2RfkQAAhRtJREFUeF7tvQu0LNld3ofOzO1z7jl97ozmpdGdGY2EQE8mc7kjDRMJCYZHWLEt
+        EAAACxABrSO9dQAAhRtJREFUeF7tvQu0LNld3ofOzO1z7jl97ozmpdGdGY2EQE8mc7kjDRMJCYZHWLEt
         YzsB4uXBHrANMyhD7ECcKDYOAZuYhcHBFg4Px5Z4STbG8YP4BdjGBoONHQcw4CcPmae4d2SektDD+X+d
         bzfV3buq9v7XrlO7u75vrW/NnFv9+3btqr1r/093n6oPkSRJkiRJytYnfMLHHm2bm1xSnvJypDzl5Uh5
         ysvR3PKSZQ09x3xrxM/hS7IEbitHeRkCt5WjvAyB28pRXobAbeUoL0PgtnKUlyFwWznKG0toxHzJvGgY
@@ -9264,7 +9264,7 @@
         iCPFkKF4/EksZqHBJL2a/hteRtyjgTU7E3Mw0adCQ0mWZMbDQwiP/9k=
 </value>
   </data>
-  <data name="label2.Text" xml:space="preserve">
+  <data name="ComandLabel.Text" xml:space="preserve">
     <value>"Alt+R" : Richiedi la Clipboard (Appunti ) del 
                 Server.
 "Alt+S" : Invia il contenuto della Clipboard locale 

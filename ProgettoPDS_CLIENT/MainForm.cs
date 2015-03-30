@@ -27,7 +27,10 @@ namespace ProgettoPDS_CLIENT
         public delegate void SetClipboardDataDelegate(object[] d);   
         public delegate void startProgressBarDelegate(int dim);        
         public delegate void doStepProgressBarDelegate();
-        public delegate void closeProgressBarDelegate();        
+        public delegate void closeProgressBarDelegate();
+        public delegate void ResetDelegate();
+
+        public ResetDelegate resetCallback;
         public Handler myHandler;
         private GetClipboardDataDelegate getClip;
         private SetClipboardDataDelegate setClip;
@@ -87,6 +90,7 @@ namespace ProgettoPDS_CLIENT
             this.startProgressBar = new startProgressBarDelegate(startProgressBarMethod);
             this.doStepProgressBar = new doStepProgressBarDelegate(doStepProgressBarMethod);
             this.closeProgressBar = new closeProgressBarDelegate(closeProgressBarMethod);
+            this.resetCallback = new ResetDelegate(ResetConnection);
         }
 
         #endregion
@@ -112,6 +116,12 @@ namespace ProgettoPDS_CLIENT
             this.groupBox1.Font = new System.Drawing.Font("Comic Sans MS", aux, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox1.Height = (this.groupBox1.Height * this.Height) / this.AltezzaForm;
             this.groupBox1.Width = (this.groupBox1.Width * this.Width) / this.BaseForm;
+
+            // Resize "GroupBox Comandi"
+            aux = (this.ComandiGroupBox.Font.Size * this.Height) / this.AltezzaForm;
+            this.ComandiGroupBox.Font = new System.Drawing.Font("Comic Sans MS", aux, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ComandiGroupBox.Height = (this.ComandiGroupBox.Height * this.Height) / this.AltezzaForm;
+            this.ComandiGroupBox.Width = (this.ComandiGroupBox.Width * this.Width) / this.BaseForm;
 
             // Resize "GroupBox STATO"
             aux = (this.groupBox2.Font.Size * this.Height) / this.AltezzaForm;
@@ -292,9 +302,17 @@ namespace ProgettoPDS_CLIENT
 
         private void ComandiGroupBox_Paint(object sender, PaintEventArgs e)
         {
+            
             GroupBox box = (GroupBox)sender;
-            e.Graphics.Clear(SystemColors.Control);
-            e.Graphics.DrawString(box.Text, box.Font, Brushes.DarkRed, box.Location);
+            /*e.Graphics.Clear(SystemColors.Control);
+            e.Graphics.DrawString(box.Text, box.Font, Brushes.DarkRed, box.Location);*/
+            Graphics gfx = e.Graphics;
+            Pen p = new Pen(Color.DarkRed, 2);
+            gfx.DrawLine(p, 0, 5, 0, box.Height + 2);
+            //gfx.DrawLine(p, 0, 5, 10, 5);
+            //gfx.DrawLine(p, 62, 5, e.ClipRectangle.Width - 2, 5);
+            //gfx.DrawLine(p, box.Width - 2, 5, box.Width - 2, box.Height - 2);
+            //gfx.DrawLine(p, box.Width - 2, box.Height - 2, 0, box.Height - 2);  
         }
 
         #endregion
@@ -320,6 +338,47 @@ namespace ProgettoPDS_CLIENT
 
         #region Disconnected Button
 
+        private void ResetDisconnectLabel()
+        { 
+            this.CountServerConnected--;
+
+            if (this.CountServerConnected == 0)
+                this.label5.Text = "Non Connesso con Nessun Server al momento!!";
+            else {
+                string[] aux = this.label5.Text.Split(',');
+                int index = -1;
+
+                aux[0] = aux[0].Substring(aux[0].LastIndexOf(' '), aux[0].Length - aux[0].LastIndexOf(' '));
+
+                if (aux[0] == this.servers[this.currServ].HostName)
+                    index = 0;
+                else {
+
+                    for (int i = 1; i < aux.Length; i++) {
+
+                        if (aux[i] == this.servers[this.currServ].HostName) {
+                            index = i;
+                            break;
+                        }
+                    }
+                }
+
+                this.label5.Text = "Connessioni attive : ";
+
+                for (int i = 0; i < aux.Length; i++) {
+
+                    if (i != index) {
+
+                        if (i == 0)
+                            this.label5.Text += " " + this.servers[this.currServ].HostName;
+                        else
+                            this.label5.Text += ", " + this.servers[this.currServ].HostName;
+                    }
+                }
+
+            }
+        }
+
         private void DisconnectButton_Click(object sender, EventArgs e)
         {
             if (this.listBox1.SelectedIndex == -1) {
@@ -339,43 +398,8 @@ namespace ProgettoPDS_CLIENT
             this.connessioni[this.currServ].SockClose();
             this.connessioni[this.currServ].CloseClipSock();
             this.connessioni[this.currServ].Stato = SocketConnection.STATO.DISCONESSO;
-            this.CountServerConnected--;
 
-            if (this.CountServerConnected == 0)
-                this.label5.Text = "Non Connesso con Nessun Server al momento!!";
-            else {
-                string[] aux = this.label5.Text.Split(',');
-                int index = -1;
-
-                aux[0] = aux[0].Substring(aux[0].LastIndexOf(' '), aux[0].Length - aux[0].LastIndexOf(' '));
-
-                if (aux[0] == this.servers[this.currServ].HostName)
-                    index = 0;
-                else {
-
-                    for (int i = 1; i < aux.Length; i++) {
-
-                        if ( aux[i] == this.servers[this.currServ].HostName) {
-                            index = i;
-                            break;
-                        }
-                    }
-                }
-
-                this.label5.Text = "Connessioni attive : ";
-
-                for (int i = 0; i < aux.Length; i++) {
-
-                    if (i != index) {
-
-                        if (i == 0)
-                            this.label5.Text += " " + this.servers[this.currServ].HostName;
-                        else
-                            this.label5.Text += ", " + this.servers[this.currServ].HostName;
-                    }
-                }
-            }
-
+            ResetDisconnectLabel();
         }
 
         #endregion
@@ -398,6 +422,8 @@ namespace ProgettoPDS_CLIENT
                 if (this.mouseHook.IsStarted)
                     this.mouseHook.Unistall();
 
+                ResetDisconnectLabel();
+
             }
         }
 
@@ -410,7 +436,7 @@ namespace ProgettoPDS_CLIENT
             }
             catch (Exception e) {
                 MessageBox.Show(e.Message, "ANOMALY", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                ResetConnection();
+                this.Invoke(this.resetCallback);
             }
             finally {
                 mut.ReleaseMutex();
@@ -497,7 +523,6 @@ namespace ProgettoPDS_CLIENT
             this.mouseHook.Install();
             this.keyboardHook.Install();
              
-
         }
 
         private void RemoveButton_Click(object sender, EventArgs e)
@@ -1144,7 +1169,7 @@ namespace ProgettoPDS_CLIENT
                 }
                 catch (Exception e) {
                     MessageBox.Show(e.Message, "ANOMALY", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    ResetConnection();
+                    this.Invoke(this.resetCallback);
                 }
 
                 dataSended += d.Length;
@@ -1170,7 +1195,7 @@ namespace ProgettoPDS_CLIENT
                 }
                 catch (Exception e) {
                     MessageBox.Show( e.Message, "ANOMALY", MessageBoxButtons.OK, MessageBoxIcon.Information );
-                    ResetConnection();
+                    this.Invoke(this.resetCallback);
                 }
 
                 for (int i = dataReceived; i < SocketConnection.RBufSizeClipSock + dataReceived && i < dim; i++)
@@ -1194,16 +1219,17 @@ namespace ProgettoPDS_CLIENT
             if (!this.ProgressBarPanel.Visible)
                 this.ProgressBarPanel.Visible = true;
 
-            this.ClipboardProgressBar.Maximum = 100;
+            this.ClipboardProgressBar.Maximum = dim;
             this.ClipboardProgressBar.Minimum = 0;
             this.ClipboardProgressBar.Value = 0;
-            this.ClipboardProgressBar.Step = ( 100 * SocketConnection.SBufSizeClipSock ) / dim;
+            this.ClipboardProgressBar.Step = SocketConnection.SBufSizeClipSock;
         }
 
         public void doStepProgressBarMethod()
         {
             this.ClipboardProgressBar.PerformStep();
-            this.PercentageLabel.Text = this.ClipboardProgressBar.Value.ToString() + " %";
+            int aux = (this.ClipboardProgressBar.Value * 100) / this.ClipboardProgressBar.Maximum;
+            this.PercentageLabel.Text = aux.ToString() + " %";
         }
 
         private void closeProgressBarMethod()
