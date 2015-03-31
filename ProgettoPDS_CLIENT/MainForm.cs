@@ -748,8 +748,13 @@ namespace ProgettoPDS_CLIENT
             this.ImageClipboardPictureBox.Visible = false;
             this.TypeClipboardLabel.Text = "TYPE OF DATA :";
             this.RichTextBox.Visible = false;
-            this.PlayAudioButton.Visible = true;
-            this.StopAudioButton.Visible = true;
+
+            if( player != null )
+                this.player.Stop();
+
+            this.PlayAudioButton.Visible = false;
+            this.StopAudioButton.Visible = false;
+            this.player = null;
         }
 
         private void PlayAudioButton_Click(object sender, EventArgs e)
