@@ -32,10 +32,10 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.toolStripMenuItemCloseForm = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemOpenConsole = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemConnetti = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemDisconnetti = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemCloseForm = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemCloseMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.PacketsHandlerbackgroundWorker = new System.ComponentModel.BackgroundWorker();
             this.labelStato = new System.Windows.Forms.Label();
@@ -106,21 +106,13 @@
             this.contextMenuStrip.BackColor = System.Drawing.SystemColors.Control;
             this.contextMenuStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.contextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItemCloseForm,
             this.toolStripMenuItemOpenConsole,
             this.toolStripMenuItemConnetti,
             this.toolStripMenuItemDisconnetti,
+            this.toolStripMenuItemCloseForm,
             this.toolStripMenuItemCloseMenu});
             this.contextMenuStrip.Name = "contextMenuStrip";
             this.contextMenuStrip.Size = new System.Drawing.Size(185, 134);
-            // 
-            // toolStripMenuItemCloseForm
-            // 
-            this.toolStripMenuItemCloseForm.Image = ((System.Drawing.Image)(resources.GetObject("toolStripMenuItemCloseForm.Image")));
-            this.toolStripMenuItemCloseForm.Name = "toolStripMenuItemCloseForm";
-            this.toolStripMenuItemCloseForm.Size = new System.Drawing.Size(184, 26);
-            this.toolStripMenuItemCloseForm.Text = "Chiudi Menù";
-            this.toolStripMenuItemCloseForm.Click += new System.EventHandler(this.MenuClose);
             // 
             // toolStripMenuItemOpenConsole
             // 
@@ -145,6 +137,14 @@
             this.toolStripMenuItemDisconnetti.Size = new System.Drawing.Size(184, 26);
             this.toolStripMenuItemDisconnetti.Text = "Disconnetti";
             this.toolStripMenuItemDisconnetti.Click += new System.EventHandler(this.buttonDisconnect_Click);
+            // 
+            // toolStripMenuItemCloseForm
+            // 
+            this.toolStripMenuItemCloseForm.Image = ((System.Drawing.Image)(resources.GetObject("toolStripMenuItemCloseForm.Image")));
+            this.toolStripMenuItemCloseForm.Name = "toolStripMenuItemCloseForm";
+            this.toolStripMenuItemCloseForm.Size = new System.Drawing.Size(184, 26);
+            this.toolStripMenuItemCloseForm.Text = "Chiudi Menù";
+            this.toolStripMenuItemCloseForm.Click += new System.EventHandler(this.MenuClose);
             // 
             // toolStripMenuItemCloseMenu
             // 
@@ -624,7 +624,7 @@
             // labelTipoCB
             // 
             this.labelTipoCB.AutoSize = true;
-            this.labelTipoCB.Location = new System.Drawing.Point(39, 10);
+            this.labelTipoCB.Location = new System.Drawing.Point(36, 10);
             this.labelTipoCB.Name = "labelTipoCB";
             this.labelTipoCB.Size = new System.Drawing.Size(64, 13);
             this.labelTipoCB.TabIndex = 7;
@@ -633,7 +633,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(3, 10);
+            this.label6.Location = new System.Drawing.Point(2, 10);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(35, 13);
             this.label6.TabIndex = 6;
@@ -677,6 +677,7 @@
             this.TransparencyKey = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.WindowState = System.Windows.Forms.FormWindowState.Minimized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
             this.contextMenuStrip.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownPort)).EndInit();
             this.menuStrip1.ResumeLayout(false);

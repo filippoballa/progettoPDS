@@ -26,7 +26,8 @@ namespace ProgettoPDS_SERVER
         private const int maxheight = 250;
         private SocketConnection Sconnection = null;
 
-        private static int port = 2000;
+        private bool buttonHideProgRotated = false;
+        private int port = 2000;
         private string client;
         public int Port { get { return port; } set { port = value; } }
         private const int toolTipTimeOut = 1;
@@ -99,9 +100,12 @@ namespace ProgettoPDS_SERVER
         /// </summary>
         private void button_connect_Click(object sender, EventArgs e)
         {
-            Sconnection.StartListening(this);
+            if (labelStato.Text != ApplicationConstants.Stato.CONNESSO.ToString())
+            {
+                Sconnection.StartListening(this);
 
-            notifyIcon1.ShowBalloonTip(ToolTipTimeOut, "INFO STATO", "In attesa di connessioni dal Client.", ToolTipIcon.Info);
+                notifyIcon1.ShowBalloonTip(ToolTipTimeOut, "INFO STATO", "In attesa di connessioni dal Client.", ToolTipIcon.Info);
+            } 
         }
 
         /// <summary>
@@ -168,8 +172,6 @@ namespace ProgettoPDS_SERVER
                 }
                 else
                 {
-                    notifyIcon1.Visible = false;
-                    notifyIcon1.Dispose();
                     e.Cancel = true;
                 }
 
@@ -179,11 +181,17 @@ namespace ProgettoPDS_SERVER
             }
             else
             {
-                if (work)
+                if (PacketsHandlerbackgroundWorker.IsBusy)
                     work = false;
                 else
                     Sconnection.SockDisconnect();
             }
+        }
+        private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            notifyIcon1.Visible = false;
+            notifyIcon1.Dispose();
+            Clipboard.Clear();
         }
         /// <summary>
         /// Click sul pulsante 'Chiudi Applicazione' del menu: chiude l'applicazione.
@@ -586,8 +594,7 @@ namespace ProgettoPDS_SERVER
         //nasconde la progressBar
         private void buttonHideShowProg_Click(object sender, EventArgs e)
         {
-            //Button b = sender as Button;
-            buttonHideProg.BackgroundImage.RotateFlip(RotateFlipType.Rotate180FlipX);
+            buttonHideProg.BackgroundImage.RotateFlip(RotateFlipType.RotateNoneFlipXY);
 
             if(this.progressBarClipboard.Visible)
             {
@@ -606,26 +613,21 @@ namespace ProgettoPDS_SERVER
         // OTTENGO IL CONTENUTO DELLA CLIPBOARD
         private object GetClipboardDataMethod()
         {
-            //object[] data = new object[2];
 
             if (Clipboard.ContainsAudio())
             {
-                //data[0] = "AUDIO";
                 return Clipboard.GetAudioStream();
             }
             else if (Clipboard.ContainsImage())
             {
-                //data[0] = "IMMAGINE";
                 return Clipboard.GetImage();
             }
             else if (Clipboard.ContainsText())
             {
-                //data[0] = "TEXT";
                 return Clipboard.GetText();
             }
             else if (Clipboard.ContainsFileDropList())
             {
-                //data[0] = "FILE_DROP";
                 return Clipboard.GetFileDropList();
             }
 
@@ -650,7 +652,13 @@ namespace ProgettoPDS_SERVER
                 case "FILE_DROP":
                     Clipboard.SetFileDropList((System.Collections.Specialized.StringCollection)data);
                     break;
+                default :
+                    Clipboard.Clear();
+                    break;    
             }
+            ClipboardChanghedMethod();
+            infoDatiToolStripMenuItem_Click(null, null);
+
         }
 
         //pulizia della Clipboard
@@ -658,6 +666,7 @@ namespace ProgettoPDS_SERVER
         {
             Clipboard.Clear();
             ClipboardChanghedMethod();
+            infoDatiToolStripMenuItem_Click(null, null);
         }
 
         //chiusura pannello Info Clipboard
@@ -730,6 +739,8 @@ namespace ProgettoPDS_SERVER
                 groupBoxInfo.Width -= panelInfoCB.Width + groupBoxInfo.Margin.Left;
                 panelInfoCB.Visible = true;
             }
+
+            ClipboardChanghedMethod();
         }
 
         //controllo stato clipboard
@@ -737,6 +748,7 @@ namespace ProgettoPDS_SERVER
         {
             // Controllo stato clipboard
             ApplicationConstants.StatoClipBoard s = ApplicationConstants.StatoClipBoard.VUOTA;
+            labelTipoCB.Text = s.ToString();
 
             if (Clipboard.ContainsAudio())
             {
@@ -807,6 +819,7 @@ namespace ProgettoPDS_SERVER
                 work = false;
             }
         }
+
     }
     
 }

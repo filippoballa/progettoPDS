@@ -446,6 +446,13 @@ namespace ProgettoPDS_SERVER
                             //non ho ricevuto l'ok
                         }
                     }
+                    else//clipboard vuota
+                    {
+                        //invio info clipboard vuota
+                        byte[] datagram = new byte[64];
+                        datagram = Encoding.ASCII.GetBytes(statoCB + "-" + 0);
+                        Sconnection.PassivTransfer.Send(datagram);
+                    }
 
                 }
                 #endregion
@@ -579,6 +586,10 @@ namespace ProgettoPDS_SERVER
                         data = filenames;
                     }
                 }
+                else if (statoCB == ApplicationConstants.StatoClipBoard.VUOTA.ToString())
+                {
+                    data = 0;
+                }
             }
             catch(Exception e)
             {
@@ -676,6 +687,7 @@ namespace ProgettoPDS_SERVER
         static extern short VkKeyScan(char ch);
         #endregion
 
+        #region Mutex
         public static int ThreadCounter
         {
             get
@@ -692,6 +704,7 @@ namespace ProgettoPDS_SERVER
                 mut.ReleaseMutex();
             }
         }
+
         public static bool ClipBoardWork
         {
             get
@@ -708,5 +721,7 @@ namespace ProgettoPDS_SERVER
                 mut.ReleaseMutex();
             }
         }
+        #endregion
+
     }
 }

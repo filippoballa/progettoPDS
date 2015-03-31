@@ -19,6 +19,8 @@ namespace ProgettoPDS_SERVER
      * +AUTH_USER(SERVER)
      * +"USERNAME"(CLIENT)
      * 
+     * POSSIBILITA' DI NON ACCETTARE LA CONNESSIONE
+     * 
      * USER PRESENTE:
      * * +AUTH_PWD(SERVER)
      * * +"PASSWORD"(CLIENT)
@@ -315,6 +317,12 @@ namespace ProgettoPDS_SERVER
                         else
                         {
                             //da gestire Cancel, ovvero non voglio che un certo user si connetta
+                            comando = ApplicationConstants.ERR;
+                            data = Encoding.ASCII.GetBytes(comando);
+                            passiv.Send(data);//invio che c'è stato un errore
+
+                            SockDisconnect();//e chiudo
+                            return false;
                         }
                     }
                     else
