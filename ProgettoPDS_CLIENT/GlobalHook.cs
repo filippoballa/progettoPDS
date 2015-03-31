@@ -122,6 +122,8 @@ namespace ProgettoPDS_CLIENT
         [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         private static extern IntPtr GetModuleHandle(string lpModuleName);
 
+        [DllImport("user32.dll")]
+        private static extern IntPtr GetForegroundWindow();
 
         #endregion
 
@@ -135,6 +137,12 @@ namespace ProgettoPDS_CLIENT
         #endregion
 
         #region Methods
+
+        public static bool IsActive(IntPtr handle)
+        {
+            IntPtr activeHandle = GetForegroundWindow();
+            return (activeHandle == handle);
+        }
 
         public void Install() 
         {

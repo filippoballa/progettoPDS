@@ -14,6 +14,7 @@ using System.Xml;
 using System.IO;
 using System.Collections.Specialized;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Media;
 
 namespace ProgettoPDS_CLIENT
 {
@@ -50,6 +51,7 @@ namespace ProgettoPDS_CLIENT
         private MouseCord mc;
         private XmlManager mng;
         private bool isDialog;
+        private SoundPlayer player; 
 
         #endregion
 
@@ -117,6 +119,12 @@ namespace ProgettoPDS_CLIENT
             this.ComandLabel.Height = (this.ComandLabel.Height * this.Height) / this.AltezzaForm;
             this.ComandLabel.Width = (this.ComandLabel.Width * this.Width) / this.BaseForm;
 
+            // Resize "ComandLabel"
+            aux = (this.TypeClipboardLabel.Font.Size * this.Height) / this.AltezzaForm;
+            this.TypeClipboardLabel.Font = new System.Drawing.Font("Calibri", aux, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TypeClipboardLabel.Height = (this.TypeClipboardLabel.Height * this.Height) / this.AltezzaForm;
+            this.TypeClipboardLabel.Width = (this.TypeClipboardLabel.Width * this.Width) / this.BaseForm;
+
             // Resize "GroupBox Conf."
             aux = (this.groupBox1.Font.Size * this.Height) / this.AltezzaForm;
             this.groupBox1.Font = new System.Drawing.Font("Comic Sans MS", aux, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -146,6 +154,19 @@ namespace ProgettoPDS_CLIENT
             Y = (this.ComandiGroupBox.Location.Y * this.Height) / this.AltezzaForm;
             this.ComandiGroupBox.Location = new Point(X, Y);
 
+            // Resize "ContentClipboardPanel"
+            X = (this.ContentClipboardPanel.Location.X * this.Width) / this.BaseForm;
+            Y = (this.ContentClipboardPanel.Location.Y * this.Height) / this.AltezzaForm;
+            this.ContentClipboardPanel.Location = new Point(X, Y);
+            this.ContentClipboardPanel.Height = (this.ContentClipboardPanel.Height * this.Height) / this.AltezzaForm;
+            this.ContentClipboardPanel.Width = (this.ContentClipboardPanel.Width * this.Width) / this.BaseForm;
+
+            // Resize "ComandLabel"
+            aux = (this.TitleContentClipLabel.Font.Size * this.Height) / this.AltezzaForm;
+            this.TitleContentClipLabel.Font = new System.Drawing.Font("Comic Sans MS", aux, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TitleContentClipLabel.Height = (this.TitleContentClipLabel.Height * this.Height) / this.AltezzaForm;
+            this.TitleContentClipLabel.Width = (this.TitleContentClipLabel.Width * this.Width) / this.BaseForm;
+
             // Resize "GroupBox STATO"
             aux = (this.groupBox2.Font.Size * this.Height) / this.AltezzaForm;
             this.groupBox2.Font = new System.Drawing.Font("Comic Sans MS", aux, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -158,6 +179,14 @@ namespace ProgettoPDS_CLIENT
             X = (this.listBox1.Location.X * this.Width) / this.BaseForm;
             Y = (this.listBox1.Location.Y * this.Height) / this.AltezzaForm;
             this.listBox1.Location = new Point(X, Y);
+
+            // Resize ImageClipboardPictureBox 
+            this.ImageClipboardPictureBox.Height = (this.ImageClipboardPictureBox.Height * this.Height) / this.AltezzaForm;
+            this.ImageClipboardPictureBox.Width = (this.ImageClipboardPictureBox.Width * this.Width) / this.BaseForm;
+            X = (this.ImageClipboardPictureBox.Location.X * this.Width) / this.BaseForm;
+            Y = (this.ImageClipboardPictureBox.Location.Y * this.Height) / this.AltezzaForm;
+            this.ImageClipboardPictureBox.Location = new Point(X, Y);
+
 
             // Riposizionamento Bottone Connetti
             aux = (this.ConnectButton.Font.Size * this.Height) / this.AltezzaForm;
@@ -713,12 +742,37 @@ namespace ProgettoPDS_CLIENT
             MessageBox.Show("La cache è stata svuotata con successo!!", "AVVISO", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
+        private void ClearClipboardContentPanel() 
+        {
+            this.ContentClipboardPanel.Visible = false;
+            this.ImageClipboardPictureBox.Visible = false;
+            this.TypeClipboardLabel.Text = "TYPE OF DATA :";
+            this.RichTextBox.Visible = false;
+            this.PlayAudioButton.Visible = true;
+            this.StopAudioButton.Visible = true;
+        }
+
+        private void PlayAudioButton_Click(object sender, EventArgs e)
+        {
+            if (this.player != null)
+                this.player.Play();
+        }
+
+        private void StopAudioButton_Click(object sender, EventArgs e)
+        {
+            if (this.player != null)
+                this.player.Stop();
+        }
+
         #endregion
 
         #region Keyboard Management
 
         private void keyboardHook_KeyUp( object sender, KeyEventArgs e ) 
         {
+            if (!GlobalHook.IsActive(this.Handle))
+                return;
+
             if (this.ActionPanel.Visible && this.keyboardHook.IsStarted ) {
 
                 if ( e.Shift && e.KeyCode == Keys.Escape ) {
@@ -728,8 +782,8 @@ namespace ProgettoPDS_CLIENT
                     this.HostNameTextBox.Focus();
                     this.mouseHook.Unistall();
                     this.keyboardHook.Unistall();
+                    ClearClipboardContentPanel();
 
-                    // gestione BWs!!
                     if( this.MouseBackgroundWorker.IsBusy )
                         this.MouseBackgroundWorker.CancelAsync();
 
@@ -799,9 +853,7 @@ namespace ProgettoPDS_CLIENT
                         this.ClipboardRequestBW.CancelAsync();
 
                     if ( this.ClipboardSendBW.IsBusy )
-                        this.ClipboardSendBW.CancelAsync();
-
-                    //this.ProgressBarPanel.Visible = false;
+                        this.ClipboardSendBW.CancelAsync();                    
 
                 }
                 else if (e.Alt && e.KeyCode == Keys.R) {
@@ -819,6 +871,57 @@ namespace ProgettoPDS_CLIENT
                     else
                         MessageBox.Show("E' in corso il completamento della richiesta precedente relativa alla Clipboard.", "AVVISO",
                             MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else if (e.Alt && e.KeyCode == Keys.M) { 
+                    
+                    if (this.ContentClipboardPanel.Visible)
+                        ClearClipboardContentPanel();
+                    else {
+                        this.ContentClipboardPanel.Visible = true;
+
+                        object[] data = (object[])this.Invoke(this.getClip);
+
+                        switch (data[0].ToString()) {
+
+                            case "IMMAGINE":
+                                this.ImageClipboardPictureBox.Visible = true;
+                                this.TypeClipboardLabel.Text += " IMAGE";
+                                this.ImageClipboardPictureBox.BackgroundImage = (Image)data[1];
+                                break;
+
+                            case "TEXT":
+                                this.TypeClipboardLabel.Text += " TEXT";
+                                this.RichTextBox.Visible = true;
+                                this.RichTextBox.Clear();
+                                this.RichTextBox.AppendText((string)data[1]);
+                                break;
+
+                            case "AUDIO":
+                                this.TypeClipboardLabel.Text += " AUDIO";
+                                this.PlayAudioButton.Visible = true;
+                                this.StopAudioButton.Visible = true;
+                                this.player = new SoundPlayer((Stream)data[1]);
+                                break;
+
+                            case "FILE_DROP":
+                                this.TypeClipboardLabel.Text += " FILE DROP";
+                                this.RichTextBox.Visible = true;
+                                this.RichTextBox.Clear();
+                                StringCollection strColl = (StringCollection)data[1];
+
+                                for (int i = 0; i < strColl.Count; i++)
+                                    this.RichTextBox.AppendText(strColl[i]);
+
+                                break;
+                            
+                            default:
+                                this.TypeClipboardLabel.Text += " VUOTA!";
+                                break;
+                        }
+
+                        
+                    }
+                        
                 }
                 else {
 
@@ -892,6 +995,9 @@ namespace ProgettoPDS_CLIENT
 
         private void MouseManagement( MouseEventArgs e ) 
         {
+            if (!GlobalHook.IsActive(this.Handle))
+                return;
+           
             if (this.mouseHook.IsStarted && this.ActionPanel.Visible) {
 
                 if ( e.Clicks == 0 ) {
@@ -964,7 +1070,7 @@ namespace ProgettoPDS_CLIENT
         {
             ClipboardPacket("SET_CLIP");
 
-            object[] data = (object[])this.Invoke(this.getClip);;
+            object[] data = (object[])this.Invoke(this.getClip);
             string aux, resp;
             byte[] pdu, buff;
 
@@ -1221,8 +1327,11 @@ namespace ProgettoPDS_CLIENT
 
             while (dataSended < dim) {
 
-                if (this.ClipboardSendBW.CancellationPending)
+                if (this.ClipboardSendBW.CancellationPending) {
+                    string aux = "C-CLOSE-";
+                    SendPacket(Encoding.ASCII.GetBytes(aux));
                     break;
+                }
 
                 byte[] d = new byte[SocketConnection.SBufSizeClipSock];
 
@@ -1258,6 +1367,8 @@ namespace ProgettoPDS_CLIENT
                 if (this.ClipboardRequestBW.CancellationPending) {
                     Array.Clear(rbuff, 0, rbuff.Length);
                     rbuff = null;
+                    string aux = "C-CLOSE-";
+                    SendPacket(Encoding.ASCII.GetBytes(aux));
                     break;
                 }
 
@@ -1319,6 +1430,6 @@ namespace ProgettoPDS_CLIENT
         }
 
         #endregion
-
+        
     }
 }
