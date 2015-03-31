@@ -284,7 +284,7 @@ namespace ProgettoPDS_CLIENT
         }
 
         // Test sulla connessione.
-        bool SocketConnected(Socket s)
+        public static bool SocketConnected(Socket s)
         {
             bool part1 = s.Poll(1000, SelectMode.SelectRead);
             bool part2 = (s.Available == 0);
