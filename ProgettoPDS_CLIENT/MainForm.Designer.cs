@@ -57,6 +57,8 @@
             this.StartButton = new System.Windows.Forms.Button();
             this.ActionPanel = new System.Windows.Forms.Panel();
             this.ContentClipboardPanel = new System.Windows.Forms.Panel();
+            this.StopAudioButton = new System.Windows.Forms.Button();
+            this.PlayAudioButton = new System.Windows.Forms.Button();
             this.RichTextBox = new System.Windows.Forms.RichTextBox();
             this.ImageClipboardPictureBox = new System.Windows.Forms.PictureBox();
             this.TypeClipboardLabel = new System.Windows.Forms.Label();
@@ -79,8 +81,7 @@
             this.pictureBox5 = new System.Windows.Forms.PictureBox();
             this.ClipboardSendBW = new System.ComponentModel.BackgroundWorker();
             this.ClipboardRequestBW = new System.ComponentModel.BackgroundWorker();
-            this.PlayAudioButton = new System.Windows.Forms.Button();
-            this.StopAudioButton = new System.Windows.Forms.Button();
+            this.InfoContentLabel = new System.Windows.Forms.Label();
             this.MainPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -488,6 +489,32 @@
             this.ContentClipboardPanel.TabIndex = 6;
             this.ContentClipboardPanel.Visible = false;
             // 
+            // StopAudioButton
+            // 
+            this.StopAudioButton.BackColor = System.Drawing.Color.Transparent;
+            this.StopAudioButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("StopAudioButton.BackgroundImage")));
+            this.StopAudioButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.StopAudioButton.Location = new System.Drawing.Point(151, 102);
+            this.StopAudioButton.Name = "StopAudioButton";
+            this.StopAudioButton.Size = new System.Drawing.Size(50, 50);
+            this.StopAudioButton.TabIndex = 12;
+            this.StopAudioButton.UseVisualStyleBackColor = false;
+            this.StopAudioButton.Visible = false;
+            this.StopAudioButton.Click += new System.EventHandler(this.StopAudioButton_Click);
+            // 
+            // PlayAudioButton
+            // 
+            this.PlayAudioButton.BackColor = System.Drawing.Color.Transparent;
+            this.PlayAudioButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("PlayAudioButton.BackgroundImage")));
+            this.PlayAudioButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.PlayAudioButton.Location = new System.Drawing.Point(64, 102);
+            this.PlayAudioButton.Name = "PlayAudioButton";
+            this.PlayAudioButton.Size = new System.Drawing.Size(50, 50);
+            this.PlayAudioButton.TabIndex = 11;
+            this.PlayAudioButton.UseVisualStyleBackColor = false;
+            this.PlayAudioButton.Visible = false;
+            this.PlayAudioButton.Click += new System.EventHandler(this.PlayAudioButton_Click);
+            // 
             // RichTextBox
             // 
             this.RichTextBox.BackColor = System.Drawing.Color.WhiteSmoke;
@@ -513,11 +540,11 @@
             // 
             this.TypeClipboardLabel.AutoSize = true;
             this.TypeClipboardLabel.BackColor = System.Drawing.Color.Transparent;
-            this.TypeClipboardLabel.Font = new System.Drawing.Font("Calibri", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TypeClipboardLabel.Font = new System.Drawing.Font("Calibri", 9.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TypeClipboardLabel.ForeColor = System.Drawing.Color.Navy;
             this.TypeClipboardLabel.Location = new System.Drawing.Point(14, 59);
             this.TypeClipboardLabel.Name = "TypeClipboardLabel";
-            this.TypeClipboardLabel.Size = new System.Drawing.Size(100, 18);
+            this.TypeClipboardLabel.Size = new System.Drawing.Size(89, 15);
             this.TypeClipboardLabel.TabIndex = 2;
             this.TypeClipboardLabel.Text = "TYPE OF DATA :";
             // 
@@ -656,6 +683,7 @@
             // InfoPanel
             // 
             this.InfoPanel.BackColor = System.Drawing.Color.Linen;
+            this.InfoPanel.Controls.Add(this.InfoContentLabel);
             this.InfoPanel.Controls.Add(this.BackButton);
             this.InfoPanel.Controls.Add(this.label1);
             this.InfoPanel.Controls.Add(this.pictureBox6);
@@ -727,31 +755,18 @@
             this.ClipboardRequestBW.WorkerSupportsCancellation = true;
             this.ClipboardRequestBW.DoWork += new System.ComponentModel.DoWorkEventHandler(this.ClipboardRequestBW_DoWork);
             // 
-            // PlayAudioButton
+            // InfoContentLabel
             // 
-            this.PlayAudioButton.BackColor = System.Drawing.Color.Transparent;
-            this.PlayAudioButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("PlayAudioButton.BackgroundImage")));
-            this.PlayAudioButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.PlayAudioButton.Location = new System.Drawing.Point(64, 102);
-            this.PlayAudioButton.Name = "PlayAudioButton";
-            this.PlayAudioButton.Size = new System.Drawing.Size(50, 50);
-            this.PlayAudioButton.TabIndex = 11;
-            this.PlayAudioButton.UseVisualStyleBackColor = false;
-            this.PlayAudioButton.Visible = false;
-            this.PlayAudioButton.Click += new System.EventHandler(this.PlayAudioButton_Click);
-            // 
-            // StopAudioButton
-            // 
-            this.StopAudioButton.BackColor = System.Drawing.Color.Transparent;
-            this.StopAudioButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("StopAudioButton.BackgroundImage")));
-            this.StopAudioButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.StopAudioButton.Location = new System.Drawing.Point(151, 102);
-            this.StopAudioButton.Name = "StopAudioButton";
-            this.StopAudioButton.Size = new System.Drawing.Size(50, 50);
-            this.StopAudioButton.TabIndex = 12;
-            this.StopAudioButton.UseVisualStyleBackColor = false;
-            this.StopAudioButton.Visible = false;
-            this.StopAudioButton.Click += new System.EventHandler(this.StopAudioButton_Click);
+            this.InfoContentLabel.BackColor = System.Drawing.Color.Transparent;
+            this.InfoContentLabel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.InfoContentLabel.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.InfoContentLabel.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.InfoContentLabel.Location = new System.Drawing.Point(154, 83);
+            this.InfoContentLabel.Name = "InfoContentLabel";
+            this.InfoContentLabel.Padding = new System.Windows.Forms.Padding(8, 8, 2, 2);
+            this.InfoContentLabel.Size = new System.Drawing.Size(589, 228);
+            this.InfoContentLabel.TabIndex = 11;
+            this.InfoContentLabel.Text = resources.GetString("InfoContentLabel.Text");
             // 
             // MainForm
             // 
@@ -759,9 +774,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Sienna;
             this.ClientSize = new System.Drawing.Size(1071, 608);
+            this.Controls.Add(this.InfoPanel);
             this.Controls.Add(this.ActionPanel);
             this.Controls.Add(this.MainPanel);
-            this.Controls.Add(this.InfoPanel);
             this.Cursor = System.Windows.Forms.Cursors.Default;
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
@@ -853,5 +868,6 @@
         private System.Windows.Forms.RichTextBox RichTextBox;
         private System.Windows.Forms.Button StopAudioButton;
         private System.Windows.Forms.Button PlayAudioButton;
+        private System.Windows.Forms.Label InfoContentLabel;
     }
 }

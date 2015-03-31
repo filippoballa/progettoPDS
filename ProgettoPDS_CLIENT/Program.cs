@@ -45,6 +45,7 @@ namespace ProgettoPDS_CLIENT
             foreach( string data in Directory.EnumerateDirectories(Program.tempPath) )
                 Directory.Delete(Program.tempPath, true);
 
+            Clipboard.Clear();
         }
     }
 }

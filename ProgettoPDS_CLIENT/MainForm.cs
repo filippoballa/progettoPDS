@@ -119,7 +119,7 @@ namespace ProgettoPDS_CLIENT
             this.ComandLabel.Height = (this.ComandLabel.Height * this.Height) / this.AltezzaForm;
             this.ComandLabel.Width = (this.ComandLabel.Width * this.Width) / this.BaseForm;
 
-            // Resize "ComandLabel"
+            // Resize "Type Clipboard label"
             aux = (this.TypeClipboardLabel.Font.Size * this.Height) / this.AltezzaForm;
             this.TypeClipboardLabel.Font = new System.Drawing.Font("Calibri", aux, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TypeClipboardLabel.Height = (this.TypeClipboardLabel.Height * this.Height) / this.AltezzaForm;
@@ -163,7 +163,7 @@ namespace ProgettoPDS_CLIENT
 
             // Resize "ComandLabel"
             aux = (this.TitleContentClipLabel.Font.Size * this.Height) / this.AltezzaForm;
-            this.TitleContentClipLabel.Font = new System.Drawing.Font("Comic Sans MS", aux, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TitleContentClipLabel.Font = new System.Drawing.Font("Comic Sans MS", aux, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TitleContentClipLabel.Height = (this.TitleContentClipLabel.Height * this.Height) / this.AltezzaForm;
             this.TitleContentClipLabel.Width = (this.TitleContentClipLabel.Width * this.Width) / this.BaseForm;
 
@@ -757,6 +757,48 @@ namespace ProgettoPDS_CLIENT
             this.player = null;
         }
 
+        private void SetClipboardContentPanel( object[] data ) 
+        {
+            switch (data[0].ToString()) {
+
+                case "IMMAGINE":
+                    this.ImageClipboardPictureBox.Visible = true;
+                    this.TypeClipboardLabel.Text += " IMAGE";
+                    this.ImageClipboardPictureBox.BackgroundImage = (Image)data[1];
+                    break;
+
+                case "TEXT":
+                    this.TypeClipboardLabel.Text += " TEXT";
+                    this.RichTextBox.Visible = true;
+                    this.RichTextBox.Clear();
+                    this.RichTextBox.AppendText((string)data[1]);
+                    break;
+
+                case "AUDIO":
+                    this.TypeClipboardLabel.Text += " AUDIO";
+                    this.PlayAudioButton.Visible = true;
+                    this.StopAudioButton.Visible = true;
+                    this.player = new SoundPlayer((Stream)data[1]);
+                    break;
+
+                case "FILE_DROP":
+                    this.TypeClipboardLabel.Text += " FILE DROP";
+                    this.RichTextBox.Visible = true;
+                    this.RichTextBox.Clear();
+                    StringCollection strColl = (StringCollection)data[1];
+
+                    for (int i = 0; i < strColl.Count; i++)
+                        this.RichTextBox.AppendText(strColl[i] + "\n");
+
+                    break;
+
+                case "VUOTA" :
+                    this.TypeClipboardLabel.Text += " VUOTA!";
+                    break;
+            }
+
+        }
+
         private void PlayAudioButton_Click(object sender, EventArgs e)
         {
             if (this.player != null)
@@ -886,45 +928,7 @@ namespace ProgettoPDS_CLIENT
 
                         object[] data = (object[])this.Invoke(this.getClip);
 
-                        switch (data[0].ToString()) {
-
-                            case "IMMAGINE":
-                                this.ImageClipboardPictureBox.Visible = true;
-                                this.TypeClipboardLabel.Text += " IMAGE";
-                                this.ImageClipboardPictureBox.BackgroundImage = (Image)data[1];
-                                break;
-
-                            case "TEXT":
-                                this.TypeClipboardLabel.Text += " TEXT";
-                                this.RichTextBox.Visible = true;
-                                this.RichTextBox.Clear();
-                                this.RichTextBox.AppendText((string)data[1]);
-                                break;
-
-                            case "AUDIO":
-                                this.TypeClipboardLabel.Text += " AUDIO";
-                                this.PlayAudioButton.Visible = true;
-                                this.StopAudioButton.Visible = true;
-                                this.player = new SoundPlayer((Stream)data[1]);
-                                break;
-
-                            case "FILE_DROP":
-                                this.TypeClipboardLabel.Text += " FILE DROP";
-                                this.RichTextBox.Visible = true;
-                                this.RichTextBox.Clear();
-                                StringCollection strColl = (StringCollection)data[1];
-
-                                for (int i = 0; i < strColl.Count; i++)
-                                    this.RichTextBox.AppendText(strColl[i]);
-
-                                break;
-                            
-                            default:
-                                this.TypeClipboardLabel.Text += " VUOTA!";
-                                break;
-                        }
-
-                        
+                        SetClipboardContentPanel(data);                        
                     }
                         
                 }
@@ -1167,7 +1171,13 @@ namespace ProgettoPDS_CLIENT
                         SendClipboardData(buff, buff.Length);
                     
                     break;
- 
+
+                case "VUOTA":
+                    aux = "VUOTA-0";
+                    pdu = Encoding.ASCII.GetBytes(aux);
+                    SendClipboardInfo(pdu);
+                    pdu = ReceiveClipboardInfo();
+                    break;
             } 
 
         }
@@ -1181,6 +1191,13 @@ namespace ProgettoPDS_CLIENT
             object[] data = new object[2];
 
             string[] parametersInfo = resp.Split('-');
+
+            if (parametersInfo[0] == "VUOTA") {
+                data[0] = "VUOTA";
+                data[1] = null;
+                this.Invoke(this.setClip, new object[] { data });
+                return;
+            }
 
             Array.Clear(pdu, 0, pdu.Length);
             aux = "+OK";
@@ -1297,9 +1314,13 @@ namespace ProgettoPDS_CLIENT
                 data[0] = "TEXT";
                 data[1] = Clipboard.GetText();
             }
-            else if ( Clipboard.ContainsFileDropList() ) {
+            else if (Clipboard.ContainsFileDropList()) {
                 data[0] = "FILE_DROP";
                 data[1] = Clipboard.GetFileDropList();
+            }
+            else {
+                data[0] = "VUOTA";
+                data[1] = null;
             }
 
             return data;                
@@ -1321,6 +1342,9 @@ namespace ProgettoPDS_CLIENT
                     break;
                 case "FILE_DROP":
                     Clipboard.SetFileDropList((StringCollection)data[1]);
+                    break;
+                case "VUOTA":
+                    Clipboard.Clear();
                     break;
             }
         }
