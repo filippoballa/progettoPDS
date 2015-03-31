@@ -119,6 +119,16 @@ namespace ProgettoPDS_CLIENT
             this.ComandLabel.Height = (this.ComandLabel.Height * this.Height) / this.AltezzaForm;
             this.ComandLabel.Width = (this.ComandLabel.Width * this.Width) / this.BaseForm;
 
+            // Resize "InfoContentLabel"
+            aux = (this.InfoContentLabel.Font.Size * this.Height) / this.AltezzaForm;
+            this.InfoContentLabel.Font = new System.Drawing.Font("Comic Sans MS",aux, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.InfoContentLabel.Height = (this.InfoContentLabel.Height * this.Height) / this.AltezzaForm;
+            this.InfoContentLabel.Width = (this.InfoContentLabel.Width * this.Width) / this.BaseForm;
+            X = (this.InfoContentLabel.Location.X * this.Width) / this.BaseForm;
+            Y = (this.InfoContentLabel.Location.Y * this.Height) / this.AltezzaForm;
+            this.InfoContentLabel.Location = new Point(X, Y);
+
+
             // Resize "Type Clipboard label"
             aux = (this.TypeClipboardLabel.Font.Size * this.Height) / this.AltezzaForm;
             this.TypeClipboardLabel.Font = new System.Drawing.Font("Calibri", aux, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -186,6 +196,27 @@ namespace ProgettoPDS_CLIENT
             X = (this.ImageClipboardPictureBox.Location.X * this.Width) / this.BaseForm;
             Y = (this.ImageClipboardPictureBox.Location.Y * this.Height) / this.AltezzaForm;
             this.ImageClipboardPictureBox.Location = new Point(X, Y);
+
+            // Resize KeyPictureBox 
+            this.KeyPictureBox.Height = (this.KeyPictureBox.Height * this.Height) / this.AltezzaForm;
+            this.KeyPictureBox.Width = (this.KeyPictureBox.Width * this.Width) / this.BaseForm;
+            X = (this.KeyPictureBox.Location.X * this.Width) / this.BaseForm;
+            Y = (this.KeyPictureBox.Location.Y * this.Height) / this.AltezzaForm;
+            this.KeyPictureBox.Location = new Point(X, Y);
+
+            // Resize MousePictureBox 
+            this.MousePictureBox.Height = (this.MousePictureBox.Height * this.Height) / this.AltezzaForm;
+            this.MousePictureBox.Width = (this.MousePictureBox.Width * this.Width) / this.BaseForm;
+            X = (this.MousePictureBox.Location.X * this.Width) / this.BaseForm;
+            Y = (this.MousePictureBox.Location.Y * this.Height) / this.AltezzaForm;
+            this.MousePictureBox.Location = new Point(X, Y);
+
+            // Resize ClipPictureBox 
+            this.ClipPictureBox.Height = (this.ClipPictureBox.Height * this.Height) / this.AltezzaForm;
+            this.ClipPictureBox.Width = (this.ClipPictureBox.Width * this.Width) / this.BaseForm;
+            X = (this.ClipPictureBox.Location.X * this.Width) / this.BaseForm;
+            Y = (this.ClipPictureBox.Location.Y * this.Height) / this.AltezzaForm;
+            this.ClipPictureBox.Location = new Point(X, Y);
 
 
             // Riposizionamento Bottone Connetti
@@ -377,6 +408,12 @@ namespace ProgettoPDS_CLIENT
             gfx.DrawLine(p, 250, 16, box.Width, 16);
             gfx.DrawLine(p, box.Width, 16, box.Width, box.Height);
             gfx.DrawLine(p, 0, box.Height, box.Width, box.Height);  
+        }
+
+        private void InfoContentLabel_Paint(object sender, PaintEventArgs e)
+        {
+            ControlPaint.DrawBorder(e.Graphics, this.InfoContentLabel.DisplayRectangle, Color.DarkRed, 3, ButtonBorderStyle.Solid,
+                Color.DarkRed, 3, ButtonBorderStyle.Solid, Color.DarkRed, 3, ButtonBorderStyle.Solid, Color.DarkRed, 3, ButtonBorderStyle.Solid);
         }
 
         #endregion
@@ -1196,6 +1233,10 @@ namespace ProgettoPDS_CLIENT
                 data[0] = "VUOTA";
                 data[1] = null;
                 this.Invoke(this.setClip, new object[] { data });
+
+                if (this.ContentClipboardPanel.Visible)
+                    SetClipboardContentPanel(data);
+
                 return;
             }
 
@@ -1261,6 +1302,9 @@ namespace ProgettoPDS_CLIENT
                 }
 
                 this.Invoke(this.setClip, new object[] { data });
+
+                if (this.ContentClipboardPanel.Visible)
+                    SetClipboardContentPanel(data);
 
             }
 
@@ -1459,6 +1503,6 @@ namespace ProgettoPDS_CLIENT
         }
 
         #endregion
-        
+
     }
 }
