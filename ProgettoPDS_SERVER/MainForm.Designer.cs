@@ -32,12 +32,11 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toolStripMenuItemCloseForm = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemOpenConsole = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemConnetti = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemDisconnetti = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItemCloseForm = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemCloseMenu = new System.Windows.Forms.ToolStripMenuItem();
-            this.disegnaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.PacketsHandlerbackgroundWorker = new System.ComponentModel.BackgroundWorker();
             this.labelStato = new System.Windows.Forms.Label();
             this.numericUpDownPort = new System.Windows.Forms.NumericUpDown();
@@ -70,6 +69,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.textBoxVpassword = new System.Windows.Forms.TextBox();
             this.groupBoxInfo = new System.Windows.Forms.GroupBox();
+            this.buttonHideProg = new System.Windows.Forms.Button();
             this.pictureBoxLoader = new System.Windows.Forms.PictureBox();
             this.panelInfoCB = new System.Windows.Forms.Panel();
             this.buttonStopAudio = new System.Windows.Forms.Button();
@@ -106,14 +106,21 @@
             this.contextMenuStrip.BackColor = System.Drawing.SystemColors.Control;
             this.contextMenuStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.contextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItemCloseForm,
             this.toolStripMenuItemOpenConsole,
             this.toolStripMenuItemConnetti,
             this.toolStripMenuItemDisconnetti,
-            this.toolStripMenuItemCloseForm,
-            this.toolStripMenuItemCloseMenu,
-            this.disegnaToolStripMenuItem});
+            this.toolStripMenuItemCloseMenu});
             this.contextMenuStrip.Name = "contextMenuStrip";
-            this.contextMenuStrip.Size = new System.Drawing.Size(185, 160);
+            this.contextMenuStrip.Size = new System.Drawing.Size(185, 134);
+            // 
+            // toolStripMenuItemCloseForm
+            // 
+            this.toolStripMenuItemCloseForm.Image = ((System.Drawing.Image)(resources.GetObject("toolStripMenuItemCloseForm.Image")));
+            this.toolStripMenuItemCloseForm.Name = "toolStripMenuItemCloseForm";
+            this.toolStripMenuItemCloseForm.Size = new System.Drawing.Size(184, 26);
+            this.toolStripMenuItemCloseForm.Text = "Chiudi Menù";
+            this.toolStripMenuItemCloseForm.Click += new System.EventHandler(this.MenuClose);
             // 
             // toolStripMenuItemOpenConsole
             // 
@@ -139,14 +146,6 @@
             this.toolStripMenuItemDisconnetti.Text = "Disconnetti";
             this.toolStripMenuItemDisconnetti.Click += new System.EventHandler(this.buttonDisconnect_Click);
             // 
-            // toolStripMenuItemCloseForm
-            // 
-            this.toolStripMenuItemCloseForm.Image = ((System.Drawing.Image)(resources.GetObject("toolStripMenuItemCloseForm.Image")));
-            this.toolStripMenuItemCloseForm.Name = "toolStripMenuItemCloseForm";
-            this.toolStripMenuItemCloseForm.Size = new System.Drawing.Size(184, 26);
-            this.toolStripMenuItemCloseForm.Text = "Chiudi Menù";
-            this.toolStripMenuItemCloseForm.Click += new System.EventHandler(this.MenuClose);
-            // 
             // toolStripMenuItemCloseMenu
             // 
             this.toolStripMenuItemCloseMenu.Image = ((System.Drawing.Image)(resources.GetObject("toolStripMenuItemCloseMenu.Image")));
@@ -154,13 +153,6 @@
             this.toolStripMenuItemCloseMenu.Size = new System.Drawing.Size(184, 26);
             this.toolStripMenuItemCloseMenu.Text = "Chiudi Applicazione";
             this.toolStripMenuItemCloseMenu.Click += new System.EventHandler(this.MainFormClose);
-            // 
-            // disegnaToolStripMenuItem
-            // 
-            this.disegnaToolStripMenuItem.Name = "disegnaToolStripMenuItem";
-            this.disegnaToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
-            this.disegnaToolStripMenuItem.Text = "disegna";
-            this.disegnaToolStripMenuItem.Click += new System.EventHandler(this.toolStripMenuDisegna_Click);
             // 
             // PacketsHandlerbackgroundWorker
             // 
@@ -326,7 +318,7 @@
             this.infoDatiToolStripMenuItem.BackColor = System.Drawing.Color.Beige;
             this.infoDatiToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("infoDatiToolStripMenuItem.Image")));
             this.infoDatiToolStripMenuItem.Name = "infoDatiToolStripMenuItem";
-            this.infoDatiToolStripMenuItem.Size = new System.Drawing.Size(156, 26);
+            this.infoDatiToolStripMenuItem.Size = new System.Drawing.Size(129, 26);
             this.infoDatiToolStripMenuItem.Text = "Info Dati";
             this.infoDatiToolStripMenuItem.Click += new System.EventHandler(this.infoDatiToolStripMenuItem_Click);
             // 
@@ -335,7 +327,7 @@
             this.pulisciToolStripMenuItem.BackColor = System.Drawing.Color.Beige;
             this.pulisciToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("pulisciToolStripMenuItem.Image")));
             this.pulisciToolStripMenuItem.Name = "pulisciToolStripMenuItem";
-            this.pulisciToolStripMenuItem.Size = new System.Drawing.Size(156, 26);
+            this.pulisciToolStripMenuItem.Size = new System.Drawing.Size(129, 26);
             this.pulisciToolStripMenuItem.Text = "Pulisci";
             this.pulisciToolStripMenuItem.Click += new System.EventHandler(this.pulisciToolStripMenuItem_Click);
             // 
@@ -382,7 +374,7 @@
             this.PanelSetPort.Controls.Add(this.numericUpDownPort);
             this.PanelSetPort.Controls.Add(this.buttonSetPort);
             this.PanelSetPort.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.PanelSetPort.Location = new System.Drawing.Point(0, 124);
+            this.PanelSetPort.Location = new System.Drawing.Point(0, 149);
             this.PanelSetPort.Name = "PanelSetPort";
             this.PanelSetPort.Padding = new System.Windows.Forms.Padding(5);
             this.PanelSetPort.Size = new System.Drawing.Size(384, 87);
@@ -406,7 +398,7 @@
             // 
             this.progressBarClipboard.BackColor = System.Drawing.Color.Gold;
             this.progressBarClipboard.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.progressBarClipboard.Location = new System.Drawing.Point(0, 211);
+            this.progressBarClipboard.Location = new System.Drawing.Point(0, 37);
             this.progressBarClipboard.Name = "progressBarClipboard";
             this.progressBarClipboard.Size = new System.Drawing.Size(384, 25);
             this.progressBarClipboard.TabIndex = 5;
@@ -449,7 +441,7 @@
             this.panelChangePassword.Controls.Add(this.label2);
             this.panelChangePassword.Controls.Add(this.textBoxVpassword);
             this.panelChangePassword.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panelChangePassword.Location = new System.Drawing.Point(0, 37);
+            this.panelChangePassword.Location = new System.Drawing.Point(0, 62);
             this.panelChangePassword.Name = "panelChangePassword";
             this.panelChangePassword.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.panelChangePassword.Size = new System.Drawing.Size(384, 87);
@@ -519,6 +511,7 @@
             // groupBoxInfo
             // 
             this.groupBoxInfo.BackColor = System.Drawing.Color.Transparent;
+            this.groupBoxInfo.Controls.Add(this.buttonHideProg);
             this.groupBoxInfo.Controls.Add(this.pictureBoxLoader);
             this.groupBoxInfo.Controls.Add(this.labelStato);
             this.groupBoxInfo.Controls.Add(this.label1);
@@ -537,6 +530,20 @@
             this.groupBoxInfo.TabIndex = 15;
             this.groupBoxInfo.TabStop = false;
             this.groupBoxInfo.Text = "Info";
+            // 
+            // buttonHideProg
+            // 
+            this.buttonHideProg.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonHideProg.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("buttonHideProg.BackgroundImage")));
+            this.buttonHideProg.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.buttonHideProg.Location = new System.Drawing.Point(350, 61);
+            this.buttonHideProg.Name = "buttonHideProg";
+            this.buttonHideProg.Padding = new System.Windows.Forms.Padding(5);
+            this.buttonHideProg.Size = new System.Drawing.Size(24, 23);
+            this.buttonHideProg.TabIndex = 21;
+            this.buttonHideProg.UseVisualStyleBackColor = true;
+            this.buttonHideProg.Visible = false;
+            this.buttonHideProg.Click += new System.EventHandler(this.buttonHideShowProg_Click);
             // 
             // pictureBoxLoader
             // 
@@ -652,12 +659,12 @@
             this.BackColor = System.Drawing.Color.Beige;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.ClientSize = new System.Drawing.Size(384, 236);
-            this.Controls.Add(this.panelInfoCB);
             this.Controls.Add(this.menuStrip1);
-            this.Controls.Add(this.panelChangePassword);
-            this.Controls.Add(this.PanelSetPort);
             this.Controls.Add(this.groupBoxInfo);
             this.Controls.Add(this.progressBarClipboard);
+            this.Controls.Add(this.panelChangePassword);
+            this.Controls.Add(this.PanelSetPort);
+            this.Controls.Add(this.panelInfoCB);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
@@ -736,8 +743,8 @@
         private System.Windows.Forms.Button buttonPlayAudio;
         protected internal System.Windows.Forms.ProgressBar progressBarClipboard;
         private System.Windows.Forms.PictureBox pictureBoxLoader;
-        private System.Windows.Forms.ToolStripMenuItem disegnaToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cambioPasswordToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem logOutToolStripMenuItem;
+        private System.Windows.Forms.Button buttonHideProg;
     }
 }

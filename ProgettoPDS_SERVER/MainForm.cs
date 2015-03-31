@@ -27,6 +27,7 @@ namespace ProgettoPDS_SERVER
         private SocketConnection Sconnection = null;
 
         private static int port = 2000;
+        private string client;
         public int Port { get { return port; } set { port = value; } }
         private const int toolTipTimeOut = 1;
         public int ToolTipTimeOut { get { return toolTipTimeOut; } }
@@ -50,6 +51,8 @@ namespace ProgettoPDS_SERVER
         public GetCliboardData GetCliboardDataDelegate;
         public delegate void DrawBorders(Brush color);
         public DrawBorders DrawBordersDelegate;
+        public delegate void ClipboardChanghed();
+        public ClipboardChanghed ClipboardChanghedDelegate;
         #endregion
 
         #region Constructor
@@ -63,8 +66,8 @@ namespace ProgettoPDS_SERVER
             SetCliboardDataDelegate = new SetCliboardData(SetCliboardDataMethod);
             GetCliboardDataDelegate = new GetCliboardData(GetClipboardDataMethod);
             DrawBordersDelegate = new DrawBorders(DrawBordersMethod);
+            ClipboardChanghedDelegate = new ClipboardChanghed(ClipboardChanghedMethod);
             
-
             InitializeComponent();
 
             this.Height = minheight;
@@ -73,7 +76,7 @@ namespace ProgettoPDS_SERVER
             this.Text = "SERVER - "+ u.Username;
 
             //stato clipBoard
-            ClipboardChanghed();
+            ClipboardChanghedMethod();
 
             //lancio la notify icon
             this.notifyIcon1.ShowBalloonTip(ToolTipTimeOut, "SERVER AVVIATO", "Benvenuto "+u.Name+" "+u.Surname, ToolTipIcon.Info);
@@ -90,49 +93,7 @@ namespace ProgettoPDS_SERVER
 
         #endregion
 
-        //controllo stato clipboard
-        private void ClipboardChanghed()
-        {
-             // Controllo stato clipboard
-            ApplicationConstants.StatoClipBoard s = ApplicationConstants.StatoClipBoard.VUOTA;
-          
-            if(Clipboard.ContainsAudio())
-            {
-                s = ApplicationConstants.StatoClipBoard.PIENA;
-                labelTipoCB.Text = ApplicationConstants.StatoClipBoard.AUDIO.ToString();
-            }
-            else if(Clipboard.ContainsImage())
-            {
-                s = ApplicationConstants.StatoClipBoard.PIENA;
-                labelTipoCB.Text = ApplicationConstants.StatoClipBoard.IMMAGINE.ToString();
-            }
-            else if(Clipboard.ContainsText())
-            {
-                s = ApplicationConstants.StatoClipBoard.PIENA;
-                labelTipoCB.Text = ApplicationConstants.StatoClipBoard.TEXT.ToString();
-            }
-            else if(Clipboard.ContainsFileDropList())
-            {
-                s = ApplicationConstants.StatoClipBoard.PIENA;
-                labelTipoCB.Text = ApplicationConstants.StatoClipBoard.FILE_DROP.ToString();
-            }
-                
-            this.labelClipboardState.Text = s.ToString();
-
-            if(s==ApplicationConstants.StatoClipBoard.VUOTA)
-                this.labelClipboardState.ForeColor = Color.DarkRed;
-            else
-                this.labelClipboardState.ForeColor = Color.LawnGreen;
-        }
-
-        /// <summary>
-        /// Click sulla Notify Icon: mostra il menu.
-        /// </summary>
-        private void notifyIcon1_BalloonTipClicked(object sender, EventArgs e)
-        {
-            this.contextMenuStrip.Show(Cursor.Position);
-        }
-
+        #region Connessione
         /// <summary>
         /// Click sul pulsante 'Connetti' del menu: avvia la connessione.
         /// </summary>
@@ -157,30 +118,40 @@ namespace ProgettoPDS_SERVER
         }
 
         /// <summary>
-        /// Click sul pulsante 'Chiudi Applicazione' del menu: chiude l'applicazione.
+        /// Metodo per cambiare lo 'stato' della connessione
         /// </summary>
-        private void MainFormClose(object sender, EventArgs e)
+        /// <param name="stato"></param>
+        /// <param name="client"></param>
+        public void LabelStatoChangedMethod(ApplicationConstants.Stato stato, string client)
         {
-               this.Close();
-        }
+            pictureBoxLoader.Visible = false;
+            this.client = client;
+            this.labelStato.Text = stato.ToString();
 
-        /// <summary>
-        /// Click sul pulsante 'Chiudi Menu' del menu: nasconde il menu.
-        /// </summary>
-        private void MenuClose(object sender, EventArgs e)
-        {
-            this.contextMenuStrip.Hide();
-        }
+            if (stato == ApplicationConstants.Stato.CONNESSO)
+            {
+                DrawBordersMethod(Brushes.LawnGreen);
+                this.labelStato.ForeColor = Color.LawnGreen;
+                this.labelConnectedClient.Text = client;
+            }
+            else if (stato == ApplicationConstants.Stato.IN_ATTESA)
+            {
+                DrawBordersMethod(Brushes.MediumTurquoise);
+                this.labelStato.ForeColor = Color.MediumTurquoise;
+                this.labelConnectedClient.Text = "-";
+                pictureBoxLoader.Visible = true;
+            }
+            else
+            {
+                DrawBordersMethod(Brushes.Red);
+                this.labelStato.ForeColor = Color.DarkRed;
+                this.labelConnectedClient.Text = "-";
+            }
 
-        /// <summary>
-        /// Click sul pulsante 'Console' del menu: mostra il form che funge da console.
-        /// </summary>
-        private void MainFormShow(object sender, EventArgs e)
-        {
-            this.WindowState = FormWindowState.Normal;
-            this.ShowInTaskbar = true;
         }
-
+        #endregion
+       
+        #region Main Form
         /// <summary>
         /// Metodo chiamato quando il form si sta chiudendo, da la possibilita di chiudere oppure no.
         /// </summary>
@@ -196,7 +167,11 @@ namespace ProgettoPDS_SERVER
                     notifyIcon1.ShowBalloonTip(ToolTipTimeOut, "INFO STATO", "Applicazione in Back Ground.", ToolTipIcon.Info);
                 }
                 else
+                {
+                    notifyIcon1.Visible = false;
+                    notifyIcon1.Dispose();
                     e.Cancel = true;
+                }
 
                 this.ShowInTaskbar = true;
                 this.WindowState = FormWindowState.Minimized;
@@ -210,14 +185,23 @@ namespace ProgettoPDS_SERVER
                     Sconnection.SockDisconnect();
             }
         }
+        /// <summary>
+        /// Click sul pulsante 'Chiudi Applicazione' del menu: chiude l'applicazione.
+        /// </summary>
+        private void MainFormClose(object sender, EventArgs e)
+        {
+            this.Close();
+        }
 
         /// <summary>
-        /// Click sul pulsante 'disegna' del menu: disegna un bordo.
+        /// Click sul pulsante 'Console' del menu: mostra il form che funge da console.
         /// </summary>
-        private void toolStripMenuDisegna_Click(object sender, EventArgs e)
+        private void MainFormShow(object sender, EventArgs e)
         {
-            DrawBordersMethod(Brushes.Red);
+            this.WindowState = FormWindowState.Normal;
+            this.ShowInTaskbar = true;
         }
+        #endregion
 
         #region PacketsHandler backgroundWorker
 
@@ -305,12 +289,23 @@ namespace ProgettoPDS_SERVER
                             d[0] = s;
                             d[1] = d[1] = Data[i + 1];
                             //campi aggiuntivi per passare dati diversi da string al thread della clipboard 
+                            this.Invoke(ClipboardChanghedDelegate);
                             d[2] = this;
                             d[3] = this.Sconnection;
                             
                             i += 1;
 
-                            t = new Thread(ThreadHandler.ClipBoardThreadProc);
+                            if((string)d[1]==ApplicationConstants.CLIPQUITCODE)//ho ricevuto un messaggio 'CLOSE' sulla clipboard
+                            {
+                                ThreadHandler.ClipBoardWork = false;
+                                MessageBox.Show("Chiusura trasferimento in corso da parte del client", "CHIUSURA IN CORSO");
+                            }
+                            else
+                            {
+                                ThreadHandler.ClipBoardWork = true;
+                                t = new Thread(ThreadHandler.ClipBoardThreadProc);
+                            }
+                            
                         }
                         else if(s==ApplicationConstants.QUITCODE)
                         {
@@ -336,21 +331,6 @@ namespace ProgettoPDS_SERVER
             }
             EndBackgroundWorker();
         }
-
-        #endregion
-        /// <summary>
-        /// Gestione di un'eccezione. Messaggio di errore e possibilita' di chiudere la connessione.
-        /// </summary>
-        private void ExceptionManagement(Exception ex)
-        {
-            DialogResult res = MessageBox.Show("\""+ex.Message+"\" Errore critico, vuoi chiudere la connessione?", "ECCEZIONE", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
-
-            if (res == DialogResult.OK)
-            {
-                //EndBackgroundWorker();
-                work = false;
-            }
-        }
         /// <summary>
         /// Chiusura del PacketsHandlerbackgroundWorker, disconnessione e terminazione BW.
         /// </summary>
@@ -358,40 +338,49 @@ namespace ProgettoPDS_SERVER
         {
             Sconnection.SockDisconnect();
 
-            if(PacketsHandlerbackgroundWorker.IsBusy)
+            if (PacketsHandlerbackgroundWorker.IsBusy)
                 PacketsHandlerbackgroundWorker.CancelAsync();
         }
+        #endregion
+      
+        #region Altre funzioni
         /// <summary>
-        /// Metodo per cambiare lo 'stato' della connessione
+        /// Click sul pulsante 'Chiudi Menu' del menu: nasconde il menu.
         /// </summary>
-        /// <param name="stato"></param>
-        /// <param name="client"></param>
-        public void LabelStatoChangedMethod(ApplicationConstants.Stato stato, string client)
+        private void MenuClose(object sender, EventArgs e)
         {
-            pictureBoxLoader.Visible = false;
-            this.labelStato.Text = stato.ToString();
-
-            if (stato == ApplicationConstants.Stato.CONNESSO)
-            {
-                DrawBordersMethod(Brushes.LawnGreen);
-                this.labelStato.ForeColor = Color.LawnGreen;
-                this.labelConnectedClient.Text = client;
-            }
-            else if (stato == ApplicationConstants.Stato.IN_ATTESA)
-            {
-                DrawBordersMethod(Brushes.MediumTurquoise);
-                this.labelStato.ForeColor = Color.MediumTurquoise;
-                this.labelConnectedClient.Text = "-";
-                pictureBoxLoader.Visible = true;
-            }  
-            else
-            {
-                DrawBordersMethod(Brushes.Red);
-                this.labelStato.ForeColor = Color.DarkRed;
-                this.labelConnectedClient.Text = "-";
-            }
- 
+            this.contextMenuStrip.Hide();
         }
+        /// <summary>
+        /// Nasconde il form e non lo mostra nella task bar
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void toolStripTextBoxNascondi_Click(object sender, EventArgs e)
+        {
+            notifyIcon1.ShowBalloonTip(ToolTipTimeOut, "INFO STATO", "Applicazione in Back Ground.", ToolTipIcon.Info);
+            this.ShowInTaskbar = true; 
+            this.WindowState = FormWindowState.Minimized;
+            this.ShowInTaskbar = false; 
+        }
+
+        private void logOutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ApplicationConstants.RES = DialogResult.Yes;
+            this.Close();
+        }
+
+        /// <summary>
+        /// Click sulla Notify Icon: mostra il menu.
+        /// </summary>
+        private void notifyIcon1_BalloonTipClicked(object sender, EventArgs e)
+        {
+            this.contextMenuStrip.Show(Cursor.Position);
+        }
+        #endregion
+
+        #region Porta
+
         /// <summary>
         /// Set della nuova porta di ascolto.
         /// </summary>
@@ -418,29 +407,17 @@ namespace ProgettoPDS_SERVER
             {
                 MessageBox.Show("Impossibile usare la porta " + SocketConnection.trasfport + ", è dedicata alle operazioni sulla Clipboard!");
             }
-           
+
 
         }
-        /// <summary>
-        /// Nasconde il form e non lo mostra nella task bar
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void toolStripTextBoxNascondi_Click(object sender, EventArgs e)
-        {
-            notifyIcon1.ShowBalloonTip(ToolTipTimeOut, "INFO STATO", "Applicazione in Back Ground.", ToolTipIcon.Info);
-            this.ShowInTaskbar = true; 
-            this.WindowState = FormWindowState.Minimized;
-            this.ShowInTaskbar = false; 
-        }
-
+        //cambio porta
         private void impostaPortaToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
             //port
             numericUpDownPort.Value = port;
 
-            if(panelChangePassword.Visible)
+            if (panelChangePassword.Visible)
             {
                 panelChangePassword.Visible = false;
             }
@@ -448,15 +425,20 @@ namespace ProgettoPDS_SERVER
             {
                 this.Height = maxheight;
             }
-            this.PanelSetPort.Visible = true;    
+            this.PanelSetPort.Visible = true;
         }
 
-        private void logOutToolStripMenuItem_Click(object sender, EventArgs e)
+        //chiusura pannello porta
+        private void buttonClosePanelSetPort_Click(object sender, EventArgs e)
         {
-            ApplicationConstants.RES = DialogResult.Yes;
-            this.Close();
+            PanelSetPort.Visible = false;
+            this.Height = minheight;
         }
+        #endregion
 
+        #region Password
+
+        //Apertura pannello Password
         private void cambioPasswordToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (PanelSetPort.Visible)
@@ -467,15 +449,10 @@ namespace ProgettoPDS_SERVER
             {
                 this.Height = maxheight;
             }
-            this.panelChangePassword.Visible = true;    
+            this.panelChangePassword.Visible = true;
         }
 
-        private void buttonClosePanelSetPort_Click(object sender, EventArgs e)
-        {
-            PanelSetPort.Visible = false;
-            this.Height = minheight;
-        }
-
+        //chiusura pannello password
         private void buttonClosePanelChangePassword_Click(object sender, EventArgs e)
         {
             panelChangePassword.Visible = false;
@@ -526,86 +503,9 @@ namespace ProgettoPDS_SERVER
                 }
             } 
         }
+        #endregion
 
-        private void infoDatiToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            // Retrieves the data from the clipboard.
-            richTextBoxCB.Visible = false;
-            pictureBoxCB.Visible = false;
-            buttonPlayAudio.Visible = false;
-            buttonStopAudio.Visible = false;
-
-            IDataObject d = System.Windows.Forms.Clipboard.GetDataObject();
-            if(d != null)
-            {
-                if(Clipboard.ContainsAudio())
-                {
-                    buttonPlayAudio.Visible = true;
-                    buttonStopAudio.Visible = true;
-                    labelTipoCB.Text = ApplicationConstants.StatoClipBoard.AUDIO.ToString();
-                }
-                else if(Clipboard.ContainsImage())
-                {
-                    pictureBoxCB.Visible = true;
-                    labelTipoCB.Text = ApplicationConstants.StatoClipBoard.IMMAGINE.ToString();
-
-                    Image i = Clipboard.GetImage();
-
-                    pictureBoxCB.Image = i;
-                }
-                else if(Clipboard.ContainsText())
-                {
-                    richTextBoxCB.Visible = true;
-                    labelTipoCB.Text = ApplicationConstants.StatoClipBoard.TEXT.ToString();
-                    string text = Clipboard.GetText();
-
-                    richTextBoxCB.Text = text;
-                }
-                else if(Clipboard.ContainsFileDropList())
-                {
-                    richTextBoxCB.Visible = true;
-                    labelTipoCB.Text = ApplicationConstants.StatoClipBoard.FILE_DROP.ToString();
-
-                    System.Collections.Specialized.StringCollection s = Clipboard.GetFileDropList();
-
-                    richTextBoxCB.Text ="";
-                    for (int i = 0; i < s.Count; i++)
-                    {
-                        richTextBoxCB.Text += s[i] + Environment.NewLine;
-                    }
-                }
-                else
-                {
-                    labelTipoCB.Text = ApplicationConstants.StatoClipBoard.VUOTA.ToString();
-                }
-            }
-            else
-            {
-                //clipboard data object null
-            }
-
-            if (!panelInfoCB.Visible)
-            {
-                groupBoxInfo.Width -= panelInfoCB.Width+groupBoxInfo.Margin.Left;
-                panelInfoCB.Visible = true;
-            }
-        }
-        public bool ThumbnailCallback()
-        {
-            return false;
-        }
-        private void pulisciToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Clipboard.Clear();
-            ClipboardChanghed();
-        }
-
-        private void buttonClosePanelInfoCB_Click(object sender, EventArgs e)
-        {
-            groupBoxInfo.Width += panelInfoCB.Width+groupBoxInfo.Margin.Left;
-            panelInfoCB.Visible = false;
-        }
-
+        #region Audio Player
         private void buttonPlayAudio_Click(object sender, EventArgs e)
         {
              System.IO.Stream aus = Clipboard.GetAudioStream();
@@ -632,8 +532,13 @@ namespace ProgettoPDS_SERVER
                 MessageBox.Show(ex.Message);
             }
         }
+        #endregion
+
+        #region ProgressBar
         public void startProgressBarMethod(int max)
         {
+            //buttonCloseProg.Visible = true;
+            buttonHideProg.Visible = true;
             panelChangePassword.Visible = false;
             PanelSetPort.Visible = false;
             this.Height = minheight + progressBarClipboard.Height;
@@ -663,8 +568,40 @@ namespace ProgettoPDS_SERVER
             this.Height = minheight;
 
             this.progressBarClipboard.Visible = false;
-            //this.progressBarClipboardPerc.Visible = false;
+            //buttonCloseProg.Visible = false;
+            buttonHideProg.Visible = false;
         }
+
+        //chiude il trasferimento dei dati [non utilizzato]
+        private void buttonCloseProg_Click(object sender, EventArgs e)
+        {
+            DialogResult res = MessageBox.Show(" Vuoi davvero chiudere la trasmissione?", "CANCELLAZIONE OPERAZIONE", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+
+            if (res == DialogResult.OK)
+            {
+                ThreadHandler.ClipBoardWork = false;
+            }
+        }
+
+        //nasconde la progressBar
+        private void buttonHideShowProg_Click(object sender, EventArgs e)
+        {
+            //Button b = sender as Button;
+            buttonHideProg.BackgroundImage.RotateFlip(RotateFlipType.Rotate180FlipX);
+
+            if(this.progressBarClipboard.Visible)
+            {
+                this.progressBarClipboard.Visible = false;
+                this.Height = minheight;
+            }
+            else
+            {
+                this.Height = minheight + progressBarClipboard.Height;
+                this.progressBarClipboard.Visible = true;
+            }   
+        }
+        #endregion
+
         #region Clipboard
         // OTTENGO IL CONTENUTO DELLA CLIPBOARD
         private object GetClipboardDataMethod()
@@ -715,7 +652,122 @@ namespace ProgettoPDS_SERVER
                     break;
             }
         }
+
+        //pulizia della Clipboard
+        private void pulisciToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Clipboard.Clear();
+            ClipboardChanghedMethod();
+        }
+
+        //chiusura pannello Info Clipboard
+        private void buttonClosePanelInfoCB_Click(object sender, EventArgs e)
+        {
+            groupBoxInfo.Width += panelInfoCB.Width + groupBoxInfo.Margin.Left;
+            panelInfoCB.Visible = false;
+        }
+
+        //apertura pannello Info ClipBoard
+        private void infoDatiToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Retrieves the data from the clipboard.
+            richTextBoxCB.Visible = false;
+            pictureBoxCB.Visible = false;
+            buttonPlayAudio.Visible = false;
+            buttonStopAudio.Visible = false;
+
+            IDataObject d = System.Windows.Forms.Clipboard.GetDataObject();
+            if (d != null)
+            {
+                if (Clipboard.ContainsAudio())
+                {
+                    buttonPlayAudio.Visible = true;
+                    buttonStopAudio.Visible = true;
+                    labelTipoCB.Text = ApplicationConstants.StatoClipBoard.AUDIO.ToString();
+                }
+                else if (Clipboard.ContainsImage())
+                {
+                    pictureBoxCB.Visible = true;
+                    labelTipoCB.Text = ApplicationConstants.StatoClipBoard.IMMAGINE.ToString();
+
+                    Image i = Clipboard.GetImage();
+
+                    pictureBoxCB.Image = i;
+                }
+                else if (Clipboard.ContainsText())
+                {
+                    richTextBoxCB.Visible = true;
+                    labelTipoCB.Text = ApplicationConstants.StatoClipBoard.TEXT.ToString();
+                    string text = Clipboard.GetText();
+
+                    richTextBoxCB.Text = text;
+                }
+                else if (Clipboard.ContainsFileDropList())
+                {
+                    richTextBoxCB.Visible = true;
+                    labelTipoCB.Text = ApplicationConstants.StatoClipBoard.FILE_DROP.ToString();
+
+                    System.Collections.Specialized.StringCollection s = Clipboard.GetFileDropList();
+
+                    richTextBoxCB.Text = "";
+                    for (int i = 0; i < s.Count; i++)
+                    {
+                        richTextBoxCB.Text += s[i] + Environment.NewLine;
+                    }
+                }
+                else
+                {
+                    labelTipoCB.Text = ApplicationConstants.StatoClipBoard.VUOTA.ToString();
+                }
+            }
+            else
+            {
+                //clipboard data object null
+            }
+
+            if (!panelInfoCB.Visible)
+            {
+                groupBoxInfo.Width -= panelInfoCB.Width + groupBoxInfo.Margin.Left;
+                panelInfoCB.Visible = true;
+            }
+        }
+
+        //controllo stato clipboard
+        private void ClipboardChanghedMethod()
+        {
+            // Controllo stato clipboard
+            ApplicationConstants.StatoClipBoard s = ApplicationConstants.StatoClipBoard.VUOTA;
+
+            if (Clipboard.ContainsAudio())
+            {
+                s = ApplicationConstants.StatoClipBoard.PIENA;
+                labelTipoCB.Text = ApplicationConstants.StatoClipBoard.AUDIO.ToString();
+            }
+            else if (Clipboard.ContainsImage())
+            {
+                s = ApplicationConstants.StatoClipBoard.PIENA;
+                labelTipoCB.Text = ApplicationConstants.StatoClipBoard.IMMAGINE.ToString();
+            }
+            else if (Clipboard.ContainsText())
+            {
+                s = ApplicationConstants.StatoClipBoard.PIENA;
+                labelTipoCB.Text = ApplicationConstants.StatoClipBoard.TEXT.ToString();
+            }
+            else if (Clipboard.ContainsFileDropList())
+            {
+                s = ApplicationConstants.StatoClipBoard.PIENA;
+                labelTipoCB.Text = ApplicationConstants.StatoClipBoard.FILE_DROP.ToString();
+            }
+
+            this.labelClipboardState.Text = s.ToString();
+
+            if (s == ApplicationConstants.StatoClipBoard.VUOTA)
+                this.labelClipboardState.ForeColor = Color.DarkRed;
+            else
+                this.labelClipboardState.ForeColor = Color.LawnGreen;
+        }
         #endregion
+
         #region Graphics
         public void DrawBordersMethod(Brush color)
         {
@@ -742,7 +794,19 @@ namespace ProgettoPDS_SERVER
         [DllImport("User32.dll", EntryPoint = "ReleaseDC", SetLastError = true)]
         static extern int ReleaseDC(IntPtr hwnd, IntPtr dc);
         #endregion
+ 
+/*
+ *      Gestione di un'eccezione. Messaggio di errore e possibilita' di chiudere la connessione.
+ */
+        private void ExceptionManagement(Exception ex)
+        {
+            DialogResult res = MessageBox.Show("\"" + ex.Message + "\" Errore critico, vuoi chiudere la connessione?", "ECCEZIONE", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
 
+            if (res == DialogResult.OK)
+            {
+                work = false;
+            }
+        }
     }
     
 }

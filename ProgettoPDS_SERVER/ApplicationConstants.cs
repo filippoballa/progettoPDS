@@ -92,6 +92,7 @@ namespace ProgettoPDS_SERVER
         const string keyboardcode = "K";
         const string clipboardcode = "C";
         const string quitcode = "QUIT";
+        const string clipboardquitcode = "CLOSE";
 
         //mouse flags
         const uint mouseeventf_absolute = 0x8000;
@@ -157,6 +158,7 @@ namespace ProgettoPDS_SERVER
         public static string KEYBOARDCODE { get { return keyboardcode; } }
         public static string CLIPBOARDCODE { get { return clipboardcode; } }
         public static string QUITCODE { get { return quitcode; } }
+        public static string CLIPQUITCODE { get { return clipboardquitcode; } }
 
         public static uint MOUSEEVENTF_ABSOLUTE { get { return mouseeventf_absolute; } }
         public static uint MOUSEEVENTF_LEFTDOWN { get { return mouseeventf_leftdown; } }

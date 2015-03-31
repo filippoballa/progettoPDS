@@ -28,6 +28,7 @@ namespace ProgettoPDS_SERVER
         public static ManualResetEvent mrMouseThreads = new ManualResetEvent(false);
         public static Queue<string[]> MouseQueue = new Queue<string[]>();
         public static Queue<string[]> KeyBoardQueue = new Queue<string[]>();
+        private static bool clipBoardWork = false;
         #endregion
 
         #region MOUSE
@@ -423,7 +424,7 @@ namespace ProgettoPDS_SERVER
                             main.Invoke(main.startProgressBarDelegate, new Object[] { dataToSend.Length });
 
                             int dataSended = 0;
-                            while (dataSended < dataToSend.Length)
+                            while (dataSended < dataToSend.Length && ClipBoardWork)
                             {
                                 byte[] d = new byte[SBuffSize];
 
@@ -479,7 +480,7 @@ namespace ProgettoPDS_SERVER
 
                         main.Invoke(main.startProgressBarDelegate, new Object[] { dim });
 
-                        while (dataReceived < dim)
+                        while (dataReceived < dim && ClipBoardWork)
                         {
                             datagram = new byte[RBuffSize];
                             Sconnection.PassivTransfer.Receive(datagram);
@@ -493,16 +494,19 @@ namespace ProgettoPDS_SERVER
                             dataReceived += datagram.Length;
                         }
 
-                        //creazione dei dati da mettere in clipboard
-                        object data = CreateDataToSet(statoCB, dataToReceive);
-
-                        if (data != null)
+                        //creazione dei dati da mettere in clipboard se il thread deve lavorare
+                        if(ClipBoardWork)
                         {
-                            main.Invoke(main.SetCliboardDataDelegate, new Object[] { statoCB, data });
+                            object data = CreateDataToSet(statoCB, dataToReceive);
+
+                            if (data != null)
+                            {
+                                main.Invoke(main.SetCliboardDataDelegate, new Object[] { statoCB, data });
+                            }
                         }
+                        
                         main.Invoke(main.closeProgressBarDelegate);
                     }
-
 
                     else//ricezione comando sbagliato
                     {
@@ -685,6 +689,22 @@ namespace ProgettoPDS_SERVER
             {
                 mut.WaitOne();
                 threadcounter = value;
+                mut.ReleaseMutex();
+            }
+        }
+        public static bool ClipBoardWork
+        {
+            get
+            {
+                mut.WaitOne();
+                bool cbw = clipBoardWork;
+                mut.ReleaseMutex();
+                return cbw;
+            }
+            set
+            {
+                mut.WaitOne();
+                clipBoardWork = value;
                 mut.ReleaseMutex();
             }
         }
