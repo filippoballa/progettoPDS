@@ -1,0 +1,12 @@
+C:\Users\Dave\Documents\GitHub\progettoPDS\ProgettoPDS_CLIENT\bin\Release\ProgettoPDS_CLIENT.exe.config
+C:\Users\Dave\Documents\GitHub\progettoPDS\ProgettoPDS_CLIENT\bin\Release\XMLServers.xml
+C:\Users\Dave\Documents\GitHub\progettoPDS\ProgettoPDS_CLIENT\bin\Release\XMLUsers.xml
+C:\Users\Dave\Documents\GitHub\progettoPDS\ProgettoPDS_CLIENT\bin\Release\ProgettoPDS_CLIENT.exe
+C:\Users\Dave\Documents\GitHub\progettoPDS\ProgettoPDS_CLIENT\bin\Release\ProgettoPDS_CLIENT.pdb
+C:\Users\Dave\Documents\GitHub\progettoPDS\ProgettoPDS_CLIENT\obj\Release\ProgettoPDS_CLIENT.csprojResolveAssemblyReference.cache
+C:\Users\Dave\Documents\GitHub\progettoPDS\ProgettoPDS_CLIENT\obj\Release\ProgettoPDS_CLIENT.LoginForm.resources
+C:\Users\Dave\Documents\GitHub\progettoPDS\ProgettoPDS_CLIENT\obj\Release\ProgettoPDS_CLIENT.MainForm.resources
+C:\Users\Dave\Documents\GitHub\progettoPDS\ProgettoPDS_CLIENT\obj\Release\ProgettoPDS_CLIENT.Properties.Resources.resources
+C:\Users\Dave\Documents\GitHub\progettoPDS\ProgettoPDS_CLIENT\obj\Release\ProgettoPDS_CLIENT.csproj.GenerateResource.Cache
+C:\Users\Dave\Documents\GitHub\progettoPDS\ProgettoPDS_CLIENT\obj\Release\ProgettoPDS_CLIENT.exe
+C:\Users\Dave\Documents\GitHub\progettoPDS\ProgettoPDS_CLIENT\obj\Release\ProgettoPDS_CLIENT.pdb

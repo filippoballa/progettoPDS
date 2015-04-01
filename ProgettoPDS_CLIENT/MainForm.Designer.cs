@@ -75,16 +75,16 @@
             this.ActionServerLabel = new System.Windows.Forms.Label();
             this.KeyBackgroundWorker = new System.ComponentModel.BackgroundWorker();
             this.InfoPanel = new System.Windows.Forms.Panel();
-            this.InfoContentLabel = new System.Windows.Forms.Label();
-            this.BackButton = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
+            this.ClipPictureBox = new System.Windows.Forms.PictureBox();
+            this.MousePictureBox = new System.Windows.Forms.PictureBox();
+            this.KeyPictureBox = new System.Windows.Forms.PictureBox();
             this.pictureBox6 = new System.Windows.Forms.PictureBox();
             this.pictureBox5 = new System.Windows.Forms.PictureBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.BackButton = new System.Windows.Forms.Button();
+            this.InfoContentLabel = new System.Windows.Forms.Label();
             this.ClipboardSendBW = new System.ComponentModel.BackgroundWorker();
             this.ClipboardRequestBW = new System.ComponentModel.BackgroundWorker();
-            this.KeyPictureBox = new System.Windows.Forms.PictureBox();
-            this.MousePictureBox = new System.Windows.Forms.PictureBox();
-            this.ClipPictureBox = new System.Windows.Forms.PictureBox();
             this.MainPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -98,11 +98,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             this.InfoPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ClipPictureBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.MousePictureBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.KeyPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.KeyPictureBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.MousePictureBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ClipPictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // MouseBackgroundWorker
@@ -278,7 +278,7 @@
             this.ConfigLabel.ForeColor = System.Drawing.Color.DarkOrange;
             this.ConfigLabel.Location = new System.Drawing.Point(32, 45);
             this.ConfigLabel.Name = "ConfigLabel";
-            this.ConfigLabel.Size = new System.Drawing.Size(289, 22);
+            this.ConfigLabel.Size = new System.Drawing.Size(289, 21);
             this.ConfigLabel.TabIndex = 5;
             this.ConfigLabel.Text = "Inserisci i Parametri di Configurazione";
             // 
@@ -704,47 +704,35 @@
             this.InfoPanel.TabIndex = 27;
             this.InfoPanel.Visible = false;
             // 
-            // InfoContentLabel
+            // ClipPictureBox
             // 
-            this.InfoContentLabel.BackColor = System.Drawing.Color.Linen;
-            this.InfoContentLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.InfoContentLabel.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.InfoContentLabel.ForeColor = System.Drawing.Color.DarkRed;
-            this.InfoContentLabel.Location = new System.Drawing.Point(119, 79);
-            this.InfoContentLabel.Name = "InfoContentLabel";
-            this.InfoContentLabel.Padding = new System.Windows.Forms.Padding(8, 8, 2, 2);
-            this.InfoContentLabel.Size = new System.Drawing.Size(672, 466);
-            this.InfoContentLabel.TabIndex = 11;
-            this.InfoContentLabel.Text = resources.GetString("InfoContentLabel.Text");
-            this.InfoContentLabel.Paint += new System.Windows.Forms.PaintEventHandler(this.InfoContentLabel_Paint);
+            this.ClipPictureBox.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("ClipPictureBox.BackgroundImage")));
+            this.ClipPictureBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.ClipPictureBox.Location = new System.Drawing.Point(824, 410);
+            this.ClipPictureBox.Name = "ClipPictureBox";
+            this.ClipPictureBox.Size = new System.Drawing.Size(123, 109);
+            this.ClipPictureBox.TabIndex = 14;
+            this.ClipPictureBox.TabStop = false;
             // 
-            // BackButton
+            // MousePictureBox
             // 
-            this.BackButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.BackButton.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.BackButton.FlatAppearance.BorderSize = 0;
-            this.BackButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Linen;
-            this.BackButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Linen;
-            this.BackButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BackButton.Image = ((System.Drawing.Image)(resources.GetObject("BackButton.Image")));
-            this.BackButton.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.BackButton.Location = new System.Drawing.Point(106, 547);
-            this.BackButton.Name = "BackButton";
-            this.BackButton.Size = new System.Drawing.Size(118, 59);
-            this.BackButton.TabIndex = 3;
-            this.BackButton.UseVisualStyleBackColor = true;
-            this.BackButton.Click += new System.EventHandler(this.BackButton_Click);
+            this.MousePictureBox.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("MousePictureBox.BackgroundImage")));
+            this.MousePictureBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.MousePictureBox.Location = new System.Drawing.Point(814, 259);
+            this.MousePictureBox.Name = "MousePictureBox";
+            this.MousePictureBox.Size = new System.Drawing.Size(139, 85);
+            this.MousePictureBox.TabIndex = 13;
+            this.MousePictureBox.TabStop = false;
             // 
-            // label1
+            // KeyPictureBox
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Comic Sans MS", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.Maroon;
-            this.label1.Location = new System.Drawing.Point(229, 18);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(627, 25);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "INFORMAZIONI SULL\'UTILIZZO DELLA SCHERMATA PRINCIPALE";
+            this.KeyPictureBox.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("KeyPictureBox.BackgroundImage")));
+            this.KeyPictureBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.KeyPictureBox.Location = new System.Drawing.Point(824, 87);
+            this.KeyPictureBox.Name = "KeyPictureBox";
+            this.KeyPictureBox.Size = new System.Drawing.Size(123, 85);
+            this.KeyPictureBox.TabIndex = 12;
+            this.KeyPictureBox.TabStop = false;
             // 
             // pictureBox6
             // 
@@ -766,6 +754,47 @@
             this.pictureBox5.TabIndex = 0;
             this.pictureBox5.TabStop = false;
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Comic Sans MS", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.Maroon;
+            this.label1.Location = new System.Drawing.Point(229, 18);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(627, 25);
+            this.label1.TabIndex = 2;
+            this.label1.Text = "INFORMAZIONI SULL\'UTILIZZO DELLA SCHERMATA PRINCIPALE";
+            // 
+            // BackButton
+            // 
+            this.BackButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.BackButton.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.BackButton.FlatAppearance.BorderSize = 0;
+            this.BackButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Linen;
+            this.BackButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Linen;
+            this.BackButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BackButton.Image = ((System.Drawing.Image)(resources.GetObject("BackButton.Image")));
+            this.BackButton.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
+            this.BackButton.Location = new System.Drawing.Point(106, 547);
+            this.BackButton.Name = "BackButton";
+            this.BackButton.Size = new System.Drawing.Size(118, 59);
+            this.BackButton.TabIndex = 3;
+            this.BackButton.UseVisualStyleBackColor = true;
+            this.BackButton.Click += new System.EventHandler(this.BackButton_Click);
+            // 
+            // InfoContentLabel
+            // 
+            this.InfoContentLabel.BackColor = System.Drawing.Color.Linen;
+            this.InfoContentLabel.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.InfoContentLabel.ForeColor = System.Drawing.Color.DarkRed;
+            this.InfoContentLabel.Location = new System.Drawing.Point(119, 79);
+            this.InfoContentLabel.Name = "InfoContentLabel";
+            this.InfoContentLabel.Padding = new System.Windows.Forms.Padding(8, 8, 2, 2);
+            this.InfoContentLabel.Size = new System.Drawing.Size(672, 466);
+            this.InfoContentLabel.TabIndex = 11;
+            this.InfoContentLabel.Text = resources.GetString("InfoContentLabel.Text");
+            this.InfoContentLabel.Paint += new System.Windows.Forms.PaintEventHandler(this.InfoContentLabel_Paint);
+            // 
             // ClipboardSendBW
             // 
             this.ClipboardSendBW.WorkerReportsProgress = true;
@@ -777,36 +806,6 @@
             this.ClipboardRequestBW.WorkerReportsProgress = true;
             this.ClipboardRequestBW.WorkerSupportsCancellation = true;
             this.ClipboardRequestBW.DoWork += new System.ComponentModel.DoWorkEventHandler(this.ClipboardRequestBW_DoWork);
-            // 
-            // KeyPictureBox
-            // 
-            this.KeyPictureBox.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("KeyPictureBox.BackgroundImage")));
-            this.KeyPictureBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.KeyPictureBox.Location = new System.Drawing.Point(824, 87);
-            this.KeyPictureBox.Name = "KeyPictureBox";
-            this.KeyPictureBox.Size = new System.Drawing.Size(123, 85);
-            this.KeyPictureBox.TabIndex = 12;
-            this.KeyPictureBox.TabStop = false;
-            // 
-            // MousePictureBox
-            // 
-            this.MousePictureBox.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("MousePictureBox.BackgroundImage")));
-            this.MousePictureBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.MousePictureBox.Location = new System.Drawing.Point(814, 259);
-            this.MousePictureBox.Name = "MousePictureBox";
-            this.MousePictureBox.Size = new System.Drawing.Size(139, 85);
-            this.MousePictureBox.TabIndex = 13;
-            this.MousePictureBox.TabStop = false;
-            // 
-            // ClipPictureBox
-            // 
-            this.ClipPictureBox.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("ClipPictureBox.BackgroundImage")));
-            this.ClipPictureBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClipPictureBox.Location = new System.Drawing.Point(824, 410);
-            this.ClipPictureBox.Name = "ClipPictureBox";
-            this.ClipPictureBox.Size = new System.Drawing.Size(123, 109);
-            this.ClipPictureBox.TabIndex = 14;
-            this.ClipPictureBox.TabStop = false;
             // 
             // MainForm
             // 
@@ -848,11 +847,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             this.InfoPanel.ResumeLayout(false);
             this.InfoPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ClipPictureBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.MousePictureBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.KeyPictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.KeyPictureBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.MousePictureBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ClipPictureBox)).EndInit();
             this.ResumeLayout(false);
 
         }

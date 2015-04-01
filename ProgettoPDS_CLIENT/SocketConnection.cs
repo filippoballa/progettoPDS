@@ -157,10 +157,10 @@ namespace ProgettoPDS_CLIENT
             catch (Exception ecc) {
                 MessageBox.Show(ecc.Message, "ANOMALY", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
-                if (this.sock != null) 
+                if ( this.sock.Connected )
                     this.SockClose();
 
-                if (this.clipSock != null)
+                if( this.clipSock != null )
                     this.CloseClipSock();
 
                 this.stato = STATO.DISCONESSO;

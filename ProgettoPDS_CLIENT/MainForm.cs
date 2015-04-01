@@ -25,7 +25,8 @@ namespace ProgettoPDS_CLIENT
 
         public delegate void Handler();
         public delegate object[] GetClipboardDataDelegate();
-        public delegate void SetClipboardDataDelegate(object[] d);   
+        public delegate void SetClipboardDataDelegate(object[] d);
+        public delegate void SetClipboardContentPanelDelegate(object[] d);
         public delegate void startProgressBarDelegate(int dim);        
         public delegate void doStepProgressBarDelegate();
         public delegate void closeProgressBarDelegate();
@@ -35,6 +36,7 @@ namespace ProgettoPDS_CLIENT
         public Handler myHandler;
         private GetClipboardDataDelegate getClip;
         private SetClipboardDataDelegate setClip;
+        private SetClipboardContentPanelDelegate setContentClip;
         public startProgressBarDelegate startProgressBar;
         public doStepProgressBarDelegate doStepProgressBar;
         public closeProgressBarDelegate closeProgressBar;
@@ -75,6 +77,7 @@ namespace ProgettoPDS_CLIENT
             this.myHandler = new Handler(RefreshLabel);
             this.getClip = new GetClipboardDataDelegate(GetClipboardData);
             this.setClip = new SetClipboardDataDelegate(SetCliboardData);
+            this.setContentClip = new SetClipboardContentPanelDelegate(SetClipboardContentPanel);
             this.currServ = -1;
             this.user = aux;
             this.CountServerConnected = 0;
@@ -800,6 +803,9 @@ namespace ProgettoPDS_CLIENT
 
                 case "IMMAGINE":
                     this.ImageClipboardPictureBox.Visible = true;
+                    this.RichTextBox.Visible = false;
+                    this.PlayAudioButton.Visible = false;
+                    this.StopAudioButton.Visible = false;
                     this.TypeClipboardLabel.Text += " IMAGE";
                     this.ImageClipboardPictureBox.BackgroundImage = (Image)data[1];
                     break;
@@ -807,19 +813,27 @@ namespace ProgettoPDS_CLIENT
                 case "TEXT":
                     this.TypeClipboardLabel.Text += " TEXT";
                     this.RichTextBox.Visible = true;
+                    this.PlayAudioButton.Visible = false;
+                    this.StopAudioButton.Visible = false;
+                    this.ImageClipboardPictureBox.Visible = false;
                     this.RichTextBox.Clear();
                     this.RichTextBox.AppendText((string)data[1]);
                     break;
 
                 case "AUDIO":
                     this.TypeClipboardLabel.Text += " AUDIO";
+                    this.RichTextBox.Visible = false;
                     this.PlayAudioButton.Visible = true;
                     this.StopAudioButton.Visible = true;
+                    this.ImageClipboardPictureBox.Visible = false;
                     this.player = new SoundPlayer((Stream)data[1]);
                     break;
 
                 case "FILE_DROP":
                     this.TypeClipboardLabel.Text += " FILE DROP";
+                    this.PlayAudioButton.Visible = false;
+                    this.StopAudioButton.Visible = false;
+                    this.ImageClipboardPictureBox.Visible = false;
                     this.RichTextBox.Visible = true;
                     this.RichTextBox.Clear();
                     StringCollection strColl = (StringCollection)data[1];
@@ -1304,7 +1318,7 @@ namespace ProgettoPDS_CLIENT
                 this.Invoke(this.setClip, new object[] { data });
 
                 if (this.ContentClipboardPanel.Visible)
-                    SetClipboardContentPanel(data);
+                    this.Invoke(this.setContentClip, new object[] { data });
 
             }
 
@@ -1496,7 +1510,6 @@ namespace ProgettoPDS_CLIENT
             while (this.ClipboardProgressBar.Maximum > this.ClipboardProgressBar.Value) {
                 doStepProgressBarMethod();
                 Thread.Sleep(10);
-
             }
 
             this.ProgressBarPanel.Visible = false;
