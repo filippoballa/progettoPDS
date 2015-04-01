@@ -154,6 +154,8 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="images\darrow.png" />
+    <Content Include="images\uarrow.png" />
     <Content Include="server.ico" />
     <Content Include="XMLClients.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

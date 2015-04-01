@@ -35,6 +35,7 @@
             this.toolStripMenuItemOpenConsole = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemConnetti = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemDisconnetti = new System.Windows.Forms.ToolStripMenuItem();
+            this.logOutToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemCloseForm = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemCloseMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.PacketsHandlerbackgroundWorker = new System.ComponentModel.BackgroundWorker();
@@ -109,10 +110,11 @@
             this.toolStripMenuItemOpenConsole,
             this.toolStripMenuItemConnetti,
             this.toolStripMenuItemDisconnetti,
+            this.logOutToolStripMenuItem1,
             this.toolStripMenuItemCloseForm,
             this.toolStripMenuItemCloseMenu});
             this.contextMenuStrip.Name = "contextMenuStrip";
-            this.contextMenuStrip.Size = new System.Drawing.Size(185, 134);
+            this.contextMenuStrip.Size = new System.Drawing.Size(185, 160);
             // 
             // toolStripMenuItemOpenConsole
             // 
@@ -137,6 +139,14 @@
             this.toolStripMenuItemDisconnetti.Size = new System.Drawing.Size(184, 26);
             this.toolStripMenuItemDisconnetti.Text = "Disconnetti";
             this.toolStripMenuItemDisconnetti.Click += new System.EventHandler(this.buttonDisconnect_Click);
+            // 
+            // logOutToolStripMenuItem1
+            // 
+            this.logOutToolStripMenuItem1.Image = ((System.Drawing.Image)(resources.GetObject("logOutToolStripMenuItem1.Image")));
+            this.logOutToolStripMenuItem1.Name = "logOutToolStripMenuItem1";
+            this.logOutToolStripMenuItem1.Size = new System.Drawing.Size(184, 26);
+            this.logOutToolStripMenuItem1.Text = "Log Out";
+            this.logOutToolStripMenuItem1.Click += new System.EventHandler(this.logOutToolStripMenuItem_Click);
             // 
             // toolStripMenuItemCloseForm
             // 
@@ -318,7 +328,7 @@
             this.infoDatiToolStripMenuItem.BackColor = System.Drawing.Color.Beige;
             this.infoDatiToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("infoDatiToolStripMenuItem.Image")));
             this.infoDatiToolStripMenuItem.Name = "infoDatiToolStripMenuItem";
-            this.infoDatiToolStripMenuItem.Size = new System.Drawing.Size(129, 26);
+            this.infoDatiToolStripMenuItem.Size = new System.Drawing.Size(156, 26);
             this.infoDatiToolStripMenuItem.Text = "Info Dati";
             this.infoDatiToolStripMenuItem.Click += new System.EventHandler(this.infoDatiToolStripMenuItem_Click);
             // 
@@ -327,7 +337,7 @@
             this.pulisciToolStripMenuItem.BackColor = System.Drawing.Color.Beige;
             this.pulisciToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("pulisciToolStripMenuItem.Image")));
             this.pulisciToolStripMenuItem.Name = "pulisciToolStripMenuItem";
-            this.pulisciToolStripMenuItem.Size = new System.Drawing.Size(129, 26);
+            this.pulisciToolStripMenuItem.Size = new System.Drawing.Size(156, 26);
             this.pulisciToolStripMenuItem.Text = "Pulisci";
             this.pulisciToolStripMenuItem.Click += new System.EventHandler(this.pulisciToolStripMenuItem_Click);
             // 
@@ -747,5 +757,6 @@
         private System.Windows.Forms.ToolStripMenuItem cambioPasswordToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem logOutToolStripMenuItem;
         private System.Windows.Forms.Button buttonHideProg;
+        private System.Windows.Forms.ToolStripMenuItem logOutToolStripMenuItem1;
     }
 }

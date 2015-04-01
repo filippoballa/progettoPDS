@@ -594,15 +594,17 @@ namespace ProgettoPDS_SERVER
         //nasconde la progressBar
         private void buttonHideShowProg_Click(object sender, EventArgs e)
         {
-            buttonHideProg.BackgroundImage.RotateFlip(RotateFlipType.RotateNoneFlipXY);
+            //buttonHideProg.BackgroundImage.RotateFlip(RotateFlipType.RotateNoneFlipXY);
 
             if(this.progressBarClipboard.Visible)
             {
+                buttonHideProg.BackgroundImage = new Bitmap(@"C:\Users\Filippo\Documents\GitHub\progettoPDS\ProgettoPDS_SERVER\images\uarrow.png");
                 this.progressBarClipboard.Visible = false;
                 this.Height = minheight;
             }
             else
             {
+                buttonHideProg.BackgroundImage = new Bitmap(@"C:\Users\Filippo\Documents\GitHub\progettoPDS\ProgettoPDS_SERVER\images\darrow.png");
                 this.Height = minheight + progressBarClipboard.Height;
                 this.progressBarClipboard.Visible = true;
             }   
@@ -819,7 +821,6 @@ namespace ProgettoPDS_SERVER
                 work = false;
             }
         }
-
     }
     
 }
