@@ -94,7 +94,7 @@ namespace ProgettoPDS_SERVER
         const string quitcode = "QUIT";
         const string clipboardquitcode = "CLOSE";
         const string startuse = "STARTUSE";
-        const string enduse = "ENDSUSE";
+        const string enduse = "ENDUSE";
 
         //mouse flags
         const uint mouseeventf_absolute = 0x8000;
