@@ -791,9 +791,18 @@ namespace ProgettoPDS_SERVER
             IntPtr desktop = GetDC(IntPtr.Zero);
             using (Graphics g = Graphics.FromHdc(desktop))
             {
-                int border = 20;
-                g.FillRectangle(Brushes.Black, (Screen.PrimaryScreen.Bounds.Width / 2) - border -1, border - 1, border + 2, border + 2);
-                g.FillRectangle(color, (Screen.PrimaryScreen.Bounds.Width/2) - border, border, border, border);
+                if (color == Brushes.Transparent)
+                {
+                    int border = 20;
+                    g.FillRectangle(color, (Screen.PrimaryScreen.Bounds.Width / 2) - border - 1, border - 1, border + 2, border + 2);
+                }
+                else
+                {
+                    int border = 20;
+                    g.FillRectangle(Brushes.Black, (Screen.PrimaryScreen.Bounds.Width / 2) - border - 1, border - 1, border + 2, border + 2);
+                    g.FillRectangle(color, (Screen.PrimaryScreen.Bounds.Width / 2) - border, border, border, border);
+                }
+                
             }
             ReleaseDC(IntPtr.Zero, desktop);
         }
