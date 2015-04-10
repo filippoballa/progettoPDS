@@ -34,6 +34,7 @@ namespace ProgettoPDS_SERVER
         private User u = null;
         private const int passwordlenght = 8;
         private static System.Media.SoundPlayer player;
+        Graphics g;
         #endregion
 
         #region Delegates per le modifiche del form da parte di altri thread
@@ -789,20 +790,19 @@ namespace ProgettoPDS_SERVER
         public void DrawBordersMethod(Brush color)
         {
             IntPtr desktop = GetDC(IntPtr.Zero);
-            using (Graphics g = Graphics.FromHdc(desktop))
+
+            if (color == Brushes.Transparent)
             {
-                if (color == Brushes.Transparent)
-                {
-                    int border = 20;
-                    g.FillRectangle(color, (Screen.PrimaryScreen.Bounds.Width / 2) - border - 1, border - 1, border + 2, border + 2);
-                }
-                else
-                {
-                    int border = 20;
-                    g.FillRectangle(Brushes.Black, (Screen.PrimaryScreen.Bounds.Width / 2) - border - 1, border - 1, border + 2, border + 2);
-                    g.FillRectangle(color, (Screen.PrimaryScreen.Bounds.Width / 2) - border, border, border, border);
-                }
-                
+                g.Dispose();
+            }
+            else
+            {
+                g = Graphics.FromHdc(desktop);
+  
+                int border = 20;
+                g.FillRectangle(Brushes.Black, (Screen.PrimaryScreen.Bounds.Width / 2) - border - 1, border - 1, border + 2, border + 2);
+                g.FillRectangle(color, (Screen.PrimaryScreen.Bounds.Width / 2) - border, border, border, border);
+ 
             }
             ReleaseDC(IntPtr.Zero, desktop);
         }
