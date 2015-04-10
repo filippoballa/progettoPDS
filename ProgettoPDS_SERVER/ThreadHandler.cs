@@ -59,7 +59,7 @@ namespace ProgettoPDS_SERVER
 
             //calculate Scroll size
             int ScrollX = X - p.X;
-            int ScrollY = Y - p.Y ;
+            int ScrollY = Y - p.Y;
 
             //MOUSE MOVE
             if (MouseData[1] == ApplicationConstants.MOUSEEVENT_MOVE)
@@ -143,6 +143,7 @@ namespace ProgettoPDS_SERVER
                 }
             }
             #endregion
+
             #region spostamento solo asse X
             else if (ScrollY == 0)//spostamento solo asse X
             {
@@ -166,6 +167,7 @@ namespace ProgettoPDS_SERVER
                 }
             }
             #endregion
+
             #region spostamento entrambi gli assi
             else
             {
@@ -189,6 +191,7 @@ namespace ProgettoPDS_SERVER
                     signy = -1;
                 }
                 #endregion
+
                 if (ScrollX == ScrollY)//spostamenti uguali asse X e Y (M = 1)
                 {
                     for (int i = 0; i < ScrollY; i++)

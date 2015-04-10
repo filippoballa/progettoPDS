@@ -406,7 +406,7 @@
             // 
             // progressBarClipboard
             // 
-            this.progressBarClipboard.BackColor = System.Drawing.Color.Gold;
+            this.progressBarClipboard.BackColor = System.Drawing.Color.Black;
             this.progressBarClipboard.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.progressBarClipboard.Location = new System.Drawing.Point(0, 37);
             this.progressBarClipboard.Name = "progressBarClipboard";

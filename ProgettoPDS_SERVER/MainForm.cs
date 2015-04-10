@@ -26,7 +26,6 @@ namespace ProgettoPDS_SERVER
         private const int maxheight = 250;
         private SocketConnection Sconnection = null;
 
-        private bool buttonHideProgRotated = false;
         private int port = 2000;
         private string client;
         public int Port { get { return port; } set { port = value; } }
@@ -545,7 +544,6 @@ namespace ProgettoPDS_SERVER
         #region ProgressBar
         public void startProgressBarMethod(int max)
         {
-            //buttonCloseProg.Visible = true;
             buttonHideProg.Visible = true;
             panelChangePassword.Visible = false;
             PanelSetPort.Visible = false;
@@ -576,7 +574,6 @@ namespace ProgettoPDS_SERVER
             this.Height = minheight;
 
             this.progressBarClipboard.Visible = false;
-            //buttonCloseProg.Visible = false;
             buttonHideProg.Visible = false;
         }
 
@@ -594,17 +591,15 @@ namespace ProgettoPDS_SERVER
         //nasconde la progressBar
         private void buttonHideShowProg_Click(object sender, EventArgs e)
         {
-            //buttonHideProg.BackgroundImage.RotateFlip(RotateFlipType.RotateNoneFlipXY);
-
             if(this.progressBarClipboard.Visible)
             {
-                buttonHideProg.BackgroundImage = new Bitmap(@"C:\Users\Filippo\Documents\GitHub\progettoPDS\ProgettoPDS_SERVER\images\uarrow.png");
+                buttonHideProg.BackgroundImage = new Bitmap(@"..\..\images\darrow.png");
                 this.progressBarClipboard.Visible = false;
                 this.Height = minheight;
             }
             else
             {
-                buttonHideProg.BackgroundImage = new Bitmap(@"C:\Users\Filippo\Documents\GitHub\progettoPDS\ProgettoPDS_SERVER\images\darrow.png");
+                buttonHideProg.BackgroundImage = new Bitmap(@"..\..\images\uarrow.png");
                 this.Height = minheight + progressBarClipboard.Height;
                 this.progressBarClipboard.Visible = true;
             }   
