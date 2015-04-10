@@ -93,6 +93,8 @@ namespace ProgettoPDS_SERVER
         const string clipboardcode = "C";
         const string quitcode = "QUIT";
         const string clipboardquitcode = "CLOSE";
+        const string startuse = "STARTUSE";
+        const string enduse = "ENDSUSE";
 
         //mouse flags
         const uint mouseeventf_absolute = 0x8000;
@@ -159,6 +161,8 @@ namespace ProgettoPDS_SERVER
         public static string CLIPBOARDCODE { get { return clipboardcode; } }
         public static string QUITCODE { get { return quitcode; } }
         public static string CLIPQUITCODE { get { return clipboardquitcode; } }
+        public static string START { get { return startuse; } }
+        public static string END { get { return enduse; } }
 
         public static uint MOUSEEVENTF_ABSOLUTE { get { return mouseeventf_absolute; } }
         public static uint MOUSEEVENTF_LEFTDOWN { get { return mouseeventf_leftdown; } }

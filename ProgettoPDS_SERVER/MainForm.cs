@@ -133,20 +133,20 @@ namespace ProgettoPDS_SERVER
 
             if (stato == ApplicationConstants.Stato.CONNESSO)
             {
-                DrawBordersMethod(Brushes.LawnGreen);
+                DrawBordersMethod(Brushes.Red);
                 this.labelStato.ForeColor = Color.LawnGreen;
                 this.labelConnectedClient.Text = client;
             }
             else if (stato == ApplicationConstants.Stato.IN_ATTESA)
             {
-                DrawBordersMethod(Brushes.MediumTurquoise);
+                DrawBordersMethod(Brushes.Yellow);
                 this.labelStato.ForeColor = Color.MediumTurquoise;
                 this.labelConnectedClient.Text = "-";
                 pictureBoxLoader.Visible = true;
             }
             else
             {
-                DrawBordersMethod(Brushes.Red);
+                DrawBordersMethod(Brushes.Transparent);
                 this.labelStato.ForeColor = Color.DarkRed;
                 this.labelConnectedClient.Text = "-";
             }
@@ -224,8 +224,6 @@ namespace ProgettoPDS_SERVER
             {
                 try
                 {
-                    DrawBordersMethod(Brushes.LawnGreen);
-
                     data = new byte[128];
                     Sconnection.Passiv.Receive(data);
 
@@ -318,6 +316,16 @@ namespace ProgettoPDS_SERVER
                         {
                             work = false;
                             break;
+                        }
+                        else if(s==ApplicationConstants.START)
+                        {
+                            //creo stato controllato
+                            DrawBordersMethod(Brushes.LawnGreen);
+                        }
+                        else if (s == ApplicationConstants.END)
+                        {
+                            //creo stato non controllato
+                            DrawBordersMethod(Brushes.Red);
                         }
 
                         //se è stato creato un thread lo lancio e aggiorno il counter e la condition variable se ho lanciato il 20esimo
@@ -786,14 +794,6 @@ namespace ProgettoPDS_SERVER
                 int border = 20;
                 g.FillRectangle(Brushes.Black, (Screen.PrimaryScreen.Bounds.Width / 2) - border -1, border - 1, border + 2, border + 2);
                 g.FillRectangle(color, (Screen.PrimaryScreen.Bounds.Width/2) - border, border, border, border);
-                /*/top
-                g.FillRectangle(color, 0, 0, Screen.PrimaryScreen.Bounds.Width, border);
-                //right
-                g.FillRectangle(color, Screen.PrimaryScreen.Bounds.Width - border, border, border, Screen.PrimaryScreen.Bounds.Height - (2 * border));
-                //bottom
-                g.FillRectangle(color, 0, Screen.PrimaryScreen.Bounds.Height - border, Screen.PrimaryScreen.Bounds.Width, border);
-                //left
-                g.FillRectangle(color, 0, border, border, Screen.PrimaryScreen.Bounds.Height - (2 * border));*/
             }
             ReleaseDC(IntPtr.Zero, desktop);
         }
