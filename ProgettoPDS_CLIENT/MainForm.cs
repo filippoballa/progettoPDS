@@ -470,37 +470,16 @@ namespace ProgettoPDS_CLIENT
             if (this.CountServerConnected == 0)
                 this.label5.Text = "Non Connesso con Nessun Server al momento!!";
             else {
-                string[] aux = this.label5.Text.Split(',');
-                int index = -1;
-
-                aux[0] = aux[0].Substring(aux[0].LastIndexOf(' '), aux[0].Length - aux[0].LastIndexOf(' '));
-
-                if (aux[0] == this.servers[this.currServ].HostName)
-                    index = 0;
-                else {
-
-                    for (int i = 1; i < aux.Length; i++) {
-
-                        if (aux[i] == this.servers[this.currServ].HostName) {
-                            index = i;
-                            break;
-                        }
-                    }
-                }
-
+                
                 this.label5.Text = "Connessioni attive : ";
 
-                for (int i = 0; i < aux.Length; i++) {
+                for (int i = 0; i < this.servers.Count; i++) {
 
-                    if (i != index) {
-
-                        if (i == 0)
-                            this.label5.Text += " " + this.servers[this.currServ].HostName;
-                        else
-                            this.label5.Text += ", " + this.servers[this.currServ].HostName;
-                    }
+                    if (this.connessioni[i].IsConnected()) 
+                        this.label5.Text += this.servers[i].HostName; 
+                    
                 }
-
+                
             }
         }
 
@@ -518,7 +497,7 @@ namespace ProgettoPDS_CLIENT
                 return;
             }
 
-            QuitPacket();
+            QuitPacket(this.currServ);
 
             this.connessioni[this.currServ].SockClose();
             this.connessioni[this.currServ].CloseClipSock();
@@ -552,13 +531,13 @@ namespace ProgettoPDS_CLIENT
             }
         }
 
-        private void SendPacket(byte[] pdu)
+        private void SendPacket(byte[] pdu, int i)
         {
             try {
                 mut.WaitOne();
 
-                if( this.connessioni[this.currServ].IsConnected() )
-                    this.connessioni[this.currServ].Sock.Send(pdu);
+                if( this.connessioni[i].IsConnected() )
+                    this.connessioni[i].Sock.Send(pdu);
             }
             catch (Exception e) {
                 MessageBox.Show(e.Message, "ANOMALY", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -569,10 +548,10 @@ namespace ProgettoPDS_CLIENT
             }
         }
 
-        private void QuitPacket() 
+        private void QuitPacket(int i) 
         {
             byte[] pdu = Encoding.ASCII.GetBytes("QUIT-");
-            SendPacket(pdu);
+            SendPacket(pdu,i);
         }
 
         #endregion
@@ -591,7 +570,7 @@ namespace ProgettoPDS_CLIENT
             for (int i = 0; i < this.connessioni.Count; i++) {
 
                 if (this.connessioni[i].IsConnected()) {
-                    QuitPacket();
+                    QuitPacket(i);
                     this.connessioni[i].SockClose();
                     this.connessioni[i].CloseClipSock();
                 }
@@ -640,7 +619,7 @@ namespace ProgettoPDS_CLIENT
                     "ERRORE!!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-
+            
             this.currServ = this.listBox1.SelectedIndex;
 
             if (!this.connessioni[this.currServ].IsConnected()) {
@@ -664,6 +643,9 @@ namespace ProgettoPDS_CLIENT
             this.mc = new MouseCord(Cursor.Position.X, Cursor.Position.Y);
             this.mouseHook.Install();
             this.keyboardHook.Install();
+
+            string aux = "STARTUSE-";
+            SendPacket(Encoding.ASCII.GetBytes(aux), this.currServ);
              
         }
 
@@ -926,6 +908,10 @@ namespace ProgettoPDS_CLIENT
 
                     if (trovato)
                         this.ProgressBarPanel.Visible = false;
+
+                    string aux = "ENDUSE-";
+                    SendPacket(Encoding.ASCII.GetBytes(aux), this.currServ);
+
                 }
                 else if (e.Alt && e.KeyCode == Keys.Up) {
                     int index = this.currServ;
@@ -942,9 +928,17 @@ namespace ProgettoPDS_CLIENT
                         }
                     } while( this.currServ != index );
 
-                    if( this.currServ == index )
+                    if (this.currServ == index)
                         MessageBox.Show("Al momento sei connesso solo con il server : " + this.servers[this.currServ].HostName,
                             "AVVISO!!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    else { 
+                        string aux = "STARTUSE-";
+                        byte[] pdu = Encoding.ASCII.GetBytes(aux);
+                        this.connessioni[this.currServ].Sock.Send(pdu);
+                        aux = "ENDUSE-";
+                        pdu = Encoding.ASCII.GetBytes(aux);
+                        this.connessioni[index].Sock.Send(pdu);
+                    }
 
                 }
                 else if (e.Alt && e.KeyCode == Keys.Down) {
@@ -966,6 +960,14 @@ namespace ProgettoPDS_CLIENT
                     if (this.currServ == index)
                         MessageBox.Show("Al momento sei connesso solo con il server : " + this.servers[this.currServ].HostName,
                             "AVVISO!!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    else {
+                        string aux = "STARTUSE-";
+                        byte[] pdu = Encoding.ASCII.GetBytes(aux);
+                        this.connessioni[this.currServ].Sock.Send(pdu);
+                        aux = "ENDUSE-";
+                        pdu = Encoding.ASCII.GetBytes(aux);
+                        this.connessioni[index].Sock.Send(pdu);
+                    }
                 }
                 else if (e.Alt && e.KeyCode == Keys.C) {
 
@@ -1040,8 +1042,7 @@ namespace ProgettoPDS_CLIENT
                     aux += KeyboardHook.Modificatore.A.ToString() + "-";
                 else if (key.Shift)
                     aux += KeyboardHook.Modificatore.S.ToString() + "-";
-                else
-                {
+                else {
                     mod = false;
                     aux += "SNGKEY-" + key.KeyValue.ToString("X") + "-";
                 }
@@ -1051,10 +1052,9 @@ namespace ProgettoPDS_CLIENT
 
                 byte[] pdu = Encoding.ASCII.GetBytes(aux);
 
-                SendPacket(pdu);
+                SendPacket(pdu,this.currServ);
 
-            } 
-            
+            }             
         }
 
         #endregion
@@ -1132,7 +1132,7 @@ namespace ProgettoPDS_CLIENT
                 aux += "-" + res.ToString() + "-";
                 byte[] pdu = Encoding.ASCII.GetBytes(aux);
 
-                SendPacket(pdu);
+                SendPacket(pdu,this.currServ);
                 
             } 
                                                                            
@@ -1146,7 +1146,7 @@ namespace ProgettoPDS_CLIENT
         {
             string aux = "C-" + eventType + "-";
             byte[] pdu = Encoding.ASCII.GetBytes(aux);
-            SendPacket(pdu);           
+            SendPacket(pdu,this.currServ);           
         }
 
         private void ClipboardSendBW_DoWork(object sender, DoWorkEventArgs e)
@@ -1439,7 +1439,7 @@ namespace ProgettoPDS_CLIENT
 
                 if (this.ClipboardSendBW.CancellationPending) {
                     string aux = "C-CLOSE-";
-                    SendPacket(Encoding.ASCII.GetBytes(aux));
+                    SendPacket(Encoding.ASCII.GetBytes(aux),this.currServ);
                     break;
                 }
 
@@ -1478,7 +1478,7 @@ namespace ProgettoPDS_CLIENT
                     Array.Clear(rbuff, 0, rbuff.Length);
                     rbuff = null;
                     string aux = "C-CLOSE-";
-                    SendPacket(Encoding.ASCII.GetBytes(aux));
+                    SendPacket(Encoding.ASCII.GetBytes(aux),this.currServ);
                     break;
                 }
 
