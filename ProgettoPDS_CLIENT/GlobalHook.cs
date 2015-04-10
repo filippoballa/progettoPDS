@@ -61,6 +61,12 @@ namespace ProgettoPDS_CLIENT
         protected const byte VK_PAUSE = 0x13;
         protected const byte VK_BACK = 0x08;
         protected const byte VK_TAB = 0x09;
+        internal const byte VK_M = 0x4D;
+        internal const byte VK_S = 0x53;
+        internal const byte VK_R = 0x52;
+        internal const byte VK_UP = 0x26;
+        internal const byte VK_DOWN = 0x28;
+        internal const byte VK_C = 0x43;
 
         protected const byte LLKHF_ALTDOWN = 0x20;
 

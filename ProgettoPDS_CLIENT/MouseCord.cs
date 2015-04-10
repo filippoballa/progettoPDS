@@ -10,7 +10,7 @@ namespace ProgettoPDS_CLIENT
     {
         private int cordX;
         private int cordY;
-        private const int DIFF = 12;
+        private const int DIFF = 1;
 
         public MouseCord() 
         {

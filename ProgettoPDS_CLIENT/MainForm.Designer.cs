@@ -56,17 +56,6 @@
             this.RemoveButton = new System.Windows.Forms.Button();
             this.StartButton = new System.Windows.Forms.Button();
             this.ActionPanel = new System.Windows.Forms.Panel();
-            this.ContentClipboardPanel = new System.Windows.Forms.Panel();
-            this.StopAudioButton = new System.Windows.Forms.Button();
-            this.PlayAudioButton = new System.Windows.Forms.Button();
-            this.RichTextBox = new System.Windows.Forms.RichTextBox();
-            this.ImageClipboardPictureBox = new System.Windows.Forms.PictureBox();
-            this.TypeClipboardLabel = new System.Windows.Forms.Label();
-            this.TitleContentClipLabel = new System.Windows.Forms.Label();
-            this.ProgressBarPanel = new System.Windows.Forms.Panel();
-            this.PercentageLabel = new System.Windows.Forms.Label();
-            this.ClipboardProgressBar = new System.Windows.Forms.ProgressBar();
-            this.AvanzClipLabel = new System.Windows.Forms.Label();
             this.ComandiGroupBox = new System.Windows.Forms.GroupBox();
             this.ComandLabel = new System.Windows.Forms.Label();
             this.EscapeLabel = new System.Windows.Forms.Label();
@@ -85,15 +74,25 @@
             this.InfoContentLabel = new System.Windows.Forms.Label();
             this.ClipboardSendBW = new System.ComponentModel.BackgroundWorker();
             this.ClipboardRequestBW = new System.ComponentModel.BackgroundWorker();
+            this.ContentClipboardPanel = new System.Windows.Forms.Panel();
+            this.StopAudioButton = new System.Windows.Forms.Button();
+            this.PlayAudioButton = new System.Windows.Forms.Button();
+            this.RichTextBox = new System.Windows.Forms.RichTextBox();
+            this.ImageClipboardPictureBox = new System.Windows.Forms.PictureBox();
+            this.TypeClipboardLabel = new System.Windows.Forms.Label();
+            this.TitleContentClipLabel = new System.Windows.Forms.Label();
+            this.ProgressBarPanel = new System.Windows.Forms.Panel();
+            this.PercentageLabel = new System.Windows.Forms.Label();
+            this.ClipboardProgressBar = new System.Windows.Forms.ProgressBar();
+            this.AvanzClipLabel = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
             this.MainPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.ActionPanel.SuspendLayout();
-            this.ContentClipboardPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ImageClipboardPictureBox)).BeginInit();
-            this.ProgressBarPanel.SuspendLayout();
             this.ComandiGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
@@ -103,6 +102,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.KeyPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
+            this.ContentClipboardPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ImageClipboardPictureBox)).BeginInit();
+            this.ProgressBarPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // MouseBackgroundWorker
@@ -464,8 +466,9 @@
             // ActionPanel
             // 
             this.ActionPanel.BackColor = System.Drawing.Color.Snow;
-            this.ActionPanel.Controls.Add(this.ContentClipboardPanel);
+            this.ActionPanel.Controls.Add(this.label2);
             this.ActionPanel.Controls.Add(this.ProgressBarPanel);
+            this.ActionPanel.Controls.Add(this.ContentClipboardPanel);
             this.ActionPanel.Controls.Add(this.ComandiGroupBox);
             this.ActionPanel.Controls.Add(this.EscapeLabel);
             this.ActionPanel.Controls.Add(this.pictureBox4);
@@ -478,136 +481,6 @@
             this.ActionPanel.Size = new System.Drawing.Size(1071, 608);
             this.ActionPanel.TabIndex = 26;
             this.ActionPanel.Visible = false;
-            // 
-            // ContentClipboardPanel
-            // 
-            this.ContentClipboardPanel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("ContentClipboardPanel.BackgroundImage")));
-            this.ContentClipboardPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.ContentClipboardPanel.Controls.Add(this.StopAudioButton);
-            this.ContentClipboardPanel.Controls.Add(this.PlayAudioButton);
-            this.ContentClipboardPanel.Controls.Add(this.RichTextBox);
-            this.ContentClipboardPanel.Controls.Add(this.ImageClipboardPictureBox);
-            this.ContentClipboardPanel.Controls.Add(this.TypeClipboardLabel);
-            this.ContentClipboardPanel.Controls.Add(this.TitleContentClipLabel);
-            this.ContentClipboardPanel.Location = new System.Drawing.Point(527, 107);
-            this.ContentClipboardPanel.Name = "ContentClipboardPanel";
-            this.ContentClipboardPanel.Size = new System.Drawing.Size(328, 191);
-            this.ContentClipboardPanel.TabIndex = 6;
-            this.ContentClipboardPanel.Visible = false;
-            // 
-            // StopAudioButton
-            // 
-            this.StopAudioButton.BackColor = System.Drawing.Color.Transparent;
-            this.StopAudioButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("StopAudioButton.BackgroundImage")));
-            this.StopAudioButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.StopAudioButton.Location = new System.Drawing.Point(151, 102);
-            this.StopAudioButton.Name = "StopAudioButton";
-            this.StopAudioButton.Size = new System.Drawing.Size(50, 50);
-            this.StopAudioButton.TabIndex = 12;
-            this.StopAudioButton.UseVisualStyleBackColor = false;
-            this.StopAudioButton.Visible = false;
-            this.StopAudioButton.Click += new System.EventHandler(this.StopAudioButton_Click);
-            // 
-            // PlayAudioButton
-            // 
-            this.PlayAudioButton.BackColor = System.Drawing.Color.Transparent;
-            this.PlayAudioButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("PlayAudioButton.BackgroundImage")));
-            this.PlayAudioButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.PlayAudioButton.Location = new System.Drawing.Point(64, 102);
-            this.PlayAudioButton.Name = "PlayAudioButton";
-            this.PlayAudioButton.Size = new System.Drawing.Size(50, 50);
-            this.PlayAudioButton.TabIndex = 11;
-            this.PlayAudioButton.UseVisualStyleBackColor = false;
-            this.PlayAudioButton.Visible = false;
-            this.PlayAudioButton.Click += new System.EventHandler(this.PlayAudioButton_Click);
-            // 
-            // RichTextBox
-            // 
-            this.RichTextBox.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.RichTextBox.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.RichTextBox.Location = new System.Drawing.Point(17, 87);
-            this.RichTextBox.Name = "RichTextBox";
-            this.RichTextBox.Size = new System.Drawing.Size(277, 88);
-            this.RichTextBox.TabIndex = 4;
-            this.RichTextBox.Text = "";
-            this.RichTextBox.Visible = false;
-            // 
-            // ImageClipboardPictureBox
-            // 
-            this.ImageClipboardPictureBox.BackColor = System.Drawing.Color.Transparent;
-            this.ImageClipboardPictureBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ImageClipboardPictureBox.Location = new System.Drawing.Point(94, 92);
-            this.ImageClipboardPictureBox.Name = "ImageClipboardPictureBox";
-            this.ImageClipboardPictureBox.Size = new System.Drawing.Size(140, 82);
-            this.ImageClipboardPictureBox.TabIndex = 3;
-            this.ImageClipboardPictureBox.TabStop = false;
-            // 
-            // TypeClipboardLabel
-            // 
-            this.TypeClipboardLabel.AutoSize = true;
-            this.TypeClipboardLabel.BackColor = System.Drawing.Color.Transparent;
-            this.TypeClipboardLabel.Font = new System.Drawing.Font("Calibri", 9.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TypeClipboardLabel.ForeColor = System.Drawing.Color.Navy;
-            this.TypeClipboardLabel.Location = new System.Drawing.Point(14, 59);
-            this.TypeClipboardLabel.Name = "TypeClipboardLabel";
-            this.TypeClipboardLabel.Size = new System.Drawing.Size(89, 15);
-            this.TypeClipboardLabel.TabIndex = 2;
-            this.TypeClipboardLabel.Text = "TYPE OF DATA :";
-            // 
-            // TitleContentClipLabel
-            // 
-            this.TitleContentClipLabel.AutoSize = true;
-            this.TitleContentClipLabel.BackColor = System.Drawing.Color.Transparent;
-            this.TitleContentClipLabel.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TitleContentClipLabel.Location = new System.Drawing.Point(74, 16);
-            this.TitleContentClipLabel.Name = "TitleContentClipLabel";
-            this.TitleContentClipLabel.Size = new System.Drawing.Size(187, 20);
-            this.TitleContentClipLabel.TabIndex = 1;
-            this.TitleContentClipLabel.Text = "Contenuto della Clipboard";
-            this.TitleContentClipLabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
-            // ProgressBarPanel
-            // 
-            this.ProgressBarPanel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("ProgressBarPanel.BackgroundImage")));
-            this.ProgressBarPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.ProgressBarPanel.Controls.Add(this.PercentageLabel);
-            this.ProgressBarPanel.Controls.Add(this.ClipboardProgressBar);
-            this.ProgressBarPanel.Controls.Add(this.AvanzClipLabel);
-            this.ProgressBarPanel.Location = new System.Drawing.Point(527, 308);
-            this.ProgressBarPanel.Name = "ProgressBarPanel";
-            this.ProgressBarPanel.Size = new System.Drawing.Size(380, 161);
-            this.ProgressBarPanel.TabIndex = 5;
-            this.ProgressBarPanel.Visible = false;
-            // 
-            // PercentageLabel
-            // 
-            this.PercentageLabel.AutoSize = true;
-            this.PercentageLabel.BackColor = System.Drawing.Color.Transparent;
-            this.PercentageLabel.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.PercentageLabel.Location = new System.Drawing.Point(277, 102);
-            this.PercentageLabel.Name = "PercentageLabel";
-            this.PercentageLabel.Size = new System.Drawing.Size(29, 18);
-            this.PercentageLabel.TabIndex = 7;
-            this.PercentageLabel.Text = "0 %";
-            // 
-            // ClipboardProgressBar
-            // 
-            this.ClipboardProgressBar.Location = new System.Drawing.Point(58, 101);
-            this.ClipboardProgressBar.Name = "ClipboardProgressBar";
-            this.ClipboardProgressBar.Size = new System.Drawing.Size(205, 23);
-            this.ClipboardProgressBar.TabIndex = 6;
-            // 
-            // AvanzClipLabel
-            // 
-            this.AvanzClipLabel.AutoSize = true;
-            this.AvanzClipLabel.BackColor = System.Drawing.Color.Transparent;
-            this.AvanzClipLabel.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.AvanzClipLabel.Location = new System.Drawing.Point(39, 27);
-            this.AvanzClipLabel.Name = "AvanzClipLabel";
-            this.AvanzClipLabel.Size = new System.Drawing.Size(276, 40);
-            this.AvanzClipLabel.TabIndex = 1;
-            this.AvanzClipLabel.Text = "Avanzamento dell\'operazione richiesta\r\nsulla Clipboard!!";
-            this.AvanzClipLabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // ComandiGroupBox
             // 
@@ -674,11 +547,10 @@
             this.ActionServerLabel.AutoSize = true;
             this.ActionServerLabel.Font = new System.Drawing.Font("Comic Sans MS", 19F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ActionServerLabel.ForeColor = System.Drawing.Color.DarkRed;
-            this.ActionServerLabel.Location = new System.Drawing.Point(217, 18);
+            this.ActionServerLabel.Location = new System.Drawing.Point(679, 18);
             this.ActionServerLabel.Name = "ActionServerLabel";
-            this.ActionServerLabel.Size = new System.Drawing.Size(495, 36);
+            this.ActionServerLabel.Size = new System.Drawing.Size(0, 36);
             this.ActionServerLabel.TabIndex = 0;
-            this.ActionServerLabel.Text = "Stai Comandando il seguente Server: ";
             // 
             // KeyBackgroundWorker
             // 
@@ -807,15 +679,166 @@
             this.ClipboardRequestBW.WorkerSupportsCancellation = true;
             this.ClipboardRequestBW.DoWork += new System.ComponentModel.DoWorkEventHandler(this.ClipboardRequestBW_DoWork);
             // 
+            // ContentClipboardPanel
+            // 
+            this.ContentClipboardPanel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("ContentClipboardPanel.BackgroundImage")));
+            this.ContentClipboardPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ContentClipboardPanel.Controls.Add(this.label3);
+            this.ContentClipboardPanel.Controls.Add(this.StopAudioButton);
+            this.ContentClipboardPanel.Controls.Add(this.PlayAudioButton);
+            this.ContentClipboardPanel.Controls.Add(this.RichTextBox);
+            this.ContentClipboardPanel.Controls.Add(this.ImageClipboardPictureBox);
+            this.ContentClipboardPanel.Controls.Add(this.TypeClipboardLabel);
+            this.ContentClipboardPanel.Controls.Add(this.TitleContentClipLabel);
+            this.ContentClipboardPanel.Location = new System.Drawing.Point(551, 135);
+            this.ContentClipboardPanel.Name = "ContentClipboardPanel";
+            this.ContentClipboardPanel.Size = new System.Drawing.Size(328, 191);
+            this.ContentClipboardPanel.TabIndex = 16;
+            this.ContentClipboardPanel.Visible = false;
+            // 
+            // StopAudioButton
+            // 
+            this.StopAudioButton.BackColor = System.Drawing.Color.Transparent;
+            this.StopAudioButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("StopAudioButton.BackgroundImage")));
+            this.StopAudioButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.StopAudioButton.Location = new System.Drawing.Point(151, 102);
+            this.StopAudioButton.Name = "StopAudioButton";
+            this.StopAudioButton.Size = new System.Drawing.Size(50, 50);
+            this.StopAudioButton.TabIndex = 12;
+            this.StopAudioButton.UseVisualStyleBackColor = false;
+            this.StopAudioButton.Visible = false;
+            // 
+            // PlayAudioButton
+            // 
+            this.PlayAudioButton.BackColor = System.Drawing.Color.Transparent;
+            this.PlayAudioButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("PlayAudioButton.BackgroundImage")));
+            this.PlayAudioButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.PlayAudioButton.Location = new System.Drawing.Point(64, 102);
+            this.PlayAudioButton.Name = "PlayAudioButton";
+            this.PlayAudioButton.Size = new System.Drawing.Size(50, 50);
+            this.PlayAudioButton.TabIndex = 11;
+            this.PlayAudioButton.UseVisualStyleBackColor = false;
+            this.PlayAudioButton.Visible = false;
+            // 
+            // RichTextBox
+            // 
+            this.RichTextBox.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.RichTextBox.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.RichTextBox.Location = new System.Drawing.Point(17, 87);
+            this.RichTextBox.Name = "RichTextBox";
+            this.RichTextBox.Size = new System.Drawing.Size(277, 88);
+            this.RichTextBox.TabIndex = 4;
+            this.RichTextBox.Text = "";
+            this.RichTextBox.Visible = false;
+            // 
+            // ImageClipboardPictureBox
+            // 
+            this.ImageClipboardPictureBox.BackColor = System.Drawing.Color.Transparent;
+            this.ImageClipboardPictureBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.ImageClipboardPictureBox.Location = new System.Drawing.Point(94, 92);
+            this.ImageClipboardPictureBox.Name = "ImageClipboardPictureBox";
+            this.ImageClipboardPictureBox.Size = new System.Drawing.Size(140, 82);
+            this.ImageClipboardPictureBox.TabIndex = 3;
+            this.ImageClipboardPictureBox.TabStop = false;
+            // 
+            // TypeClipboardLabel
+            // 
+            this.TypeClipboardLabel.AutoSize = true;
+            this.TypeClipboardLabel.BackColor = System.Drawing.Color.Transparent;
+            this.TypeClipboardLabel.Font = new System.Drawing.Font("Calibri", 9.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TypeClipboardLabel.ForeColor = System.Drawing.Color.Navy;
+            this.TypeClipboardLabel.Location = new System.Drawing.Point(119, 59);
+            this.TypeClipboardLabel.Name = "TypeClipboardLabel";
+            this.TypeClipboardLabel.Size = new System.Drawing.Size(0, 15);
+            this.TypeClipboardLabel.TabIndex = 2;
+            // 
+            // TitleContentClipLabel
+            // 
+            this.TitleContentClipLabel.AutoSize = true;
+            this.TitleContentClipLabel.BackColor = System.Drawing.Color.Transparent;
+            this.TitleContentClipLabel.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TitleContentClipLabel.Location = new System.Drawing.Point(64, 21);
+            this.TitleContentClipLabel.Name = "TitleContentClipLabel";
+            this.TitleContentClipLabel.Size = new System.Drawing.Size(187, 20);
+            this.TitleContentClipLabel.TabIndex = 1;
+            this.TitleContentClipLabel.Text = "Contenuto della Clipboard";
+            this.TitleContentClipLabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // ProgressBarPanel
+            // 
+            this.ProgressBarPanel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("ProgressBarPanel.BackgroundImage")));
+            this.ProgressBarPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ProgressBarPanel.Controls.Add(this.PercentageLabel);
+            this.ProgressBarPanel.Controls.Add(this.ClipboardProgressBar);
+            this.ProgressBarPanel.Controls.Add(this.AvanzClipLabel);
+            this.ProgressBarPanel.Location = new System.Drawing.Point(551, 346);
+            this.ProgressBarPanel.Name = "ProgressBarPanel";
+            this.ProgressBarPanel.Size = new System.Drawing.Size(328, 123);
+            this.ProgressBarPanel.TabIndex = 29;
+            this.ProgressBarPanel.Visible = false;
+            // 
+            // PercentageLabel
+            // 
+            this.PercentageLabel.AutoSize = true;
+            this.PercentageLabel.BackColor = System.Drawing.Color.Transparent;
+            this.PercentageLabel.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.PercentageLabel.Location = new System.Drawing.Point(244, 82);
+            this.PercentageLabel.Name = "PercentageLabel";
+            this.PercentageLabel.Size = new System.Drawing.Size(29, 18);
+            this.PercentageLabel.TabIndex = 7;
+            this.PercentageLabel.Text = "0 %";
+            // 
+            // ClipboardProgressBar
+            // 
+            this.ClipboardProgressBar.Location = new System.Drawing.Point(29, 80);
+            this.ClipboardProgressBar.Name = "ClipboardProgressBar";
+            this.ClipboardProgressBar.Size = new System.Drawing.Size(205, 23);
+            this.ClipboardProgressBar.TabIndex = 6;
+            // 
+            // AvanzClipLabel
+            // 
+            this.AvanzClipLabel.AutoSize = true;
+            this.AvanzClipLabel.BackColor = System.Drawing.Color.Transparent;
+            this.AvanzClipLabel.Font = new System.Drawing.Font("Comic Sans MS", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AvanzClipLabel.Location = new System.Drawing.Point(36, 16);
+            this.AvanzClipLabel.Name = "AvanzClipLabel";
+            this.AvanzClipLabel.Size = new System.Drawing.Size(261, 38);
+            this.AvanzClipLabel.TabIndex = 1;
+            this.AvanzClipLabel.Text = "Avanzamento dell\'operazione richiesta \r\nsulla Clipboard!!";
+            this.AvanzClipLabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Comic Sans MS", 19F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.ForeColor = System.Drawing.Color.DarkRed;
+            this.label2.Location = new System.Drawing.Point(194, 18);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(495, 36);
+            this.label2.TabIndex = 30;
+            this.label2.Text = "Stai Comandando il seguente Server: ";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.BackColor = System.Drawing.Color.Transparent;
+            this.label3.Font = new System.Drawing.Font("Calibri", 9.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.ForeColor = System.Drawing.Color.Navy;
+            this.label3.Location = new System.Drawing.Point(24, 59);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(89, 15);
+            this.label3.TabIndex = 13;
+            this.label3.Text = "TYPE OF DATA :";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Sienna;
             this.ClientSize = new System.Drawing.Size(1071, 608);
+            this.Controls.Add(this.ActionPanel);
             this.Controls.Add(this.MainPanel);
             this.Controls.Add(this.InfoPanel);
-            this.Controls.Add(this.ActionPanel);
             this.Cursor = System.Windows.Forms.Cursors.Default;
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
@@ -836,11 +859,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ActionPanel.ResumeLayout(false);
             this.ActionPanel.PerformLayout();
-            this.ContentClipboardPanel.ResumeLayout(false);
-            this.ContentClipboardPanel.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ImageClipboardPictureBox)).EndInit();
-            this.ProgressBarPanel.ResumeLayout(false);
-            this.ProgressBarPanel.PerformLayout();
             this.ComandiGroupBox.ResumeLayout(false);
             this.ComandiGroupBox.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
@@ -852,6 +870,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.KeyPictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).EndInit();
+            this.ContentClipboardPanel.ResumeLayout(false);
+            this.ContentClipboardPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ImageClipboardPictureBox)).EndInit();
+            this.ProgressBarPanel.ResumeLayout(false);
+            this.ProgressBarPanel.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -899,20 +922,22 @@
         private System.Windows.Forms.Button LogOutButton;
         private System.Windows.Forms.GroupBox ComandiGroupBox;
         private System.Windows.Forms.Label ComandLabel;
-        private System.Windows.Forms.Panel ProgressBarPanel;
-        private System.Windows.Forms.Label AvanzClipLabel;
-        private System.Windows.Forms.Label PercentageLabel;
-        private System.Windows.Forms.ProgressBar ClipboardProgressBar;
-        private System.Windows.Forms.Panel ContentClipboardPanel;
-        private System.Windows.Forms.Label TypeClipboardLabel;
-        private System.Windows.Forms.Label TitleContentClipLabel;
-        private System.Windows.Forms.PictureBox ImageClipboardPictureBox;
-        private System.Windows.Forms.RichTextBox RichTextBox;
-        private System.Windows.Forms.Button StopAudioButton;
-        private System.Windows.Forms.Button PlayAudioButton;
         private System.Windows.Forms.Label InfoContentLabel;
         private System.Windows.Forms.PictureBox ClipPictureBox;
         private System.Windows.Forms.PictureBox MousePictureBox;
         private System.Windows.Forms.PictureBox KeyPictureBox;
+        private System.Windows.Forms.Panel ProgressBarPanel;
+        private System.Windows.Forms.Label PercentageLabel;
+        private System.Windows.Forms.ProgressBar ClipboardProgressBar;
+        private System.Windows.Forms.Label AvanzClipLabel;
+        private System.Windows.Forms.Panel ContentClipboardPanel;
+        private System.Windows.Forms.Button StopAudioButton;
+        private System.Windows.Forms.Button PlayAudioButton;
+        private System.Windows.Forms.RichTextBox RichTextBox;
+        private System.Windows.Forms.PictureBox ImageClipboardPictureBox;
+        private System.Windows.Forms.Label TypeClipboardLabel;
+        private System.Windows.Forms.Label TitleContentClipLabel;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
     }
 }

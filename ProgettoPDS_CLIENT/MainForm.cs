@@ -137,6 +137,19 @@ namespace ProgettoPDS_CLIENT
             this.TypeClipboardLabel.Font = new System.Drawing.Font("Calibri", aux, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TypeClipboardLabel.Height = (this.TypeClipboardLabel.Height * this.Height) / this.AltezzaForm;
             this.TypeClipboardLabel.Width = (this.TypeClipboardLabel.Width * this.Width) / this.BaseForm;
+            X = (this.TypeClipboardLabel.Location.X * this.Width) / this.BaseForm;
+            Y = (this.TypeClipboardLabel.Location.Y * this.Height) / this.AltezzaForm;
+            this.TypeClipboardLabel.Location = new Point(X, Y);
+
+
+            // Resize "label3"
+            aux = (this.label3.Font.Size * this.Height) / this.AltezzaForm;
+            this.label3.Font = new System.Drawing.Font("Calibri", aux, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Height = (this.label3.Height * this.Height) / this.AltezzaForm;
+            this.label3.Width = (this.label3.Width * this.Width) / this.BaseForm;
+            X = (this.label3.Location.X * this.Width) / this.BaseForm;
+            Y = (this.label3.Location.Y * this.Height) / this.AltezzaForm;
+            this.label3.Location = new Point(X, Y);
 
             // Resize "GroupBox Conf."
             aux = (this.groupBox1.Font.Size * this.Height) / this.AltezzaForm;
@@ -174,9 +187,9 @@ namespace ProgettoPDS_CLIENT
             this.ContentClipboardPanel.Height = (this.ContentClipboardPanel.Height * this.Height) / this.AltezzaForm;
             this.ContentClipboardPanel.Width = (this.ContentClipboardPanel.Width * this.Width) / this.BaseForm;
 
-            // Resize "ComandLabel"
+            // Resize "TitleContentClip"
             aux = (this.TitleContentClipLabel.Font.Size * this.Height) / this.AltezzaForm;
-            this.TitleContentClipLabel.Font = new System.Drawing.Font("Comic Sans MS", aux, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TitleContentClipLabel.Font = new System.Drawing.Font("Comic Sans MS", aux, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TitleContentClipLabel.Height = (this.TitleContentClipLabel.Height * this.Height) / this.AltezzaForm;
             this.TitleContentClipLabel.Width = (this.TitleContentClipLabel.Width * this.Width) / this.BaseForm;
 
@@ -281,7 +294,7 @@ namespace ProgettoPDS_CLIENT
 
             // Resize " AvanzClipLabel "
             aux = (this.AvanzClipLabel.Font.Size * this.Height) / this.AltezzaForm;
-            this.AvanzClipLabel.Font = new System.Drawing.Font("Comic Sans MS", aux, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AvanzClipLabel.Font = new System.Drawing.Font("Comic Sans MS", aux, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             X = (this.AvanzClipLabel.Location.X * this.Width) / this.BaseForm;
             Y = (this.AvanzClipLabel.Location.Y * this.Height) / this.AltezzaForm;
             this.AvanzClipLabel.Location = new Point(X, Y);
@@ -370,6 +383,13 @@ namespace ProgettoPDS_CLIENT
             Y = (this.ActionServerLabel.Location.Y * this.Height) / this.AltezzaForm;
             this.ActionServerLabel.Location = new Point(X, Y);
 
+            // Resize Label2
+            aux = (this.label2.Font.Size * this.Height) / this.AltezzaForm;
+            this.label2.Font = new System.Drawing.Font("Comic Sans MS", aux, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            X = (this.label2.Location.X * this.Width) / this.BaseForm;
+            Y = (this.label2.Location.Y * this.Height) / this.AltezzaForm;
+            this.label2.Location = new Point(X, Y);
+
             // Resize Escape label
             aux = (this.EscapeLabel.Font.Size * this.Height) / this.AltezzaForm;
             this.EscapeLabel.Font = new System.Drawing.Font("Comic Sans MS", aux, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -406,10 +426,11 @@ namespace ProgettoPDS_CLIENT
             GroupBox box = (GroupBox)sender;
             Graphics gfx = e.Graphics;
             Pen p = new Pen(Color.DarkRed, 2);
-            gfx.DrawLine(p, 0, 16, 0, box.Height);
-            gfx.DrawLine(p, 0, 16, 10, 16);
-            gfx.DrawLine(p, 250, 16, box.Width, 16);
-            gfx.DrawLine(p, box.Width, 16, box.Width, box.Height);
+            gfx.DrawLine(p, 0, box.Font.Height / 2, 0, box.Height);
+            gfx.DrawLine(p, 0, box.Font.Height / 2, 10, box.Font.Height / 2);
+            int widthText = Convert.ToInt32(box.CreateGraphics().MeasureString(box.Text,box.Font).Width);
+            gfx.DrawLine(p, widthText + 5, box.Font.Height / 2, box.Width, box.Font.Height / 2);
+            gfx.DrawLine(p, box.Width, box.Font.Height / 2, box.Width, box.Height);
             gfx.DrawLine(p, 0, box.Height, box.Width, box.Height);  
         }
 
@@ -637,7 +658,7 @@ namespace ProgettoPDS_CLIENT
                 return;
             }
 
-            this.ActionServerLabel.Text += this.servers[this.currServ].HostName;
+            this.ActionServerLabel.Text = this.servers[this.currServ].HostName;
             this.ActionPanel.Visible = true;
             this.MainPanel.Visible = false;
             this.mc = new MouseCord(Cursor.Position.X, Cursor.Position.Y);
@@ -786,7 +807,7 @@ namespace ProgettoPDS_CLIENT
         {
             this.ContentClipboardPanel.Visible = false;
             this.ImageClipboardPictureBox.Visible = false;
-            this.TypeClipboardLabel.Text = "TYPE OF DATA :";
+            this.TypeClipboardLabel.Text = "";
             this.RichTextBox.Visible = false;
 
             if( player != null )
@@ -806,12 +827,12 @@ namespace ProgettoPDS_CLIENT
                     this.RichTextBox.Visible = false;
                     this.PlayAudioButton.Visible = false;
                     this.StopAudioButton.Visible = false;
-                    this.TypeClipboardLabel.Text += " IMAGE";
+                    this.TypeClipboardLabel.Text = " IMAGE";
                     this.ImageClipboardPictureBox.BackgroundImage = (Image)data[1];
                     break;
 
                 case "TEXT":
-                    this.TypeClipboardLabel.Text += " TEXT";
+                    this.TypeClipboardLabel.Text = " TEXT";
                     this.RichTextBox.Visible = true;
                     this.PlayAudioButton.Visible = false;
                     this.StopAudioButton.Visible = false;
@@ -821,7 +842,7 @@ namespace ProgettoPDS_CLIENT
                     break;
 
                 case "AUDIO":
-                    this.TypeClipboardLabel.Text += " AUDIO";
+                    this.TypeClipboardLabel.Text = " AUDIO";
                     this.RichTextBox.Visible = false;
                     this.PlayAudioButton.Visible = true;
                     this.StopAudioButton.Visible = true;
@@ -830,7 +851,7 @@ namespace ProgettoPDS_CLIENT
                     break;
 
                 case "FILE_DROP":
-                    this.TypeClipboardLabel.Text += " FILE DROP";
+                    this.TypeClipboardLabel.Text = " FILE DROP";
                     this.PlayAudioButton.Visible = false;
                     this.StopAudioButton.Visible = false;
                     this.ImageClipboardPictureBox.Visible = false;
@@ -844,7 +865,7 @@ namespace ProgettoPDS_CLIENT
                     break;
 
                 case "VUOTA" :
-                    this.TypeClipboardLabel.Text += " VUOTA!";
+                    this.TypeClipboardLabel.Text = " VUOTA!";
                     break;
             }
 
@@ -875,7 +896,7 @@ namespace ProgettoPDS_CLIENT
 
                 if ( e.Shift && e.KeyCode == Keys.Escape ) {
                     this.ActionPanel.Visible = false;
-                    this.ActionServerLabel.Text = "Stai Comandando il seguente Server: ";
+                    this.ActionServerLabel.Text = "";
                     this.MainPanel.Visible = true;
                     this.HostNameTextBox.Focus();
                     this.mouseHook.Unistall();
@@ -906,7 +927,7 @@ namespace ProgettoPDS_CLIENT
                     if (trovato)
                         this.ProgressBarPanel.Visible = false;
                 }
-                else if ( e.Alt && e.KeyCode == Keys.PageUp ) {
+                else if (e.Alt && e.KeyCode == Keys.Up) {
                     int index = this.currServ;
 
                     do { 
@@ -916,7 +937,7 @@ namespace ProgettoPDS_CLIENT
                             this.currServ = 0;
 
                         if( this.connessioni[this.currServ].IsConnected() ) {
-                            this.ActionServerLabel.Text = "Stai Comandando il seguente Server: " + this.servers[this.currServ].HostName;
+                            this.ActionServerLabel.Text = this.servers[this.currServ].HostName;
                             break;
                         }
                     } while( this.currServ != index );
@@ -926,7 +947,8 @@ namespace ProgettoPDS_CLIENT
                             "AVVISO!!", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 }
-                else if ( e.Alt && e.KeyCode == Keys.PageDown ) {
+                else if (e.Alt && e.KeyCode == Keys.Down) {
+
                     int index = this.currServ;
 
                     do {
@@ -936,7 +958,7 @@ namespace ProgettoPDS_CLIENT
                             this.currServ = this.connessioni.Count - 1;
 
                         if (this.connessioni[this.currServ].IsConnected()) {
-                            this.ActionServerLabel.Text = "Stai Comandando il seguente Server: " + this.servers[this.currServ].HostName;
+                            this.ActionServerLabel.Text = this.servers[this.currServ].HostName;
                             break;
                         }
                     } while (this.currServ != index);
@@ -945,7 +967,7 @@ namespace ProgettoPDS_CLIENT
                         MessageBox.Show("Al momento sei connesso solo con il server : " + this.servers[this.currServ].HostName,
                             "AVVISO!!", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
-                else if (e.Alt && e.KeyCode == Keys.C ) {
+                else if (e.Alt && e.KeyCode == Keys.C) {
 
                     if ( this.ClipboardRequestBW.IsBusy )
                         this.ClipboardRequestBW.CancelAsync();
@@ -955,6 +977,7 @@ namespace ProgettoPDS_CLIENT
 
                 }
                 else if (e.Alt && e.KeyCode == Keys.R) {
+
                     if (!this.ClipboardRequestBW.IsBusy && !this.ClipboardSendBW.IsBusy)
                         this.ClipboardRequestBW.RunWorkerAsync();
                     else
@@ -970,8 +993,8 @@ namespace ProgettoPDS_CLIENT
                         MessageBox.Show("E' in corso il completamento della richiesta precedente relativa alla Clipboard.", "AVVISO",
                             MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
-                else if (e.Alt && e.KeyCode == Keys.M) { 
-                    
+                else if (e.Alt && e.KeyCode == Keys.M) {
+
                     if (this.ContentClipboardPanel.Visible)
                         ClearClipboardContentPanel();
                     else {
@@ -1422,9 +1445,9 @@ namespace ProgettoPDS_CLIENT
 
                 byte[] d = new byte[SocketConnection.SBufSizeClipSock];
 
-                for ( int i = dataSended; (i < SocketConnection.SBufSizeClipSock + dataSended ) && i < dim; i++)
+                for (int i = dataSended; (i < SocketConnection.SBufSizeClipSock + dataSended) && i < dim; i++) 
                     d[i - dataSended] = buff[i];
-
+                    
                 try {
 
                     if (this.connessioni[this.currServ].IsConnected())
@@ -1435,8 +1458,8 @@ namespace ProgettoPDS_CLIENT
                     this.Invoke(this.resetCallback);
                 }
 
+                this.Invoke(this.doStepProgressBar);
                 dataSended += d.Length;
-                this.Invoke(this.doStepProgressBar); 
             }
 
             this.Invoke(this.closeProgressBar);
@@ -1471,11 +1494,11 @@ namespace ProgettoPDS_CLIENT
                     this.Invoke(this.resetCallback);
                 }
 
-                for (int i = dataReceived; i < SocketConnection.RBufSizeClipSock + dataReceived && i < dim; i++)
+                for (int i = dataReceived; i < SocketConnection.RBufSizeClipSock + dataReceived && i < dim; i++) 
                     rbuff[i] = data[i - dataReceived];
-
-                dataReceived += data.Length;
-                this.Invoke(this.doStepProgressBar); 
+                    
+                dataReceived += data.Length;    
+                this.Invoke(this.doStepProgressBar);
             }
 
             this.Invoke(this.closeProgressBar);
@@ -1492,7 +1515,7 @@ namespace ProgettoPDS_CLIENT
             if (!this.ProgressBarPanel.Visible)
                 this.ProgressBarPanel.Visible = true;
 
-            this.ClipboardProgressBar.Maximum = dim;
+            this.ClipboardProgressBar.Maximum = dim - 1;
             this.ClipboardProgressBar.Minimum = 0;
             this.ClipboardProgressBar.Value = 0;
             this.ClipboardProgressBar.Step = SocketConnection.SBufSizeClipSock;
@@ -1507,12 +1530,11 @@ namespace ProgettoPDS_CLIENT
 
         private void closeProgressBarMethod()
         {
-            while (this.ClipboardProgressBar.Maximum > this.ClipboardProgressBar.Value) {
+            while (this.ClipboardProgressBar.Maximum > this.ClipboardProgressBar.Value)
                 doStepProgressBarMethod();
-                Thread.Sleep(10);
-            }
 
             this.ProgressBarPanel.Visible = false;
+            this.PercentageLabel.Text = "0 %";
         }
 
         #endregion
