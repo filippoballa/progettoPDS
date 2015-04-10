@@ -793,7 +793,7 @@ namespace ProgettoPDS_SERVER
 
             if (color == Brushes.Transparent)
             {
-                g.Dispose();
+                SHChangeNotify(0x8000000, 0x1000, IntPtr.Zero, IntPtr.Zero);
             }
             else
             {
@@ -825,6 +825,9 @@ namespace ProgettoPDS_SERVER
                 work = false;
             }
         }
+
+        [DllImport("Shell32.dll")]
+        private static extern int SHChangeNotify(int eventId, int flags, IntPtr item1, IntPtr item2);
     }
     
 }
