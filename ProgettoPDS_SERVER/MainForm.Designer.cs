@@ -328,7 +328,7 @@
             this.infoDatiToolStripMenuItem.BackColor = System.Drawing.Color.Beige;
             this.infoDatiToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("infoDatiToolStripMenuItem.Image")));
             this.infoDatiToolStripMenuItem.Name = "infoDatiToolStripMenuItem";
-            this.infoDatiToolStripMenuItem.Size = new System.Drawing.Size(156, 26);
+            this.infoDatiToolStripMenuItem.Size = new System.Drawing.Size(129, 26);
             this.infoDatiToolStripMenuItem.Text = "Info Dati";
             this.infoDatiToolStripMenuItem.Click += new System.EventHandler(this.infoDatiToolStripMenuItem_Click);
             // 
@@ -337,7 +337,7 @@
             this.pulisciToolStripMenuItem.BackColor = System.Drawing.Color.Beige;
             this.pulisciToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("pulisciToolStripMenuItem.Image")));
             this.pulisciToolStripMenuItem.Name = "pulisciToolStripMenuItem";
-            this.pulisciToolStripMenuItem.Size = new System.Drawing.Size(156, 26);
+            this.pulisciToolStripMenuItem.Size = new System.Drawing.Size(129, 26);
             this.pulisciToolStripMenuItem.Text = "Pulisci";
             this.pulisciToolStripMenuItem.Click += new System.EventHandler(this.pulisciToolStripMenuItem_Click);
             // 

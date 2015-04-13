@@ -429,8 +429,9 @@ namespace ProgettoPDS_SERVER
         //cambio porta
         private void impostaPortaToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
-            //port
+            if(!progressBarClipboard.Visible)
+            {
+                //port
             numericUpDownPort.Value = port;
 
             if (panelChangePassword.Visible)
@@ -442,6 +443,8 @@ namespace ProgettoPDS_SERVER
                 this.Height = maxheight;
             }
             this.PanelSetPort.Visible = true;
+            }
+            
         }
 
         //chiusura pannello porta
@@ -457,15 +460,19 @@ namespace ProgettoPDS_SERVER
         //Apertura pannello Password
         private void cambioPasswordToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (PanelSetPort.Visible)
+            if (!progressBarClipboard.Visible)
             {
-                PanelSetPort.Visible = false;
+                if (PanelSetPort.Visible)
+                {
+                    PanelSetPort.Visible = false;
+                }
+                else
+                {
+                    this.Height = maxheight;
+                }
+                this.panelChangePassword.Visible = true;
             }
-            else
-            {
-                this.Height = maxheight;
-            }
-            this.panelChangePassword.Visible = true;
+            
         }
 
         //chiusura pannello password
