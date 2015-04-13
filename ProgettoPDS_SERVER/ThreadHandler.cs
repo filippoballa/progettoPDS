@@ -127,7 +127,7 @@ namespace ProgettoPDS_SERVER
                 {
                     for (int i = ScrollY; i > 0; i--)
                     {
-                        mouse_event(ApplicationConstants.MOUSEEVENTF_MOVE, 0, old.Y + i, 0, UIntPtr.Zero);
+                        mouse_event(ApplicationConstants.MOUSEEVENTF_MOVE, 0, -1, 0, UIntPtr.Zero);
                         if (i % t != 0)
                             Thread.Sleep(T);
                     }
@@ -137,7 +137,7 @@ namespace ProgettoPDS_SERVER
                 {
                     for (int i = 0; i < ScrollY; i++)
                     {
-                        mouse_event(ApplicationConstants.MOUSEEVENTF_MOVE, 0, old.Y + i, 0, UIntPtr.Zero);
+                        mouse_event(ApplicationConstants.MOUSEEVENTF_MOVE, 0, 1, 0, UIntPtr.Zero);
                         if (i % t != 0)
                             Thread.Sleep(T);
                     }
@@ -152,7 +152,7 @@ namespace ProgettoPDS_SERVER
                 {
                     for (int i = ScrollX; i > 0; i--)
                     {
-                        mouse_event(ApplicationConstants.MOUSEEVENTF_MOVE, old.X + i, 0, 0, UIntPtr.Zero);
+                        mouse_event(ApplicationConstants.MOUSEEVENTF_MOVE, -1, 0, 0, UIntPtr.Zero);
                         if (i % t != 0)
                             Thread.Sleep(T);
                     }
@@ -161,7 +161,7 @@ namespace ProgettoPDS_SERVER
                 {
                     for (int i = 0; i < ScrollX; i++)
                     {
-                        mouse_event(ApplicationConstants.MOUSEEVENTF_MOVE, old.X + i, 0, 0, UIntPtr.Zero);
+                        mouse_event(ApplicationConstants.MOUSEEVENTF_MOVE, 1, 0, 0, UIntPtr.Zero);
                         if (i % t != 0)
                             Thread.Sleep(T);
                     }
@@ -172,8 +172,8 @@ namespace ProgettoPDS_SERVER
             #region spostamento entrambi gli assi
             else
             {
-                int M = 0;
-                int counter = 0;
+                long M = 0;
+                long counter = 0;
                 int signx = 1;
                 int signy = 1;
 
@@ -195,7 +195,7 @@ namespace ProgettoPDS_SERVER
 
                 if (ScrollX == ScrollY)//spostamenti uguali asse X e Y (M = 1)
                 {
-                    for (int i = 0; i < ScrollY; i++)
+                    for (int i = 0; i < signx*ScrollX; i++)
                     {
                         mouse_event(ApplicationConstants.MOUSEEVENTF_MOVE, signx, 0, 0, UIntPtr.Zero);
                         mouse_event(ApplicationConstants.MOUSEEVENTF_MOVE, 0, signy, 0, UIntPtr.Zero);
@@ -212,7 +212,7 @@ namespace ProgettoPDS_SERVER
                     if (LScrollX > LScrollY)//spostamento maggiore sull'asse x
                     {
                         //Calcolo rapporto
-                        M = (int)(LScrollX / LScrollY);
+                        M = (LScrollX / LScrollY);
                         for (long i = 0; i < LScrollX; i += PREC)
                         {
                             mouse_event(ApplicationConstants.MOUSEEVENTF_MOVE, signx, 0, 0, UIntPtr.Zero);
@@ -229,7 +229,7 @@ namespace ProgettoPDS_SERVER
                     else//spostamento maggiore sull'asse y
                     {
                         //Calcolo rapporto
-                        M = (int)(LScrollY / LScrollX);
+                        M = (LScrollY / LScrollX);
 
                         for (long i = 0; i < LScrollY; i += PREC)
                         {
