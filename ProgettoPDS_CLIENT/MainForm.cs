@@ -1126,9 +1126,9 @@ namespace ProgettoPDS_CLIENT
                         aux = "M-MDBCLK";
                 }
 
-                int res = (Cursor.Position.X * 1000) / Screen.PrimaryScreen.WorkingArea.Width;
+                int res = (Cursor.Position.X * 10000) / Screen.PrimaryScreen.Bounds.Width;
                 aux += "-" + res.ToString();
-                res = (Cursor.Position.Y * 1000) / Screen.PrimaryScreen.WorkingArea.Height;
+                res = (Cursor.Position.Y * 10000) / Screen.PrimaryScreen.Bounds.Height;
                 aux += "-" + res.ToString() + "-";
                 byte[] pdu = Encoding.ASCII.GetBytes(aux);
 
