@@ -43,19 +43,19 @@ namespace ProgettoPDS_SERVER
 
             //get proportion from data
             if (MouseData[2] != null)
-                X = Convert.ToInt32(MouseData[2])*Screen.PrimaryScreen.WorkingArea.Width / 1000;
+                X = Convert.ToInt32(MouseData[2])*Screen.PrimaryScreen.Bounds.Width / PREC;
             if (MouseData[3] != null)
-                Y = Convert.ToInt32(MouseData[3]) * Screen.PrimaryScreen.WorkingArea.Width / 1000;
+                Y = Convert.ToInt32(MouseData[3]) * Screen.PrimaryScreen.Bounds.Width / PREC;
 
             //controllo di non uscire dallo schermo
             if (X < 0)
                 X = 0;
-            else if (X > Screen.PrimaryScreen.WorkingArea.Width)
-                X = Screen.PrimaryScreen.WorkingArea.Width;
+            else if (X > Screen.PrimaryScreen.Bounds.Width)
+                X = Screen.PrimaryScreen.Bounds.Width;
             if (Y < 0)
                 Y = 0;
-            else if (Y > Screen.PrimaryScreen.WorkingArea.Height)
-                Y = Screen.PrimaryScreen.WorkingArea.Height;
+            else if (Y > Screen.PrimaryScreen.Bounds.Height)
+                Y = Screen.PrimaryScreen.Bounds.Height;
 
             //calculate Scroll size
             int ScrollX = X - p.X;
@@ -65,6 +65,7 @@ namespace ProgettoPDS_SERVER
             if (MouseData[1] == ApplicationConstants.MOUSEEVENT_MOVE)
             {
                 MouseMove(ScrollX,ScrollY, p);
+                //mouse_event(ApplicationConstants.MOUSEEVENTF_MOVE, ScrollX, ScrollY, 0, UIntPtr.Zero);
             }
             //MOUSE LEFT CLICK
             else if (MouseData[1] == ApplicationConstants.MOUSEEVENT_LEFTCLICK)
@@ -122,7 +123,7 @@ namespace ProgettoPDS_SERVER
             #region spostamento solo asse Y
             if (ScrollX == 0)//spostamento solo asse Y
             {
-                if (ScrollX < 0)//spostamento in basso
+                if (ScrollY < 0)//spostamento in basso
                 {
                     for (int i = ScrollY; i > 0; i--)
                     {
@@ -147,7 +148,7 @@ namespace ProgettoPDS_SERVER
             #region spostamento solo asse X
             else if (ScrollY == 0)//spostamento solo asse X
             {
-                if (ScrollY < 0)//spostamento a sx
+                if (ScrollX < 0)//spostamento a sx
                 {
                     for (int i = ScrollX; i > 0; i--)
                     {
